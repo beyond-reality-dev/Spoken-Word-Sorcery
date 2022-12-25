@@ -1,0 +1,12 @@
+# pycache folders
+__pycache__/
+__init__.py
+
+# Graphics files.
+graphics
+
+# Notes.
+notes
+
+# Data files.
+save_files
