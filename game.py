@@ -28,6 +28,8 @@ def load_game():
             game_state_locations = json.load(openfile)
         with open (KNOWSAVE_FILENAME, 'r') as openfile:
             game_state_knowledge = json.load(openfile)
+        global temp_player_name
+        temp_player_name = game_state_player['Name']
     else:
         flash("No savegame found, returning to the start menu", 3)
         start_menu()
@@ -76,6 +78,7 @@ def initialize_game():
         "Insanity": 0,
         "Progress": 0,
         "Experience": 0,
+        "Level": 1,
         "Gold": 0
         }
     game_state_locations["locations"] = [locations]
@@ -177,10 +180,10 @@ def start_new_game():
     from cutscenes import intro
     initialize_game()
     save_game()
-    clear()
-    chapter_one()
-    input()
-    intro()
+    #clear()
+    #chapter_one()
+    #input()
+    #intro()
 
 # Menus
 
