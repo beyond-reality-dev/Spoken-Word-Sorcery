@@ -11,6 +11,7 @@ screen_height = windll.user32.GetSystemMetrics(1)
 
 # Set the font settings.
 MAINFONT = ("Georgia", 24)
+STARTFONT = ("Georgia", 67)
 
 class App(tk.Tk):
     def __init__(self):
@@ -65,21 +66,28 @@ class StartMenu(tk.Frame):
         # Inherit from the frame class.
         super().__init__(parent, *args, **kwargs)
 
+        # Create a spacer.
+        self.spacer = " " * 100
+
+        # Create a label to display the title.
+        self.title = tk.Label(self, text="Spoken Word Sorcery - Start Menu", font=STARTFONT)
+        self.title.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+
         # Create a button to load the game.
-        self.start_button = tk.Button(self, text="Load a Save Game", font=MAINFONT, command=lambda: self.load_game(parent))
-        self.start_button.pack()
+        self.start_button = tk.Button(self, text="Load a Save Game", font=STARTFONT, relief=tk.GROOVE, bg="dark gray", command=lambda: self.load_game(parent))
+        self.start_button.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
         # Create a button to start a new game.
-        self.new_button = tk.Button(self, text="Start a New Game", font=MAINFONT, command=lambda: self.start_a_new_game(parent))
-        self.new_button.pack()
+        self.new_button = tk.Button(self, text="Start a New Game", font=STARTFONT, relief=tk.GROOVE, bg="dark gray", command=lambda: self.start_a_new_game(parent))
+        self.new_button.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
         
         # Create a button to view information about the game.
-        self.info_button = tk.Button(self, text="View Information", font=MAINFONT, command=lambda: self.view_info(parent))
-        self.info_button.pack()
+        self.info_button = tk.Button(self, text="View Information", font=STARTFONT, relief=tk.GROOVE, bg="dark gray", command=lambda: self.view_info(parent))
+        self.info_button.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
         # Create a button to quit the game.
-        self.quit_button = tk.Button(self, text="Quit", font=MAINFONT, command=self.quit)
-        self.quit_button.pack()
+        self.quit_button = tk.Button(self, text=f"{self.spacer}Quit{self.spacer}", relief=tk.GROOVE, bg="dark gray", font=STARTFONT, command=self.quit)
+        self.quit_button.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
     def load_game(self, parent):
         load_game()
