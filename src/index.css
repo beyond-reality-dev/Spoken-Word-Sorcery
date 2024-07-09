@@ -32,9 +32,18 @@ body {
     border-left: solid black;
 }
 
+.title-bar {
+    width: 61.675%;
+    height: 11vh;
+    box-sizing: border-box;
+    padding-inline: 2.5%;
+    background-color: #fef8e6;
+    overflow-x: hidden;
+}
+
 .main-content {
     width: 61.675%;
-    height: 95vh;
+    height: 84vh;
     box-sizing: border-box;
     padding-inline: 2.5%;
     float: left;
@@ -71,6 +80,25 @@ body {
     cursor: pointer;
 }
 
+progress[value] {
+    position: absolute;
+    top: 2%;
+    left: 20%;
+    --color: green; /* the progress color */
+    --background: #ffffff; /* the background color */
+    width: 40vh;
+    height: 10vh;
+    margin: 0 10px;
+  }
+  progress[value]::-webkit-progress-bar {
+    border-radius: 50px;
+    background: var(--background);
+  }
+  progress[value]::-webkit-progress-value {
+    border-radius: 50px;
+    background: var(--color);
+  }
+
 .health-bar {
     position: absolute;
     top: 2%;
@@ -80,6 +108,12 @@ body {
     background-color: #ffffff;
     border: solid black;
     border-radius: 50px;
+}
+
+.health-bar-filling {
+    height: fit-content;
+    width: fit-content;
+    background-color: red;
 }
 
 .mana-bar {
