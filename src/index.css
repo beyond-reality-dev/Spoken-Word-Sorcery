@@ -34,7 +34,7 @@ body {
 
 .title-bar {
     width: 61.675%;
-    height: 11vh;
+    height: 12vh;
     box-sizing: border-box;
     padding-inline: 2.5%;
     background-color: #fef8e6;
@@ -43,7 +43,7 @@ body {
 
 .main-content {
     width: 61.675%;
-    height: 84vh;
+    height: 83vh;
     box-sizing: border-box;
     padding-inline: 2.5%;
     float: left;
@@ -80,64 +80,53 @@ body {
     cursor: pointer;
 }
 
-progress[value] {
-    position: absolute;
-    top: 2%;
-    left: 20%;
-    --color: green; /* the progress color */
-    --background: #ffffff; /* the background color */
-    width: 40vh;
-    height: 10vh;
-    margin: 0 10px;
-  }
-  progress[value]::-webkit-progress-bar {
-    border-radius: 50px;
-    background: var(--background);
-  }
-  progress[value]::-webkit-progress-value {
-    border-radius: 50px;
-    background: var(--color);
-  }
+.icon {
+    padding: 1.5vh 0; 
+    font-size: 5em;
+}
 
 .health-bar {
     position: absolute;
-    top: 2%;
+    top: 0%;
     left: 20%;
     width: 40vh;
-    height: 5vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 50px;
+    height: 10vh;
+    margin: 0 10px;
+    accent-color: red;
 }
 
-.health-bar-filling {
-    height: fit-content;
-    width: fit-content;
-    background-color: red;
+.health-text {
+    position: absolute;
+    top: 3.5vh;
+    left: 21.5%;
+    font-size: large;
+    font-weight: bold;
+    color: #ffffff
 }
 
 .mana-bar {
     position: absolute;
-    top: 2%;
+    top: 0%;
     right: 20%;
     width: 40vh;
-    height: 5vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 50px;
+    height: 10vh;
+    margin: 0 10px;
+    accent-color: blue;
 }
 
-.bar-text {
-    margin: auto;
-    width: 100%;
-    padding-top: 1vh;
-    padding-left: 1vh;
+.mana-text {
+    position: absolute;
+    top: 3.5vh;
+    right: 31.75%;
     font-size: large;
+    font-weight: bold;
+    color: #ffffff;
 }
 
 .title-text {
     text-align: center;
     margin-top: 2vh;
+    font-size: xx-large;
 }
 
 .content-text {
