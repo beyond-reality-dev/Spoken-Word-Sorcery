@@ -1,4 +1,4 @@
-module.exports = { switchScreen, switchButton, blockInput, allowInput };
+module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines };
 
 function switchScreen(screen) {
     document.getElementById("main").style.display = "none";
@@ -36,3 +36,26 @@ function allowInput() {
     document.getElementById("input-bar").style.backgroundColor = "#ffffff";
     document.getElementById("input-bar").setAttribute("contenteditable", "true");
 }
+
+function printLines(file) {
+    // Read lines of text and print to screen, delaying between each line.
+    var fs = require("fs");
+    fs.readFile(file, "utf8", function(err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        var lines = data.split("\n");
+        printDelay(lines);
+    });
+}
+
+function printDelay(lines) {
+    console.log(lines);
+    for (let i = 0; i < lines.length; i++) {
+      setTimeout(() => {
+        console.log(lines[i]);
+        printDelay(i);
+      }, 1000);
+     
+    }
+  }

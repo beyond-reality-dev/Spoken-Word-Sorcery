@@ -22,7 +22,7 @@ function createWindow() {
 
     // Start menu functions.
     window.webContents.executeJavaScript(`
-        const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { switchScreen, switchButton, blockInput, allowInput, printLines } = require("./general.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {
@@ -31,6 +31,8 @@ function createWindow() {
             document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
             document.getElementById("home-button").style.cursor = "default";
             blockInput();
+            printLines("app/src/chapters/intro.txt");
+            allowInput();
         }
 
         document.getElementById("load-button").onclick = function () { 
