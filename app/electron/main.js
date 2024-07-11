@@ -44,6 +44,12 @@ function createWindow() {
         }`);
     
     // Game screen functions.
+    window.webContents.executeJavaScript(`document.getElementById("input-bar").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var input = document.getElementById("input-bar").value;
+        console.log(input);
+        document.getElementById("input-bar").value = "";
+        });`);
     window.webContents.executeJavaScript(`document.getElementById("spellbook-button").onclick = function () {
         document.getElementById("spellbook-screen").style.display = "block";
         document.getElementById("main").style.display = "none";

@@ -20,8 +20,8 @@
 
     <section id="loading-screen" class="screen">
         <h1 id="loading-title" class="start-title">Load an Existing Game</h1>
-        <button id="save-1" class="start-button">Save 1</button>
-        <button id="save-2" class="start-button">Save 2</button>
+        <button id="load-save" class="start-button">Load Save Game</button>
+        <button id="overwrite-save" class="start-button">Overwrite Save Game</button>
         <button id="loading-back" class="start-button">Back</button>
     </section>
 
@@ -54,7 +54,7 @@
     
         <section id="main">
             <div id="main-content" class="main-content"></div>
-            <form><input id="input-bar" type="text" title="input" id="input" class="input-bar"></input></form>
+            <form><input id="input-bar" type="text" title="input" class="input-bar"></input></form>
         </section>
 
         <section id="spellbook-screen" class="sub-screen">
@@ -70,7 +70,9 @@
         </section>
 
         <section id="settings-screen" class="sub-screen">
-            <p>WIP</p>
+            <button id="save-button" class="settings-button">Save Game</button>
+            <button id="quit-save" class="settings-button">Save Game and Exit</button>
+            <button id="quit-button" class="settings-button">Exit without Saving</button>
         </section>
 
         <section id="map-screen" class="sub-screen">

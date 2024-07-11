@@ -100,9 +100,10 @@ body {
     height: 12vh;
     box-sizing: border-box;
     padding-inline: 2.5%;
-    background-color: #fef8e6;
+    background-color: #ffffff;
     overflow-x: hidden;
     text-align: center;
+    border-bottom: solid black;
 }
 
 .title-text {
@@ -194,4 +195,22 @@ body {
 
 .content-text {
     font-size: large;
+}
+
+.settings-button {
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100vh;
+    height: 20vh;
+    background-color: #ffffff;
+    border: solid black;
+    border-radius: 25px;
+    display: block;
+    font-size: 4em;
+}
+
+.settings-button:hover {
+    background-color: #d1d1d1;
+    cursor: pointer;
 }
