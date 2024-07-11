@@ -26,6 +26,8 @@ function createWindow() {
         document.getElementById("start-screen").style.display = "none";
         document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
         document.getElementById("home-button").style.cursor = "default";
+        document.getElementById("input-bar").contentEditable = false;
+        document.getElementById("input-bar").style.backgroundColor = "#d1d1d1";
         }`);
     window.webContents.executeJavaScript(`document.getElementById("load-button").onclick = function () { 
         document.getElementById("loading-screen").style.display = "block";
@@ -50,7 +52,7 @@ function createWindow() {
             if (event.key === "Enter") {
                 event.preventDefault();
                 var text = document.getElementById("input-bar").innerText;
-                console.log(text);
+                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
                 document.getElementById("input-bar").innerText = "";
             }
     });`);

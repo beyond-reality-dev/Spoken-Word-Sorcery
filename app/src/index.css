@@ -119,15 +119,21 @@ body {
     float: left;
     background-color: #fef8e6;
     overflow-x: hidden;
+    font-size: x-large;
 }
 
 .input-bar {
     display: inline-block;
-    width: 61.42%;
-    height: 4.2vh;
+    width: 61.15%;
+    height: 4vh;
     background-color: #ffffff;
     border-top: solid black;
-    font-size: large;
+    padding: 0.5vh;
+    font-size: x-large;
+}
+
+.input-bar:focus {
+    outline: none;
 }
 
 .icon-button {
