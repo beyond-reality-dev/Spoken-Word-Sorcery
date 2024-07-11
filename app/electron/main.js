@@ -20,14 +20,9 @@ function createWindow() {
 
     // Set up the window to display the start screen.
     window.webContents.executeJavaScript(`document.getElementById("start-button").onclick = function () { 
-        document.getElementById("left-sidebar").style.display = "inline-block";
-        document.getElementById("right-sidebar").style.display = "block";
-        document.getElementById("title-bar").style.display = "block";
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("input-bar").style.display = "block";
+        document.getElementById("game-screen").style.display = "block";
         document.getElementById("start-screen").style.display = "none";
         }`);
-    
 }
 
 // This method is called when Electron
