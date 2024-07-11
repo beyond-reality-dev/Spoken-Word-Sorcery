@@ -18,21 +18,30 @@
         <button id="about-button" class="start-button">About</button>
     </section>
 
-    <section id="loading-screen"></section>
+    <section id="loading-screen" class="screen">
+        <h1 id="loading-title" class="start-title">Load an Existing Game</h1>
+        <button id="save-1" class="start-button">Save 1</button>
+        <button id="save-2" class="start-button">Save 2</button>
+        <button id="loading-back" class="start-button">Back</button>
+    </section>
 
-    <section id="about-screen"></section>
+    <section id="about-screen" class="screen">
+        <h1 id="about-title" class="start-title">About</h1>
+        <p id="about-text" class="about-text">Spoken Word Sorcery is a text-based role-playing game (RPG) written in JavaScript. The game is designed to be as open world as possible, within the constraints of the format and technical limitations.</p>
+        <button id="about-back" class="start-button">Back</button>
+    </section>
 
-    <section id="game-screen" class="game-screen">
+    <section id="game-screen" class="screen">
         <section id="left-sidebar" class="left-sidebar">
-            <div id="spellbook-button" class="icon-button"><span class="material-icons icon"><span class="icon">book</span></span></div>
-            <div id="equipment-button" class="icon-button"><span class="material-icons icon"><span class="icon">shield</span></span></div>
-            <div id="inventory-button" class="icon-button"><span class="material-icons icon"><span class="icon">inventory</span></span></div>
+            <button id="spellbook-button" class="icon-button"><span class="material-icons icon"><span class="icon">book</span></span></button>
+            <button id="equipment-button" class="icon-button"><span class="material-icons icon"><span class="icon">shield</span></span></button>
+            <button id="inventory-button" class="icon-button"><span class="material-icons icon"><span class="icon">inventory</span></span></button>
         </section>
     
         <section id="right-sidebar" class="right-sidebar">
-            <div id="settings-button" class="icon-button"><span class="material-icons icon"><span class="icon">settings</span></span></div>
-            <div id="map-button" class="icon-button"><span class="material-icons icon"><span class="icon">map</span></span></div>
-            <div id="home-button" class="icon-button"><span class="material-icons icon"><span class="icon">home</span></span></div>
+            <button id="settings-button" class="icon-button"><span class="material-icons icon"><span class="icon">settings</span></span></button>
+            <button id="map-button" class="icon-button"><span class="material-icons icon"><span class="icon">map</span></span></button>
+            <button id="home-button" class="icon-button"><span class="material-icons icon"><span class="icon">home</span></span></button>
         </section>
     
         <section id="title-bar" class="title-bar">
@@ -46,6 +55,26 @@
         <section id="main">
             <div id="main-content" class="main-content"></div>
             <form><input id="input-bar" type="text" title="input" id="input" class="input-bar"></input></form>
+        </section>
+
+        <section id="spellbook-screen" class="sub-screen">
+            <p>WIP</p>
+        </section>
+
+        <section id="equipment-screen" class="sub-screen">
+            <p>WIP</p>
+        </section>
+
+        <section id="inventory-screen" class="sub-screen">
+            <p>WIP</p>
+        </section>
+
+        <section id="settings-screen" class="sub-screen">
+            <p>WIP</p>
+        </section>
+
+        <section id="map-screen" class="sub-screen">
+            <p>WIP</p>
         </section>
     </section>
 </body>
