@@ -1,14 +1,15 @@
-const {
-    app,
-    BrowserWindow
-} = require("electron");
+const { ipcMain, app, BrowserWindow } = require("electron");
 
 function createWindow() {
     // Create the browser window and load the index.html of the app.
     var window = new BrowserWindow({
         width: 800,
         height: 600,
-        show: false
+        show: false,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
     });
     window.removeMenu();
     window.webContents.openDevTools();
@@ -44,12 +45,15 @@ function createWindow() {
         }`);
     
     // Game screen functions.
-    window.webContents.executeJavaScript(`document.getElementById("input-bar").addEventListener("submit", function (event) {
-        event.preventDefault();
-        var input = document.getElementById("input-bar").value;
-        console.log(input);
-        document.getElementById("input-bar").value = "";
-        });`);
+    window.webContents.executeJavaScript(`var input = document.getElementById("input-bar");
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var text = document.getElementById("input-bar").innerText;
+                console.log(text);
+                document.getElementById("input-bar").innerText = "";
+            }
+    });`);
     window.webContents.executeJavaScript(`document.getElementById("spellbook-button").onclick = function () {
         document.getElementById("spellbook-screen").style.display = "block";
         document.getElementById("main").style.display = "none";

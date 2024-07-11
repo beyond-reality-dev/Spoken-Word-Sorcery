@@ -122,15 +122,12 @@ body {
 }
 
 .input-bar {
+    display: inline-block;
     width: 61.42%;
     height: 4.2vh;
-    border: none;
+    background-color: #ffffff;
     border-top: solid black;
     font-size: large;
-}
-
-.input-bar:focus {
-    outline: none;
 }
 
 .icon-button {
