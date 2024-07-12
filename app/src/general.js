@@ -49,10 +49,11 @@ async function printLines(file) {
         for (let i = 0; i < lines.length; i++) {
             setTimeout(() => {
                 document.getElementById("main-content").innerHTML += "<p>" + lines[i] + "</p>";
+                document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                 if (i == lines.length - 1) {
                     allowInput();
                 }
-            }, i*1000);
+            }, i*4000);
         }
     });
 }
