@@ -22,7 +22,8 @@ function createWindow() {
 
     // Start menu functions.
     window.webContents.executeJavaScript(`
-        const { switchScreen, switchButton, blockInput, allowInput, printLines } = require("./general.js");
+        const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {
@@ -30,9 +31,7 @@ function createWindow() {
             document.getElementById("start-screen").style.display = "none";
             document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
             document.getElementById("home-button").style.cursor = "default";
-            blockInput();
-            printLines("app/src/chapters/intro.txt");
-            allowInput();
+            intro();
         }
 
         document.getElementById("load-button").onclick = function () { 
@@ -54,17 +53,6 @@ function createWindow() {
             document.getElementById("about-screen").style.display = "none";
             document.getElementById("start-screen").style.display = "block";
         }
-        
-        // Input handling functions.
-        var input = document.getElementById("input-bar");
-        input.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                var text = document.getElementById("input-bar").innerText;
-                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
-                document.getElementById("input-bar").innerText = "";
-            }
-        });
         
         // Sidebar functions.
         document.getElementById("spellbook-button").onclick = function () {

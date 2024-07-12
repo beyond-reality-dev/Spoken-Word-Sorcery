@@ -1,4 +1,4 @@
-module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines };
+module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines, awaitInput };
 
 function switchScreen(screen) {
     document.getElementById("main").style.display = "none";
@@ -37,7 +37,8 @@ function allowInput() {
     document.getElementById("input-bar").setAttribute("contenteditable", "true");
 }
 
-function printLines(file) {
+async function printLines(file) {
+    blockInput();
     // Read lines of text and print to screen, delaying between each line.
     var fs = require("fs");
     fs.readFile(file, "utf8", function(err, data) {
@@ -45,17 +46,27 @@ function printLines(file) {
             return console.log(err);
         }
         var lines = data.split("\n");
-        printDelay(lines);
+        for (let i = 0; i < lines.length; i++) {
+            setTimeout(() => {
+                document.getElementById("main-content").innerHTML += "<p>" + lines[i] + "</p>";
+                if (i == lines.length - 1) {
+                    allowInput();
+                }
+            }, i*1000);
+        }
     });
 }
 
-function printDelay(lines) {
-    console.log(lines);
-    for (let i = 0; i < lines.length; i++) {
-      setTimeout(() => {
-        console.log(lines[i]);
-        printDelay(i);
-      }, 1000);
-     
-    }
-  }
+async function awaitInput() {
+    return new Promise(function(resolve) {
+        var input = document.getElementById("input-bar");
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                var text = document.getElementById("input-bar").innerText;
+                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + input.innerText + "</p></span>";
+                input.innerText = "";
+                resolve(text);
+            }
+        });
+    });
+}
