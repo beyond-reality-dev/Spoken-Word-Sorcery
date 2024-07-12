@@ -1,4 +1,4 @@
-module.exports = { gameSpeed, switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput };
+module.exports = { gameSpeed, switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput, requireAnswer };
 
 var gameSpeed = 1000;
 
@@ -80,4 +80,15 @@ async function awaitInput() {
         }
         input.addEventListener("keypress", handleKeyPress);
     });
+}
+
+async function requireAnswer(answerChoices, question) {
+    var confirm = await awaitInput();
+    confirm = confirm.toLowerCase();
+    while (!answerChoices.includes(confirm)) {
+        quickPrint(question);
+        confirm = await awaitInput();
+        confirm = confirm.toLowerCase();
+    }
+    confirm = false;
 }
