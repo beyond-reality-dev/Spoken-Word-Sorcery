@@ -85,10 +85,13 @@ async function awaitInput() {
 async function requireAnswer(answerChoices, question) {
     var confirm = await awaitInput();
     confirm = confirm.toLowerCase();
-    while (!answerChoices.includes(confirm)) {
+    confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
+    console.log(confirm);
+    while (!answerChoices.includes(confirm) && !answerChoices.includes("any")) {
         quickPrint(question);
         confirm = await awaitInput();
         confirm = confirm.toLowerCase();
+        confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     }
     confirm = false;
 }

@@ -125,11 +125,12 @@ body {
 .input-bar {
     display: inline-block;
     width: 61.15%;
-    height: 4vh;
+    height: 3.6vh;
     background-color: #ffffff;
     border-top: solid black;
     padding: 0.5vh;
     font-size: x-large;
+    overflow-y: hidden;
 }
 
 .input-bar:focus {

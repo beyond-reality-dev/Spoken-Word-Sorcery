@@ -40,17 +40,22 @@ async function intro() {
     localStorage.setItem("playerData", JSON.stringify(playerData));
     console.log(playerData);
     printLines("app/src/cutscenes/intro/2.txt");
-    requireAnswer(["yes", "y"], '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"') 
+    await requireAnswer(["yes", "y"], '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"') 
     printLines("app/src/cutscenes/intro/3.txt");
-    requireAnswer(["yes", "y"], '"I will not proceed until you swear to it," he said firmly. "Do you swear to obey the Order?"');
+    await requireAnswer(["any"], "unreachable");
     printLines("app/src/cutscenes/intro/4.txt");
-    requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
+    await requireAnswer(["yes", "y"], '"I will not proceed until you swear to it," he said firmly. "Do you swear to obey the Order?"');
     printLines("app/src/cutscenes/intro/5.txt");
-    requireAnswer(["the cost of the power is my mind, my sanity, my very humanity.", "the cost of the power is my mind, my sanity, my very humanity"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
-    quickPrint('"Now, speak the Word again," he instructed.')
-    requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
+    await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
     printLines("app/src/cutscenes/intro/6.txt");
-    requireAnswer(["i am loyal to, and shall give my life to defend if necessary, the order and the empire.", "i am loyal to, and shall give my life to defend if necessary, the order and the empire"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
+    await requireAnswer(["i must use the power sparingly for its cost is my mind my sanity my very humanity"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
     quickPrint('"Now, speak the Word again," he instructed.')
-    requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
+    await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
+    printLines("app/src/cutscenes/intro/7.txt");
+    await requireAnswer(["i am loyal to and shall give my life to defend if necessary the order and the empire"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
+    printLines("app/src/cutscenes/intro/8.txt");
+    await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting."');
+    printLines("app/src/cutscenes/intro/9.txt");
+    await requireAnswer(["i shall obey the fourth grandmaster of the order arnoch segeric those designated to carry out his will and any successor lawfully appointed by the emperor after his death"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"');
+    printLines("app/src/cutscenes/intro/10.txt");
 }
