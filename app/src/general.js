@@ -1,4 +1,4 @@
-module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines, awaitInput };
+module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput };
 
 function switchScreen(screen) {
     document.getElementById("main").style.display = "none";
@@ -53,21 +53,29 @@ async function printLines(file) {
                 if (i == lines.length - 1) {
                     allowInput();
                 }
-            }, i*4000);
+            }, i*1000);
         }
     });
 }
 
+function quickPrint(text) {
+    document.getElementById("main-content").innerHTML += "<p>" + text + "</p>";
+    document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
+}
+
 async function awaitInput() {
     return new Promise(function(resolve) {
-        var input = document.getElementById("input-bar");
-        input.addEventListener("keypress", function(event) {
+        const input = document.getElementById("input-bar");
+        function handleKeyPress(event) {
             if (event.key === "Enter") {
-                var text = document.getElementById("input-bar").innerText;
-                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + input.innerText + "</p></span>";
+                event.preventDefault();
+                const text = input.innerText;
+                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
                 input.innerText = "";
+                input.removeEventListener("keypress", handleKeyPress);
                 resolve(text);
             }
-        });
+        }
+        input.addEventListener("keypress", handleKeyPress);
     });
 }
