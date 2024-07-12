@@ -27,7 +27,6 @@
     "name": "beyond-reality-dev",
     "email": "79934131+beyond-reality-dev@users.noreply.github.com"
   },
-  "license": "MIT",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",

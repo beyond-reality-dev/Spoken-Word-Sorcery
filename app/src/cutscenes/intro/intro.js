@@ -18,13 +18,13 @@ async function intro() {
         }
     }
     validInput = false;
-    quickPrint("I have to assume you know your own name, but just in case, is " + name + " correct?");
+    quickPrint('"I have to assume you know your own name, but just in case, is "' + name + '" correct?"');
     var confirm = await awaitInput();
     while (confirm != "Yes" && confirm != "yes" && confirm != "Y" && confirm != "y") {
         if (confirm == "No" || confirm == "no" || confirm == "N" || confirm == "n") {
             quickPrint('"Then what is your name?" He demanded.');
             name = await awaitInput();
-            quickPrint("I have to assume you know your own name, but just in case, is " + name + " correct?");
+            quickPrint('"I have to assume you know your own name, but just in case, is "' + name + '" correct?"');
         }
         else {
             quickPrint('"Speak up, I can\'t understand you!" He barked. "It\'s a simple question, is ' + name + ' your name?"');
@@ -100,16 +100,19 @@ async function intro() {
         case "1":
         case "one":
         case "the first":
+            quickPrint('"Very well, you have chosen the element of <i>Fire</i>."')
             addSpell((new Fire()));
             break;
         case "2":
         case "two":
         case "the second":
+            quickPrint('"Very well, you have chosen the element of <i>Water</i>."')
             addSpell((new Water()));
             break;
         case "3":
         case "three":
         case "the third":
+            quickPrint('"Very well, you have chosen the element of <i>Earth</i>."')
             addSpell((new Earth()));
             break;
     }

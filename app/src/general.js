@@ -95,8 +95,3 @@ async function requireAnswer(answerChoices, question) {
     }
     confirm = false;
 }
-
-function loadAndEditPlayerData(target, key, value) {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
-    playerData[target][key] = value
-}

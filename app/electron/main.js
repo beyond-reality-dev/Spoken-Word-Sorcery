@@ -12,7 +12,7 @@ function createWindow() {
         }
     });
     window.removeMenu();
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
     window.loadFile("app/src/index.html");
     window.webContents.on("did-finish-load", () => {
         window.show();
