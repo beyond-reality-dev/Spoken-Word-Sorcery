@@ -37,6 +37,24 @@ async function intro() {
         "maxMana": 50,
         "currentMana": 50,
     }
+    var inventory = {
+        "gold": 0,
+        "items": []
+    }
+    var equipment = {
+        "head": null,
+        "chest": null,
+        "legs": null,
+        "feet": null,
+        "mainHand": null,
+        "offHand": null
+    }
+    var spellbook = {
+        "spells": []
+    }
+    playerData["spellbook"] = spellbook;
+    playerData["equipment"] = equipment;
+    playerData["inventory"] = inventory;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     console.log(playerData);
     printLines("app/src/cutscenes/intro/2.txt");
