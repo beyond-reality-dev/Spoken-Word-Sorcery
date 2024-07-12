@@ -1,6 +1,7 @@
 module.exports = { intro };
 
 const { printLines, quickPrint, awaitInput, requireAnswer } = require("../../general");
+const { Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
 
 var validInput = false;
 
@@ -76,4 +77,40 @@ async function intro() {
     printLines("app/src/cutscenes/intro/9.txt");
     await requireAnswer(["i shall obey the fourth grandmaster of the order arnoch segeric those designated to carry out his will and any successor lawfully appointed by the emperor after his death"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"');
     printLines("app/src/cutscenes/intro/10.txt");
+    confirm = await awaitInput();
+    confirm = confirm.toLowerCase();
+    confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
+    while (confirm != "1"
+    && confirm != "one"
+    && confirm != "the first"
+    && confirm != "2"
+    && confirm != "two"
+    && confirm != "the second"
+    && confirm != "3"
+    && confirm != "three"
+    && confirm != "the third"
+    ) {
+        quickPrint('"Will you pick the first, second, or third element?" he demanded impatiently.');
+        confirm = await awaitInput();
+        confirm = confirm.toLowerCase();
+        confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
+    }
+    switch (confirm) {
+        case "1":
+        case "one":
+        case "the first":
+            localStorage.getItem("playerData")["spellbook"]["spells"].push(new Spear());
+            console.log(localStorage.getItem("playerData")["spellbook"]["spells"]);
+            break;
+        case "2":
+        case "two":
+        case "the second":
+            var element = new Fire();
+            break;
+        case "3":
+        case "three":
+        case "the third":
+            var element = new Water();
+            break;
+    }
 }
