@@ -22,7 +22,7 @@ function createWindow() {
 
     // Start menu functions.
     window.webContents.executeJavaScript(`
-        const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { gameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
@@ -56,33 +56,54 @@ function createWindow() {
         
         // Sidebar functions.
         document.getElementById("spellbook-button").onclick = function () {
-        switchScreen("spellbook-screen");
-        switchButton("spellbook-button");
+            switchScreen("spellbook-screen");
+            switchButton("spellbook-button");
         }
 
         document.getElementById("equipment-button").onclick = function () {
-        switchScreen("equipment-screen");
-        switchButton("equipment-button");
+            switchScreen("equipment-screen");
+            switchButton("equipment-button");
         }
 
         document.getElementById("inventory-button").onclick = function () { 
-        switchScreen("inventory-screen");
-        switchButton("inventory-button");
+            switchScreen("inventory-screen");
+            switchButton("inventory-button");
         }
 
         document.getElementById("settings-button").onclick = function () {
-        switchScreen("settings-screen");
-        switchButton("settings-button");
+            switchScreen("settings-screen");
+            switchButton("settings-button");
         }
 
         document.getElementById("map-button").onclick = function () {
-        switchScreen("map-screen");
-        switchButton("map-button");
+            switchScreen("map-screen");
+            switchButton("map-button");
         }
 
         document.getElementById("home-button").onclick = function () {
-        switchScreen("main");
-        switchButton("home-button");
+            switchScreen("main");
+            switchButton("home-button");
+        }
+
+        // Setttings functions.
+        document.getElementById("radio-zero").onclick = function () {
+            gameSpeed = 0;
+        }
+
+        document.getElementById("radio-one").onclick = function () {
+            gameSpeed = 1000;
+        }
+
+        document.getElementById("radio-two").onclick = function () {
+            gameSpeed = 2000;
+        }
+
+        document.getElementById("radio-three").onclick = function () {
+            gameSpeed = 3000;
+        }
+
+        document.getElementById("radio-four").onclick = function () {
+            gameSpeed = 4000;
         }
     `);
 }

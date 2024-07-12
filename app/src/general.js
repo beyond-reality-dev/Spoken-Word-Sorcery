@@ -1,4 +1,6 @@
-module.exports = { switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput };
+module.exports = { gameSpeed, switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput };
+
+var gameSpeed = 1000;
 
 function switchScreen(screen) {
     document.getElementById("main").style.display = "none";
@@ -39,7 +41,6 @@ function allowInput() {
 
 async function printLines(file) {
     blockInput();
-    // Read lines of text and print to screen, delaying between each line.
     var fs = require("fs");
     fs.readFile(file, "utf8", function(err, data) {
         if (err) {
@@ -53,7 +54,7 @@ async function printLines(file) {
                 if (i == lines.length - 1) {
                     allowInput();
                 }
-            }, i*1000);
+            }, i*gameSpeed);
         }
     });
 }
@@ -71,6 +72,7 @@ async function awaitInput() {
                 event.preventDefault();
                 const text = input.innerText;
                 document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
+                document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                 input.innerText = "";
                 input.removeEventListener("keypress", handleKeyPress);
                 resolve(text);
