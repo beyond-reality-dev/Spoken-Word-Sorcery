@@ -1,11 +1,12 @@
 module.exports = { intro };
 
-const { printLines, quickPrint, awaitInput, requireAnswer } = require("../../general");
-const { Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
+const { printLines, quickPrint, awaitInput, requireAnswer, blockInput } = require("../../general");
+const { addSpell, Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
 
 var validInput = false;
 
 async function intro() {
+    localStorage.clear();
     printLines("app/src/cutscenes/intro/1.txt");
     var name = await awaitInput();
     while (!validInput) {
@@ -37,11 +38,11 @@ async function intro() {
         "currentHealth": 100,
         "maxMana": 50,
         "currentMana": 50,
-    }
+    };
     var inventory = {
         "gold": 0,
         "items": []
-    }
+    };
     var equipment = {
         "head": null,
         "chest": null,
@@ -49,11 +50,11 @@ async function intro() {
         "feet": null,
         "mainHand": null,
         "offHand": null
-    }
-    var spellbook = {
-        "spells": []
-    }
-    playerData["spellbook"] = spellbook;
+    };
+    var knownSpells = [];
+    var spokenSpells = [];
+    playerData["knownSpells"] = knownSpells;
+    playerData["spokenSpells"] = spokenSpells;
     playerData["equipment"] = equipment;
     playerData["inventory"] = inventory;
     localStorage.setItem("playerData", JSON.stringify(playerData));
@@ -99,18 +100,27 @@ async function intro() {
         case "1":
         case "one":
         case "the first":
-            localStorage.getItem("playerData")["spellbook"]["spells"].push(new Spear());
-            console.log(localStorage.getItem("playerData")["spellbook"]["spells"]);
+            addSpell((new Fire()));
             break;
         case "2":
         case "two":
         case "the second":
-            var element = new Fire();
+            addSpell((new Water()));
             break;
         case "3":
         case "three":
         case "the third":
-            var element = new Water();
+            addSpell((new Earth()));
             break;
     }
+    confirm = false;
+    printLines("app/src/cutscenes/intro/11.txt");
+    await requireAnswer(["spear"], "Speak the word <i>Spear</i>.");
+    addSpell((new Spear()), true);
+    printLines("app/src/cutscenes/intro/12.txt");
+    await requireAnswer(["shield"], "Speak the word <i>Shield</i>.");
+    addSpell((new Shield()), true);
+    console.log(JSON.parse(localStorage.getItem("playerData")));
+    printLines("app/src/cutscenes/intro/13.txt");
+    blockInput();
 }
