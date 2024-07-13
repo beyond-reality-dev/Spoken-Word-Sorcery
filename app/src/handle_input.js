@@ -103,12 +103,37 @@ async function openInput() {
                         var phrase = "";
                         for (let i = 0; i < words.length; i++) {
                             var spell = eval("new " + toTitleCase(words[i]) + "()");
-                            if (!getValue("knownSpells").includes(spell.name) && !getValue("spokenSpells").includes(spell.name)) {
-                                phrase = "Nothing happens.";
+                            var knownSpells = getValue("knownSpells");
+                            console.log(knownSpells);
+                            var spokenSpells = getValue("spokenSpells");
+                            console.log(spokenSpells);
+                            var match = false;
+                            for (let j = 0; j < knownSpells.length; j++) {
+                                var spellName = knownSpells[j]["name"];
+                                console.log(spellName);
+                                if (spellName == spell.name) {
+                                    var descriptor = spell.descriptor;
+                                    phrase = phrase.concat(descriptor);
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            for (let j = 0; j < spokenSpells.length; j++) {
+                                spellName = spokenSpells[j]["name"];
+                                console.log(spellName);
+                                if (spellName == spell.name) {
+                                    descriptor = spell.descriptor;
+                                    phrase = phrase.concat(descriptor);
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            if (match = false) {
                                 break;
                             }
-                            var descriptor = spell.descriptor;
-                            phrase = phrase.concat(descriptor);
+                        }
+                        if (phrase == "" || match == false) {
+                            phrase = "Nothing happens.";
                         }
                         console.log(spell);
                         console.log(getValue("knownSpells"));
@@ -121,13 +146,37 @@ async function openInput() {
                         var phrase = "";
                         for (let i = 0; i < words.length; i++) {
                             var spell = eval("new " + toTitleCase(words[i]) + "()");
-                            if (!getValue("knownSpells").includes(spell.name) && !getValue("spokenSpells").includes(spell.name)) {
-                                phrase = "Nothing happens.";
+                            var knownSpells = getValue("knownSpells");
+                            var spokenSpells = getValue("spokenSpells");
+                            var match = false;
+                            for (let j = 0; j < knownSpells.length; j++) {
+                                var spellName = knownSpells[j]["name"];
+                                if (spellName == spell.name) {
+                                    descriptor = spell.descriptor;
+                                    phrase = phrase.concat(descriptor);
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            for (let j = 0; j < spokenSpells.length; j++) {
+                                spellName = spokenSpells[j]["name"];
+                                if (spellName == spell.name) {
+                                    var descriptor = spell.descriptor;
+                                    phrase = phrase.concat(descriptor);
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            if (match = false) {
                                 break;
                             }
-                            var descriptor = spell.descriptor;
-                            phrase = phrase.concat(descriptor);
                         }
+                        if (phrase == "" || match == false) {
+                            phrase = "Nothing happens.";
+                        }
+                        console.log(spell);
+                        console.log(getValue("knownSpells"));
+                        console.log(getValue("spokenSpells"));
                         document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
                         document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                     }

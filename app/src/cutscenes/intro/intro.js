@@ -3,7 +3,7 @@ module.exports = { intro };
 const { printLines, quickPrint, requireAnswer } = require("../../general");
 const { initializeData, addEntity, getValue } = require("../../save_data");
 const { closedInput, openInput } = require("../../handle_input");
-const { Earth, Fire, Water, Spear, Shield, Remember } = require("../../class_collections/spellbook");
+const { Earth, Fire, Water, Spear, Shield, Away, Remember } = require("../../class_collections/spellbook");
 
 var validInput = false;
 
@@ -117,6 +117,7 @@ async function intro() {
     await requireAnswer(["shield"], '"Speak the word <i>Shield</i>."');
     addEntity((new Shield()), "spokenSpells");
     printLines("app/src/cutscenes/intro/13.txt");
+    addEntity((new Away()), "knownSpells");
     await openInput();
     console.log("A");
     while (getValue("direction") == "North") {
