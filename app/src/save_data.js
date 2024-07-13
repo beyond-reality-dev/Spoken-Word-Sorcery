@@ -5,6 +5,7 @@ function initializeData(name) {
     "name": name,
     "level": 1,
     "experience": 0,
+    "insanity": 0,
     "maxHealth": 100,
     "currentHealth": 100,
     "maxMana": 50,

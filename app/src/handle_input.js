@@ -103,18 +103,19 @@ async function openInput() {
                         var phrase = "";
                         for (let i = 0; i < words.length; i++) {
                             var spell = eval("new " + toTitleCase(words[i]) + "()");
+                            console.log(spell);
+                            console.log(spell.name);
                             var knownSpells = getValue("knownSpells");
                             console.log(knownSpells);
                             var spokenSpells = getValue("spokenSpells");
                             console.log(spokenSpells);
-                            var match = false;
                             for (let j = 0; j < knownSpells.length; j++) {
                                 var spellName = knownSpells[j]["name"];
                                 console.log(spellName);
                                 if (spellName == spell.name) {
                                     var descriptor = spell.descriptor;
                                     phrase = phrase.concat(descriptor);
-                                    match = true;
+                                    var matchKnown = true;
                                     break;
                                 }
                             }
@@ -124,15 +125,16 @@ async function openInput() {
                                 if (spellName == spell.name) {
                                     descriptor = spell.descriptor;
                                     phrase = phrase.concat(descriptor);
-                                    match = true;
+                                    var matchSpoken = true;
                                     break;
                                 }
                             }
-                            if (match = false) {
+                            if (matchKnown == false && matchSpoken == false) {
                                 break;
                             }
                         }
-                        if (phrase == "" || match == false) {
+                        console.log(phrase);
+                        if (phrase == "" || (matchKnown == false && matchSpoken == false)) {
                             phrase = "Nothing happens.";
                         }
                         console.log(spell);
