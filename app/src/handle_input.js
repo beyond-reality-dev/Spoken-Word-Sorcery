@@ -1,6 +1,8 @@
 module.exports = { allowInput, blockInput, closedInput, openInput };
 
 const { addEntity, getDirection, changeDirection } = require("./save_data");
+const { toTitleCase } = require("./general")
+const { Aether, Earth, Fire, Water, Spear, Shield, Away } = require("./class_collections/spellbook");
 
 function allowInput() {
     document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -90,8 +92,30 @@ async function openInput() {
                                 }
                                 break;
                         }
-                    } else if (clauses[i].substring(0, 4) == "say " || clauses[i].substring(0,6) == "speak") {
-                        break;
+                    } else if (clauses[i].substring(0, 4) == "say ") {
+                        var words = clauses[i].substring(4);
+                        words = words.split(" ");
+                        var phrase = "";
+                        for (let i = 0; i < words.length; i++) {
+                            var spell = eval("new " + toTitleCase(words[i]) + "()");
+                            console.log(spell);
+                            var description = spell.description;
+                            console.log(description);
+                            phrase = phrase.concat(description);
+                            console.log(phrase);
+                        }
+                        document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
+                    } else if (clauses[i].substring(0,6) == "speak ") {
+                        var words = clauses[i].substring(6);
+                        words = words.split(" ");
+                        var phrase = "";
+                        for (let i = 0; i < words.length; i++) {
+                            var spell = eval("new " + toTitleCase(words[i]) + "()");
+                            var description = spell.description;
+                            phrase = phrase.concat(description);
+                        }
+                        document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
+                        document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                     }
                 }
                 resolve(text);

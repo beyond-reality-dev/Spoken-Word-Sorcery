@@ -1,6 +1,7 @@
-module.exports = { gameSpeed, switchScreen, switchButton, printLines, quickPrint, requireAnswer };
+module.exports = { gameSpeed, switchScreen, switchButton, printLines, quickPrint, requireAnswer, toTitleCase, updateBars };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
+const { getValue } = require("./save_data");
 
 var gameSpeed = 0;
 
@@ -68,4 +69,20 @@ async function requireAnswer(answerChoices, question) {
         confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     }
     confirm = false;
+}
+
+function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+  }
+
+  function updateBars() {
+    document.getElementById("health-bar").value = getValue("currentHealth");
+    document.getElementById("health-bar").max = getValue("maxHealth");
+    document.getElementById("health-text").innerHTML = `Health: ${getValue("currentHealth")}/${getValue("maxHealth")}`;
+    document.getElementById("mana-bar").value = getValue("currentMana");
+    document.getElementById("mana-bar").max = getValue("maxMana");
+    document.getElementById("mana-text").innerHTML = `Mana: ${getValue("currentMana")}/${getValue("maxMana")}`;
 }

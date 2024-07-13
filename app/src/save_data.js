@@ -1,4 +1,4 @@
-module.exports = { initializeData, loadData, saveData, addEntity, getDirection, changeDirection };
+module.exports = { initializeData, loadData, saveData, addEntity, getValue, getDirection, changeDirection };
 
 function initializeData(name) {
   var playerData = {
@@ -56,6 +56,12 @@ function removeEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   playerData[target].splice(playerData[target].indexOf(entity), 1);
   localStorage.setItem("playerData", JSON.stringify(playerData));
+}
+
+function getValue(target) {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var value = playerData[target];
+  return value;
 }
 
 function getDirection() {

@@ -9,31 +9,32 @@ class Element {
 
 class Aether extends Element {
   constructor() {
-    super("Aether", "The element that underpins the Power of the universe but can only affect the immaterial.", "None", "None");
+    super("Aether", "A shimmering ", "None", "None");
   }
 }
 
 class Earth extends Element {
   constructor() {
-    super("Earth", "The element of rock, soil, and plant life.", "Water", "Air");
+    super("Earth", "An earthen ", "Water", "Air");
   }
 }
 
 class Fire extends Element {
   constructor() {
-    super("Fire", "The element of heat and flame.", "Earth", "Water");
+    super("Fire", "A flaming ", "Earth", "Water");
   }
 }
 
 class Water extends Element {
   constructor() {
-    super("Water", "The element of oceans and rivers.", "Fire", "Earth");
+    super("Water", "A rushing ", "Fire", "Earth");
   }
 }
 
 class Spell {
-  constructor(name, manaCost, power, range, isOffensive, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
+  constructor(name, description, manaCost, power, range, isOffensive, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
     this.name = name;
+    this.description = description;
     this.manaCost = manaCost;
     this.power = power;
     this.range = range;
@@ -48,13 +49,13 @@ class Spell {
 
 class Spear extends Spell {
   constructor() {
-    super("Spear", 5, 10, 1, true, 0, 0, 0, 0, 0);
+    super("Spear", "spear flies through the air ", 5, 10, 1, true, 0, 0, 0, 0, 0);
   }
 }
 
 class Shield extends Spell {
   constructor() {
-    super("Shield", 5, 10, 0, false, 0, 0, 0, 0, 0);
+    super("Shield", "shield forms in front of you!", 5, 10, 0, false, 0, 0, 0, 0, 0);
   }
 }
 
@@ -67,7 +68,7 @@ class Direction {
 
 class Away extends Direction {
   constructor() {
-    super("Away", "The direction opposite the caster.");
+    super("Away", "away from you!");
   }
 }
 
