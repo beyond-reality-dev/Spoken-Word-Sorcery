@@ -1,6 +1,6 @@
 module.exports = { allowInput, blockInput, closedInput, openInput };
 
-const { addEntity } = require("./save_data");
+const { addEntity, getDirection, changeDirection } = require("./save_data");
 
 function allowInput() {
     document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -41,11 +41,58 @@ async function openInput() {
                 document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                 input.innerText = "";
                 input.removeEventListener("keypress", handleKeyPress);
-                // If the beginning of the input is "Remember," add the phrase following it to the player's memory.
                 text = text.toLowerCase();
-                if (text.substring(0, 9) == "remember ") {
-                    var memory = text.substring(9);
-                    addEntity(memory, "memories");
+                if (text.substring(0, 2) == "i ") {
+                    text = text.substring(2);
+                }
+                var clauses = text.split(" and ");
+                for (let i = 0; i < clauses.length; i++) {
+                    if (clauses[i].substring(0, 9) == "remember ") {
+                        var memory = clauses[i].substring(9);
+                        addEntity(memory, "memories");
+                    } else if (clauses[i].substring(0, 5) == "look " || clauses[i].substring(0,5) == "turn ") {
+                        var direction = getDirection();
+                        var change = clauses[i].substring(5);
+                        switch (change) {
+                            case "left":
+                                if (direction == "North") {
+                                    changeDirection("West");
+                                } else if (direction == "East") {
+                                    changeDirection("North");
+                                } else if (direction == "South") {
+                                    changeDirection("East");
+                                } else if (direction == "East") {
+                                    changeDirection("South");
+                                }
+                                break;
+                            case "right":
+                                if (direction == "North") {
+                                    changeDirection("East");
+                                } else if (direction == "East") {
+                                    changeDirection("South");
+                                } else if (direction == "South") {
+                                    changeDirection("West");
+                                } else if (direction == "West") {
+                                    changeDirection("North");
+                                }
+                                break;
+                            case "forward":
+                                break;
+                            case "backward":
+                                if (direction == "North") {
+                                    changeDirection("South");
+                                } else if (direction == "East") {
+                                    changeDirection("West");
+                                } else if (direction == "South") {
+                                    changeDirection("North");
+                                } else if (direction == "West") {
+                                    changeDirection("East");
+                                }
+                                break;
+                        }
+                    } else if (clauses[i].substring(0, 4) == "say " || clauses[i].substring(0,6) == "speak") {
+                        break;
+                    }
                 }
                 resolve(text);
             }

@@ -1,7 +1,7 @@
 module.exports = { intro };
 
 const { printLines, quickPrint, requireAnswer } = require("../../general");
-const { initializeData, loadData, addEntity } = require("../../save_data");
+const { initializeData, addEntity, getDirection, loadData } = require("../../save_data");
 const { closedInput, openInput } = require("../../handle_input");
 const { Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
 
@@ -35,8 +35,6 @@ async function intro() {
     }
     confirm = false;
     initializeData(name);
-    playerData = loadData();
-    console.log(playerData);
     printLines("app/src/cutscenes/intro/2.txt");
     await requireAnswer(["yes", "y"], '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"') 
     printLines("app/src/cutscenes/intro/3.txt");
@@ -101,8 +99,6 @@ async function intro() {
     printLines("app/src/cutscenes/intro/12.txt");
     await requireAnswer(["shield"], "Speak the word <i>Shield</i>.");
     addEntity((new Shield()), "spokenSpells");
-    console.log(JSON.parse(localStorage.getItem("playerData")));
     printLines("app/src/cutscenes/intro/13.txt");
     await openInput();
-    console.log(JSON.parse(localStorage.getItem("playerData")));
 }

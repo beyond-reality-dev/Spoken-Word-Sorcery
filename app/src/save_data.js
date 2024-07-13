@@ -1,4 +1,4 @@
-module.exports = { initializeData, loadData, saveData, addEntity };
+module.exports = { initializeData, loadData, saveData, addEntity, getDirection, changeDirection };
 
 function initializeData(name) {
   var playerData = {
@@ -7,6 +7,7 @@ function initializeData(name) {
     "currentHealth": 100,
     "maxMana": 50,
     "currentMana": 50,
+    "direction": "North"
 };
 var inventory = {
     "gold": 0,
@@ -54,5 +55,17 @@ function addEntity(entity, target) {
 function removeEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   playerData[target].splice(playerData[target].indexOf(entity), 1);
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+}
+
+function getDirection() {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var direction = playerData["direction"];
+  return direction;
+}
+
+function changeDirection(newDirection) {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  playerData["direction"] = newDirection;
   localStorage.setItem("playerData", JSON.stringify(playerData));
 }
