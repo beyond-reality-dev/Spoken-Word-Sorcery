@@ -1,262 +1,267 @@
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
 }
 
 .font {
-    font-family: "Segoe UI", "Open Sans", Arial, sans-serif;
-    font-size: large;
+  font-family: "Segoe UI", "Open Sans", Arial, sans-serif;
+  font-size: large;
 }
 
 .start-screen {
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    text-align: center;
-    overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  text-align: center;
+  overflow-y: hidden;
 }
 
 .start-title {
-    text-align: center;
-    margin-top: 2vh;
-    font-size: 5em;
+  text-align: center;
+  margin-top: 2vh;
+  font-size: 5em;
 }
 
 .start-button {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    width: 120vh;
-    height: 20vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 25px;
-    display: block;
-    font-size: 4em;
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 120vh;
+  height: 20vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-radius: 25px;
+  display: block;
+  font-size: 4em;
 }
 
 .start-button:hover {
-    background-color: #d1d1d1;
-    cursor: pointer;
+  background-color: #d1d1d1;
+  cursor: pointer;
 }
 
 .screen {
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow-y: hidden;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .sub-screen {
-    width: 61.675%;
-    height: 87.2vh;
-    box-sizing: border-box;
-    padding-inline: 2.5%;
-    float: left;
-    background-color: #ffffff;
-    overflow-x: hidden;
+  width: 61.675%;
+  height: 87.2vh;
+  box-sizing: border-box;
+  padding-inline: 2.5%;
+  float: left;
+  background-color: #ffffff;
+  overflow-x: hidden;
 }
 
 .about-text {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    width: 115vh;
-    height: 40vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 25px;
-    display: block;
-    font-size: 3em;
-    padding: 2vh;
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 115vh;
+  height: 40vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-radius: 25px;
+  display: block;
+  font-size: 3em;
+  padding: 2vh;
 }
 
 .left-sidebar {
-    width: 19%;
-    height: 100%;
-    float: left;
-    text-align: center;
-    background-color: #f2f2f2;
-    overflow-x: hidden;
-    border-right: solid black;
+  width: 19%;
+  height: 100%;
+  float: left;
+  text-align: center;
+  background-color: #f2f2f2;
+  overflow-x: hidden;
+  border-right: solid black;
 }
 
 .right-sidebar {
-    width: 19%;
-    height: 100%;
-    float: right;
-    text-align: center;
-    background-color: #f2f2f2;
-    overflow-x: hidden;
-    border-left: solid black;
+  width: 19%;
+  height: 100%;
+  float: right;
+  text-align: center;
+  background-color: #f2f2f2;
+  overflow-x: hidden;
+  border-left: solid black;
 }
 
 .title-bar {
-    width: 61.675%;
-    height: 12vh;
-    box-sizing: border-box;
-    padding-inline: 2.5%;
-    background-color: #ffffff;
-    overflow-x: hidden;
-    text-align: center;
-    border-bottom: solid black;
+  width: 61.675%;
+  height: 12vh;
+  box-sizing: border-box;
+  padding-inline: 2.5%;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  text-align: center;
+  border-bottom: solid black;
 }
 
 .title-text {
-    margin-top: 2vh;
-    font-size: xx-large;
+  margin-top: 2vh;
+  font-size: xx-large;
 }
 
 .main-content {
-    width: 61.675%;
-    height: 83vh;
-    box-sizing: border-box;
-    padding-inline: 2.5%;
-    float: left;
-    background-color: #fef8e6;
-    overflow-x: hidden;
-    font-size: x-large;
+  width: 61.675%;
+  height: 83vh;
+  box-sizing: border-box;
+  padding-inline: 2.5%;
+  float: left;
+  background-color: #fef8e6;
+  overflow-x: hidden;
+  font-size: x-large;
 }
 
 .input-bar {
-    display: inline-block;
-    width: 61.15%;
-    height: 3.6vh;
-    background-color: #ffffff;
-    border-top: solid black;
-    padding: 0.5vh;
-    font-size: x-large;
-    overflow-y: hidden;
+  display: inline-block;
+  width: 61.15%;
+  height: 3.6vh;
+  background-color: #ffffff;
+  border-top: solid black;
+  padding: 0.5vh;
+  font-size: x-large;
+  overflow-y: hidden;
 }
 
 .input-bar:focus {
-    outline: none;
+  outline: none;
 }
 
 .icon-button {
-    margin-top: 10vh;
-    margin-left: 5vh;
-    margin-right: 5vh;
-    width: 20vh;
-    height: 20vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 25px;
-    display: inline-block;
+  margin-top: 10vh;
+  margin-left: 5vh;
+  margin-right: 5vh;
+  width: 20vh;
+  height: 20vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-radius: 25px;
+  display: inline-block;
 }
 
 .icon-button:hover {
-    background-color: #d1d1d1;
-    cursor: pointer;
+  background-color: #d1d1d1;
+  cursor: pointer;
 }
 
 .icon {
-    padding: 1.5vh 0; 
-    font-size: 5em;
+  padding: 1.5vh 0;
+  font-size: 5em;
 }
 
 .name-text {
-    position: absolute;
-    top: 1vh;
-    left: 21.5%;
-    font-size: large;
-    font-weight: bold;
+  position: absolute;
+  top: 1vh;
+  left: 21.5%;
+  font-size: large;
+  font-weight: bold;
 }
 
 .health-bar {
-    position: absolute;
-    top: 2.5%;
-    left: 20%;
-    width: 35vh;
-    height: 10vh;
-    margin: 0 10px;
-    accent-color: red;
+  position: absolute;
+  top: 2.5%;
+  left: 20%;
+  width: 35vh;
+  height: 10vh;
+  margin: 0 10px;
+  accent-color: red;
 }
 
 .health-text {
-    position: absolute;
-    top: 5.5vh;
-    left: 21.5%;
-    font-size: x-large;
-    font-weight: bold;
-    color: white;
+  position: absolute;
+  top: 5.5vh;
+  left: 21.5%;
+  font-size: x-large;
+  font-weight: bold;
+  color: white;
 }
 
 .level-text {
-    position: absolute;
-    top: 1vh;
-    right: 34%;
-    font-size: large;
-    font-weight: bold;
+  position: absolute;
+  top: 1vh;
+  right: 34%;
+  font-size: large;
+  font-weight: bold;
 }
 
 .mana-bar {
-    position: absolute;
-    top: 2.5%;
-    right: 20%;
-    width: 35vh;
-    height: 10vh;
-    margin: 0 10px;
-    accent-color: blue;
+  position: absolute;
+  top: 2.5%;
+  right: 20%;
+  width: 35vh;
+  height: 10vh;
+  margin: 0 10px;
+  accent-color: blue;
 }
 
 .mana-text {
-    position: absolute;
-    top: 5.5vh;
-    right: 29.5%;
-    font-size: x-large;
-    font-weight: bold;
-    color: white;
+  position: absolute;
+  top: 5.5vh;
+  right: 29.5%;
+  font-size: x-large;
+  font-weight: bold;
+  color: white;
 }
 
 .content-text {
-    font-size: large;
+  font-size: large;
 }
 
 .settings-button {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100vh;
-    height: 20vh;
-    background-color: #ffffff;
-    border: solid black;
-    border-radius: 25px;
-    display: block;
-    font-size: 4em;
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100vh;
+  height: 20vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-radius: 25px;
+  display: block;
+  font-size: 4em;
 }
 
 .settings-button:hover {
-    background-color: #d1d1d1;
-    cursor: pointer;
+  background-color: #d1d1d1;
+  cursor: pointer;
 }
 
 .radio-group {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .controls {
-    display: inline-block;
+  display: inline-block;
 }
 
 .radio {
-    display: inline-block;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: large;
-    font-weight: bold;
-  }
+  display: inline-block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+  font-weight: bold;
+}
 
 .inline-title {
-    font-size: large;
-    display: inline-block;
-    font-weight: bold;
+  font-size: large;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.spell-box {
+  width: 100%;
+  font-size: large;
 }

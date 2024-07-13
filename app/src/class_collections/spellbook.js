@@ -5,6 +5,7 @@ class Element {
     this.descriptor = descriptor;
     this.negates = negates;
     this.isNegatedBy = isNegatedBy;
+    this.type = "Element";
   }
 }
 
@@ -33,7 +34,7 @@ class Water extends Element {
 }
 
 class Spell {
-  constructor(name, description, descriptor, manaCost, power, range, isOffensive, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
+  constructor(name, description, descriptor, manaCost, power, range, isOffensive, isSupport, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
     this.name = name;
     this.description = description;
     this.descriptor = descriptor;
@@ -41,23 +42,25 @@ class Spell {
     this.power = power;
     this.range = range;
     this.isOffensive = isOffensive;
+    this.isSupport = isSupport;
     this.attackIncrease = attackIncrease;
     this.healthIncrease = healthIncrease;
     this.armorIncrease = armorIncrease;
     this.speedIncrease = speedIncrease;
     this.rangeIncrease = rangeIncrease;
+    this.type = "Spell";
   }
 }
 
 class Spear extends Spell {
   constructor() {
-    super("Spear", "An arcane spear made from an element that flies in the direction you command.", "spear flies through the air ", 5, 10, 1, true, 0, 0, 0, 0, 0);
+    super("Spear", "An arcane spear made from an element that flies in the direction you command.", "spear flies through the air ", 5, 10, 1, true, false, 0, 0, 0, 0, 0);
   }
 }
 
 class Shield extends Spell {
   constructor() {
-    super("Shield", "An arcane shield that forms in front of you to protect you from incoming attacks.", "shield forms in front of you!", 5, 10, 0, false, 0, 0, 0, 0, 0);
+    super("Shield", "An arcane shield that forms in front of you to protect you from incoming attacks.", "shield forms in front of you!", 5, 10, 0, false, false, 0, 0, 0, 0, 0);
   }
 }
 
@@ -66,6 +69,7 @@ class Direction {
     this.name = name;
     this.description = description;
     this.descriptor = descriptor;
+    this.type = "Direction";
   }
 }
 
