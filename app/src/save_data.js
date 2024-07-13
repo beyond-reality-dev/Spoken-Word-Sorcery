@@ -65,9 +65,8 @@ function updateSpellbook(target) {
       var spellDescription = spells[i]["description"];
       var spellType = spells[i]["type"];
       if (spellType == "Element" || spellType == "Direction") {
-        if (!document.getElementById(spellName)) {
-          document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
-        }
+        if (document.getElementById(spellName)) { document.getElementById(spellName).remove(); }
+        document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
       } else if (spellType == "Spell") {
         var spellPower = spells[i]["power"];
         var spellRange = spells[i]["range"];
@@ -77,12 +76,11 @@ function updateSpellbook(target) {
         var spellArmorIncrease = spells[i]["armorIncrease"];
         var spellSpeedIncrease = spells[i]["speedIncrease"];
         var spellRangeIncrease = spells[i]["rangeIncrease"];
-        if (!document.getElementById(spellName)) {
-          if (spells[i]["isSupport"] == false) {
-            document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
-          } else if (spells[i]["isSupport"] == true) {
-            document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
-          }
+        if (document.getElementById(spellName)) { document.getElementById(spellName).remove(); }
+        if (spells[i]["isSupport"] == false) {
+          document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
+        } else if (spells[i]["isSupport"] == true) {
+          document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
         }
       }
     }
@@ -120,26 +118,45 @@ function sortList(list) {
   }
 }
 
+function updateInventory() {
+  var inventory = getValue("inventory");
+  var items = inventory["items"];
+  for (let i = 0; i < items.length; i++) {
+    var itemName = items[i]["name"];
+    var itemDescription = items[i]["description"];
+    var itemGoldValue = items[i]["goldValue"];
+    var itemHealthValue = items[i]["healthValue"];
+    var itemArmorValue = items[i]["armorValue"];
+    var itemAttackValue = items[i]["attackValue"];
+    var itemSpeedValue = items[i]["speedValue"];
+    var itemRangeValue = items[i]["rangeValue"];
+    var itemManaValue = items[i]["manaValue"];
+    var itemIsConsumable = items[i]["isConsumable"];
+    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    if (itemIsConsumable == false) {
+      document.getElementById("inventory").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold: ${itemGoldValue} | Def: ${itemArmorValue} | Atk: ${itemAttackValue} Rng: ${itemRangeValue} </option>`;
+    } else if (itemIsConsumable == true) {
+      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold: ${itemGoldValue} | HP↑: ${itemHealthValue} | Mana: ${itemManaValue} | Spd↑: ${itemSpeedValue}</option>`;
+    }
+  }
+  sortList("inventory");
+}
+
 function addEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   for (let i = 0; i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length; i++) {
     if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
       var matchKnown = true;
+      var index = i;
       break;
     }
   }
   if (target == "spokenSpells" && matchKnown == true) {
-    playerData["knownSpells"].splice(playerData["knownSpells"].indexOf(entity), 1);
-    localStorage.setItem("playerData", JSON.stringify(playerData));
+    playerData["knownSpells"].splice(index, 1);
+    console.log(playerData["knownSpells"]);
   }
   playerData[target].push(entity);
-  localStorage.setItem("playerData", JSON.stringify(playerData));
-  updateUI();
-}
-
-function removeEntity(entity, target) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  playerData[target].splice(playerData[target].indexOf(entity), 1);
+  console.log(playerData[target]);
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }

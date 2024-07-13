@@ -49,21 +49,25 @@ async function openInput() {
       if (event.key === "Enter") {
         event.preventDefault();
         var text = input.innerText;
-        document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
-        document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
+        document.getElementById("main-content").innerHTML +=
+          "<span style='color: blue;'><p> " + text + "</p></span>";
+        document.getElementById("main-content").scrollTop =
+          document.getElementById("main-content").scrollHeight;
         input.innerText = "";
         input.removeEventListener("keypress", handleKeyPress);
         text = text.toLowerCase();
         text = text.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
-        if (text.substring(0, 2) == "i ") { text = text.substring(2); }
+        if (text.substring(0, 2) == "i ") {
+          text = text.substring(2);
+        }
         var clauses = text.split(" and ");
         for (let i = 0; i < clauses.length; i++) {
           if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
             addEntity(memory, "memories");
           } else if (
-            clauses[i].substring(0, 5) == "look " ||
             clauses[i].substring(0, 5) == "face " ||
+            clauses[i].substring(0, 5) == "look " ||
             clauses[i].substring(0, 5) == "turn "
           ) {
             var direction = getValue("direction");
@@ -76,8 +80,22 @@ async function openInput() {
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
-          } else if (clauses[i].substring(0, 6) == "speak ") {
+          } else if (
+            clauses[i].substring(0, 5) == "yell " ||
+            clauses[i].substring(0, 5) == "cast "
+          ) {
+            var words = clauses[i].substring(5);
+            handleSpell(words);
+          } else if (
+            clauses[i].substring(0, 6) == "chant " ||
+            clauses[i].substring(0, 6) == "shout " ||
+            clauses[i].substring(0, 6) == "speak " ||
+            clauses[i].substring(0, 6) == "utter "
+          ) {
             var words = clauses[i].substring(6);
+            handleSpell(words);
+          } else if (clauses[i].substring(0, 7) == "mutter ") {
+            var words = clauses[i].substring(7);
             handleSpell(words);
           }
         }
@@ -126,7 +144,8 @@ function handleDirection(direction, change) {
       }
       break;
   }
-  document.getElementById("main-content").innerHTML += "<p>You are now facing " + getValue("direction") + ".</p>";
+  document.getElementById("main-content").innerHTML +=
+    "<p>You are now facing " + getValue("direction") + ".</p>";
 }
 
 function handleSpell(words) {
@@ -155,9 +174,14 @@ function handleSpell(words) {
         break;
       }
     }
-    if (matchKnown == false && matchSpoken == false) { break; }
+    if (matchKnown == false && matchSpoken == false) {
+      break;
+    }
   }
-  if (phrase == "" || (matchKnown == false && matchSpoken == false)) { phrase = "Nothing happens."; }
+  if (phrase == "" || (matchKnown == false && matchSpoken == false)) {
+    phrase = "Nothing happens.";
+  }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
-  document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
+  document.getElementById("main-content").scrollTop =
+    document.getElementById("main-content").scrollHeight;
 }
