@@ -1,6 +1,6 @@
 module.exports = { allowInput, blockInput, closedInput, openInput };
 
-const { addEntity, getDirection, changeDirection } = require("./save_data");
+const { addEntity, getValue, changeValue } = require("./save_data");
 const { toTitleCase } = require("./general")
 const { Aether, Earth, Fire, Water, Spear, Shield, Away } = require("./class_collections/spellbook");
 
@@ -44,6 +44,7 @@ async function openInput() {
                 input.innerText = "";
                 input.removeEventListener("keypress", handleKeyPress);
                 text = text.toLowerCase();
+                text = text.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
                 if (text.substring(0, 2) == "i ") {
                     text = text.substring(2);
                 }
@@ -52,43 +53,47 @@ async function openInput() {
                     if (clauses[i].substring(0, 9) == "remember ") {
                         var memory = clauses[i].substring(9);
                         addEntity(memory, "memories");
-                    } else if (clauses[i].substring(0, 5) == "look " || clauses[i].substring(0,5) == "turn ") {
-                        var direction = getDirection();
-                        var change = clauses[i].substring(5);
+                    } else if (clauses[i].substring(0, 5) == "look " || clauses[i].substring(0, 5) == "face " || clauses[i].substring(0,5) == "turn ") {
+                        var direction = getValue("direction");
+                        if (clauses[i].substring(5) == "to the ") {
+                            var change = clauses[i].substring(10);
+                        } else {
+                            change = clauses[i].substring(5);
+                        }
                         switch (change) {
                             case "left":
                                 if (direction == "North") {
-                                    changeDirection("West");
+                                    changeValue("direction", "West");
                                 } else if (direction == "East") {
-                                    changeDirection("North");
+                                    changeValue("direction", "North");
                                 } else if (direction == "South") {
-                                    changeDirection("East");
+                                    changeValue("direction", "East");
                                 } else if (direction == "East") {
-                                    changeDirection("South");
+                                    changeValue("direction", "South");
                                 }
                                 break;
                             case "right":
                                 if (direction == "North") {
-                                    changeDirection("East");
+                                    changeValue("direction", "East");
                                 } else if (direction == "East") {
-                                    changeDirection("South");
+                                    changeValue("direction", "South");
                                 } else if (direction == "South") {
-                                    changeDirection("West");
+                                    changeValue("direction", "West");
                                 } else if (direction == "West") {
-                                    changeDirection("North");
+                                    changeValue("direction", "North");
                                 }
                                 break;
                             case "forward":
                                 break;
                             case "backward":
                                 if (direction == "North") {
-                                    changeDirection("South");
+                                    changeValue("direction", "South");
                                 } else if (direction == "East") {
-                                    changeDirection("West");
+                                    changeValue("direction", "West");
                                 } else if (direction == "South") {
-                                    changeDirection("North");
+                                    changeValue("direction", "North");
                                 } else if (direction == "West") {
-                                    changeDirection("East");
+                                    changeValue("direction", "East");
                                 }
                                 break;
                         }
@@ -98,21 +103,30 @@ async function openInput() {
                         var phrase = "";
                         for (let i = 0; i < words.length; i++) {
                             var spell = eval("new " + toTitleCase(words[i]) + "()");
-                            console.log(spell);
-                            var description = spell.description;
-                            console.log(description);
-                            phrase = phrase.concat(description);
-                            console.log(phrase);
+                            if (!getValue("knownSpells").includes(spell.name) && !getValue("spokenSpells").includes(spell.name)) {
+                                phrase = "Nothing happens.";
+                                break;
+                            }
+                            var descriptor = spell.descriptor;
+                            phrase = phrase.concat(descriptor);
                         }
+                        console.log(spell);
+                        console.log(getValue("knownSpells"));
+                        console.log(getValue("spokenSpells"));
                         document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
+                        document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
                     } else if (clauses[i].substring(0,6) == "speak ") {
                         var words = clauses[i].substring(6);
                         words = words.split(" ");
                         var phrase = "";
                         for (let i = 0; i < words.length; i++) {
                             var spell = eval("new " + toTitleCase(words[i]) + "()");
-                            var description = spell.description;
-                            phrase = phrase.concat(description);
+                            if (!getValue("knownSpells").includes(spell.name) && !getValue("spokenSpells").includes(spell.name)) {
+                                phrase = "Nothing happens.";
+                                break;
+                            }
+                            var descriptor = spell.descriptor;
+                            phrase = phrase.concat(descriptor);
                         }
                         document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
                         document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;

@@ -1,7 +1,7 @@
 module.exports = { intro };
 
-const { printLines, quickPrint, requireAnswer, updateBars } = require("../../general");
-const { initializeData, addEntity, getDirection, loadData } = require("../../save_data");
+const { printLines, quickPrint, requireAnswer } = require("../../general");
+const { initializeData, addEntity, getValue } = require("../../save_data");
 const { closedInput, openInput } = require("../../handle_input");
 const { Earth, Fire, Water, Spear, Shield, Remember } = require("../../class_collections/spellbook");
 
@@ -35,7 +35,6 @@ async function intro() {
     }
     confirm = false;
     initializeData(name);
-    updateBars();
     printLines("app/src/cutscenes/intro/2.txt");
     await requireAnswer(["yes", "y"], '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"') 
     printLines("app/src/cutscenes/intro/3.txt");
@@ -66,12 +65,18 @@ async function intro() {
     while (confirm != "1"
     && confirm != "one"
     && confirm != "the first"
+    && confirm != "the first one"
+    && confirm != "the first element"
     && confirm != "2"
     && confirm != "two"
     && confirm != "the second"
+    && confirm != "the second one"
+    && confirm != "the second element"
     && confirm != "3"
     && confirm != "three"
     && confirm != "the third"
+    && confirm != "the third one"
+    && confirm != "the third element"
     ) {
         quickPrint('"Will you pick the first, second, or third element?" he demanded impatiently.');
         confirm = await closedInput();
@@ -82,18 +87,24 @@ async function intro() {
         case "1":
         case "one":
         case "the first":
+        case "the first one":
+        case "the first element":
             quickPrint('"Very well, you have chosen the element of <i>Fire</i>."')
             addEntity((new Fire()), "knownSpells");
             break;
         case "2":
         case "two":
         case "the second":
+        case "the second one":
+        case "the second element":
             quickPrint('"Very well, you have chosen the element of <i>Water</i>."')
             addEntity((new Water()), "knownSpells");
             break;
         case "3":
         case "three":
         case "the third":
+        case "the third one":
+        case "the third element":
             quickPrint('"Very well, you have chosen the element of <i>Earth</i>."')
             addEntity((new Earth()), "knownSpells");
             break;
@@ -107,5 +118,10 @@ async function intro() {
     addEntity((new Shield()), "spokenSpells");
     printLines("app/src/cutscenes/intro/13.txt");
     await openInput();
-    console.log(getDirection());
+    console.log("A");
+    while (getValue("direction") == "North") {
+        printLines("app/src/cutscenes/intro/14.txt");
+        await openInput();
+    }
+    printLines("app/src/cutscenes/intro/15.txt");
 }

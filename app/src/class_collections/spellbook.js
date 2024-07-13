@@ -28,7 +28,7 @@ class Fire extends Element {
 
 class Water extends Element {
   constructor() {
-    super("Water", "The element of rivers and rain.", "A rushing ", "Fire", "Earth");
+    super("Water", "The element of rivers and rain.", "A flowing ", "Fire", "Earth");
   }
 }
 
