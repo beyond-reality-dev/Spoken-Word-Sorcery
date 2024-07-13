@@ -3,7 +3,7 @@ module.exports = { intro };
 const { printLines, quickPrint, requireAnswer, updateBars } = require("../../general");
 const { initializeData, addEntity, getDirection, loadData } = require("../../save_data");
 const { closedInput, openInput } = require("../../handle_input");
-const { Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
+const { Earth, Fire, Water, Spear, Shield, Remember } = require("../../class_collections/spellbook");
 
 var validInput = false;
 
@@ -41,19 +41,24 @@ async function intro() {
     printLines("app/src/cutscenes/intro/3.txt");
     await requireAnswer(["any"], "unreachable");
     printLines("app/src/cutscenes/intro/4.txt");
+    addEntity((new Remember()), "knownSpells");
     await requireAnswer(["yes", "y"], '"I will not proceed until you swear to it," he said firmly. "Do you swear to obey the Order?"');
     printLines("app/src/cutscenes/intro/5.txt");
     await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting.');
+    addEntity((new Remember()), "spokenSpells");
     printLines("app/src/cutscenes/intro/6.txt");
     await requireAnswer(["i must use the power sparingly for its cost is my mind my sanity my very humanity"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
+    addEntity("I must use the Power sparingly for its cost is my mind, my sanity, my very humanity.", "memories")
     quickPrint('"Now, speak the Word again," he instructed.')
     await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting.');
     printLines("app/src/cutscenes/intro/7.txt");
     await requireAnswer(["i am loyal to and shall give my life to defend if necessary the order and the empire"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"')
+    addEntity("I am loyal to, and shall give my life to defend if necessary, the Order and the Empire.", "memories")
     printLines("app/src/cutscenes/intro/8.txt");
     await requireAnswer(["remember"], '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting.');
     printLines("app/src/cutscenes/intro/9.txt");
     await requireAnswer(["i shall obey the fourth grandmaster of the order arnoch segeric those designated to carry out his will and any successor lawfully appointed by the emperor after his death"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"');
+    addEntity("I shall obey the Fourth Grandmaster of the Order, Arnoch Segeric, those designated to carry out his will, and any successor lawfully appointed by the Emperor after his death.", "memories")
     printLines("app/src/cutscenes/intro/10.txt");
     confirm = await closedInput();
     confirm = confirm.toLowerCase();

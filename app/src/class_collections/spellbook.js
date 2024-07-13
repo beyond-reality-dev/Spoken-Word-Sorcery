@@ -1,7 +1,8 @@
 class Element {
-  constructor(name, description, negates, isNegatedBy) {
+  constructor(name, description, descriptor, negates, isNegatedBy) {
     this.name = name;
     this.description = description;
+    this.descriptor = descriptor;
     this.negates = negates;
     this.isNegatedBy = isNegatedBy;
   }
@@ -9,32 +10,33 @@ class Element {
 
 class Aether extends Element {
   constructor() {
-    super("Aether", "A shimmering ", "None", "None");
+    super("Aether", "Aether makes up the fabric of the universe, but spells cast using it do not have any material effect.", "A shimmering ", "None", "None");
   }
 }
 
 class Earth extends Element {
   constructor() {
-    super("Earth", "An earthen ", "Water", "Air");
+    super("Earth", "The element of rock, soil, and plant life.", "An earthen ", "Water", "Air");
   }
 }
 
 class Fire extends Element {
   constructor() {
-    super("Fire", "A flaming ", "Earth", "Water");
+    super("Fire", "The element of heat and flame.", "A flaming ", "Earth", "Water");
   }
 }
 
 class Water extends Element {
   constructor() {
-    super("Water", "A rushing ", "Fire", "Earth");
+    super("Water", "The element of rivers and rain.", "A rushing ", "Fire", "Earth");
   }
 }
 
 class Spell {
-  constructor(name, description, manaCost, power, range, isOffensive, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
+  constructor(name, description, descriptor, manaCost, power, range, isOffensive, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
     this.name = name;
     this.description = description;
+    this.descriptor = descriptor;
     this.manaCost = manaCost;
     this.power = power;
     this.range = range;
@@ -49,27 +51,34 @@ class Spell {
 
 class Spear extends Spell {
   constructor() {
-    super("Spear", "spear flies through the air ", 5, 10, 1, true, 0, 0, 0, 0, 0);
+    super("Spear", "An arcane spear made from an element that flies in the direction you command.", "spear flies through the air ", 5, 10, 1, true, 0, 0, 0, 0, 0);
   }
 }
 
 class Shield extends Spell {
   constructor() {
-    super("Shield", "shield forms in front of you!", 5, 10, 0, false, 0, 0, 0, 0, 0);
+    super("Shield", "An arcane shield that forms in front of you to protect you from incoming attacks.", "shield forms in front of you!", 5, 10, 0, false, 0, 0, 0, 0, 0);
   }
 }
 
 class Direction {
-  constructor(name, description) {
+  constructor(name, description, descriptor) {
     this.name = name;
     this.description = description;
+    this.descriptor = descriptor;
   }
 }
 
 class Away extends Direction {
   constructor() {
-    super("Away", "away from you!");
+    super("Away", "This direction will cause spells to face or move in the direction away from where you are looking.", "away from you!");
   }
 }
 
-module.exports = { Earth, Fire, Water, Spear, Shield, Away };
+class Remember extends Direction {
+  constructor() {
+    super("Remember", "Creates a memory that cannot be taken away.", "in your mind!");
+  }
+}
+
+module.exports = { Earth, Fire, Water, Spear, Shield, Away, Remember };
