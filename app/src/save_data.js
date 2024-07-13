@@ -46,62 +46,89 @@ function updateUI() {
   document.getElementById("mana-bar").value = getValue("currentMana");
   document.getElementById("mana-bar").max = getValue("maxMana");
   document.getElementById("mana-text").innerHTML = `Mana: ${getValue("currentMana")}/${getValue("maxMana")}`;
-  for (let i = 0; i < getValue("knownSpells").length; i++) {
-    var spellName = getValue("knownSpells")[i]["name"];
-    var spellDescription = getValue("knownSpells")[i]["description"];
-    console.log(i+" "+spellName+" "+spellDescription);
-    console.log(getValue("knownSpells")[i]["type"]);
-    if (getValue("knownSpells")[i]["type"] == "element" || getValue("knownSpells")[i]["type"] == "direction") {
+  var knownSpells = getValue("knownSpells");
+  var spokenSpells = getValue("spokenSpells");
+  var memories = getValue("memories");
+  for (let i = 0; i < knownSpells.length; i++) {
+    var spellName = knownSpells[i]["name"];
+    var spellDescription = knownSpells[i]["description"];
+    var spellType = knownSpells[i]["type"];
+    if (spellType == "Element" || spellType == "Direction") {
       if (!document.getElementById(spellName)) {
-        document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription}</option>`;
+        document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
       }
-    } else if (getValue("knownSpells")[i]["type"] == "spell") {
-      var spellPower = getValue("knownSpells")[i]["power"];
-      var spellRange = getValue("knownSpells")[i]["range"];
-      var spellManaCost = getValue("knownSpells")[i]["manaCost"];
-      var spellAttackIncrease = getValue("knownSpells")[i]["attackIncrease"];
-      var spellHealthIncrease = getValue("knownSpells")[i]["healthIncrease"];
-      var spellArmorIncrease = getValue("knownSpells")[i]["armorIncrease"];
-      var spellSpeedIncrease = getValue("knownSpells")[i]["speedIncrease"];
-      var spellRangeIncrease = getValue("knownSpells")[i]["rangeIncrease"];
+    } else if (spellType == "Spell") {
+      var spellPower = knownSpells[i]["power"];
+      var spellRange = knownSpells[i]["range"];
+      var spellManaCost = knownSpells[i]["manaCost"];
+      var spellAttackIncrease = knownSpells[i]["attackIncrease"];
+      var spellHealthIncrease = knownSpells[i]["healthIncrease"];
+      var spellArmorIncrease = knownSpells[i]["armorIncrease"];
+      var spellSpeedIncrease = knownSpells[i]["speedIncrease"];
+      var spellRangeIncrease = knownSpells[i]["rangeIncrease"];
       if (!document.getElementById(spellName)) {
-        if (getValue("knownSpells")[i]["isSupport"] == false) {
-          document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
-        } else if (getValue("knownSpells")[i]["isSupport"] == true) {
-          document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
+        if (knownSpells[i]["isSupport"] == false) {
+          document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
+        } else if (knownSpells[i]["isSupport"] == true) {
+          document.getElementById("known-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
         }
       }
     }
   }
-  for (let i = 0; i < getValue("spokenSpells").length; i++) {
-    var spellName = getValue("spokenSpells")[i]["name"];
-    var spellDescription = getValue("spokenSpells")[i]["description"];
-    if (getValue("spokenSpells")[i]["type"] == "element" || getValue("spokenSpells")[i]["type"] == "direction") {
+  for (let i = 0; i < spokenSpells.length; i++) {
+    var spellName = spokenSpells[i]["name"];
+    var spellDescription = spokenSpells[i]["description"];
+    var spellType = spokenSpells[i]["type"];
+    if (spellType == "Element" || spellType == "Direction") {
       if (!document.getElementById(spellName)) {
-        document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription}</option>`;
+        document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
       }
-    } else if (getValue("spokenSpells")[i]["type"] == "spell") {
-      var spellPower = getValue("spokenSpells")[i]["power"];
-      var spellRange = getValue("spokenSpells")[i]["range"];
-      var spellManaCost = getValue("spokenSpells")[i]["manaCost"];
-      var spellAttackIncrease = getValue("spokenSpells")[i]["attackIncrease"];
-      var spellHealthIncrease = getValue("spokenSpells")[i]["healthIncrease"];
-      var spellArmorIncrease = getValue("spokenSpells")[i]["armorIncrease"];
-      var spellSpeedIncrease = getValue("spokenSpells")[i]["speedIncrease"];
-      var spellRangeIncrease = getValue("spokenSpells")[i]["rangeIncrease"];
+    } else if (spellType == "Spell") {
+      var spellPower = spokenSpells[i]["power"];
+      var spellRange = spokenSpells[i]["range"];
+      var spellManaCost = spokenSpells[i]["manaCost"];
+      var spellAttackIncrease = spokenSpells[i]["attackIncrease"];
+      var spellHealthIncrease = spokenSpells[i]["healthIncrease"];
+      var spellArmorIncrease = spokenSpells[i]["armorIncrease"];
+      var spellSpeedIncrease = spokenSpells[i]["speedIncrease"];
+      var spellRangeIncrease = spokenSpells[i]["rangeIncrease"];
       if (!document.getElementById(spellName)) {
-        if (getValue("spokenSpells")[i]["isSupport"] == false) {
-          document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
-        } else if (getValue("spokenSpells")[i]["isSupport"] == true) {
-          document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
+        if (spokenSpells[i]["isSupport"] == false) {
+          document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
+        } else if (spokenSpells[i]["isSupport"] == true) {
+          document.getElementById("spoken-spells").innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
         }
       }
     }
   }
-  for (let i = 0; i <getValue("memories").length; i++) {
-    var memory = getValue("memories")[i];
+  for (let i = 0; i < memories.length; i++) {
+    var memory = memories[i];
     if (!document.getElementById(memory)) {
       document.getElementById("memories").innerHTML += `<option id="${memory}">${memory}</option>`;
+    }
+  }
+  sortList("known-spells");
+  sortList("spoken-spells");
+  sortList("memories");
+}
+
+function sortList(list) {
+  var list, i, switching, b, shouldSwitch;
+  list = document.getElementById(list);
+  switching = true;
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("OPTION");
+    for (i = 0; i < (b.length - 1); i++) {
+      shouldSwitch = false;
+      if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
     }
   }
 }

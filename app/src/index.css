@@ -163,7 +163,7 @@ body {
   position: absolute;
   top: 1vh;
   left: 21.5%;
-  font-size: large;
+  font-size: x-large;
   font-weight: bold;
 }
 
@@ -189,8 +189,8 @@ body {
 .level-text {
   position: absolute;
   top: 1vh;
-  right: 34%;
-  font-size: large;
+  right: 32.5%;
+  font-size: x-large;
   font-weight: bold;
 }
 
