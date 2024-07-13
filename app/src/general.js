@@ -1,6 +1,8 @@
-module.exports = { gameSpeed, switchScreen, switchButton, blockInput, allowInput, printLines, quickPrint, awaitInput, requireAnswer };
+module.exports = { gameSpeed, switchScreen, switchButton, printLines, quickPrint, requireAnswer };
 
-var gameSpeed = 1000;
+const { allowInput, blockInput, closedInput } = require("./handle_input");
+
+var gameSpeed = 0;
 
 function switchScreen(screen) {
     document.getElementById("main").style.display = "none";
@@ -29,16 +31,6 @@ function switchButton(button) {
     document.getElementById(button).style.cursor = "default";
 }
 
-function blockInput() {
-    document.getElementById("input-bar").style.backgroundColor = "#d1d1d1";
-    document.getElementById("input-bar").setAttribute("contenteditable", "false");
-}
-
-function allowInput() {
-    document.getElementById("input-bar").style.backgroundColor = "#ffffff";
-    document.getElementById("input-bar").setAttribute("contenteditable", "true");
-}
-
 async function printLines(file) {
     blockInput();
     var fs = require("fs");
@@ -64,32 +56,14 @@ function quickPrint(text) {
     document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
 }
 
-async function awaitInput() {
-    return new Promise(function(resolve) {
-        const input = document.getElementById("input-bar");
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                const text = input.innerText;
-                document.getElementById("main-content").innerHTML += "<span style='color: blue;'><p> " + text + "</p></span>";
-                document.getElementById("main-content").scrollTop = document.getElementById("main-content").scrollHeight;
-                input.innerText = "";
-                input.removeEventListener("keypress", handleKeyPress);
-                resolve(text);
-            }
-        }
-        input.addEventListener("keypress", handleKeyPress);
-    });
-}
-
 async function requireAnswer(answerChoices, question) {
-    var confirm = await awaitInput();
+    var confirm = await closedInput();
     confirm = confirm.toLowerCase();
     confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     console.log(confirm);
     while (!answerChoices.includes(confirm) && !answerChoices.includes("any")) {
         quickPrint(question);
-        confirm = await awaitInput();
+        confirm = await closedInput();
         confirm = confirm.toLowerCase();
         confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     }

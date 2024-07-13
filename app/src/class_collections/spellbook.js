@@ -1,16 +1,3 @@
-function addSpell(spell, isSpoken=false) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  if (isSpoken) {
-    playerData["spokenSpells"].push(spell);
-    localStorage.setItem("playerData", JSON.stringify(playerData));
-    return;
-  } else {
-    playerData = JSON.parse(localStorage.getItem("playerData"));
-    playerData["knownSpells"].push(spell);
-    localStorage.setItem("playerData", JSON.stringify(playerData));
-  }
-} 
-
 class Element {
   constructor(name, description, negates, isNegatedBy) {
     this.name = name;
@@ -71,4 +58,17 @@ class Shield extends Spell {
   }
 }
 
-module.exports = { addSpell, Earth, Fire, Water, Spear, Shield };
+class Direction {
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+  }
+}
+
+class Away extends Direction {
+  constructor() {
+    super("Away", "The direction opposite the caster.");
+  }
+}
+
+module.exports = { Earth, Fire, Water, Spear, Shield, Away };

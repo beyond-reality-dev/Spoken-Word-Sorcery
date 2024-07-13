@@ -1,63 +1,41 @@
 module.exports = { intro };
 
-const { printLines, quickPrint, awaitInput, requireAnswer, blockInput } = require("../../general");
-const { addSpell, Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
+const { printLines, quickPrint, requireAnswer } = require("../../general");
+const { initializeData, loadData, addEntity } = require("../../save_data");
+const { closedInput, openInput } = require("../../handle_input");
+const { Earth, Fire, Water, Spear, Shield } = require("../../class_collections/spellbook");
 
 var validInput = false;
 
 async function intro() {
     localStorage.clear();
     printLines("app/src/cutscenes/intro/1.txt");
-    var name = await awaitInput();
+    var name = await closedInput();
     while (!validInput) {
         if (name == "") {
             quickPrint('"Speak up, I can\'t understand you!" He barked.');
-            name = await awaitInput();
+            name = await closedInput();
         } else {
             validInput = true;
         }
     }
     validInput = false;
     quickPrint('"I have to assume you know your own name, but just in case, is "' + name + '" correct?"');
-    var confirm = await awaitInput();
+    var confirm = await closedInput();
     while (confirm != "Yes" && confirm != "yes" && confirm != "Y" && confirm != "y") {
         if (confirm == "No" || confirm == "no" || confirm == "N" || confirm == "n") {
             quickPrint('"Then what is your name?" He demanded.');
-            name = await awaitInput();
+            name = await closedInput();
             quickPrint('"I have to assume you know your own name, but just in case, is "' + name + '" correct?"');
         }
         else {
             quickPrint('"Speak up, I can\'t understand you!" He barked. "It\'s a simple question, is ' + name + ' your name?"');
         }
-        confirm = await awaitInput();
+        confirm = await closedInput();
     }
     confirm = false;
-    var playerData = {
-        "name": name,
-        "maxHealth": 100,
-        "currentHealth": 100,
-        "maxMana": 50,
-        "currentMana": 50,
-    };
-    var inventory = {
-        "gold": 0,
-        "items": []
-    };
-    var equipment = {
-        "head": null,
-        "chest": null,
-        "legs": null,
-        "feet": null,
-        "mainHand": null,
-        "offHand": null
-    };
-    var knownSpells = [];
-    var spokenSpells = [];
-    playerData["knownSpells"] = knownSpells;
-    playerData["spokenSpells"] = spokenSpells;
-    playerData["equipment"] = equipment;
-    playerData["inventory"] = inventory;
-    localStorage.setItem("playerData", JSON.stringify(playerData));
+    initializeData(name);
+    playerData = loadData();
     console.log(playerData);
     printLines("app/src/cutscenes/intro/2.txt");
     await requireAnswer(["yes", "y"], '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"') 
@@ -78,7 +56,7 @@ async function intro() {
     printLines("app/src/cutscenes/intro/9.txt");
     await requireAnswer(["i shall obey the fourth grandmaster of the order arnoch segeric those designated to carry out his will and any successor lawfully appointed by the emperor after his death"], '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"');
     printLines("app/src/cutscenes/intro/10.txt");
-    confirm = await awaitInput();
+    confirm = await closedInput();
     confirm = confirm.toLowerCase();
     confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     while (confirm != "1"
@@ -92,7 +70,7 @@ async function intro() {
     && confirm != "the third"
     ) {
         quickPrint('"Will you pick the first, second, or third element?" he demanded impatiently.');
-        confirm = await awaitInput();
+        confirm = await closedInput();
         confirm = confirm.toLowerCase();
         confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
     }
@@ -101,29 +79,30 @@ async function intro() {
         case "one":
         case "the first":
             quickPrint('"Very well, you have chosen the element of <i>Fire</i>."')
-            addSpell((new Fire()));
+            addEntity((new Fire()), "knownSpells");
             break;
         case "2":
         case "two":
         case "the second":
             quickPrint('"Very well, you have chosen the element of <i>Water</i>."')
-            addSpell((new Water()));
+            addEntity((new Water()), "knownSpells");
             break;
         case "3":
         case "three":
         case "the third":
             quickPrint('"Very well, you have chosen the element of <i>Earth</i>."')
-            addSpell((new Earth()));
+            addEntity((new Earth()), "knownSpells");
             break;
     }
     confirm = false;
     printLines("app/src/cutscenes/intro/11.txt");
     await requireAnswer(["spear"], "Speak the word <i>Spear</i>.");
-    addSpell((new Spear()), true);
+    addEntity((new Spear()), "spokenSpells");
     printLines("app/src/cutscenes/intro/12.txt");
     await requireAnswer(["shield"], "Speak the word <i>Shield</i>.");
-    addSpell((new Shield()), true);
+    addEntity((new Shield()), "spokenSpells");
     console.log(JSON.parse(localStorage.getItem("playerData")));
     printLines("app/src/cutscenes/intro/13.txt");
-    blockInput();
+    await openInput();
+    console.log(JSON.parse(localStorage.getItem("playerData")));
 }
