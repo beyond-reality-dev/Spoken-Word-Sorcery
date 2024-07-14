@@ -217,6 +217,14 @@ body {
   font-size: large;
 }
 
+.settings-group {
+  width: 100%;
+  margin-top: -2.5vh;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 .settings-button {
   margin-top: 5vh;
   margin-left: auto;
@@ -236,10 +244,12 @@ body {
 }
 
 .radio-group {
+  margin-top: 2.5vh;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  transform: scale(1.5);
 }
 
 .controls {

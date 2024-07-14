@@ -2,40 +2,40 @@ module.exports = { initializeData, updateUI, addEntity, getValue, changeValue };
 
 function initializeData(name) {
   var playerData = {
-    "name": name,
-    "level": 1,
-    "experience": 0,
-    "insanity": 0,
-    "maxHealth": 100,
-    "currentHealth": 100,
-    "maxMana": 50,
-    "currentMana": 50,
-    "direction": "North",
-    "checkPoint": "intro"
-};
-var inventory = {
-    "gold": 0,
-    "items": []
-};
-var equipment = {
-    "head": null,
-    "chest": null,
-    "legs": null,
-    "feet": null,
-    "mainHand": null,
-    "offHand": null,
-    "accessory": null
-};
-var knownSpells = [];
-var spokenSpells = [];
-var memories = [];
-playerData["knownSpells"] = knownSpells;
-playerData["spokenSpells"] = spokenSpells;
-playerData["memories"] = memories;
-playerData["equipment"] = equipment;
-playerData["inventory"] = inventory;
-localStorage.setItem("playerData", JSON.stringify(playerData));
-updateUI();
+    name: name,
+    level: 1,
+    experience: 0,
+    insanity: 0,
+    maxHealth: 100,
+    currentHealth: 100,
+    maxMana: 50,
+    currentMana: 50,
+    direction: "North",
+    checkPoint: "intro",
+  };
+  var inventory = {
+    gold: 0,
+    items: [],
+  };
+  var equipment = {
+    head: null,
+    chest: null,
+    legs: null,
+    feet: null,
+    mainHand: null,
+    offHand: null,
+    accessory: null,
+  };
+  var knownSpells = [];
+  var spokenSpells = [];
+  var memories = [];
+  playerData["knownSpells"] = knownSpells;
+  playerData["spokenSpells"] = spokenSpells;
+  playerData["memories"] = memories;
+  playerData["equipment"] = equipment;
+  playerData["inventory"] = inventory;
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+  updateUI();
 }
 
 function updateUI() {
@@ -44,10 +44,11 @@ function updateUI() {
   updateSpellbook("spokenSpells");
   updateSpellbook("memories");
   updateInventory();
+  updateEquipment();
 }
 
 function updateTitleBar() {
-  document.getElementById("name-text").innerHTML = `Name: ${getValue("name")}`
+  document.getElementById("name-text").innerHTML = `Name: ${getValue("name")}`;
   document.getElementById("health-bar").value = getValue("currentHealth");
   document.getElementById("health-bar").max = getValue("maxHealth");
   document.getElementById("health-text").innerHTML = `Health: ${getValue("currentHealth")}/${getValue("maxHealth")}`;
@@ -60,8 +61,11 @@ function updateTitleBar() {
 function updateSpellbook(target) {
   var spells = getValue(target);
   if (target == "knownSpells" || target == "spokenSpells") {
-    if (target == "knownSpells") { targetElement = "known-spells"; }
-    else if (target == "spokenSpells") { targetElement = "spoken-spells"; }
+    if (target == "knownSpells") {
+      targetElement = "known-spells";
+    } else if (target == "spokenSpells") {
+      targetElement = "spoken-spells";
+    }
     for (let i = 0; i < spells.length; i++) {
       var spellName = spells[i]["name"];
       var spellDescription = spells[i]["description"];
@@ -99,7 +103,6 @@ function updateSpellbook(target) {
   sortList("memories");
 }
 
-
 function sortList(list) {
   var list, i, switching, b, shouldSwitch;
   list = document.getElementById(list);
@@ -107,7 +110,7 @@ function sortList(list) {
   while (switching) {
     switching = false;
     b = list.getElementsByTagName("OPTION");
-    for (i = 0; i < (b.length - 1); i++) {
+    for (i = 0; i < b.length - 1; i++) {
       shouldSwitch = false;
       if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
         shouldSwitch = true;
@@ -150,6 +153,12 @@ function updateInventory() {
       var itemSpeedValue = items[i]["speedValue"];
       var itemWeight = items[i]["weight"];
       document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+    } else if (items[i]["type"] == "Miscellaneous") {
+      var itemName = items[i]["name"];
+      var itemDescription = items[i]["description"];
+      var itemGoldValue = items[i]["goldValue"];
+      var itemWeight = items[i]["weight"];
+      document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
     }
   }
   sortList("inventory");
@@ -158,30 +167,76 @@ function updateInventory() {
 function updateEquipment() {
   var equipment = getValue("equipment");
   for (let i = 0; i < equipment.length; i++) {
-    var itemName = items[i]["name"];
-    var itemDescription = items[i]["description"];
-    var itemGoldValue = items[i]["goldValue"];
-    var itemArmorValue = items[i]["armorValue"];
-    var itemAttackValue = items[i]["attackValue"];
-    var itemRangeValue = items[i]["rangeValue"];
+    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    var position = equipment[i]["position"];
+    if (
+      position == "head" ||
+      position == "chest" ||
+      position == "legs" ||
+      position == "feet"
+    ) {
+      var itemName = equipment[i]["name"];
+      var itemDescription = equipment[i]["description"];
+      var itemArmorValue = equipment[i]["armorValue"];
+      var itemWeight = equipment[i]["weight"];
+      document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    } else if (
+      position == "mainHand" ||
+      position == "offHand" ||
+      position == "accessory"
+    ) {
+      var itemName = equipment[i]["name"];
+      var itemDescription = equipment[i]["description"];
+      var itemAttackValue = equipment[i]["attackValue"];
+      var itemRangeValue = equipment[i]["rangeValue"];
+      var itemWeight = equipment[i]["weight"];
+      document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+    }
   }
+  sortList("equipment");
 }
 
 function addEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
-  for (let i = 0; i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length; i++) {
-    if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
-      var matchKnown = true;
-      var index = i;
-      break;
+  if (target == "spokenSpells") {
+    for (
+      let i = 0;
+      i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
+      i++
+    ) {
+      if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
+        var matchKnown = true;
+        var index = i;
+        break;
+      }
+    }
+    if (matchKnown == true) {
+      playerData["knownSpells"].splice(index, 1);
     }
   }
-  if (target == "spokenSpells" && matchKnown == true) {
-    playerData["knownSpells"].splice(index, 1);
-    console.log(playerData["knownSpells"]);
-  }
   playerData[target].push(entity);
-  console.log(playerData[target]);
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+  updateUI();
+}
+
+function removeEntity(entity, target) {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var hits = 0;
+  for (let i = 0; i < playerData[target].length; i++) {
+    if (playerData[target][i]["name"] == entity) {
+      if (hits == 0) {
+        playerData[target].splice(i, 1);
+      }
+      hits = hits + 1;
+    }
+  }
+  if (target == "inventory" && hits == 1) {
+    for (let i = 0; i < playerData["equipment"].length; i++) {
+      if (playerData["equipment"][i]["name"] == entity) {
+        playerData["equipment"].splice(i, 1);
+      }
+    }
+  }
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }

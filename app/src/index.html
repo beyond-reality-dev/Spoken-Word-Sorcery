@@ -79,17 +79,17 @@
 
     <section id="equipment-screen" class="sub-screen">
       <h2>Helmet</h2>
-      <select id="helmet" class="spell-box" title="helmet" name="helmet" size="1"></select>
+      <select id="head" class="spell-box" title="helmet" name="helmet" size="1"></select>
       <h2>Chest Gear</h2>
       <select id="chest" class="spell-box" title="chest" name="chest" size="1"></select>
       <h2>Leggings</h2>
-      <select id="leggings" class="spell-box" title="leggings" name="leggings" size="1"></select>
+      <select id="legs" class="spell-box" title="leggings" name="leggings" size="1"></select>
       <h2>Foot Gear</h2>
-      <select id="foot" class="spell-box" title="foot" name="foot" size="1"></select>
-      <h2>Weapon</h2>
-      <select id="weapon" class="spell-box" title="weapon" name="weapon" size="1"></select>
-      <h2>Shield</h2>
-      <select id="shield" class="spell-box" title="shield" name="shield" size="1"></select>
+      <select id="feet" class="spell-box" title="foot" name="foot" size="1"></select>
+      <h2>Main Hand</h2>
+      <select id="mainHand" class="spell-box" title="weapon" name="weapon" size="1"></select>
+      <h2>Off Hand</h2>
+      <select id="offHand" class="spell-box" title="shield" name="shield" size="1"></select>
       <h2>Accessory</h2>
       <select id="accessory" class="spell-box" title="accessory" name="accessory" size="1"></select>
     </section>
@@ -107,33 +107,35 @@
 
     <section id="settings-screen" class="sub-screen">
       <div class="radio-group">
-        <p class="inline-title">Delay between Lines:</p>
+        <p class="inline-title">Seconds between Lines:</p>
         <div class="controls">
           <label class="radio">
             <input id="radio-zero" type="radio" name="time-settings" value="0">
-            Zero Seconds
+            Zero
           </label>
           <label class="radio">
             <input id="radio-one" type="radio" name="time-settings" value="1000" checked="checked">
-            One Second
+            One
           </label>
           <label class="radio">
             <input id="radio-two" type="radio" name="time-settings" value="2000">
-            Two Seconds
+            Two
           </label>
           <label class="radio">
             <input id="radio-three" type="radio" name="time-settings" value="3000">
-            Three Seconds
+            Three
           </label>
           <label class="radio">
             <input id="radio-four" type="radio" name="time-settings" value="4000">
-            Four Seconds
+            Four
           </label>
         </div>
       </div>
-      <button id="save-button" class="settings-button">Save Game</button>
-      <button id="quit-save" class="settings-button">Save Game and Exit</button>
-      <button id="quit-button" class="settings-button">Exit without Saving</button>
+      <div class="settings-group">
+        <button id="save-button" class="settings-button">Save Game</button>
+        <button id="quit-save" class="settings-button">Save Game and Exit</button>
+        <button id="quit-button" class="settings-button">Exit without Saving</button>
+      </div>
     </section>
 
     <section id="map-screen" class="sub-screen">
