@@ -1,8 +1,15 @@
-const { Room } = require("../locations/locations");
+class Room { 
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+    this.items = [];
+    this.exits = {};
+  }
+}
 
 class TrainingRoom extends Room {
   constructor() {
-    super("Imperial Academy", "A prestigious academy for the Empire's finest warriors.");
+    super("TrainingRoom", "A prestigious academy for the Empire's finest warriors.");
     this.items = [];
     this.exits = {
       north: "Hallway_01",
@@ -14,7 +21,7 @@ class TrainingRoom extends Room {
 
 class Hallway_01 extends Room {
   constructor() {
-    super("Hallway 1", "A long hallway with a few doors on either side.");
+    super("Hallway_01", "A long hallway with a few doors on either side.");
     this.items = [];
     this.exits = {
       north: "CommonRoom",

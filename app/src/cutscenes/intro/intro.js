@@ -129,4 +129,5 @@ async function intro() {
         await openInput();
     }
     printLines("app/src/cutscenes/intro/15.txt");
+    await openInput();
 }

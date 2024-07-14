@@ -1,7 +1,14 @@
 module.exports = { allowInput, blockInput, closedInput, openInput };
 
-const { addEntity, getValue, changeValue, calculateValue } = require("./save_data");
-const { toTitleCase } = require("./general");
+const { TrainingRoom, Hallway_01 } = require("./class_collections/locations/imperial_academy");
+
+const {
+  addEntity,
+  getValue,
+  changeValue,
+  calculateValue,
+} = require("./save_data");
+const { toTitleCase, quickPrint } = require("./general");
 const {
   Aether,
   Earth,
@@ -76,7 +83,32 @@ async function openInput() {
             } else {
               change = clauses[i].substring(5);
             }
-            handleDirection(direction, change);
+            handleTurn(direction, change);
+          } else if (clauses[i].substring(0, 3) == "go ") {
+            if (clauses[i].substring(3, 10) == "to the ") {
+              direction = clauses[i].substring(10);
+            } else {
+              direction = clauses[i].substring(3);
+            }
+            handleMovement(direction);
+          } else if (clauses[i].substring(0, 4) == "run") {
+            if (clauses[i].substring(4, 11) == "to the ") {
+              direction = clauses[i].substring(11);
+            } else {
+              direction = clauses[i].substring(4);
+            }
+            handleMovement(direction);
+          } else if (
+            clauses[i].substring(0, 5) == "exit " ||
+            clauses[i].substring(0, 5) == "move " ||
+            clauses[i].substring(0, 5) == "walk "
+          ) {
+            if (clauses[i].substring(5, 12) == "to the ") {
+              direction = clauses[i].substring(12);
+            } else {
+              direction = clauses[i].substring(5);
+            }
+            handleMovement(direction);
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
@@ -106,7 +138,7 @@ async function openInput() {
   });
 }
 
-function handleDirection(direction, change) {
+function handleTurn(direction, change) {
   switch (change) {
     case "left":
       if (direction == "North") {
@@ -148,6 +180,18 @@ function handleDirection(direction, change) {
   }
   document.getElementById("main-content").innerHTML +=
     "<p>You are now facing " + getValue("direction") + ".</p>";
+}
+
+function handleMovement(direction) {
+  var currentLocation = eval(getValue("location"));
+  console.log(currentLocation);
+  try {
+    var newLocation = eval(currentLocation.exits[direction]);
+    changeValue("location", newLocation.name);
+    quickPrint(newLocation.description);
+  } catch (error) {
+    quickPrint("You cannot go that way.");
+  }
 }
 
 function handleSpell(words) {
