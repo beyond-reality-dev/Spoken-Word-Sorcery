@@ -42,6 +42,7 @@ function updateUI() {
   updateSpellbook("knownSpells");
   updateSpellbook("spokenSpells");
   updateSpellbook("memories");
+  updateInventory();
 }
 
 function updateTitleBar() {
@@ -97,6 +98,7 @@ function updateSpellbook(target) {
   sortList("memories");
 }
 
+
 function sortList(list) {
   var list, i, switching, b, shouldSwitch;
   list = document.getElementById(list);
@@ -134,12 +136,20 @@ function updateInventory() {
     var itemIsConsumable = items[i]["isConsumable"];
     if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
     if (itemIsConsumable == false) {
-      document.getElementById("inventory").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold: ${itemGoldValue} | Def: ${itemArmorValue} | Atk: ${itemAttackValue} Rng: ${itemRangeValue} </option>`;
+      document.getElementById("inventory").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold Value: ${itemGoldValue} | Def: ${itemArmorValue} | Atk: ${itemAttackValue} Rng: ${itemRangeValue} </option>`;
     } else if (itemIsConsumable == true) {
-      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold: ${itemGoldValue} | HP↑: ${itemHealthValue} | Mana: ${itemManaValue} | Spd↑: ${itemSpeedValue}</option>`;
+      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold Value: ${itemGoldValue} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue}</option>`;
     }
   }
   sortList("inventory");
+}
+
+function updateEquipment() {
+  var equipment = getValue("equipment");
+  for (let i = 0; i < equipment.length; i++) {
+    var itemName = items[i]["name"];
+    var itemDescription = items[i]["description"]
+  }
 }
 
 function addEntity(entity, target) {
