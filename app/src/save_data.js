@@ -23,7 +23,8 @@ var equipment = {
     "legs": null,
     "feet": null,
     "mainHand": null,
-    "offHand": null
+    "offHand": null,
+    "accessory": null
 };
 var knownSpells = [];
 var spokenSpells = [];
@@ -124,21 +125,31 @@ function updateInventory() {
   var inventory = getValue("inventory");
   var items = inventory["items"];
   for (let i = 0; i < items.length; i++) {
-    var itemName = items[i]["name"];
-    var itemDescription = items[i]["description"];
-    var itemGoldValue = items[i]["goldValue"];
-    var itemHealthValue = items[i]["healthValue"];
-    var itemArmorValue = items[i]["armorValue"];
-    var itemAttackValue = items[i]["attackValue"];
-    var itemSpeedValue = items[i]["speedValue"];
-    var itemRangeValue = items[i]["rangeValue"];
-    var itemManaValue = items[i]["manaValue"];
-    var itemIsConsumable = items[i]["isConsumable"];
     if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
-    if (itemIsConsumable == false) {
-      document.getElementById("inventory").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold Value: ${itemGoldValue} | Def: ${itemArmorValue} | Atk: ${itemAttackValue} Rng: ${itemRangeValue} </option>`;
-    } else if (itemIsConsumable == true) {
-      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Gold Value: ${itemGoldValue} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue}</option>`;
+    if (items[i]["type"] == "Weapon") {
+      var itemName = items[i]["name"];
+      var itemDescription = items[i]["description"];
+      var itemGoldValue = items[i]["goldValue"];
+      var itemAttackValue = items[i]["attackValue"];
+      var itemRangeValue = items[i]["rangeValue"];
+      var itemWeight = items[i]["weight"];
+      document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+    } else if (items[i]["type"] == "Armor") {
+      var itemName = items[i]["name"];
+      var itemDescription = items[i]["description"];
+      var itemGoldValue = items[i]["goldValue"];
+      var itemArmorValue = items[i]["armorValue"];
+      var itemWeight = items[i]["weight"];
+      document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+    } else if (items[i]["type"] == "Consumable") {
+      var itemName = items[i]["name"];
+      var itemDescription = items[i]["description"];
+      var itemGoldValue = items[i]["goldValue"];
+      var itemHealthValue = items[i]["healthValue"];
+      var itemManaValue = items[i]["manaValue"];
+      var itemSpeedValue = items[i]["speedValue"];
+      var itemWeight = items[i]["weight"];
+      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
     }
   }
   sortList("inventory");
@@ -148,7 +159,11 @@ function updateEquipment() {
   var equipment = getValue("equipment");
   for (let i = 0; i < equipment.length; i++) {
     var itemName = items[i]["name"];
-    var itemDescription = items[i]["description"]
+    var itemDescription = items[i]["description"];
+    var itemGoldValue = items[i]["goldValue"];
+    var itemArmorValue = items[i]["armorValue"];
+    var itemAttackValue = items[i]["attackValue"];
+    var itemRangeValue = items[i]["rangeValue"];
   }
 }
 

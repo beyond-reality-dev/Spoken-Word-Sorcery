@@ -1,20 +1,51 @@
-class Item {
-  constructor(name, description, goldValue, healthValue, armorValue, attackValue, speedValue, rangeValue, manaValue, isConsumable) {
+class Weapon {
+  constructor(name, description, position, goldValue, attackValue, rangeValue, weight) {
     this.name = name;
     this.description = description;
+    this.position = position;
+    this.type = "Weapon";
     this.goldValue = goldValue;
-    this.healthValue = healthValue;
-    this.armorValue = armorValue;
     this.attackValue = attackValue;
-    this.speedValue = speedValue;
     this.rangeValue = rangeValue;
-    this.manaValue = manaValue;
-    this.isConsumable = isConsumable;
+    this.weight = weight;
   }
 }
 
-class Sword extends Item {
-  constructor() {
-    super("Sword", "A basic sword", 5, 0, 0, 5, 0, 1, 0, false);
+class Armor {
+  constructor(name, description, position, goldValue, armorValue, weight) {
+    this.name = name;
+    this.description = description;
+    this.position = position;
+    this.type = "Armor";
+    this.goldValue = goldValue;
+    this.armorValue = armorValue;
+    this.weight = weight;
   }
 }
+
+class Consumable {
+  constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight) {
+    this.name = name;
+    this.description = description;
+    this.position = position;
+    this.type = "Consumable";
+    this.goldValue = goldValue;
+    this.healthValue = healthValue;
+    this.manaValue = manaValue;
+    this.speedValue = speedValue;
+    this.weight = weight;
+  }
+}
+
+class Miscellaneous {
+  constructor(name, description, position, goldValue, weight) {
+    this.name = name;
+    this.description = description;
+    this.position = position;
+    this.type = "Miscellaneous";
+    this.goldValue = goldValue;
+    this.weight = weight;
+  }
+}
+
+module.exports = { Weapon, Armor, Consumable, Miscellaneous };
