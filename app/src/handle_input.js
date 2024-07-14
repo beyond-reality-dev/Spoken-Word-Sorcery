@@ -1,6 +1,4 @@
-module.exports = { allowInput, blockInput, closedInput, openInput };
-
-const { TrainingRoom, Hallway_01 } = require("./class_collections/locations/imperial_academy");
+module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop };
 
 const {
   addEntity,
@@ -8,7 +6,9 @@ const {
   changeValue,
   calculateValue,
 } = require("./save_data");
+
 const { toTitleCase, quickPrint } = require("./general");
+
 const {
   Aether,
   Earth,
@@ -18,6 +18,11 @@ const {
   Shield,
   Away,
 } = require("./class_collections/spellbook");
+
+const {
+  TrainingRoom,
+  Hallway_01,
+} = require("./class_collections/locations/imperial_academy");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -138,6 +143,12 @@ async function openInput() {
   });
 }
 
+async function inputLoop() {
+  while (true) {
+    await openInput();
+  }
+}
+
 function handleTurn(direction, change) {
   switch (change) {
     case "left":
@@ -183,10 +194,10 @@ function handleTurn(direction, change) {
 }
 
 function handleMovement(direction) {
-  var currentLocation = eval(getValue("location"));
+  var currentLocation = eval("new " + getValue("location") + "()");
   console.log(currentLocation);
   try {
-    var newLocation = eval(currentLocation.exits[direction]);
+    var newLocation = eval("new " + currentLocation.exits[direction] + "()");
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
   } catch (error) {

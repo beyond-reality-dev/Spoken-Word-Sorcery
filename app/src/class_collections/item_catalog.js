@@ -11,6 +11,12 @@ class Weapon {
   }
 }
 
+class WoodenStaff extends Weapon {
+  constructor() {
+    super("Staff", "A simple staff", "mainHand", 5, 5, 1, 5);
+  }
+}
+
 class IronSword extends Weapon {
   constructor() {
     super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5);
@@ -88,6 +94,12 @@ class ManaPotion extends Consumable {
 class SpeedPotion extends Consumable {
   constructor() {
     super("Speed Potion", "A potion that increases speed", "consumable", 10, 0, 0, 10, 1);
+  }
+}
+
+class Arrow extends Consumable {
+  constructor() {
+    super("Arrow", "A simple arrow", "consumable", 1, 0, 0, 0, 1);
   }
 }
 
