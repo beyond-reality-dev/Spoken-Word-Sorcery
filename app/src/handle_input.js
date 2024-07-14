@@ -1,6 +1,6 @@
 module.exports = { allowInput, blockInput, closedInput, openInput };
 
-const { addEntity, getValue, changeValue } = require("./save_data");
+const { addEntity, getValue, changeValue, calculateValue } = require("./save_data");
 const { toTitleCase } = require("./general");
 const {
   Aether,
@@ -143,6 +143,8 @@ function handleDirection(direction, change) {
         changeValue("direction", "East");
       }
       break;
+    default:
+      break;
   }
   document.getElementById("main-content").innerHTML +=
     "<p>You are now facing " + getValue("direction") + ".</p>";
@@ -203,8 +205,10 @@ function handleSpell(words) {
         }
         if (matchKnown == false && matchSpoken == false) {
           phrase = "Nothing happens.";
+          break;
         }
       }
+      calculateValue("currentMana", "subtract", spell.manaCost);
     }
   }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";

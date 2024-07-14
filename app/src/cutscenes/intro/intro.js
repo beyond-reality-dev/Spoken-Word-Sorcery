@@ -1,7 +1,7 @@
 module.exports = { intro };
 
 const { printLines, quickPrint, requireAnswer } = require("../../general");
-const { initializeData, addEntity, getValue } = require("../../save_data");
+const { initializeData, addEntity, getValue, calculateValue } = require("../../save_data");
 const { closedInput, openInput } = require("../../handle_input");
 const { Earth, Fire, Water, Spear, Shield, Away, Remember } = require("../../class_collections/spellbook");
 
@@ -112,14 +112,18 @@ async function intro() {
     confirm = false;
     printLines("app/src/cutscenes/intro/11.txt");
     await requireAnswer(["spear"], '"Speak the word <i>Spear</i>."');
-    addEntity((new Spear()), "spokenSpells");
+    var spear = new Spear();
+    addEntity(spear, "spokenSpells");
+    calculateValue("currentMana", "subtract", spear.manaCost);
     printLines("app/src/cutscenes/intro/12.txt");
     await requireAnswer(["shield"], '"Speak the word <i>Shield</i>."');
-    addEntity((new Shield()), "spokenSpells");
+    var shield = new Shield();
+    addEntity(shield, "spokenSpells");
+    calculateValue("currentMana", "subtract", shield.manaCost);
     printLines("app/src/cutscenes/intro/13.txt");
-    addEntity((new Away()), "knownSpells");
+    var away = new Away();
+    addEntity(away, "knownSpells");
     await openInput();
-    console.log("A");
     while (getValue("direction") == "North") {
         printLines("app/src/cutscenes/intro/14.txt");
         await openInput();

@@ -1,4 +1,4 @@
-module.exports = { initializeData, updateUI, addEntity, getValue, changeValue };
+module.exports = { initializeData, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue };
 
 function initializeData(name) {
   var playerData = {
@@ -255,4 +255,19 @@ function changeValue(target, newValue) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   playerData[target] = newValue;
   localStorage.setItem("playerData", JSON.stringify(playerData));
+  updateUI();
+}
+
+function calculateValue(target, operation, amount) {
+  var value = getValue(target);
+  if (operation == "add") {
+    value = value + amount;
+  } else if (operation == "subtract") {
+    value = value - amount;
+  } else if (operation == "multiply") {
+    value = value * amount;
+  } else if (operation == "divide") {
+    value = value / amount;
+  }
+  changeValue(target, value);
 }

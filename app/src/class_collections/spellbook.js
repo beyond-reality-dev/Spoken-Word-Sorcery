@@ -60,7 +60,7 @@ class Spear extends Spell {
 
 class Shield extends Spell {
   constructor() {
-    super("Shield", "An arcane shield", "shield forms in front of you!", 5, 10, 0, false, false, 0, 0, 0, 0, 0);
+    super("Shield", "An arcane shield", "shield forms facing ", 5, 10, 0, false, false, 0, 0, 0, 0, 0);
   }
 }
 
@@ -76,6 +76,24 @@ class Direction {
 class Away extends Direction {
   constructor() {
     super("Away", "This direction will cause spells to face or move in the direction you are facing", "away from you!");
+  }
+}
+
+class Left extends Direction {
+  constructor() {
+    super("Left", "This direction will cause spells to face or move to your left", "to your left!");
+  }
+}
+
+class Right extends Direction {
+  constructor() {
+    super("Right", "This direction will cause spells to face or move to your right", "to your right!");
+  }
+}
+
+class Behind extends Direction {
+  constructor() {
+    super("Behind", "This direction will cause spells to face or move behind you", "behind you!");
   }
 }
 
