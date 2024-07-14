@@ -151,35 +151,61 @@ function handleDirection(direction, change) {
 function handleSpell(words) {
   words = words.split(" ");
   var phrase = "";
-  for (let i = 0; i < words.length; i++) {
-    var spell = eval("new " + toTitleCase(words[i]) + "()");
-    var knownSpells = getValue("knownSpells");
-    var spokenSpells = getValue("spokenSpells");
-    for (let j = 0; j < knownSpells.length; j++) {
-      var spellName = knownSpells[j]["name"];
-      if (spellName == spell.name) {
-        var descriptor = spell.descriptor;
-        phrase = phrase.concat(descriptor);
-        var matchKnown = true;
-        addEntity(spell, "spokenSpells");
-        break;
-      }
-    }
-    for (let j = 0; j < spokenSpells.length; j++) {
-      spellName = spokenSpells[j]["name"];
-      if (spellName == spell.name) {
-        descriptor = spell.descriptor;
-        phrase = phrase.concat(descriptor);
-        var matchSpoken = true;
-        break;
-      }
-    }
-    if (matchKnown == false && matchSpoken == false) {
-      break;
-    }
-  }
-  if (phrase == "" || (matchKnown == false && matchSpoken == false)) {
+  var knownSpells = getValue("knownSpells");
+  var spokenSpells = getValue("spokenSpells");
+  if (words.length != 3) {
     phrase = "Nothing happens.";
+  } else {
+    try {
+      var element = eval("new " + toTitleCase(words[0]) + "()");
+    } catch (error) {
+      var invalid = true;
+    }
+    try {
+      var spell = eval("new " + toTitleCase(words[1]) + "()");
+    } catch (error) {
+      invalid = true;
+    }
+    try {
+      var direction = eval("new " + toTitleCase(words[2]) + "()");
+    } catch (error) {
+      invalid = true;
+    }
+    if (
+      element["type"] != "Element" ||
+      spell["type"] != "Spell" ||
+      direction["type"] != "Direction" ||
+      invalid == true
+    ) {
+      phrase = "Nothing happens.";
+    } else {
+      var matchKnown = false;
+      for (let i = 0; i < words.length; i++) {
+        for (let j = 0; j < knownSpells.length; j++) {
+          var spell = eval("new " + toTitleCase(words[i]) + "()");
+          var spellName = knownSpells[j]["name"];
+          if (spellName == spell.name) {
+            var descriptor = spell.descriptor;
+            phrase = phrase.concat(descriptor);
+            var matchKnown = true;
+            addEntity(spell, "spokenSpells");
+            break;
+          }
+        }
+        for (let i = 0; i < spokenSpells.length; i++) {
+          spellName = spokenSpells[i]["name"];
+          if (spellName == spell.name) {
+            descriptor = spell.descriptor;
+            phrase = phrase.concat(descriptor);
+            var matchSpoken = true;
+            break;
+          }
+        }
+        if (matchKnown == false && matchSpoken == false) {
+          phrase = "Nothing happens.";
+        }
+      }
+    }
   }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
