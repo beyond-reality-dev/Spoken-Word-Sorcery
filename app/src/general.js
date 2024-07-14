@@ -1,5 +1,5 @@
 module.exports = {
-  gameSpeed,
+  changeGameSpeed,
   switchScreen,
   switchButton,
   printLines,
@@ -12,6 +12,10 @@ const { allowInput, blockInput, closedInput } = require("./handle_input");
 const { getValue } = require("./save_data");
 
 var gameSpeed = 0;
+
+function changeGameSpeed(speed) {
+  gameSpeed = speed;
+}
 
 function switchScreen(screen) {
   document.getElementById("main").style.display = "none";

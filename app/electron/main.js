@@ -19,10 +19,8 @@ function createWindow() {
     window.focus();
   });
   window.maximize();
-
-  // Start menu functions.
   window.webContents.executeJavaScript(`
-        const { gameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { changeGameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
@@ -87,23 +85,23 @@ function createWindow() {
 
         // Setttings functions.
         document.getElementById("radio-zero").onclick = function () {
-            gameSpeed = 0;
+            changeGameSpeed(0);
         }
 
         document.getElementById("radio-one").onclick = function () {
-            gameSpeed = 1000;
+            changeGameSpeed(1000);
         }
 
         document.getElementById("radio-two").onclick = function () {
-            gameSpeed = 2000;
+            changeGameSpeed(2000);
         }
 
         document.getElementById("radio-three").onclick = function () {
-            gameSpeed = 3000;
+            changeGameSpeed(3000);
         }
 
         document.getElementById("radio-four").onclick = function () {
-            gameSpeed = 4000;
+            changeGameSpeed(4000);
         }
     `);
 }

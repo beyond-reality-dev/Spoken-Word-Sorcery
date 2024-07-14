@@ -125,6 +125,8 @@ function sortList(list) {
 }
 
 function updateInventory() {
+  var gold = getValue("inventory")["gold"];
+  document.getElementById("gold-counter").innerHTML = `Gold: ${gold}`;
   var inventory = getValue("inventory");
   var items = inventory["items"];
   for (let i = 0; i < items.length; i++) {
@@ -161,7 +163,10 @@ function updateInventory() {
       document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
     }
   }
-  sortList("inventory");
+  sortList("weapons");
+  sortList("armor");
+  sortList("consumables");
+  sortList("miscellaneous");
 }
 
 function updateEquipment() {
@@ -193,7 +198,6 @@ function updateEquipment() {
       document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
     }
   }
-  sortList("equipment");
 }
 
 function addEntity(entity, target) {
