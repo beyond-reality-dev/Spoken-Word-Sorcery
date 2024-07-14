@@ -22,7 +22,10 @@ const {
 const {
   TrainingRoom,
   Hallway_01,
+  PracticeYard,
+  CommonRoom,
 } = require("./class_collections/locations/imperial_academy");
+const Common = require("electron/common");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -114,7 +117,15 @@ async function openInput() {
               direction = clauses[i].substring(5);
             }
             handleMovement(direction);
-          } else if (clauses[i].substring(0, 4) == "say ") {
+          } else if (clauses[i].substring(0, 8) == "pick up ") {
+            if (clauses[i].substring(8, 12) == "the ") {
+              var item = clauses[i].substring(12);
+            } else {
+              item = clauses[i].substring(8);
+            }
+            handlePickup(item);
+          }
+          else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
           } else if (
@@ -189,8 +200,7 @@ function handleTurn(direction, change) {
     default:
       break;
   }
-  document.getElementById("main-content").innerHTML +=
-    "<p>You are now facing " + getValue("direction") + ".</p>";
+  quickPrint("You are now facing " + getValue("direction") + ".");
 }
 
 function handleMovement(direction) {
@@ -202,6 +212,18 @@ function handleMovement(direction) {
     quickPrint(newLocation.description);
   } catch (error) {
     quickPrint("You cannot go that way.");
+  }
+}
+
+function handlePickup(item) {
+  var currentLocation = eval("new " + getValue("location") + "()");
+  var items = currentLocation.items;
+  for (let i = 0; i < items.length; i++) {
+    if (item == items[i][0] || item == `${items[i][0]}s`) {
+      var entity = eval("new " + items[i][1] + "()");
+      addEntity(entity, "inventory");
+      quickPrint("You picked up " + item + ".");
+    }
   }
 }
 
