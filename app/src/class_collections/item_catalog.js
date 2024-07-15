@@ -17,17 +17,23 @@ class WoodenStaff extends Weapon {
   }
 }
 
+var woodenStaff = new WoodenStaff();
+
 class IronSword extends Weapon {
   constructor() {
     super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5);
   }
 }
 
+var ironSword = new IronSword();
+
 class WoodenBow extends Weapon {
   constructor() {
     super("Bow", "A simple bow", "mainHand", 10, 5, 5, 5);
   }
 }
+
+var woodenBow = new WoodenBow();
 
 class Armor {
   constructor(name, description, position, goldValue, armorValue, weight) {
@@ -47,11 +53,15 @@ class LeatherHelmet extends Armor {
   }
 }
 
+var leatherHelmet = new LeatherHelmet();
+
 class LeatherChestplate extends Armor {
   constructor() {
     super("Chestplate", "A simple chestplate", "chest", 10, 5, 5);
   }
 }
+
+var leatherChestplate = new LeatherChestplate();
 
 class LeatherLeggings extends Armor {
   constructor() {
@@ -59,11 +69,15 @@ class LeatherLeggings extends Armor {
   }
 }
 
+var leatherLeggings = new LeatherLeggings();
+
 class LeatherBoots extends Armor {
   constructor() {
     super("Boots", "Simple boots", "feet", 10, 5, 5);
   }
 }
+
+var leatherBoots = new LeatherBoots();
 
 class Consumable {
   constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight) {
@@ -85,11 +99,15 @@ class HealthPotion extends Consumable {
   }
 }
 
+var healthPotion = new HealthPotion();
+
 class ManaPotion extends Consumable {
   constructor() {
     super("Mana Potion", "A potion that restores mana", "consumable", 10, 0, 10, 0, 1);
   }
 }
+
+var manaPotion = new ManaPotion();
 
 class SpeedPotion extends Consumable {
   constructor() {
@@ -97,11 +115,15 @@ class SpeedPotion extends Consumable {
   }
 }
 
+var speedPotion = new SpeedPotion();
+
 class Arrow extends Consumable {
   constructor() {
     super("Arrow", "A simple arrow", "consumable", 1, 0, 0, 0, 1);
   }
 }
+
+var arrow = new Arrow();
 
 class Miscellaneous {
   constructor(name, description, position, goldValue, weight) {
@@ -114,4 +136,4 @@ class Miscellaneous {
   }
 }
 
-module.exports = { Weapon, Armor, Consumable, Miscellaneous };
+module.exports = { Weapon, Armor, Consumable, Miscellaneous, arrow };

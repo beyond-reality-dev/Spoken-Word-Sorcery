@@ -11,7 +11,7 @@ function initializeData(name) {
     maxMana: 50,
     currentMana: 50,
     direction: "North",
-    location: "TrainingRoom",
+    location: "trainingRoom",
     checkPoint: "intro",
   };
   var inventory = {

@@ -20,12 +20,13 @@ const {
 } = require("./class_collections/spellbook");
 
 const {
-  TrainingRoom,
-  Hallway_01,
-  PracticeYard,
-  CommonRoom,
+  trainingRoom,
+  hallway_01,
+  practiceYard,
+  commonRoom,
 } = require("./class_collections/locations/imperial_academy");
-const Common = require("electron/common");
+
+const { arrow } = require("./class_collections/item_catalog");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -204,10 +205,10 @@ function handleTurn(direction, change) {
 }
 
 function handleMovement(direction) {
-  var currentLocation = eval("new " + getValue("location") + "()");
+  var currentLocation = eval(getValue("location"));
   console.log(currentLocation);
   try {
-    var newLocation = eval("new " + currentLocation.exits[direction] + "()");
+    var newLocation = eval(currentLocation.exits[direction]);
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
   } catch (error) {
@@ -216,14 +217,15 @@ function handleMovement(direction) {
 }
 
 function handlePickup(item) {
-  var currentLocation = eval("new " + getValue("location") + "()");
+  var currentLocation = eval(getValue("location"));
   var items = currentLocation.items;
-  for (let i = 0; i < items.length; i++) {
-    if (item == items[i][0] || item == `${items[i][0]}s`) {
-      var entity = eval("new " + items[i][1] + "()");
-      addEntity(entity, "inventory");
-      quickPrint("You picked up " + item + ".");
-    }
+  if (items.hasOwnProperty(item)) {
+    var itemClass = eval(items[item]);
+    addEntity(itemClass, "inventory");
+    delete items[item];
+    quickPrint("You picked up the " + item + ".");
+  } else {
+    quickPrint("There is no " + item + " here.");
   }
 }
 
