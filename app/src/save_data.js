@@ -128,30 +128,22 @@ function sortList(list) {
 function updateInventory() {
   var gold = getValue("inventory")["gold"];
   document.getElementById("gold-counter").innerHTML = `Gold: ${gold}`;
-  var inventory = getValue("inventory");
-  var items = inventory["items"];
+  var items = getValue("items");
   for (let i = 0; i < items.length; i++) {
     var itemName = items[i]["name"];
-    if (document.getElementById(itemName)) { 
-      var originalQuantity = document.getElementById(itemName).innerHTML.split(" | ")[0].split(" x")[1];
-      document.getElementById(itemName).remove();
-    } else {
-      originalQuantity = 0;
-    }
+    var itemQuantity = items[i]["quantity"];
     if (items[i]["type"] == "Weapon") {
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemAttackValue = items[i]["attackValue"];
       var itemRangeValue = items[i]["rangeValue"];
       var itemWeight = items[i]["weight"];
-      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemArmorValue = items[i]["armorValue"];
       var itemWeight = items[i]["weight"];
-      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Consumable") {
       var itemDescription = items[i]["description"];
@@ -160,13 +152,11 @@ function updateInventory() {
       var itemManaValue = items[i]["manaValue"];
       var itemSpeedValue = items[i]["speedValue"];
       var itemWeight = items[i]["weight"];
-      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Miscellaneous") {
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemWeight = items[i]["weight"];
-      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
   }
@@ -257,14 +247,25 @@ function removeEntity(entity, target) {
 }
 
 function getValue(target) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  var value = playerData[target];
+  if (target == "items") {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var value = playerData["inventory"]["items"];
+  } else { 
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var value = playerData[target];
+  }
   return value;
 }
 
 function changeValue(target, newValue) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  playerData[target] = newValue;
+  if (target.includes("items")) {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    target = eval("playerData" + target);
+    target = newValue;
+  } else {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    playerData[target] = newValue;
+  }
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }

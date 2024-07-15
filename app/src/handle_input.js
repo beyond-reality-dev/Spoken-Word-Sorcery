@@ -238,6 +238,7 @@ function handlePickup(item) {
   }
   if (items.hasOwnProperty(item)) {
     var itemClass = eval("new " + items[item]);
+    console.log(itemClass.quantity);
     addEntity(itemClass, "inventory");
     delete items[item];
     quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
@@ -247,20 +248,19 @@ function handlePickup(item) {
 }
 
 function handleDrop(item) {
-  var inventory = getValue("inventory")["items"];
+  var items = getValue("items");
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);
   }
-  for (let i = 0; i < inventory.length; i++) {
-    if (inventory[i].name == toTitleCase(item)) {
-      var current = inventory[i].quantity;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].name == toTitleCase(item)) {
+      var current = items[i].quantity;
       if (current > 1) {
-        inventory[i].quantity = current - 1;
-        console.log(inventory[i].quantity);
+        changeValue(`["inventory"]["items"][${i}].quantity`, (current - 1));
+        console.log(items[i].quantity);
         quickPrint(`You dropped a ${item}.`);
-        updateUI();
       } else {
-        inventory.splice(i, 1);
+        items.splice(i, 1);
         quickPrint(`You dropped a ${item}.`);
         updateUI();
       }
