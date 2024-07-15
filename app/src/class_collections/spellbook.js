@@ -103,4 +103,4 @@ class Remember extends Direction {
   }
 }
 
-module.exports = { Earth, Fire, Water, Spear, Shield, Away, Remember };
+module.exports = { Aether, Earth, Fire, Water, Spear, Shield, Away, Left, Right, Behind, Remember };

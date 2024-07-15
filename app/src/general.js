@@ -9,7 +9,6 @@ module.exports = {
 };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
-const { getValue } = require("./save_data");
 
 var gameSpeed = 0;
 
@@ -76,7 +75,6 @@ async function requireAnswer(answerChoices, question) {
   var confirm = await closedInput();
   confirm = confirm.toLowerCase();
   confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
-  console.log(confirm);
   while (!answerChoices.includes(confirm) && !answerChoices.includes("any")) {
     quickPrint(question);
     confirm = await closedInput();

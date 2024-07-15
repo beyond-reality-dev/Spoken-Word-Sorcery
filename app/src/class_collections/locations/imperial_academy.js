@@ -18,9 +18,9 @@ class TrainingRoom extends Room {
   constructor() {
     super(
       "trainingRoom",
-      "The training room is a large room with a few training dummies and a few wooden staffs on the wall. There is a door to the north, east, and south."
+      "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, east, and south."
     );
-    this.items = {"staff": "WoodenStaff(3)"};
+    this.items = {"staff": "WoodenStaff(1)"};
     this.exits = {
       north: "hallway_01",
       east: "practiceYard",

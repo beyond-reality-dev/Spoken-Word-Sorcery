@@ -119,8 +119,12 @@ async function openInput() {
             }
             handleMovement(direction);
           } else if (clauses[i].substring(0, 8) == "pick up ") {
-            if (clauses[i].substring(8, 12) == "the ") {
-              var item = clauses[i].substring(12);
+            if (clauses[i].substring(8, 10) == "a ") {
+              var item = clauses[i].substring(10);
+            } else if (clauses[i].substring(8, 11) == "an ") {
+              item = clauses[i].substring(11);
+            } else if (clauses[i].substring(8, 12) == "the ") {
+              item = clauses[i].substring(12);
             } else {
               item = clauses[i].substring(8);
             }
@@ -206,7 +210,6 @@ function handleTurn(direction, change) {
 
 function handleMovement(direction) {
   var currentLocation = eval(getValue("location"));
-  console.log(currentLocation);
   try {
     var newLocation = eval(currentLocation.exits[direction]);
     changeValue("location", newLocation.name);
@@ -219,6 +222,9 @@ function handleMovement(direction) {
 function handlePickup(item) {
   var currentLocation = eval(getValue("location"));
   var items = currentLocation.items;
+  if (item.charAt(item.length - 1) == "s") {
+    item = item.substring(0, item.length - 1);
+  }
   if (items.hasOwnProperty(item)) {
     var itemClass = eval("new " + items[item]);
     addEntity(itemClass, "inventory");
@@ -253,10 +259,10 @@ function handleSpell(words) {
       invalid = true;
     }
     if (
+      invalid == true ||
       element["type"] != "Element" ||
       spell["type"] != "Spell" ||
-      direction["type"] != "Direction" ||
-      invalid == true
+      direction["type"] != "Direction"
     ) {
       phrase = "Nothing happens.";
     } else {

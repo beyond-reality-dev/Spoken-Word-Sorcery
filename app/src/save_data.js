@@ -132,8 +132,10 @@ function updateInventory() {
   var items = inventory["items"];
   for (let i = 0; i < items.length; i++) {
     if (document.getElementById(itemName)) { 
-      var originalQuantity = document.getElementById(itemName).innerHTML.split(" | ")[0].split(" x")[1]; 
+      var originalQuantity = document.getElementById(itemName).innerHTML.split(" | ")[0].split(" x")[1];
       document.getElementById(itemName).remove(); 
+    } else {
+      originalQuantity = 0;
     }
     if (items[i]["type"] == "Weapon") {
       var itemName = items[i]["name"];
@@ -225,6 +227,7 @@ function addEntity(entity, target) {
     if (matchKnown == true) {
       playerData["knownSpells"].splice(index, 1);
     }
+    playerData["spokenSpells"].push(entity);
   } else if (target == "inventory") {
     playerData["inventory"]["items"].push(entity);
   } else {

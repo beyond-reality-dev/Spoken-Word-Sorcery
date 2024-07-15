@@ -1,5 +1,5 @@
 class Weapon {
-  constructor(name, description, position, goldValue, attackValue, rangeValue, weight) {
+  constructor(name, description, position, goldValue, attackValue, rangeValue, weight, quantity) {
     this.name = name;
     this.description = description;
     this.position = position;
@@ -8,6 +8,7 @@ class Weapon {
     this.attackValue = attackValue;
     this.rangeValue = rangeValue;
     this.weight = weight;
+    this.quantity = quantity;
   }
 }
 
@@ -30,7 +31,7 @@ class WoodenBow extends Weapon {
 }
 
 class Armor {
-  constructor(name, description, position, goldValue, armorValue, weight) {
+  constructor(name, description, position, goldValue, armorValue, weight, quantity) {
     this.name = name;
     this.description = description;
     this.position = position;
@@ -38,6 +39,7 @@ class Armor {
     this.goldValue = goldValue;
     this.armorValue = armorValue;
     this.weight = weight;
+    this.quantity = quantity;
   }
 }
 
@@ -66,7 +68,7 @@ class LeatherBoots extends Armor {
 }
 
 class Consumable {
-  constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight) {
+  constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight, quantity) {
     this.name = name;
     this.description = description;
     this.position = position;
@@ -76,6 +78,7 @@ class Consumable {
     this.manaValue = manaValue;
     this.speedValue = speedValue;
     this.weight = weight;
+    this.quantity = quantity;
   }
 }
 
@@ -104,13 +107,14 @@ class Arrow extends Consumable {
 }
 
 class Miscellaneous {
-  constructor(name, description, position, goldValue, weight) {
+  constructor(name, description, position, goldValue, weight, quantity) {
     this.name = name;
     this.description = description;
     this.position = position;
     this.type = "Miscellaneous";
     this.goldValue = goldValue;
     this.weight = weight;
+    this.quantity = quantity;
   }
 }
 
