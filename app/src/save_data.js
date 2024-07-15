@@ -131,14 +131,14 @@ function updateInventory() {
   var inventory = getValue("inventory");
   var items = inventory["items"];
   for (let i = 0; i < items.length; i++) {
+    var itemName = items[i]["name"];
     if (document.getElementById(itemName)) { 
       var originalQuantity = document.getElementById(itemName).innerHTML.split(" | ")[0].split(" x")[1];
-      document.getElementById(itemName).remove(); 
+      document.getElementById(itemName).remove();
     } else {
       originalQuantity = 0;
     }
     if (items[i]["type"] == "Weapon") {
-      var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemAttackValue = items[i]["attackValue"];
@@ -147,7 +147,6 @@ function updateInventory() {
       var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
-      var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemArmorValue = items[i]["armorValue"];
@@ -155,7 +154,6 @@ function updateInventory() {
       var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Consumable") {
-      var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemHealthValue = items[i]["healthValue"];
@@ -165,7 +163,6 @@ function updateInventory() {
       var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
       document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Miscellaneous") {
-      var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemWeight = items[i]["weight"];

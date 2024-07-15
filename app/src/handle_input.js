@@ -5,6 +5,7 @@ const {
   getValue,
   changeValue,
   calculateValue,
+  updateUI,
 } = require("./save_data");
 
 const { toTitleCase, quickPrint } = require("./general");
@@ -129,8 +130,18 @@ async function openInput() {
               item = clauses[i].substring(8);
             }
             handlePickup(item);
-          }
-          else if (clauses[i].substring(0, 4) == "say ") {
+          } else if (clauses[i].substring(0, 5) == "drop ") {
+            if (clauses[i].substring(5, 7) == "a ") {
+              item = clauses[i].substring(7);
+            } else if (clauses[i].substring(5, 8) == "an ") {
+              item = clauses[i].substring(8);
+            } else if (clauses[i].substring(5, 9) == "the ") {
+              item = clauses[i].substring(9);
+            } else {
+              item = clauses[i].substring(5);
+            }
+            handleDrop(item);
+          } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
           } else if (
@@ -232,6 +243,28 @@ function handlePickup(item) {
     quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
   } else {
     quickPrint("There is no " + item + " here.");
+  }
+}
+
+function handleDrop(item) {
+  var inventory = getValue("inventory")["items"];
+  if (item.charAt(item.length - 1) == "s") {
+    item = item.substring(0, item.length - 1);
+  }
+  for (let i = 0; i < inventory.length; i++) {
+    if (inventory[i].name == toTitleCase(item)) {
+      var current = inventory[i].quantity;
+      if (current > 1) {
+        inventory[i].quantity = current - 1;
+        console.log(inventory[i].quantity);
+        quickPrint(`You dropped a ${item}.`);
+        updateUI();
+      } else {
+        inventory.splice(i, 1);
+        quickPrint(`You dropped a ${item}.`);
+        updateUI();
+      }
+    }
   }
 }
 
