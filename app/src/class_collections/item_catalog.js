@@ -12,28 +12,22 @@ class Weapon {
 }
 
 class WoodenStaff extends Weapon {
-  constructor() {
-    super("Staff", "A simple staff", "mainHand", 5, 5, 1, 5);
+  constructor(quantity=1) {
+    super("Staff", "A simple staff", "mainHand", 5, 5, 1, 5, quantity);
   }
 }
-
-var woodenStaff = new WoodenStaff();
 
 class IronSword extends Weapon {
-  constructor() {
-    super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5);
+  constructor(quantity=1) {
+    super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5, quantity);
   }
 }
-
-var ironSword = new IronSword();
 
 class WoodenBow extends Weapon {
-  constructor() {
-    super("Bow", "A simple bow", "mainHand", 10, 5, 5, 5);
+  constructor(quantity=1) {
+    super("Bow", "A simple bow", "mainHand", 10, 5, 5, 5, quantity);
   }
 }
-
-var woodenBow = new WoodenBow();
 
 class Armor {
   constructor(name, description, position, goldValue, armorValue, weight) {
@@ -48,36 +42,28 @@ class Armor {
 }
 
 class LeatherHelmet extends Armor {
-  constructor() {
-    super("Helmet", "A simple helmet", "head", 10, 5, 5);
+  constructor(quantity=1) {
+    super("Helmet", "A simple helmet", "head", 10, 5, 5, quantity);
   }
 }
-
-var leatherHelmet = new LeatherHelmet();
 
 class LeatherChestplate extends Armor {
-  constructor() {
-    super("Chestplate", "A simple chestplate", "chest", 10, 5, 5);
+  constructor(quantity=1) {
+    super("Chestplate", "A simple chestplate", "chest", 10, 5, 5, quantity);
   }
 }
-
-var leatherChestplate = new LeatherChestplate();
 
 class LeatherLeggings extends Armor {
-  constructor() {
-    super("Leggings", "Simple leggings", "legs", 10, 5, 5);
+  constructor(quantity=1) {
+    super("Leggings", "Simple leggings", "legs", 10, 5, 5, quantity);
   }
 }
-
-var leatherLeggings = new LeatherLeggings();
 
 class LeatherBoots extends Armor {
-  constructor() {
-    super("Boots", "Simple boots", "feet", 10, 5, 5);
+  constructor(quantity=1) {
+    super("Boots", "Simple boots", "feet", 10, 5, 5, quantity);
   }
 }
-
-var leatherBoots = new LeatherBoots();
 
 class Consumable {
   constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight) {
@@ -94,36 +80,28 @@ class Consumable {
 }
 
 class HealthPotion extends Consumable {
-  constructor() {
-    super("Health Potion", "A potion that restores health", "consumable", 10, 10, 0, 0, 1);
+  constructor(quantity=1) {
+    super("Health Potion", "A potion that restores health", "consumable", 10, 10, 0, 0, 1, quantity);
   }
 }
-
-var healthPotion = new HealthPotion();
 
 class ManaPotion extends Consumable {
-  constructor() {
-    super("Mana Potion", "A potion that restores mana", "consumable", 10, 0, 10, 0, 1);
+  constructor(quantity=1) {
+    super("Mana Potion", "A potion that restores mana", "consumable", 10, 0, 10, 0, 1, quantity);
   }
 }
-
-var manaPotion = new ManaPotion();
 
 class SpeedPotion extends Consumable {
-  constructor() {
-    super("Speed Potion", "A potion that increases speed", "consumable", 10, 0, 0, 10, 1);
+  constructor(quantity=1) {
+    super("Speed Potion", "A potion that increases speed", "consumable", 10, 0, 0, 10, 1, quantity);
   }
 }
-
-var speedPotion = new SpeedPotion();
 
 class Arrow extends Consumable {
-  constructor() {
-    super("Arrow", "A simple arrow", "consumable", 1, 0, 0, 0, 1);
+  constructor(quantity=1) {
+    super("Arrow", "A simple arrow", "consumable", 1, 0, 0, 0, 1, quantity);
   }
 }
-
-var arrow = new Arrow();
 
 class Miscellaneous {
   constructor(name, description, position, goldValue, weight) {
@@ -136,4 +114,4 @@ class Miscellaneous {
   }
 }
 
-module.exports = { Weapon, Armor, Consumable, Miscellaneous, arrow };
+module.exports = { Weapon, Armor, Consumable, Miscellaneous, Arrow };

@@ -131,7 +131,10 @@ function updateInventory() {
   var inventory = getValue("inventory");
   var items = inventory["items"];
   for (let i = 0; i < items.length; i++) {
-    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    if (document.getElementById(itemName)) { 
+      var originalQuantity = document.getElementById(itemName).innerHTML.split(" | ")[0].split(" x")[1]; 
+      document.getElementById(itemName).remove(); 
+    }
     if (items[i]["type"] == "Weapon") {
       var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
@@ -139,14 +142,16 @@ function updateInventory() {
       var itemAttackValue = items[i]["attackValue"];
       var itemRangeValue = items[i]["rangeValue"];
       var itemWeight = items[i]["weight"];
-      document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
+      document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
       var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemArmorValue = items[i]["armorValue"];
       var itemWeight = items[i]["weight"];
-      document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
+      document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Consumable") {
       var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
@@ -155,13 +160,15 @@ function updateInventory() {
       var itemManaValue = items[i]["manaValue"];
       var itemSpeedValue = items[i]["speedValue"];
       var itemWeight = items[i]["weight"];
-      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
+      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Miscellaneous") {
       var itemName = items[i]["name"];
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
       var itemWeight = items[i]["weight"];
-      document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold</option>`;
+      var itemQuantity = eval(items[i]["quantity"] + originalQuantity);
+      document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
   }
   sortList("weapons");
@@ -218,8 +225,11 @@ function addEntity(entity, target) {
     if (matchKnown == true) {
       playerData["knownSpells"].splice(index, 1);
     }
+  } else if (target == "inventory") {
+    playerData["inventory"]["items"].push(entity);
+  } else {
+    playerData[target].push(entity);
   }
-  playerData[target].push(entity);
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }

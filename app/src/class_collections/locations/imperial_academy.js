@@ -20,7 +20,7 @@ class TrainingRoom extends Room {
       "trainingRoom",
       "The training room is a large room with a few training dummies and a few wooden staffs on the wall. There is a door to the north, east, and south."
     );
-    this.items = {"wooden staff": "WoodenStaff"};
+    this.items = {"staff": "WoodenStaff(3)"};
     this.exits = {
       north: "hallway_01",
       east: "practiceYard",
@@ -53,7 +53,7 @@ class PracticeYard extends Room {
       "practiceYard",
       "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. There is a door to the west, leading back to the training room."
     );
-    this.items = {"arrow": "arrow", "arrow": "arrow", "arrow": "arrow"};
+    this.items = {"arrow": "Arrow(3)"};
     this.exits = {
       west: "trainingRoom",
     };

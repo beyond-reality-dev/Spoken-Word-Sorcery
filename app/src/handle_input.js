@@ -26,7 +26,7 @@ const {
   commonRoom,
 } = require("./class_collections/locations/imperial_academy");
 
-const { arrow } = require("./class_collections/item_catalog");
+const { Arrow } = require("./class_collections/item_catalog");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -220,10 +220,10 @@ function handlePickup(item) {
   var currentLocation = eval(getValue("location"));
   var items = currentLocation.items;
   if (items.hasOwnProperty(item)) {
-    var itemClass = eval(items[item]);
+    var itemClass = eval("new " + items[item]);
     addEntity(itemClass, "inventory");
     delete items[item];
-    quickPrint("You picked up the " + item + ".");
+    quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
   } else {
     quickPrint("There is no " + item + " here.");
   }
