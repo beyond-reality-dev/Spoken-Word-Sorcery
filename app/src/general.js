@@ -10,7 +10,7 @@ module.exports = {
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
 
-var gameSpeed = 0;
+var gameSpeed = 1000;
 
 function changeGameSpeed(speed) {
   gameSpeed = speed;

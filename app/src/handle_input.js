@@ -1,4 +1,4 @@
-module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop };
+module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop, handleMovement };
 
 const {
   addEntity,
@@ -19,16 +19,6 @@ const {
   Shield,
   Away,
 } = require("./class_collections/spellbook");
-
-const {
-  trainingRoom,
-  practiceYard,
-  storageRoom,
-  commonRoom,
-  kitchen,
-  barracks,
-  grandHall,
-} = require("./class_collections/locations/imperial_academy");
 
 const { Arrow } = require("./class_collections/item_catalog");
 
@@ -223,13 +213,27 @@ function handleTurn(direction, change) {
 }
 
 function handleMovement(direction) {
-  var currentLocation = eval(getValue("location"));
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  if (direction == "load") {
+    quickPrint(currentLocation.description);
+    return;
+  }
   try {
-    var newLocation = eval(currentLocation.exits[direction]);
+    var newLocation = currentLocation.exits[direction];
+    newLocation = eval(getValue(newLocation, true));
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
     if (newLocation.hasOwnProperty("cutscene")) {
-      eval(newLocation.cutscene + "()");
+      var hasCutscenePlayed = newLocation.hasCutscenePlayed;
+      if (hasCutscenePlayed == false) {
+        hasCutscenePlayed = true;
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        var locations = playerData["locations"];
+        locations[currentLocation.name]["hasCutscenePlayed"] = hasCutscenePlayed;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+        eval(newLocation.cutscene + "()");
+    }
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
@@ -237,16 +241,21 @@ function handleMovement(direction) {
 }
 
 function handlePickup(item) {
-  var currentLocation = eval(getValue("location"));
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
   var items = currentLocation.items;
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);
   }
   if (items.hasOwnProperty(item)) {
-    var itemClass = eval("new " + items[item]);
+    var itemClass = eval("new " + items[item])
     console.log(itemClass.quantity);
     addEntity(itemClass, "inventory");
     delete items[item];
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var locations = playerData["locations"];
+    locations[currentLocation.name]["items"] = items;
+    localStorage.setItem("playerData", JSON.stringify(playerData));
     quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
   } else {
     quickPrint("There is no " + item + " here.");
@@ -262,8 +271,8 @@ function handleDrop(item) {
     if (items[i].name == toTitleCase(item)) {
       var current = items[i].quantity;
       changeValue("itemQuantity", current - 1, i);
-      console.log(items[i].quantity);
       quickPrint(`You dropped a ${item}.`);
+      break;
     }
   }
 }

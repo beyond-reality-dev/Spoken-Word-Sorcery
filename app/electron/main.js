@@ -21,7 +21,6 @@ function createWindow() {
   window.webContents.executeJavaScript(`
         const { changeGameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
         const { saveGame, loadGame } = require("./save_data.js");
-        const { handleLocation, inputLoop } = require("./handle_input.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
@@ -34,15 +33,8 @@ function createWindow() {
         }
 
         document.getElementById("load-button").onclick = function () { 
-          try {
-            loadGame();
-            handleLocation(playerData["location"]);
-            inputLoop();
-            document.getElementById("loading-screen").style.display = "block";
-            document.getElementById("start-screen").style.display = "none";
-          } catch (error) {
-            console.log("No save data found.");
-          }
+          document.getElementById("loading-screen").style.display = "block";
+          document.getElementById("start-screen").style.display = "none";
         }
         
         document.getElementById("load-save").onclick = function () {
@@ -50,7 +42,7 @@ function createWindow() {
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
           document.getElementById("home-button").style.cursor = "default";
-          intro();
+          loadGame();
         }
 
         document.getElementById("overwrite-save").onclick = function () {

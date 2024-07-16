@@ -1,5 +1,8 @@
 module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue };
 
+const { inputLoop, handleMovement } = require("./handle_input");
+const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall } = require("./class_collections/locations/imperial_academy");
+
 function initializeData(name) {
   var playerData = {
     name: name,
@@ -12,8 +15,7 @@ function initializeData(name) {
     currentMana: 50,
     gold: 0,
     direction: "North",
-    location: "trainingRoom",
-    checkpoint: "0",
+    location: "trainingRoom"
   };
   var inventory = [];
   var equipment = {
@@ -28,11 +30,21 @@ function initializeData(name) {
   var knownSpells = [];
   var spokenSpells = [];
   var memories = [];
+  var locations = {
+    trainingRoom: trainingRoom,
+    practiceYard: practiceYard,
+    storageRoom: storageRoom,
+    commonRoom: commonRoom,
+    kitchen: kitchen,
+    barracks: barracks,
+    grandHall: grandHall
+  };
   playerData["knownSpells"] = knownSpells;
   playerData["spokenSpells"] = spokenSpells;
   playerData["memories"] = memories;
   playerData["equipment"] = equipment;
   playerData["inventory"] = inventory;
+  playerData["locations"] = locations;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }
@@ -43,13 +55,13 @@ function saveGame() {
   localStorage.setItem("save", save);
 }
 
-function loadGame() {
-  console.log("Loading game...");
+async function loadGame() {
   var save = localStorage.getItem("save");
   var playerData = JSON.parse(save);
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
-  handleLocation(playerData["location"]);
+  handleMovement("load");
+  await inputLoop();
 }
 
 function updateUI() {
@@ -253,7 +265,13 @@ function removeEntity(entity, target) {
   updateUI();
 }
 
-function getValue(target) {
+function getValue(target, locations=false) {
+  if (locations) {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var locations = playerData["locations"];
+    var value = locations[target];
+    return value;
+  }
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var value = playerData[target];
   return value;

@@ -120,6 +120,7 @@ class GrandHall extends Room {
       south: "commonRoom",
     };
     this.cutscene = "chapterOne";
+    this.hasCutscenePlayed = false;
   }
 }
 
