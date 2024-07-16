@@ -8,7 +8,7 @@ const {
   calculateValue,
   changeValue,
 } = require("../../save_data");
-const { closedInput, openInput, inputLoop } = require("../../handle_input");
+const { closedInput, openInput, inputLoop, handleMovement } = require("../../handle_input");
 const {
   Earth,
   Fire,
@@ -109,12 +109,12 @@ async function intro() {
   printLines("app/src/cutscenes/intro/7.txt");
   await requireAnswer(
     [
-      "i am loyal to and shall give my life to defend if necessary the order and the empire",
+      "i am loyal to and shall give my life to defend if necessary the arcane order and the empire",
     ],
     '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"'
   );
   addEntity(
-    "I am loyal to, and shall give my life to defend if necessary, the Order and the Empire.",
+    "I am loyal to, and shall give my life to defend if necessary, the Arcane Order and the Empire.",
     "memories"
   );
   printLines("app/src/cutscenes/intro/8.txt");
@@ -125,12 +125,12 @@ async function intro() {
   printLines("app/src/cutscenes/intro/9.txt");
   await requireAnswer(
     [
-      "i shall obey the fourth grandmaster of the order arnoch segeric those designated to carry out his will and any successor lawfully appointed by the emperor after his death",
+      "i am obedient to grandmaster arnoch segeric of the arcane order and to those under his command",
     ],
     '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"'
   );
   addEntity(
-    "I shall obey the Fourth Grandmaster of the Order, Arnoch Segeric, those designated to carry out his will, and any successor lawfully appointed by the Emperor after his death.",
+    "I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.",
     "memories"
   );
   printLines("app/src/cutscenes/intro/10.txt");
@@ -202,10 +202,10 @@ async function intro() {
   var away = new Away();
   addEntity(away, "knownSpells");
   await openInput();
-  while (getValue("direction") == "North") {
+  while (getValue("direction") == "North" || getValue("currentMana") >= 40) {
     printLines("app/src/cutscenes/intro/14.txt");
     await openInput();
   }
-  printLines("app/src/cutscenes/intro/15.txt");
+  await printLines("app/src/cutscenes/intro/15.txt");
   inputLoop();
 }
