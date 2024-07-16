@@ -228,6 +228,9 @@ function handleMovement(direction) {
     var newLocation = eval(currentLocation.exits[direction]);
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
+    if (newLocation.hasOwnProperty("cutscene")) {
+      eval(newLocation.cutscene + "()");
+    }
   } catch (error) {
     quickPrint("You cannot go that way.");
   }

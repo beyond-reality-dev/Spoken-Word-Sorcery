@@ -1,7 +1,6 @@
 const { ipcMain, app, BrowserWindow } = require("electron");
 
 function createWindow() {
-  // Create the browser window and load the index.html of the app.
   var window = new BrowserWindow({
     width: 800,
     height: 600,
@@ -21,87 +20,125 @@ function createWindow() {
   window.maximize();
   window.webContents.executeJavaScript(`
         const { changeGameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { saveGame, loadGame } = require("./save_data.js");
+        const { handleLocation, inputLoop } = require("./handle_input.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {
-            document.getElementById("game-screen").style.display = "block";
-            document.getElementById("start-screen").style.display = "none";
-            document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
-            document.getElementById("home-button").style.cursor = "default";
-            intro();
+          document.getElementById("game-screen").style.display = "block";
+          document.getElementById("start-screen").style.display = "none";
+          document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
+          document.getElementById("home-button").style.cursor = "default";
+          intro();
         }
 
         document.getElementById("load-button").onclick = function () { 
+          try {
+            loadGame();
+            handleLocation(playerData["location"]);
+            inputLoop();
             document.getElementById("loading-screen").style.display = "block";
             document.getElementById("start-screen").style.display = "none";
+          } catch (error) {
+            console.log("No save data found.");
+          }
+        }
+        
+        document.getElementById("load-save").onclick = function () {
+          document.getElementById("game-screen").style.display = "block";
+          document.getElementById("loading-screen").style.display = "none";
+          document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
+          document.getElementById("home-button").style.cursor = "default";
+          intro();
+        }
+
+        document.getElementById("overwrite-save").onclick = function () {
+          document.getElementById("game-screen").style.display = "block";
+          document.getElementById("start-screen").style.display = "none";
+          document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
+          document.getElementById("home-button").style.cursor = "default";
+          intro();
         }
         
         document.getElementById("loading-back").onclick = function () {
-            document.getElementById("loading-screen").style.display = "none";
-            document.getElementById("start-screen").style.display = "block";
+          document.getElementById("loading-screen").style.display = "none";
+          document.getElementById("start-screen").style.display = "block";
         }
         
         document.getElementById("about-button").onclick = function () { 
-            document.getElementById("about-screen").style.display = "block";
-            document.getElementById("start-screen").style.display = "none";
+          document.getElementById("about-screen").style.display = "block";
+          document.getElementById("start-screen").style.display = "none";
         }
         
         document.getElementById("about-back").onclick = function () {
-            document.getElementById("about-screen").style.display = "none";
-            document.getElementById("start-screen").style.display = "block";
+          document.getElementById("about-screen").style.display = "none";
+          document.getElementById("start-screen").style.display = "block";
         }
         
         // Sidebar functions.
         document.getElementById("spellbook-button").onclick = function () {
-            switchScreen("spellbook-screen");
-            switchButton("spellbook-button");
+          switchScreen("spellbook-screen");
+          switchButton("spellbook-button");
         }
 
         document.getElementById("equipment-button").onclick = function () {
-            switchScreen("equipment-screen");
-            switchButton("equipment-button");
+          switchScreen("equipment-screen");
+          switchButton("equipment-button");
         }
 
         document.getElementById("inventory-button").onclick = function () { 
-            switchScreen("inventory-screen");
-            switchButton("inventory-button");
+          switchScreen("inventory-screen");
+          switchButton("inventory-button");
         }
 
         document.getElementById("settings-button").onclick = function () {
-            switchScreen("settings-screen");
-            switchButton("settings-button");
+          switchScreen("settings-screen");
+          switchButton("settings-button");
         }
 
         document.getElementById("map-button").onclick = function () {
-            switchScreen("map-screen");
-            switchButton("map-button");
+          switchScreen("map-screen");
+          switchButton("map-button");
         }
 
         document.getElementById("home-button").onclick = function () {
-            switchScreen("main");
-            switchButton("home-button");
+          switchScreen("main");
+          switchButton("home-button");
         }
 
         // Setttings functions.
         document.getElementById("radio-zero").onclick = function () {
-            changeGameSpeed(0);
+          changeGameSpeed(0);
         }
 
         document.getElementById("radio-one").onclick = function () {
-            changeGameSpeed(1000);
+          changeGameSpeed(1000);
         }
 
         document.getElementById("radio-two").onclick = function () {
-            changeGameSpeed(2000);
+          changeGameSpeed(2000);
         }
 
         document.getElementById("radio-three").onclick = function () {
-            changeGameSpeed(3000);
+          changeGameSpeed(3000);
         }
 
         document.getElementById("radio-four").onclick = function () {
-            changeGameSpeed(4000);
+          changeGameSpeed(4000);
+        }
+
+        document.getElementById("save-button").onclick = function () {
+          saveGame();
+        }
+
+        document.getElementById("quit-save").onclick = function () {
+          saveGame();
+          window.close();
+        }
+
+        document.getElementById("quit-button").onclick = function () {
+          window.close();
         }
     `);
 }

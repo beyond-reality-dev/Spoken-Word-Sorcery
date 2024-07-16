@@ -1,4 +1,4 @@
-module.exports = { initializeData, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue };
+module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue };
 
 function initializeData(name) {
   var playerData = {
@@ -13,7 +13,7 @@ function initializeData(name) {
     gold: 0,
     direction: "North",
     location: "trainingRoom",
-    checkPoint: "intro",
+    checkpoint: "0",
   };
   var inventory = [];
   var equipment = {
@@ -35,6 +35,21 @@ function initializeData(name) {
   playerData["inventory"] = inventory;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
+}
+
+function saveGame() {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var save = JSON.stringify(playerData);
+  localStorage.setItem("save", save);
+}
+
+function loadGame() {
+  console.log("Loading game...");
+  var save = localStorage.getItem("save");
+  var playerData = JSON.parse(save);
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+  updateUI();
+  handleLocation(playerData["location"]);
 }
 
 function updateUI() {
@@ -124,11 +139,14 @@ function sortList(list) {
 }
 
 function updateInventory() {
-  var gold = getValue("inventory")["gold"];
+  var gold = getValue("gold");
   document.getElementById("gold-counter").innerHTML = `Gold: ${gold}`;
   var items = getValue("inventory");
   for (let i = 0; i < items.length; i++) {
     var itemName = items[i]["name"];
+    var itemDescription = items[i]["description"];
+    var itemGoldValue = items[i]["goldValue"];
+    var itemWeight = items[i]["weight"];
     var itemQuantity = items[i]["quantity"];
     if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
     if (itemQuantity == 0) {
@@ -136,30 +154,18 @@ function updateInventory() {
       continue;
     }
     if (items[i]["type"] == "Weapon") {
-      var itemDescription = items[i]["description"];
-      var itemGoldValue = items[i]["goldValue"];
       var itemAttackValue = items[i]["attackValue"];
       var itemRangeValue = items[i]["rangeValue"];
-      var itemWeight = items[i]["weight"];
       document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
-      var itemDescription = items[i]["description"];
-      var itemGoldValue = items[i]["goldValue"];
       var itemArmorValue = items[i]["armorValue"];
-      var itemWeight = items[i]["weight"];
       document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Consumable") {
-      var itemDescription = items[i]["description"];
-      var itemGoldValue = items[i]["goldValue"];
       var itemHealthValue = items[i]["healthValue"];
       var itemManaValue = items[i]["manaValue"];
       var itemSpeedValue = items[i]["speedValue"];
-      var itemWeight = items[i]["weight"];
       document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Miscellaneous") {
-      var itemDescription = items[i]["description"];
-      var itemGoldValue = items[i]["goldValue"];
-      var itemWeight = items[i]["weight"];
       document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
   }

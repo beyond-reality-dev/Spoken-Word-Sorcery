@@ -119,6 +119,7 @@ class GrandHall extends Room {
     this.exits = {
       south: "commonRoom",
     };
+    this.cutscene = "chapterOne";
   }
 }
 
