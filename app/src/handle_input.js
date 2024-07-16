@@ -252,6 +252,10 @@ function handleMovement(direction) {
         console.log(newLocation.cutscene); 
         eval(newLocation.cutscene + "()");
         console.log(8);
+    } else if (newLocation.hasOwnProperty("enemies")) {
+      console.log(9);
+      handleCombat();
+      console.log(10);
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
@@ -293,6 +297,31 @@ function handleDrop(item) {
     }
   }
 }
+
+function handleCombat() {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  var enemies = currentLocation.enemies;
+  while (getValue("currentHealth") > 0 && enemies.length > 0) {
+    var playerSpeed = getValue("speed");
+    var enemySpeed = enemies[0].speed;
+    if (playerSpeed >= enemySpeed) {
+      handlePlayerTurn();
+      if (enemies.length > 0) {
+        handleEnemyTurn();
+      }
+    } else {
+      handleEnemyTurn();
+      if (getValue("currentHealth") > 0) {
+        handlePlayerTurn();
+      }
+    }
+  }
+}
+
+function handlePlayerTurn() {}
+
+function handleEnemyTurn() {}
 
 function handleSpell(words) {
   words = words.split(" ");
