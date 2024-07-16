@@ -22,9 +22,12 @@ const {
 
 const {
   trainingRoom,
-  hallway_01,
   practiceYard,
+  storageRoom,
   commonRoom,
+  kitchen,
+  barracks,
+  grandHall,
 } = require("./class_collections/locations/imperial_academy");
 
 const { Arrow } = require("./class_collections/item_catalog");
@@ -255,7 +258,7 @@ function handleDrop(item) {
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
       var current = items[i].quantity;
-      changeValue("itemQuantity", (current - 1), i);
+      changeValue("itemQuantity", current - 1, i);
       console.log(items[i].quantity);
       quickPrint(`You dropped a ${item}.`);
     }
