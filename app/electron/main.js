@@ -47,7 +47,7 @@ function createWindow() {
 
         document.getElementById("overwrite-save").onclick = function () {
           document.getElementById("game-screen").style.display = "block";
-          document.getElementById("start-screen").style.display = "none";
+          document.getElementById("loading-screen").style.display = "none";
           document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
           document.getElementById("home-button").style.cursor = "default";
           intro();

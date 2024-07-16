@@ -1,7 +1,7 @@
 const { printLines } = require("../../general");
-const { inputLoop } = require("../../handle_input");
+const { getValue } = require("../../save_data");
 
-function barracksMeeting() {
+async function barracksMeeting() {
   if (getValue("barracks", true).isVisited == false) {
     printLines("app/src/cutscenes/barracksMeeting/1.txt");
   }

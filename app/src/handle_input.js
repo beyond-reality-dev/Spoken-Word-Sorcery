@@ -24,6 +24,7 @@ const { Arrow } = require("./class_collections/item_catalog");
 
 const { grandHall } = require("./cutscenes/grandHall/grandHall");
 const { barracksMeeting } = require("./cutscenes/barracksMeeting/barracksMeeting");
+const { militaryAnnex } = require("./cutscenes/militaryAnnex/militaryAnnex");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -225,6 +226,12 @@ function handleMovement(direction) {
   try {
     var newLocation = currentLocation.exits[direction];
     newLocation = eval(getValue(newLocation, true));
+    if (newLocation.hasOwnProperty("isLocked")) {
+      if (newLocation.isLocked == true) {
+        quickPrint(newLocation.lockedDescription);
+        return;
+      }
+    }
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
     console.log(1);

@@ -2,12 +2,12 @@ class Room {
   constructor(
     name,
     description,
-    locked = false,
+    isLocked = false,
     lockedDescription = "The door is locked."
   ) {
     this.name = name;
     this.description = description;
-    this.locked = locked;
+    this.isLocked = isLocked;
     this.lockedDescription = lockedDescription;
     this.items = {};
     this.exits = {};
