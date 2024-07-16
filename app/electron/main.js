@@ -19,8 +19,8 @@ function createWindow() {
   });
   window.maximize();
   window.webContents.executeJavaScript(`
-        const { changeGameSpeed, switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
-        const { saveGame, loadGame } = require("./save_data.js");
+        const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { saveGame, loadGame, changeValue } = require("./save_data.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
@@ -101,23 +101,23 @@ function createWindow() {
 
         // Setttings functions.
         document.getElementById("radio-zero").onclick = function () {
-          changeGameSpeed(0);
+          changeValue("gameSpeed", 0);
         }
 
         document.getElementById("radio-one").onclick = function () {
-          changeGameSpeed(1000);
+          changeValue("gameSpeed", 1000);
         }
 
         document.getElementById("radio-two").onclick = function () {
-          changeGameSpeed(2000);
+          changeValue("gameSpeed", 2000);
         }
 
         document.getElementById("radio-three").onclick = function () {
-          changeGameSpeed(3000);
+          changeValue("gameSpeed", 3000);
         }
 
         document.getElementById("radio-four").onclick = function () {
-          changeGameSpeed(4000);
+          changeValue("gameSpeed", 4000);;
         }
 
         document.getElementById("save-button").onclick = function () {

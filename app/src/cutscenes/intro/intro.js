@@ -6,6 +6,7 @@ const {
   addEntity,
   getValue,
   calculateValue,
+  changeValue,
 } = require("../../save_data");
 const { closedInput, openInput, inputLoop } = require("../../handle_input");
 const {
@@ -22,6 +23,7 @@ var validInput = false;
 
 async function intro() {
   localStorage.clear();
+  initializeData();
   printLines("app/src/cutscenes/intro/1.txt");
   var name = await closedInput();
   while (!validInput) {
@@ -68,7 +70,7 @@ async function intro() {
     confirm = await closedInput();
   }
   confirm = false;
-  initializeData(name);
+  changeValue("name", name);
   printLines("app/src/cutscenes/intro/2.txt");
   await requireAnswer(
     ["yes", "y"],

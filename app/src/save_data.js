@@ -3,9 +3,9 @@ module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, remo
 const { inputLoop, handleMovement } = require("./handle_input");
 const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall } = require("./class_collections/locations/imperial_academy");
 
-function initializeData(name) {
+function initializeData() {
   var playerData = {
-    name: name,
+    name: "",
     level: 1,
     experience: 0,
     insanity: 0,
@@ -15,7 +15,8 @@ function initializeData(name) {
     currentMana: 50,
     gold: 0,
     direction: "North",
-    location: "trainingRoom"
+    location: "trainingRoom",
+    gameSpeed: 1000,
   };
   var inventory = [];
   var equipment = {

@@ -1,5 +1,4 @@
 module.exports = {
-  changeGameSpeed,
   switchScreen,
   switchButton,
   printLines,
@@ -9,12 +8,7 @@ module.exports = {
 };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
-
-var gameSpeed = 1000;
-
-function changeGameSpeed(speed) {
-  gameSpeed = speed;
-}
+const { getValue } = require("./save_data");
 
 function switchScreen(screen) {
   document.getElementById("main").style.display = "none";
@@ -60,7 +54,7 @@ async function printLines(file) {
         if (i == lines.length - 1) {
           allowInput();
         }
-      }, i * gameSpeed);
+      }, i * getValue("gameSpeed"));
     }
   });
 }
