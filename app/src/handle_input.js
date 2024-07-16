@@ -304,24 +304,50 @@ function handleCombat() {
   var enemies = currentLocation.enemies;
   while (getValue("currentHealth") > 0 && enemies.length > 0) {
     var playerSpeed = getValue("speed");
-    var enemySpeed = enemies[0].speed;
-    if (playerSpeed >= enemySpeed) {
-      handlePlayerTurn();
-      if (enemies.length > 0) {
-        handleEnemyTurn();
-      }
-    } else {
-      handleEnemyTurn();
-      if (getValue("currentHealth") > 0) {
+    var turnPlayed = false;
+    for (let i = 0; i < enemies.length; i++) {
+      var enemy = eval("new " + enemies[i] + "()");
+      var enemySpeed = enemy.speed;
+      if (playerSpeed >= enemySpeed && turnPlayed == false) {
         handlePlayerTurn();
+        if (enemies.length > 0) {
+          handleEnemyTurn();
+        }
+      } else {
+        handleEnemyTurn(enemy);
       }
+    }
+    if (turnPlayed == false) {
+      handlePlayerTurn();
     }
   }
 }
 
-function handlePlayerTurn() {}
+async function handlePlayerTurn() {
+  await openInput();
+}
 
-function handleEnemyTurn() {}
+function handleEnemyTurn(enemy) {
+  var enemyHealth = enemy.health;
+  var enemyAttack = getRandomInt(enemy.attack);
+  var playerDefense = getRandomInt(getValue("armor"));
+  var playerDamage = Math.max(enemyAttack - playerDefense, 0);
+  calculateValue("currentHealth", "subtract", playerDamage);
+  quickPrint(`The ${enemy.name} dealt ${playerDamage} damage.`);
+  if (playerHealth <= 0) {
+    quickPrint("You have been defeated.");
+  } else if (enemyHealth <= 0) {
+    quickPrint(`You have defeated ${enemy.name}.`);
+    var location = getValue("location");
+    var enemies = getValue(location, true).enemies;
+    var index = enemies.indexOf(enemy.name);
+    enemies.splice(index, 1);
+  }
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 function handleSpell(words) {
   words = words.split(" ");

@@ -195,7 +195,7 @@ class MilitaryAnnex extends Room {
     };
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
-    this.enemies = ["rebel", "rebel", "rebel"];
+    this.enemies = ["Rebel('Rebel 1')", "Rebel('Rebel 2')", "Rebel('Rebel 3')"];
   }
 }
 

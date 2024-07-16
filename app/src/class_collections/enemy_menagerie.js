@@ -11,8 +11,8 @@ class Enemy {
   }
 }
 
-class Bandit extends Enemy {
-  constructor() {
-    super("Bandit", 100, 10, 10, 10, 1, 5, []);
+class Rebel extends Enemy {
+  constructor(name) {
+    super(name, 100, 10, 10, 10, 1, 5, []);
   }
 }
