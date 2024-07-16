@@ -10,14 +10,12 @@ function initializeData(name) {
     currentHealth: 100,
     maxMana: 50,
     currentMana: 50,
+    gold: 0,
     direction: "North",
     location: "trainingRoom",
     checkPoint: "intro",
   };
-  var inventory = {
-    gold: 0,
-    items: [],
-  };
+  var inventory = [];
   var equipment = {
     head: null,
     chest: null,
@@ -128,10 +126,15 @@ function sortList(list) {
 function updateInventory() {
   var gold = getValue("inventory")["gold"];
   document.getElementById("gold-counter").innerHTML = `Gold: ${gold}`;
-  var items = getValue("items");
+  var items = getValue("inventory");
   for (let i = 0; i < items.length; i++) {
     var itemName = items[i]["name"];
     var itemQuantity = items[i]["quantity"];
+    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    if (itemQuantity == 0) {
+      items.splice(i, 1);
+      continue;
+    }
     if (items[i]["type"] == "Weapon") {
       var itemDescription = items[i]["description"];
       var itemGoldValue = items[i]["goldValue"];
@@ -215,8 +218,6 @@ function addEntity(entity, target) {
       playerData["knownSpells"].splice(index, 1);
     }
     playerData["spokenSpells"].push(entity);
-  } else if (target == "inventory") {
-    playerData["inventory"]["items"].push(entity);
   } else {
     playerData[target].push(entity);
   }
@@ -247,23 +248,16 @@ function removeEntity(entity, target) {
 }
 
 function getValue(target) {
-  if (target == "items") {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
-    var value = playerData["inventory"]["items"];
-  } else { 
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
-    var value = playerData[target];
-  }
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var value = playerData[target];
   return value;
 }
 
-function changeValue(target, newValue) {
-  if (target.includes("items")) {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
-    target = eval("playerData" + target);
-    target = newValue;
+function changeValue(target, newValue, i=0) {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  if (target == "itemQuantity") {
+    playerData["inventory"][i]["quantity"] = newValue;
   } else {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
     playerData[target] = newValue;
   }
   localStorage.setItem("playerData", JSON.stringify(playerData));

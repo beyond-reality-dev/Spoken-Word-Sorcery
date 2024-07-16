@@ -248,22 +248,16 @@ function handlePickup(item) {
 }
 
 function handleDrop(item) {
-  var items = getValue("items");
+  var items = getValue("inventory");
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);
   }
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
       var current = items[i].quantity;
-      if (current > 1) {
-        changeValue(`["inventory"]["items"][${i}].quantity`, (current - 1));
-        console.log(items[i].quantity);
-        quickPrint(`You dropped a ${item}.`);
-      } else {
-        items.splice(i, 1);
-        quickPrint(`You dropped a ${item}.`);
-        updateUI();
-      }
+      changeValue("itemQuantity", (current - 1), i);
+      console.log(items[i].quantity);
+      quickPrint(`You dropped a ${item}.`);
     }
   }
 }
