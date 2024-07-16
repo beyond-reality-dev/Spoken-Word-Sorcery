@@ -23,6 +23,7 @@ const {
 const { Arrow } = require("./class_collections/item_catalog");
 
 const { grandHall } = require("./cutscenes/grandHall/grandHall");
+const { barracksMeeting } = require("./cutscenes/barracksMeeting/barracksMeeting");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";

@@ -104,6 +104,7 @@ class Barracks extends Room {
     this.exits = {
       east: "commonRoom",
     };
+    this.cutscene = "barracksMeeting";
     this.isVisited = false;
   }
 }
