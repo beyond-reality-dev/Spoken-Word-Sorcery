@@ -22,6 +22,8 @@ const {
 
 const { Arrow } = require("./class_collections/item_catalog");
 
+const { grandHall } = require("./cutscenes/grandHall/grandHall");
+
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
   document.getElementById("input-bar").setAttribute("contenteditable", "true");
@@ -224,16 +226,24 @@ function handleMovement(direction) {
     newLocation = eval(getValue(newLocation, true));
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
-    if (newLocation.hasOwnProperty("cutscene")) {
-      var hasCutscenePlayed = newLocation.hasCutscenePlayed;
-      if (hasCutscenePlayed == false) {
-        hasCutscenePlayed = true;
-        var playerData = JSON.parse(localStorage.getItem("playerData"));
-        var locations = playerData["locations"];
-        locations[currentLocation.name]["hasCutscenePlayed"] = hasCutscenePlayed;
-        localStorage.setItem("playerData", JSON.stringify(playerData));
-        eval(newLocation.cutscene + "()");
+    console.log(1);
+    if (newLocation.hasOwnProperty("isVisited")) {
+      newLocation.isVisited = true;
+      console.log(2);
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      console.log(3);
+      var locations = playerData["locations"];
+      console.log(4);
+      locations[currentLocation.name]["isVisited"] = true;
+      console.log(5);
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      console.log(6);
     }
+    if (newLocation.hasOwnProperty("cutscene")) {
+        console.log(7);
+        console.log(newLocation.cutscene); 
+        eval(newLocation.cutscene + "()");
+        console.log(8);
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
@@ -249,7 +259,6 @@ function handlePickup(item) {
   }
   if (items.hasOwnProperty(item)) {
     var itemClass = eval("new " + items[item])
-    console.log(itemClass.quantity);
     addEntity(itemClass, "inventory");
     delete items[item];
     var playerData = JSON.parse(localStorage.getItem("playerData"));

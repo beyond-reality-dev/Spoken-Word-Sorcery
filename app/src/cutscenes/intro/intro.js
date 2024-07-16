@@ -8,7 +8,7 @@ const {
   calculateValue,
   changeValue,
 } = require("../../save_data");
-const { closedInput, openInput, inputLoop, handleMovement } = require("../../handle_input");
+const { closedInput, openInput, inputLoop } = require("../../handle_input");
 const {
   Earth,
   Fire,
@@ -207,5 +207,6 @@ async function intro() {
     await openInput();
   }
   await printLines("app/src/cutscenes/intro/15.txt");
+  changeValue("currentMana", 50);
   inputLoop();
 }

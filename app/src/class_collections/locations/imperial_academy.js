@@ -18,7 +18,7 @@ class TrainingRoom extends Room {
   constructor() {
     super(
       "trainingRoom",
-      "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, east, and south."
+      "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room."
     );
     this.items = {"staff": "WoodenStaff(1)"};
     this.exits = {
@@ -65,7 +65,7 @@ class CommonRoom extends Room {
   constructor() {
     super(
       "commonRoom",
-      "The common room is a large room with a few tables and chairs. There is a door to the south, leading to the hallway, and a door to the east, leading to the kitchen."
+      "The common room is a large room with a few tables and chairs. There is a door to the north, leading to the grand hall, a door to the south, leading to the training room, a door to the east, leading to the kitchen, and a door to the west, leading to the barracks."
     );
     this.items = {};
     this.exits = {
@@ -104,6 +104,7 @@ class Barracks extends Room {
     this.exits = {
       east: "commonRoom",
     };
+    this.isVisited = false;
   }
 }
 
@@ -119,8 +120,7 @@ class GrandHall extends Room {
     this.exits = {
       south: "commonRoom",
     };
-    this.cutscene = "chapterOne";
-    this.hasCutscenePlayed = false;
+    this.cutscene = "grandHall";
   }
 }
 
