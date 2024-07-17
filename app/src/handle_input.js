@@ -470,13 +470,9 @@ async function handlePlayerTurn(enemies, length) {
           if (enemyHealth <= 0) {
             quickPrint(`You have defeated ${enemy.name}.`);
             var location = getValue("location");
-            console.log(location);
             var enemies = getValue(location, true).enemies;
-            console.log(enemies);
             var index = enemies.indexOf(enemy);
-            console.log(index);
             enemies.splice(index, 1);
-            console.log(enemies);
           }
           validInput = true;
         }
