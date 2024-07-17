@@ -1,3 +1,5 @@
+const { Rebel } = require("../enemy_menagerie");
+
 class Room {
   constructor(
     name,
@@ -20,7 +22,7 @@ class TrainingRoom extends Room {
       "trainingRoom",
       "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room."
     );
-    this.items = {"staff": "WoodenStaff(1)"};
+    this.items = { staff: "WoodenStaff(1)" };
     this.exits = {
       north: "commonRoom",
       east: "practiceYard",
@@ -37,7 +39,7 @@ class PracticeYard extends Room {
       "practiceYard",
       "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. There is a door to the west, leading back to the training room."
     );
-    this.items = {"arrow": "Arrow(3)"};
+    this.items = { arrow: "Arrow(3)" };
     this.exits = {
       west: "trainingRoom",
     };
@@ -72,7 +74,7 @@ class CommonRoom extends Room {
       north: "grandHall",
       south: "trainingRoom",
       east: "kitchen",
-      west: "barracks"
+      west: "barracks",
     };
   }
 }
@@ -195,9 +197,13 @@ class MilitaryAnnex extends Room {
     };
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
-    this.enemies = ["Rebel('Rebel 1')", "Rebel('Rebel 2')", "Rebel('Rebel 3')"];
+    this.enemies = [barracksRebelOne, barracksRebelTwo, barracksRebelThree];
   }
 }
+
+var barracksRebelOne = new Rebel("Rebel 1");
+var barracksRebelTwo = new Rebel("Rebel 2");
+var barracksRebelThree = new Rebel("Rebel 3");
 
 var militaryAnnex = new MilitaryAnnex();
 
@@ -247,4 +253,19 @@ class Armory extends Room {
 
 var armory = new Armory();
 
-module.exports = { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, academyGates, longPassageway, militaryAnnex, firstBarracks, secondBarracks, armory };
+module.exports = {
+  trainingRoom,
+  practiceYard,
+  storageRoom,
+  commonRoom,
+  kitchen,
+  barracks,
+  grandHall,
+  vault,
+  academyGates,
+  longPassageway,
+  militaryAnnex,
+  firstBarracks,
+  secondBarracks,
+  armory,
+};

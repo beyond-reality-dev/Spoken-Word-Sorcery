@@ -1,5 +1,5 @@
 class Enemy {
-    constructor(name, health, armor, attack, speed, range, gold, items) {
+  constructor(name, health, armor, attack, speed, range, gold, items) {
     this.name = name;
     this.health = health;
     this.armor = armor;
@@ -12,8 +12,8 @@ class Enemy {
 }
 
 class Rebel extends Enemy {
-  constructor(name) {
-    super(name, 100, 10, 10, 10, 1, 5, []);
+  constructor(name, items=[]) {
+    super(name, 100, 10, 10, 10, 1, 5, items);
   }
 }
 

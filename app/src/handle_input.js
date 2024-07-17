@@ -436,19 +436,13 @@ async function handlePlayerTurn(enemies, length) {
       response == "attack with weapon" ||
       response == "attack with equipped weapons"
     ) {
-      try {
-        var enemy = enemies[enemyChoice];
-      }
-      catch (error) {
-        enemy = eval("new " + enemies[response]);
-      }
       var playerAttack = getRandomInt(getValue("attack"));
       var enemyHealth = enemy.health;
       var enemyDefense = getRandomInt(enemy.armor);
       var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
       enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
       enemies[enemyChoice].health = enemyHealth;
-      quickPrint(`You dealt ${enemyDamage} damage to the ${enemy.name}.`);
+      quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemyHealth <= 0) {
         quickPrint(`You have defeated the ${enemy.name}.`);
         var location = getValue("location");
@@ -467,23 +461,22 @@ async function handlePlayerTurn(enemies, length) {
       while (validInput == false) {
         try {
           var spellPower = handleSpell(words);
-          var enemy = enemies[enemyChoice];
-          }
-          catch (error) {
-            enemy = eval("new " + enemies[response]);
-          }
           var enemyHealth = enemy.health;
           var enemyDefense = getRandomInt(enemy.armor);
           var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
           enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
           enemies[enemyChoice].health = enemyHealth;
-          quickPrint(`You dealt ${spellPower} damage to the ${enemy.name}.`);
+          quickPrint(`You dealt ${spellPower} damage to ${enemy.name}.`);
           if (enemyHealth <= 0) {
-            quickPrint(`You have defeated the ${enemy.name}.`);
+            quickPrint(`You have defeated ${enemy.name}.`);
             var location = getValue("location");
+            console.log(location);
             var enemies = getValue(location, true).enemies;
-            var index = enemies.indexOf(enemy.name);
+            console.log(enemies);
+            var index = enemies.indexOf(enemy);
+            console.log(index);
             enemies.splice(index, 1);
+            console.log(enemies);
           }
           validInput = true;
         }
