@@ -1,4 +1,4 @@
-module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop, handleMovement };
+module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop, handleMovement, handleCombat };
 
 const {
   addEntity,
@@ -9,6 +9,8 @@ const {
 } = require("./save_data");
 
 const { toTitleCase, quickPrint, requireAnswer } = require("./general");
+
+const { Rebel } = require("./class_collections/enemy_menagerie");
 
 const {
   Aether,
@@ -138,6 +140,67 @@ async function openInput() {
               item = clauses[i].substring(5);
             }
             handleDrop(item);
+          } else if (clauses[i].substring(0, 6) == "equip ") {
+            if (clauses[i].substring(6, 8) == "a ") {
+              item = clauses[i].substring(8);
+            } else if (clauses[i].substring(6, 9) == "an ") {
+              item = clauses[i].substring(9);
+            } else if (clauses[i].substring(6, 10) == "the ") {
+              item = clauses[i].substring(10);
+            } else {
+              item = clauses[i].substring(6);
+            }
+            handleEquip(item);
+          } else if (clauses[i].substring(0, 7) == "put on ") { 
+            if (clauses[i].substring(7, 9) == "a ") {
+              item = clauses[i].substring(9);
+            } else if (clauses[i].substring(7, 10) == "an ") {
+              item = clauses[i].substring(10);
+            } else if (clauses[i].substring(7, 11) == "the ") {
+              item = clauses[i].substring(11);
+            } else {
+              item = clauses[i].substring(7);
+            }
+            handleEquip(item);
+          } else if (clauses[i].substring(0, 6) == "remove ") {
+            if (clauses[i].substring(6, 8) == "a ") {
+              item = clauses[i].substring(8);
+            } else if (clauses[i].substring(6, 9) == "an ") {
+              item = clauses[i].substring(9);
+            } else if (clauses[i].substring(6, 10) == "the ") {
+              item = clauses[i].substring(10);
+            } else {
+              item = clauses[i].substring(6);
+            }
+            handleUnequip(item);
+          } else if (clauses[i].substring(0, 8) == "unequip ") {
+            if (clauses[i].substring(8, 10) == "a ") {
+              item = clauses[i].substring(10);
+            } else if (clauses[i].substring(8, 11) == "an ") {
+              item = clauses[i].substring(11);
+            } else if (clauses[i].substring(8, 12) == "the ") {
+              item = clauses[i].substring(12);
+            } else {
+              item = clauses[i].substring(8);
+            }
+            handleUnequip(item);
+          } else if (clauses[i].substring(0, 9) == "take off ") {
+            if (clauses[i].substring(9, 11) == "a ") {
+              item = clauses[i].substring(11);
+            } else if (clauses[i].substring(9, 12) == "an ") {
+              item = clauses[i].substring(12);
+            } else if (clauses[i].substring(9, 13) == "the ") {
+              item = clauses[i].substring(13);
+            } else {
+              item = clauses[i].substring(9);
+            }
+            handleUnequip(item);
+          } else if (clauses[i].substring(0, 6) == "fight ") {
+            console.log("fight");
+            handleCombat();
+          } else if (clauses[i].substring(0, 7) == "attack ") {
+            console.log("attack");
+            handleCombat();
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
@@ -287,6 +350,35 @@ function handleDrop(item) {
   }
 }
 
+function handleEquip(item) {
+  var items = getValue("inventory");
+  if (item.charAt(item.length - 1) == "s") {
+    item = item.substring(0, item.length - 1);
+  }
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].name == toTitleCase(item)) {
+      addEntity(items[i], "equipment");
+      quickPrint(`You equipped ${item}.`);
+      break;
+    }
+  }
+}
+
+function handleUnequip(item) {
+  var equipment = getValue("equipment");
+  if (item.charAt(item.length - 1) == "s") {
+    item = item.substring(0, item.length - 1);
+  }
+  for (let i = 0; i < equipment.length; i++) {
+    if (equipment[i].name == toTitleCase(item)) {
+      var current = equipment[i].quantity;
+      changeValue("itemQuantity", current - 1, i);
+      quickPrint(`You unequipped ${item}.`);
+      break;
+    }
+  }
+}
+
 function handleCombat() {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
@@ -295,10 +387,11 @@ function handleCombat() {
     var playerSpeed = getValue("speed");
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
-      var enemy = eval("new " + enemies[i] + "()");
+      console.log(enemies.length);
+      var enemy = eval("new " + enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
-        handlePlayerTurn(enemies);
+        handlePlayerTurn(enemies, enemies.length);
         if (enemies.length > 0) {
           handleEnemyTurn(enemy);
         }
@@ -312,9 +405,9 @@ function handleCombat() {
   }
 }
 
-async function handlePlayerTurn(enemies) {
-  quickPrint(`There are ${enemies.length} enemies remaining.`);
-  for (let i = 0; i < enemies.length; i++) {
+async function handlePlayerTurn(enemies, length) {
+  quickPrint(`There are ${length} enemies remaining.`);
+  for (let i = 0; i < length; i++) {
     var enemy = eval("new " + enemies[i] + "()");
     quickPrint(`${i}. ${enemy.name} has ${enemy.health} health`);
   }
@@ -383,10 +476,12 @@ async function handlePlayerTurn(enemies) {
 async function handleEnemyTurn(enemy) {
   var enemyHealth = enemy.health;
   var enemyAttack = getRandomInt(enemy.attack);
+  console.log(enemyAttack);
+  var playerHealth = getValue("currentHealth");
   var playerDefense = getRandomInt(getValue("armor"));
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
   calculateValue("currentHealth", "subtract", playerDamage);
-  quickPrint(`The ${enemy.name} dealt ${playerDamage} damage.`);
+  quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
   if (playerHealth <= 0) {
     quickPrint("You have been defeated.");
     var response = await requireAnswer(["Yes", "No"], "Would you like to restart from your last save?");

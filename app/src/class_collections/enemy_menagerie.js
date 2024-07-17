@@ -16,3 +16,5 @@ class Rebel extends Enemy {
     super(name, 100, 10, 10, 10, 1, 5, []);
   }
 }
+
+module.exports = { Rebel };
