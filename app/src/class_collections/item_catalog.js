@@ -49,9 +49,21 @@ class LeatherHelmet extends Armor {
   }
 }
 
+class IronHelmet extends Armor {
+  constructor(quantity=1) {
+    super("Helmet", "A simple helmet", "head", 10, 10, 5, quantity);
+  }
+}
+
 class LeatherChestplate extends Armor {
   constructor(quantity=1) {
     super("Chestplate", "A simple chestplate", "chest", 10, 5, 5, quantity);
+  }
+}
+
+class IronChestplate extends Armor {
+  constructor(quantity=1) {
+    super("Chestplate", "A simple chestplate", "chest", 10, 10, 5, quantity);
   }
 }
 
@@ -61,9 +73,21 @@ class LeatherLeggings extends Armor {
   }
 }
 
+class IronLeggings extends Armor {
+  constructor(quantity=1) {
+    super("Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
+  }
+}
+
 class LeatherBoots extends Armor {
   constructor(quantity=1) {
     super("Boots", "Simple boots", "feet", 10, 5, 5, quantity);
+  }
+}
+
+class IronBoots extends Armor {
+  constructor(quantity=1) {
+    super("Boots", "Simple boots", "feet", 10, 10, 5, quantity);
   }
 }
 

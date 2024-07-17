@@ -234,28 +234,17 @@ function handleMovement(direction) {
     }
     changeValue("location", newLocation.name);
     quickPrint(newLocation.description);
-    console.log(1);
     if (newLocation.hasOwnProperty("isVisited")) {
       newLocation.isVisited = true;
-      console.log(2);
       var playerData = JSON.parse(localStorage.getItem("playerData"));
-      console.log(3);
       var locations = playerData["locations"];
-      console.log(4);
       locations[currentLocation.name]["isVisited"] = true;
-      console.log(5);
       localStorage.setItem("playerData", JSON.stringify(playerData));
-      console.log(6);
     }
     if (newLocation.hasOwnProperty("cutscene")) {
-        console.log(7);
-        console.log(newLocation.cutscene); 
         eval(newLocation.cutscene + "()");
-        console.log(8);
     } else if (newLocation.hasOwnProperty("enemies")) {
-      console.log(9);
       handleCombat();
-      console.log(10);
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
