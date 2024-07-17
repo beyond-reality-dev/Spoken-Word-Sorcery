@@ -2,7 +2,7 @@ class Enemy {
     constructor(name, health, armor, attack, speed, range, gold, items) {
     this.name = name;
     this.health = health;
-    this.armour = armor;
+    this.armor = armor;
     this.attack = attack;
     this.speed = speed;
     this.range = range;
