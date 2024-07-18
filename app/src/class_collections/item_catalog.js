@@ -112,15 +112,45 @@ class HealthPotion extends Consumable {
   }
 }
 
+class AdvancedHealthPotion extends Consumable {
+  constructor(quantity=1) {
+    super("Advanced Health Potion", "A potion that restores health", "consumable", 20, 20, 0, 0, 1, quantity);
+  }
+}
+
+class SuperHealthPotion extends Consumable {
+  constructor(quantity=1) {
+    super("Super Health Potion", "A potion that restores health", "consumable", 30, 30, 0, 0, 1, quantity);
+  }
+}
+
 class ManaPotion extends Consumable {
   constructor(quantity=1) {
     super("Mana Potion", "A potion that restores mana", "consumable", 10, 0, 10, 0, 1, quantity);
   }
 }
 
+class AdvancedManaPotion extends Consumable {
+  constructor(quantity=1) {
+    super("Advanced Mana Potion", "A potion that restores mana", "consumable", 20, 0, 20, 0, 1, quantity);
+  }
+}
+
+class SuperManaPotion extends Consumable {
+  constructor(quantity=1) {
+    super("Super Mana Potion", "A potion that restores mana", "consumable", 30, 0, 30, 0, 1, quantity);
+  }
+}
+
 class SpeedPotion extends Consumable {
   constructor(quantity=1) {
     super("Speed Potion", "A potion that increases speed", "consumable", 10, 0, 0, 10, 1, quantity);
+  }
+}
+
+class AdvancedSpeedPotion extends Consumable {
+  constructor(quantity=1) {
+    super("Advanced Speed Potion", "A potion that increases speed", "consumable", 20, 0, 0, 20, 1, quantity);
   }
 }
 

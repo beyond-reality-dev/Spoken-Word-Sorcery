@@ -54,13 +54,13 @@ class Spell {
 
 class Spear extends Spell {
   constructor() {
-    super("Spear", "An arcane spear", "spear flies through the air ", 5, 10, 1, true, false, 0, 0, 0, 0, 0);
+    super("Spear", "An arcane spear", "spear flies through the air ", 5, 50, 1, true, false, 0, 0, 0, 0, 0);
   }
 }
 
 class Shield extends Spell {
   constructor() {
-    super("Shield", "An arcane shield", "shield forms facing ", 5, 10, 0, false, false, 0, 0, 0, 0, 0);
+    super("Shield", "An arcane shield", "shield forms facing ", 5, 50, 0, false, false, 0, 0, 0, 0, 0);
   }
 }
 

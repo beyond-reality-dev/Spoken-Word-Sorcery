@@ -388,7 +388,7 @@ async function handleCombat() {
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
       console.log(enemies.length);
-      var enemy = eval("new " + enemies[i]);
+      var enemy = eval(enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
         await handlePlayerTurn(enemies, enemies.length);
@@ -401,7 +401,7 @@ async function handleCombat() {
       }
     }
     if (turnPlayed == false) {
-      await handlePlayerTurn();
+      await handlePlayerTurn(enemies, enemies.length);
       turnPlayed = true;
     }
   }
@@ -410,20 +410,21 @@ async function handleCombat() {
 async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
-    var enemy = eval("new " + enemies[i]);
+    var enemy = eval(enemies[i]);
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health`);
   }
   quickPrint("Which enemy would you like to attack?");
   var validInput = false;
   while (validInput == false) {
     var enemyChoice = await closedInput();
-    enemyChoice = enemyChoice - 1;
+    enemyChoice = enemyChoice;
     if (enemyChoice >= 0 && enemyChoice <= enemies.length-1) {
       validInput = true;
     } else {
       quickPrint("That is not a valid target.");
     }
   }
+  enemy = eval(enemies[enemyChoice]);
   validInput = false;
   quickPrint("Would you like to attack with your equipped weapon or cast a spell?");
   while (validInput == false) {
@@ -441,7 +442,7 @@ async function handlePlayerTurn(enemies, length) {
       var enemyDefense = getRandomInt(enemy.armor);
       var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
       enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-      enemies[enemyChoice].health = enemyHealth;
+      enemy.health = enemyHealth;
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemyHealth <= 0) {
         quickPrint(`You have defeated the ${enemy.name}.`);
@@ -462,11 +463,12 @@ async function handlePlayerTurn(enemies, length) {
         try {
           var spellPower = handleSpell(words);
           var enemyHealth = enemy.health;
+          console.log(enemyHealth);
           var enemyDefense = getRandomInt(enemy.armor);
-          var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
+          var enemyDamage = Math.max(spellPower - enemyDefense, 0);
           enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-          enemies[enemyChoice].health = enemyHealth;
-          quickPrint(`You dealt ${spellPower} damage to ${enemy.name}.`);
+          enemy.health = enemyHealth;
+          quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
           if (enemyHealth <= 0) {
             quickPrint(`You have defeated ${enemy.name}.`);
             var location = getValue("location");
