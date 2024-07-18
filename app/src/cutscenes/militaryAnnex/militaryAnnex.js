@@ -8,10 +8,6 @@ async function militaryAnnex() {
     getValue("armory", true).isVisited == true
   ) {
     await printLines("app/src/cutscenes/militaryAnnex/1.txt");
-    await requireAnswer(
-      ["fight", "i fight", "attack", "i attack"],
-      "You must choose to fight, your Oath provides for no other option."
-    );
     await handleCombat();
     await printLines("app/src/cutscenes/militaryAnnex/2.txt");
   }

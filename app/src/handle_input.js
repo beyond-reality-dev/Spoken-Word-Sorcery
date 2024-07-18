@@ -1,5 +1,7 @@
 module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop, handleMovement, handleCombat };
 
+var isCombat = false;
+
 const {
   addEntity,
   getValue,
@@ -77,6 +79,10 @@ async function openInput() {
           text = text.substring(2);
         }
         var clauses = text.split(" and ");
+        var hasTurned = false;
+        var hasEquipped = false;
+        var hasUnequipped = false;
+        var hasActed = false;
         for (let i = 0; i < clauses.length; i++) {
           if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
@@ -196,9 +202,26 @@ async function openInput() {
             }
             handleUnequip(item);
           } else if (clauses[i].substring(0, 5) == "fight") {
-            handleCombat();
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == false) {
+              handleAttack();
+              hasActed = true;
+            }
           } else if (clauses[i].substring(0, 6) == "attack") {
-            handleCombat();
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == false) {
+              handleAttack();
+              hasActed = true;
+            }
+          } else if (clauses[i].substring(0, 10) == "use weapon") {
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == false) {
+              handleAttack();
+              hasActed = true;
+            }
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
             handleSpell(words);
@@ -237,38 +260,38 @@ async function inputLoop() {
 function handleTurn(direction, change) {
   switch (change) {
     case "left":
-      if (direction == "North") {
-        changeValue("direction", "West");
-      } else if (direction == "East") {
-        changeValue("direction", "North");
-      } else if (direction == "South") {
-        changeValue("direction", "East");
-      } else if (direction == "East") {
-        changeValue("direction", "South");
+      if (direction == "north") {
+        changeValue("direction", "west");
+      } else if (direction == "east") {
+        changeValue("direction", "north");
+      } else if (direction == "south") {
+        changeValue("direction", "east");
+      } else if (direction == "east") {
+        changeValue("direction", "south");
       }
       break;
     case "right":
-      if (direction == "North") {
-        changeValue("direction", "East");
-      } else if (direction == "East") {
-        changeValue("direction", "South");
-      } else if (direction == "South") {
-        changeValue("direction", "West");
-      } else if (direction == "West") {
-        changeValue("direction", "North");
+      if (direction == "north") {
+        changeValue("direction", "east");
+      } else if (direction == "east") {
+        changeValue("direction", "south");
+      } else if (direction == "south") {
+        changeValue("direction", "west");
+      } else if (direction == "west") {
+        changeValue("direction", "north");
       }
       break;
     case "forward":
       break;
     case "backward":
-      if (direction == "North") {
-        changeValue("direction", "South");
-      } else if (direction == "East") {
-        changeValue("direction", "West");
-      } else if (direction == "South") {
-        changeValue("direction", "North");
-      } else if (direction == "West") {
-        changeValue("direction", "East");
+      if (direction == "north") {
+        changeValue("direction", "south");
+      } else if (direction == "east") {
+        changeValue("direction", "west");
+      } else if (direction == "south") {
+        changeValue("direction", "north");
+      } else if (direction == "west") {
+        changeValue("direction", "east");
       }
       break;
     default:
@@ -378,7 +401,7 @@ function handleUnequip(item) {
 }
 
 async function handleCombat() {
-  var isCombat = true;
+  isCombat = true;
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   var enemies = currentLocation.enemies;
@@ -410,14 +433,14 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
-    quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health`);
+    quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
   }
-  quickPrint("Which enemy would you like to face?");
+  quickPrint(`You are facing ${getValue("direction")}.`);
   var validInput = false;
   while (validInput == false) {
     var enemyChoice = await closedInput();
     enemyChoice = enemyChoice - 1;
-    if (enemyChoice >= 0 && enemyChoice <= enemies.length-1) {
+    if (enemyChoice >= 0 && enemyChoice <= enemies.length - 1) {
       validInput = true;
     } else {
       quickPrint("That is not a valid target.");
@@ -516,6 +539,8 @@ async function handleEnemyTurn(enemy) {
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
+
+function handleAttack() {}
 
 function handleSpell(words) {
   words = words.split(" ");

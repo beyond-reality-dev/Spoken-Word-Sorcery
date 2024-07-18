@@ -17,7 +17,7 @@ function initializeData() {
     armor: 0,
     speed: 10,
     gold: 0,
-    direction: "North",
+    direction: "north",
     location: "trainingRoom",
     gameSpeed: 1000,
   };
