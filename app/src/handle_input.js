@@ -196,10 +196,8 @@ async function openInput() {
             }
             handleUnequip(item);
           } else if (clauses[i].substring(0, 5) == "fight") {
-            console.log("fight");
             handleCombat();
           } else if (clauses[i].substring(0, 6) == "attack") {
-            console.log("attack");
             handleCombat();
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
@@ -387,7 +385,6 @@ async function handleCombat() {
     var playerSpeed = getValue("speed");
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
-      console.log(enemies.length);
       var enemy = eval(enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
@@ -417,7 +414,7 @@ async function handlePlayerTurn(enemies, length) {
   var validInput = false;
   while (validInput == false) {
     var enemyChoice = await closedInput();
-    enemyChoice = enemyChoice;
+    enemyChoice = enemyChoice - 1;
     if (enemyChoice >= 0 && enemyChoice <= enemies.length-1) {
       validInput = true;
     } else {
@@ -446,9 +443,7 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemyHealth <= 0) {
         quickPrint(`You have defeated the ${enemy.name}.`);
-        var location = getValue("location");
-        var enemies = getValue(location, true).enemies;
-        var index = enemies.indexOf(enemy.name);
+        var index = enemies.indexOf(enemy);
         enemies.splice(index, 1);
       }
       validInput = true;
@@ -463,7 +458,6 @@ async function handlePlayerTurn(enemies, length) {
         try {
           var spellPower = handleSpell(words);
           var enemyHealth = enemy.health;
-          console.log(enemyHealth);
           var enemyDefense = getRandomInt(enemy.armor);
           var enemyDamage = Math.max(spellPower - enemyDefense, 0);
           enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
@@ -471,8 +465,6 @@ async function handlePlayerTurn(enemies, length) {
           quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
           if (enemyHealth <= 0) {
             quickPrint(`You have defeated ${enemy.name}.`);
-            var location = getValue("location");
-            var enemies = getValue(location, true).enemies;
             var index = enemies.indexOf(enemy);
             enemies.splice(index, 1);
           }
@@ -492,7 +484,6 @@ async function handlePlayerTurn(enemies, length) {
 async function handleEnemyTurn(enemy) {
   var enemyHealth = enemy.health;
   var enemyAttack = getRandomInt(enemy.attack);
-  console.log(enemyAttack);
   var playerHealth = getValue("currentHealth");
   var playerDefense = getRandomInt(getValue("armor"));
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
@@ -529,24 +520,18 @@ function handleSpell(words) {
   } else {
     try {
       var element = eval("new " + toTitleCase(words[0]) + "()");
-      console.log(element);
     } catch (error) {
       var invalid = true;
-      console.log(error);
     }
     try {
       var spell = eval("new " + toTitleCase(words[1]) + "()");
-      console.log(spell);
     } catch (error) {
       invalid = true;
-      console.log(error);
     }
     try {
       var direction = eval("new " + toTitleCase(words[2]) + "()");
-      console.log(direction);
     } catch (error) {
       invalid = true;
-      console.log(error);
     }
     if (
       invalid == true ||
@@ -584,7 +569,6 @@ function handleSpell(words) {
         }
       }
       calculateValue("currentMana", "subtract", spell.manaCost);
-      console.log(spell.power);
       return spell.power;
     }
   }
