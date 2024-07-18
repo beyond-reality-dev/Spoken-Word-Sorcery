@@ -201,9 +201,9 @@ class MilitaryAnnex extends Room {
   }
 }
 
-var barracksRebelOne = new Rebel("Rebel 1");
-var barracksRebelTwo = new Rebel("Rebel 2");
-var barracksRebelThree = new Rebel("Rebel 3");
+var barracksRebelOne = new Rebel("Rebel 1", "southwest");
+var barracksRebelTwo = new Rebel("Rebel 2", "south");
+var barracksRebelThree = new Rebel("Rebel 3", "southeast");
 
 var militaryAnnex = new MilitaryAnnex();
 

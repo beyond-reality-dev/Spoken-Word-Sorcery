@@ -378,6 +378,7 @@ function handleUnequip(item) {
 }
 
 async function handleCombat() {
+  var isCombat = true;
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   var enemies = currentLocation.enemies;
@@ -402,6 +403,7 @@ async function handleCombat() {
       turnPlayed = true;
     }
   }
+  isCombat = false;
 }
 
 async function handlePlayerTurn(enemies, length) {
@@ -410,7 +412,7 @@ async function handlePlayerTurn(enemies, length) {
     var enemy = eval(enemies[i]);
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health`);
   }
-  quickPrint("Which enemy would you like to attack?");
+  quickPrint("Which enemy would you like to face?");
   var validInput = false;
   while (validInput == false) {
     var enemyChoice = await closedInput();
@@ -443,6 +445,12 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemyHealth <= 0) {
         quickPrint(`You have defeated the ${enemy.name}.`);
+        calculateValue("experience", "add", enemy.xp);
+        calculateValue("gold", "add", enemy.gold);
+        for (i = 0; i < enemy.items.length; i++) {
+          var item = enemy.items[i];
+          addEntity(item, "inventory");
+        }
         var index = enemies.indexOf(enemy);
         enemies.splice(index, 1);
       }
@@ -465,6 +473,12 @@ async function handlePlayerTurn(enemies, length) {
           quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
           if (enemyHealth <= 0) {
             quickPrint(`You have defeated ${enemy.name}.`);
+            calculateValue("experience", "add", enemy.xp);
+            calculateValue("gold", "add", enemy.gold);
+            for (i = 0; i < enemy.items.length; i++) {
+              var item = enemy.items[i];
+              addEntity(item, "inventory");
+            }
             var index = enemies.indexOf(enemy);
             enemies.splice(index, 1);
           }
@@ -482,7 +496,6 @@ async function handlePlayerTurn(enemies, length) {
 }
 
 async function handleEnemyTurn(enemy) {
-  var enemyHealth = enemy.health;
   var enemyAttack = getRandomInt(enemy.attack);
   var playerHealth = getValue("currentHealth");
   var playerDefense = getRandomInt(getValue("armor"));
@@ -497,12 +510,6 @@ async function handleEnemyTurn(enemy) {
       localStorage.setItem("playerData", JSON.stringify(save));
       updateUI();
     }
-  } else if (enemyHealth <= 0) {
-    quickPrint(`You have defeated ${enemy.name}.`);
-    var location = getValue("location");
-    var enemies = getValue(location, true).enemies;
-    var index = enemies.indexOf(enemy.name);
-    enemies.splice(index, 1);
   }
 }
 
@@ -540,6 +547,8 @@ function handleSpell(words) {
       direction["type"] != "Direction"
     ) {
       phrase = "Nothing happens.";
+    } else if (spell.manaCost > getValue("currentMana")) {
+      phrase = "You don't have enough mana to cast this spell."
     } else {
       var matchKnown = false;
       for (let i = 0; i < words.length; i++) {
