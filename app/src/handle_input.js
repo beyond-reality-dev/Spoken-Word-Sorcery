@@ -105,7 +105,10 @@ async function openInput() {
             }
             handleTurn(direction, change);
           } else if (clauses[i].substring(0, 3) == "go ") {
-            hasTurned = true;
+            if (isCombat == true) {
+              quickPrint("You cannot move during combat.");
+              continue;
+            }
             if (clauses[i].substring(3, 10) == "to the ") {
               direction = clauses[i].substring(10);
             } else {
@@ -113,6 +116,10 @@ async function openInput() {
             }
             handleMovement(direction);
           } else if (clauses[i].substring(0, 4) == "run") {
+            if (isCombat == true) {
+              quickPrint("You cannot move during combat.");
+              continue;
+            }
             if (clauses[i].substring(4, 11) == "to the ") {
               direction = clauses[i].substring(11);
             } else {
@@ -124,6 +131,10 @@ async function openInput() {
             clauses[i].substring(0, 5) == "move " ||
             clauses[i].substring(0, 5) == "walk "
           ) {
+            if (isCombat == true) {
+              quickPrint("You cannot move during combat.");
+              continue;
+            }
             if (clauses[i].substring(5, 12) == "to the ") {
               direction = clauses[i].substring(12);
             } else {
@@ -235,13 +246,18 @@ async function openInput() {
           } else if (clauses[i].substring(0, 5) == "fight") {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == false) {
+            } else if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
+            } 
+            else if (hasActed == false) {
               hasActed = true;
               handleAttack();
             }
           } else if (clauses[i].substring(0, 6) == "attack") {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
               handleAttack();
@@ -249,30 +265,52 @@ async function openInput() {
           } else if (clauses[i].substring(0, 10) == "use weapon") {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
               handleAttack();
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
-            var words = clauses[i].substring(4);
-            handleSpell(words);
+            if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
+            } else if (hasActed == false) {
+              hasActed = true;
+              var words = clauses[i].substring(4);
+              handleSpell(words);
+            }
           } else if (
             clauses[i].substring(0, 5) == "yell " ||
             clauses[i].substring(0, 5) == "cast "
           ) {
-            var words = clauses[i].substring(5);
-            handleSpell(words);
+            if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
+            } else if (hasActed == false) {
+              hasActed = true;
+              var words = clauses[i].substring(5);
+              handleSpell(words);
+            }
           } else if (
             clauses[i].substring(0, 6) == "chant " ||
             clauses[i].substring(0, 6) == "shout " ||
             clauses[i].substring(0, 6) == "speak " ||
             clauses[i].substring(0, 6) == "utter "
           ) {
-            var words = clauses[i].substring(6);
-            handleSpell(words);
+            if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
+            } else if (hasActed == false) {
+              hasActed = true;
+              var words = clauses[i].substring(6);
+              handleSpell(words);
+            }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
-            var words = clauses[i].substring(7);
-            handleSpell(words);
+            if (hasActed == true) {
+              quickPrint("You have already acted this turn.");
+            } else if (hasActed == false) {
+              hasActed = true;
+              var words = clauses[i].substring(7);
+              handleSpell(words);
+            }
           }
         }
         resolve(text);
@@ -292,37 +330,40 @@ function handleTurn(direction, change) {
   switch (change) {
     case "left":
       if (direction == "north") {
-        changeValue("direction", "west");
-      } else if (direction == "east") {
+        changeValue("direction", "northwest");
+      } else if (direction == "northeast") {
         changeValue("direction", "north");
-      } else if (direction == "south") {
-        changeValue("direction", "east");
       } else if (direction == "east") {
+        changeValue("direction", "northeast");
+      } else if (direction == "southeast") {
+        changeValue("direction", "east");
+      } else if (direction == "south") {
+        changeValue("direction", "southeast");
+      } else if (direction == "southwest") {
         changeValue("direction", "south");
+      } else if (direction == "west") {
+        changeValue("direction", "southwest");
+      } else if (direction == "northwest") {
+        changeValue("direction", "west");
       }
       break;
     case "right":
       if (direction == "north") {
+        changeValue("direction", "northeast");
+      } else if (direction == "northeast") {
         changeValue("direction", "east");
       } else if (direction == "east") {
+        changeValue("direction", "southeast");
+      } else if (direction == "southeast") {
         changeValue("direction", "south");
       } else if (direction == "south") {
+        changeValue("direction", "southwest");
+      } else if (direction == "southwest") {
         changeValue("direction", "west");
       } else if (direction == "west") {
+        changeValue("direction", "northwest");
+      } else if (direction == "northwest") {
         changeValue("direction", "north");
-      }
-      break;
-    case "forward":
-      break;
-    case "backward":
-      if (direction == "north") {
-        changeValue("direction", "south");
-      } else if (direction == "east") {
-        changeValue("direction", "west");
-      } else if (direction == "south") {
-        changeValue("direction", "north");
-      } else if (direction == "west") {
-        changeValue("direction", "east");
       }
       break;
     default:
@@ -360,6 +401,23 @@ function handleMovement(direction) {
         eval(newLocation.cutscene + "()");
     } else if (newLocation.hasOwnProperty("enemies")) {
       handleCombat();
+    }
+    if (direction == "north") {
+      changeValue("direction", "south");
+    } else if (direction == "northeast") {
+      changeValue("direction", "southwest");
+    } else if (direction == "east") {
+      changeValue("direction", "west");
+    } else if (direction == "southeast") {
+      changeValue("direction", "northwest");
+    } else if (direction == "south") {
+      changeValue("direction", "north");
+    } else if (direction == "southwest") {
+      changeValue("direction", "northeast");
+    } else if (direction == "west") {
+      changeValue("direction", "east");
+    } else if (direction == "northwest") {
+      changeValue("direction", "southeast");
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
