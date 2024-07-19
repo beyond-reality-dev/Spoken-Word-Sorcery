@@ -698,7 +698,64 @@ function handleSpell(words) {
         }
       }
       calculateValue("currentMana", "subtract", spell.manaCost);
-      return [spell.power, direction];
+      if (direction.name == "Away") {
+        var spellDirection = getValue("direction");
+      } else if (direction.name == "Left") {
+        if (getValue("direction") == "North") {
+          spellDirection = "West";
+        } else if (getValue("direction") == "Northeast") {
+          spellDirection = "Northwest";
+        } else if (getValue("direction") == "East") {
+          spellDirection = "North";
+        } else if (getValue("direction") == "Southeast") {
+          spellDirection = "Northeast";
+        } else if (getValue("direction") == "South") {
+          spellDirection = "East";
+        } else if (getValue("direction") == "Southwest") {
+          spellDirection = "Southeast";
+        } else if (getValue("direction") == "West") {
+          spellDirection = "South";
+        } else if (getValue("direction") == "Northwest") {
+          spellDirection = "Southwest";
+        }
+      } else if (direction.name == "Right") {
+        if (getValue("direction") == "North") {
+          spellDirection = "East";
+        } else if (getValue("direction") == "Northeast") {
+          spellDirection = "Southeast";
+        } else if (getValue("direction") == "East") {
+          spellDirection = "South";
+        } else if (getValue("direction") == "Southeast") {
+          spellDirection = "Southwest";
+        } else if (getValue("direction") == "South") {
+          spellDirection = "West";
+        } else if (getValue("direction") == "Southwest") {
+          spellDirection = "Northwest";
+        } else if (getValue("direction") == "West") {
+          spellDirection = "North";
+        } else if (getValue("direction") == "Northwest") {
+          spellDirection = "Northeast";
+        }
+      } else if (direction.name == "Behind") {
+        if (getValue("direction") == "North") {
+          spellDirection = "South";
+        } else if (getValue("direction") == "Northeast") {
+          spellDirection = "Southwest";
+        } else if (getValue("direction") == "East") {
+          spellDirection = "West";
+        } else if (getValue("direction") == "Southeast") {
+          spellDirection = "Northwest";
+        } else if (getValue("direction") == "South") {
+          spellDirection = "North";
+        } else if (getValue("direction") == "Southwest") {
+          spellDirection = "Northeast";
+        } else if (getValue("direction") == "West") {
+          spellDirection = "East";
+        } else if (getValue("direction") == "Northwest") {
+          spellDirection = "Northeast";
+        }
+      }
+      return [spell.power, spellDirection];
     }
   }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
