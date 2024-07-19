@@ -6,6 +6,8 @@
 - [Features](#features)
   - [Introduction](#introduction)
   - [Game Speed Settings](#game-speed-settings)
+  - [Inventory System](#inventory-system)
+  - [Combat System](#combat-system)
 - [Future Changes](#future-changes)
   - [Better Grammar Parsing](#better-grammar-parsing)
   - [Open World Features](#open-world-features)
@@ -26,6 +28,14 @@ Currently the only part of the game that is playable is a short introduction tha
 ### Game Speed Settings
 
 Users can select how much of a delay they want between lines being printed on the screen. The options range from no delay to a four second delay, which is roughly the speed that it takes to read most of the lines as they are being printed. The default is a one second delay.
+
+### Inventory System
+
+Users can pick up, drop, equip, and unequip items, and view their items in the inventory screen. Currently, however, while items are being tracked they do not yet have an impact on gameplay. In the future, they will be used to affect the player's stats and characteristics.
+
+### Combat System
+
+A simple combat system has already been implemented, with which the user may select an enemy to attack and then select a weapon or spell to use to attack. In the future, this system will be replaced by a direction-based combat system, where the user will be able to move around the battlefield and attack enemies in different directions.
 
 ## Future Changes
 
