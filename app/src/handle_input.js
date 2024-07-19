@@ -272,7 +272,9 @@ async function openInput() {
               handleAttack();
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
-            if (hasActed == true) {
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
@@ -283,7 +285,9 @@ async function openInput() {
             clauses[i].substring(0, 5) == "yell " ||
             clauses[i].substring(0, 5) == "cast "
           ) {
-            if (hasActed == true) {
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
@@ -296,7 +300,9 @@ async function openInput() {
             clauses[i].substring(0, 6) == "speak " ||
             clauses[i].substring(0, 6) == "utter "
           ) {
-            if (hasActed == true) {
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
@@ -304,7 +310,9 @@ async function openInput() {
               handleSpell(words);
             }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
-            if (hasActed == true) {
+            if (isCombat == false) {
+              quickPrint("You are not in combat.");
+            } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
@@ -603,28 +611,28 @@ function handleAttack() {
         break;
       }
     }
+    var playerAttack = getRandomInt(getValue("attack"));
+    var enemyHealth = enemy.health;
+    var enemyDefense = getRandomInt(enemy.armor);
+    var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
+    enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
+    enemy.health = enemyHealth;
+    quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+    if (enemyHealth <= 0) {
+      quickPrint(`You have defeated the ${enemy.name}.`);
+      calculateValue("experience", "add", enemy.xp);
+      calculateValue("gold", "add", enemy.gold);
+      for (i = 0; i < enemy.items.length; i++) {
+        var item = enemy.items[i];
+        addEntity(item, "inventory");
+      }
+      var index = enemies.indexOf(enemy);
+      enemies.splice(index, 1);
+    }
   }
   catch (error) {
     quickPrint("There is no enemy in that direction.");
     return;
-  }
-  var playerAttack = getRandomInt(getValue("attack"));
-  var enemyHealth = enemy.health;
-  var enemyDefense = getRandomInt(enemy.armor);
-  var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
-  enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-  enemy.health = enemyHealth;
-  quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-  if (enemyHealth <= 0) {
-    quickPrint(`You have defeated the ${enemy.name}.`);
-    calculateValue("experience", "add", enemy.xp);
-    calculateValue("gold", "add", enemy.gold);
-    for (i = 0; i < enemy.items.length; i++) {
-      var item = enemy.items[i];
-      addEntity(item, "inventory");
-    }
-    var index = enemies.indexOf(enemy);
-    enemies.splice(index, 1);
   }
 }
 
@@ -746,10 +754,39 @@ function handleSpell(words) {
           spellDirection = "Northeast";
         }
       }
-      return [spell.power, spellDirection];
     }
   }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
+  var enemies = getValue("location").enemies;
+    try {
+      for (let i = 0; i < enemies.length; i++) {
+        if (enemy.position == getValue("direction")) {
+          var enemy = eval(enemies[i]);
+          break;
+        }
+      }
+    var enemyHealth = enemy.health;
+    var enemyDefense = getRandomInt(enemy.armor);
+    var enemyDamage = Math.max(spellPower - enemyDefense, 0);
+    enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
+    enemy.health = enemyHealth;
+    quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+    if (enemyHealth <= 0) {
+      quickPrint(`You have defeated ${enemy.name}.`);
+      calculateValue("experience", "add", enemy.xp);
+      calculateValue("gold", "add", enemy.gold);
+      for (i = 0; i < enemy.items.length; i++) {
+        var item = enemy.items[i];
+        addEntity(item, "inventory");
+      }
+      var index = enemies.indexOf(enemy);
+      enemies.splice(index, 1);
+    }
+    }
+    catch (error) {
+      quickPrint("There is no enemy in that direction.");
+      return;
+    }
 }
