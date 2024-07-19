@@ -397,6 +397,7 @@ function handleMovement(direction) {
       }
     }
     changeValue("location", newLocation.name);
+    changeValue("direction", direction);
     quickPrint(newLocation.description);
     if (newLocation.hasOwnProperty("isVisited")) {
       newLocation.isVisited = true;
@@ -409,23 +410,6 @@ function handleMovement(direction) {
         eval(newLocation.cutscene + "()");
     } else if (newLocation.hasOwnProperty("enemies")) {
       handleCombat();
-    }
-    if (direction == "north") {
-      changeValue("direction", "south");
-    } else if (direction == "northeast") {
-      changeValue("direction", "southwest");
-    } else if (direction == "east") {
-      changeValue("direction", "west");
-    } else if (direction == "southeast") {
-      changeValue("direction", "northwest");
-    } else if (direction == "south") {
-      changeValue("direction", "north");
-    } else if (direction == "southwest") {
-      changeValue("direction", "northeast");
-    } else if (direction == "west") {
-      changeValue("direction", "east");
-    } else if (direction == "northwest") {
-      changeValue("direction", "southeast");
     }
   } catch (error) {
     quickPrint("You cannot go that way.");
@@ -538,45 +522,6 @@ async function handlePlayerTurn(enemies, length) {
   }
   quickPrint(`You are facing ${getValue("direction")}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`);
   await openInput();
-    if (response == "cast" || 
-      response == "spell" || 
-      response == "cast a spell") {
-      quickPrint("Cast the spell now by stating the element, spell, and direction.");
-      var words = await closedInput();
-      words = words.toLowerCase();
-      validInput = false;
-      while (validInput == false) {
-        try {
-          var spellAspects = handleSpell(words);
-          var spellPower = spellAspects[0];
-          var spellDirection = spellAspects[1];
-          var enemyHealth = enemy.health;
-          var enemyDefense = getRandomInt(enemy.armor);
-          var enemyDamage = Math.max(spellPower - enemyDefense, 0);
-          enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-          enemy.health = enemyHealth;
-          quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-          if (enemyHealth <= 0) {
-            quickPrint(`You have defeated ${enemy.name}.`);
-            calculateValue("experience", "add", enemy.xp);
-            calculateValue("gold", "add", enemy.gold);
-            for (i = 0; i < enemy.items.length; i++) {
-              var item = enemy.items[i];
-              addEntity(item, "inventory");
-            }
-            var index = enemies.indexOf(enemy);
-            enemies.splice(index, 1);
-          }
-          validInput = true;
-        }
-        catch (error) {
-          quickPrint("That is not a valid spell.");
-          words = await closedInput();
-        }
-      }
-    } else {
-      quickPrint("That is not a valid action.");
-    }
   }
 
 async function handleEnemyTurn(enemy) {
@@ -602,8 +547,10 @@ function getRandomInt(max) {
 }
 
 function handleAttack() {
-  var location = getValue("location");
-  var enemies = location.enemies;
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  console.log(currentLocation);
+  var enemies = currentLocation.enemies;
   try {
     for (let i = 0; i < enemies.length; i++) {
       if (enemy.position == getValue("direction")) {
@@ -759,20 +706,33 @@ function handleSpell(words) {
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
-  var enemies = getValue("location").enemies;
-    try {
+  console.log(getValue("location"));
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  console.log(currentLocation);
+  var enemies = currentLocation.enemies;
+  console.log(enemies);
+  changeValue("direction", spellDirection);
+  console.log(getValue("direction"));
+      console.log(0);
       for (let i = 0; i < enemies.length; i++) {
+      var enemy = eval(enemies[i]);
         if (enemy.position == getValue("direction")) {
-          var enemy = eval(enemies[i]);
           break;
         }
       }
     var enemyHealth = enemy.health;
+    console.log(1);
     var enemyDefense = getRandomInt(enemy.armor);
+    console.log(2);
     var enemyDamage = Math.max(spellPower - enemyDefense, 0);
+    console.log(3);
     enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
+    console.log(4);
     enemy.health = enemyHealth;
+    console.log(5);
     quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+    console.log(6);
     if (enemyHealth <= 0) {
       quickPrint(`You have defeated ${enemy.name}.`);
       calculateValue("experience", "add", enemy.xp);
@@ -784,9 +744,6 @@ function handleSpell(words) {
       var index = enemies.indexOf(enemy);
       enemies.splice(index, 1);
     }
-    }
-    catch (error) {
       quickPrint("There is no enemy in that direction.");
       return;
-    }
 }
