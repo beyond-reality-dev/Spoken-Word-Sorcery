@@ -1,5 +1,16 @@
 class Enemy {
-  constructor(name, position, health, armor, attack, speed, range, gold, xp, items) {
+  constructor(
+    name,
+    position,
+    health,
+    armor,
+    attack,
+    speed,
+    range,
+    gold,
+    xp,
+    items
+  ) {
     this.name = name;
     this.position = position;
     this.health = health;
@@ -37,4 +48,22 @@ class RebelWarlord extends Enemy {
   }
 }
 
-module.exports = { Rebel, RebelCaptain, RebelGeneral, RebelWarlord };
+class ImperialGuard extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 100, 10, 10, 10, 1, 5, 10, items);
+  }
+}
+
+class ImperialCaptain extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 150, 15, 15, 15, 1, 10, 20, items);
+  }
+}
+
+class ImperialGeneral extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 200, 20, 20, 20, 1, 15, 30, items);
+  }
+}
+
+module.exports = { Rebel, RebelCaptain, RebelGeneral, RebelWarlord, ImperialGuard, ImperialCaptain, ImperialGeneral };
