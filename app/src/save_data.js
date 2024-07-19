@@ -247,6 +247,13 @@ function addEntity(entity, target) {
       playerData["knownSpells"].splice(index, 1);
     }
     playerData["spokenSpells"].push(entity);
+  } else if (target == "equipment") {
+    for (let i = 0; i < playerData["equipment"].length; i++) {
+      if (playerData["equipment"][i]["position"] == entity["position"]) {
+        playerData["equipment"].splice(i, 1);
+      }
+      playerData["equipment"].push(entity);
+    }
   } else {
     playerData[target].push(entity);
   }

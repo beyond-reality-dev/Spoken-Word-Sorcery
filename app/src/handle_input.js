@@ -528,50 +528,9 @@ async function handlePlayerTurn(enemies, length) {
     console.log(enemy.position);
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
   }
-  quickPrint(`You are facing ${getValue("direction")}.`);
-  var validInput = false;
-  while (validInput == false) {
-    var enemyChoice = await closedInput();
-    enemyChoice = enemyChoice - 1;
-    if (enemyChoice >= 0 && enemyChoice <= enemies.length - 1) {
-      validInput = true;
-    } else {
-      quickPrint("That is not a valid target.");
-    }
-  }
-  enemy = eval(enemies[enemyChoice]);
-  validInput = false;
-  quickPrint("Would you like to attack with your equipped weapon or cast a spell?");
-  while (validInput == false) {
-    var response = await closedInput();
-    if (response == "weapon" ||
-      response == "use weapon" ||
-      response == "equipped weapon" ||
-      response == "use equipped weapon" ||
-      response == "attack" ||
-      response == "attack with weapon" ||
-      response == "attack with equipped weapons"
-    ) {
-      var playerAttack = getRandomInt(getValue("attack"));
-      var enemyHealth = enemy.health;
-      var enemyDefense = getRandomInt(enemy.armor);
-      var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
-      enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-      enemy.health = enemyHealth;
-      quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-      if (enemyHealth <= 0) {
-        quickPrint(`You have defeated the ${enemy.name}.`);
-        calculateValue("experience", "add", enemy.xp);
-        calculateValue("gold", "add", enemy.gold);
-        for (i = 0; i < enemy.items.length; i++) {
-          var item = enemy.items[i];
-          addEntity(item, "inventory");
-        }
-        var index = enemies.indexOf(enemy);
-        enemies.splice(index, 1);
-      }
-      validInput = true;
-    } else if (response == "cast" || 
+  quickPrint(`You are facing ${getValue("direction")}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`);
+  await openInput();
+    if (response == "cast" || 
       response == "spell" || 
       response == "cast a spell") {
       quickPrint("Cast the spell now by stating the element, spell, and direction.");
@@ -611,7 +570,6 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint("That is not a valid action.");
     }
   }
-}
 
 async function handleEnemyTurn(enemy) {
   var enemyAttack = getRandomInt(enemy.attack);
@@ -635,7 +593,40 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function handleAttack() {}
+function handleAttack() {
+  var location = getValue("location");
+  var enemies = location.enemies;
+  try {
+    for (let i = 0; i < enemies.length; i++) {
+      if (enemy.position == getValue("direction")) {
+        var enemy = eval(enemies[i]);
+        break;
+      }
+    }
+  }
+  catch (error) {
+    quickPrint("There is no enemy in that direction.");
+    return;
+  }
+  var playerAttack = getRandomInt(getValue("attack"));
+  var enemyHealth = enemy.health;
+  var enemyDefense = getRandomInt(enemy.armor);
+  var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
+  enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
+  enemy.health = enemyHealth;
+  quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+  if (enemyHealth <= 0) {
+    quickPrint(`You have defeated the ${enemy.name}.`);
+    calculateValue("experience", "add", enemy.xp);
+    calculateValue("gold", "add", enemy.gold);
+    for (i = 0; i < enemy.items.length; i++) {
+      var item = enemy.items[i];
+      addEntity(item, "inventory");
+    }
+    var index = enemies.indexOf(enemy);
+    enemies.splice(index, 1);
+  }
+}
 
 function handleSpell(words) {
   words = words.split(" ");
