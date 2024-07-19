@@ -619,20 +619,20 @@ function handleSpell(words) {
       var matchKnown = false;
       for (let i = 0; i < words.length; i++) {
         for (let j = 0; j < knownSpells.length; j++) {
-          var spell = eval("new " + toTitleCase(words[i]) + "()");
+          var currentSpell = eval("new " + toTitleCase(words[i]) + "()");
           var spellName = knownSpells[j]["name"];
-          if (spellName == spell.name) {
-            var descriptor = spell.descriptor;
+          if (spellName == currentSpell.name) {
+            var descriptor = currentSpell.descriptor;
             phrase = phrase.concat(descriptor);
             var matchKnown = true;
-            addEntity(spell, "spokenSpells");
+            addEntity(currentSpell, "spokenSpells");
             break;
           }
         }
         for (let i = 0; i < spokenSpells.length; i++) {
           spellName = spokenSpells[i]["name"];
           if (spellName == spell.name) {
-            descriptor = spell.descriptor;
+            descriptor = currentSpell.descriptor;
             phrase = phrase.concat(descriptor);
             var matchSpoken = true;
             break;
@@ -714,13 +714,16 @@ function handleSpell(words) {
   console.log(enemies);
   changeValue("direction", spellDirection);
   console.log(getValue("direction"));
-      console.log(0);
-      for (let i = 0; i < enemies.length; i++) {
-      var enemy = eval(enemies[i]);
-        if (enemy.position == getValue("direction")) {
-          break;
-        }
-      }
+  console.log(0);
+  for (let i = 0; i < enemies.length; i++) {
+    var enemy = eval(enemies[i]);
+    if (enemy.position == getValue("direction")) {
+      break;
+    }
+    enemy = null;
+  }
+  if (enemy != null) {
+    var spellPower = spell.power;
     var enemyHealth = enemy.health;
     console.log(1);
     var enemyDefense = getRandomInt(enemy.armor);
@@ -730,6 +733,8 @@ function handleSpell(words) {
     enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
     console.log(4);
     enemy.health = enemyHealth;
+    console.log(enemy.health);
+    console.log(enemy);
     console.log(5);
     quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
     console.log(6);
@@ -744,6 +749,7 @@ function handleSpell(words) {
       var index = enemies.indexOf(enemy);
       enemies.splice(index, 1);
     }
-      quickPrint("There is no enemy in that direction.");
-      return;
+  } else if (enemy == null) {
+    quickPrint("There is no enemy in that direction.");
+  }
 }
