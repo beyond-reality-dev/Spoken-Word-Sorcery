@@ -251,7 +251,7 @@ async function openInput() {
             } 
             else if (hasActed == false) {
               hasActed = true;
-              return ["weapon"];
+              text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 6) == "attack") {
             if (isCombat == false) {
@@ -260,7 +260,7 @@ async function openInput() {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
-              return ["weapon"];
+              text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 10) == "use weapon") {
             if (isCombat == false) {
@@ -269,7 +269,7 @@ async function openInput() {
               quickPrint("You have already acted this turn.");
             } else if (hasActed == false) {
               hasActed = true;
-              return ["weapon"];
+              text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
             if (isCombat == false) {
@@ -280,10 +280,9 @@ async function openInput() {
               hasActed = true;
               var words = clauses[i].substring(4);
               var spellInput = handleSpell(words);
-              console.log(spellInput);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              return ["spell", spellPower, spellDirection];
+              text = ["spell", spellPower, spellDirection];
             }
           } else if (
             clauses[i].substring(0, 5) == "yell " ||
@@ -299,7 +298,7 @@ async function openInput() {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              return ["spell", spellPower, spellDirection];
+              text = ["spell", spellPower, spellDirection];
             }
           } else if (
             clauses[i].substring(0, 6) == "chant " ||
@@ -317,7 +316,7 @@ async function openInput() {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              return ["spell", spellPower, spellDirection];
+              text = ["spell", spellPower, spellDirection];
             }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
             if (isCombat == false) {
@@ -330,7 +329,7 @@ async function openInput() {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              return ["spell", spellPower, spellDirection];
+              text = ["spell", spellPower, spellDirection];
             }
           }
         }
@@ -506,7 +505,7 @@ async function handleCombat() {
       var enemy = eval(enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
-        await handlePlayerTurn(enemies, enemies.length);
+        enemies = await handlePlayerTurn(enemies, enemies.length);
         turnPlayed = true;
         if (enemies.length > 0) {
           await handleEnemyTurn(enemy);
@@ -520,6 +519,13 @@ async function handleCombat() {
       turnPlayed = true;
     }
   }
+  playerHealth = getValue("currentHealth");
+  if (playerHealth <= 0) {
+    quickPrint("You have been defeated, loading last save.");
+    var save = JSON.parse(localStorage.getItem("save"));
+    localStorage.setItem("playerData", JSON.stringify(save));
+    updateUI();
+  }
   isCombat = false;
 }
 
@@ -530,18 +536,16 @@ async function handlePlayerTurn(enemies, length) {
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
   }
   quickPrint(`You are facing ${getValue("direction")}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`);
-  var choiceInput = await openInput();
-  console.log(choiceInput);
+  choiceInput = await openInput();
   var choice = choiceInput[0];
   if (choiceInput.length > 1) {
     var spellPower = choiceInput[1];
     var spellDirection = choiceInput[2];
   }
   if (choice == "weapon") {
-    var enemies = getValue("location").enemies;
     for (let i = 0; i < enemies.length; i++) {
+      var enemy = eval(enemies[i]);
       if (enemy.position == getValue("direction")) {
-        var enemy = eval(enemies[i]);
         break;
       } else {
         enemy = null;
@@ -551,9 +555,9 @@ async function handlePlayerTurn(enemies, length) {
       var playerAttack = getRandomInt(getValue("attack"));
       var enemyDefense = getRandomInt(enemy.armor);
       var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
-      enemy.health = Math.max(enemyHealth - enemyDamage, 0);
+      enemy.health = Math.max(enemy.health - enemyDamage, 0);
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-      if (enemyHealth <= 0) {
+      if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         calculateValue("experience", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
@@ -567,10 +571,9 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint("There is no enemy in that direction.");
     }
   } else if (choice == "spell") {
-    var enemies = getValue("location").enemies;
     for (let i = 0; i < enemies.length; i++) {
+      var enemy = eval(enemies[i]);
       if (enemy.position == spellDirection) {
-        var enemy = eval(enemies[i]);
         break;
       } else {
         enemy = null;
@@ -579,10 +582,9 @@ async function handlePlayerTurn(enemies, length) {
     if (enemy != null) {
       enemyDefense = getRandomInt(enemy.armor);
       enemyDamage = Math.max(spellPower - enemyDefense, 0);
-      enemy.health = Math.max(enemyHealth - enemyDamage, 0);
-      enemy.health = enemyHealth;
+      enemy.health = Math.max(enemy.health - enemyDamage, 0);
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-      if (enemyHealth <= 0) {
+      if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         calculateValue("experience", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
@@ -597,69 +599,23 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint("There is no enemy in that direction.");
     }
   }
+  return enemies;
 }
 
 async function handleEnemyTurn(enemy) {
   var enemyAttack = getRandomInt(enemy.attack);
-  var playerHealth = getValue("currentHealth");
   var playerDefense = getRandomInt(getValue("armor"));
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-  if (playerHealth <= 0) {
-    quickPrint("You have been defeated.");
-    var response = await requireAnswer(["Yes", "No"], "Would you like to restart from your last save?");
-    if (response == "Yes") {
-      var save = JSON.parse(localStorage.getItem("save"));
-      localStorage.setItem("playerData", JSON.stringify(save));
-      updateUI();
-    }
-  }
 }
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function handleAttack() {
-  var currentLocation = getValue("location");
-  currentLocation = eval(getValue(currentLocation, true));
-  var enemies = currentLocation.enemies;
-  try {
-    for (let i = 0; i < enemies.length; i++) {
-      if (enemy.position == getValue("direction")) {
-        var enemy = eval(enemies[i]);
-        break;
-      }
-    }
-    var playerAttack = getRandomInt(getValue("attack"));
-    var enemyHealth = enemy.health;
-    var enemyDefense = getRandomInt(enemy.armor);
-    var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
-    enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-    enemy.health = enemyHealth;
-    quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-    if (enemyHealth <= 0) {
-      quickPrint(`You have defeated the ${enemy.name}.`);
-      calculateValue("experience", "add", enemy.xp);
-      calculateValue("gold", "add", enemy.gold);
-      for (i = 0; i < enemy.items.length; i++) {
-        var item = enemy.items[i];
-        addEntity(item, "inventory");
-      }
-      var index = enemies.indexOf(enemy);
-      enemies.splice(index, 1);
-    }
-  }
-  catch (error) {
-    quickPrint("There is no enemy in that direction.");
-    return;
-  }
-}
-
 function handleSpell(words) {
   words = words.split(" ");
-  console.log(words);
   var phrase = "";
   var knownSpells = getValue("knownSpells");
   var spokenSpells = getValue("spokenSpells");
@@ -708,7 +664,6 @@ function handleSpell(words) {
           spellName = spokenSpells[j]["name"];
           if (spellName == spell.name) {
             currentSpell = eval("new " + toTitleCase(words[i]) + "()");
-            console.log(currentSpell);
             descriptor = currentSpell.descriptor;
             phrase = phrase.concat(descriptor);
             var matchSpoken = true;
@@ -783,6 +738,5 @@ function handleSpell(words) {
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
-    console.log("working")
   return [spell.power, spellDirection];
 }

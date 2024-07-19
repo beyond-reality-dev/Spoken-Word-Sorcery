@@ -8,8 +8,11 @@ async function militaryAnnex() {
     getValue("armory", true).isVisited == true
   ) {
     await printLines("app/src/cutscenes/militaryAnnex/1.txt");
+    await requireAnswer(["any"], "unreachable");
     await handleCombat();
-    await printLines("app/src/cutscenes/militaryAnnex/2.txt");
+    if (getValue("location") == "militaryAnnex") {
+      await printLines("app/src/cutscenes/militaryAnnex/2.txt");
+    }
   }
 }
 
