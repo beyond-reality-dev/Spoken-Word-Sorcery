@@ -89,9 +89,14 @@ async function openInput() {
             addEntity(memory, "memories");
           } else if (
             clauses[i].substring(0, 5) == "face " ||
-            clauses[i].substring(0, 5) == "look " ||
-            clauses[i].substring(0, 5) == "turn "
+            clauses[i].substring(0, 5) == "turn " ||
+            clauses[i].substring(0, 5) == "look "
           ) {
+            if (hasTurned == true) {
+              quickPrint("You have already turned this turn.");
+              continue;
+            }
+            hasTurned = true;
             var direction = getValue("direction");
             if (clauses[i].substring(5, 12) == "to the ") {
               var change = clauses[i].substring(12);
@@ -100,6 +105,7 @@ async function openInput() {
             }
             handleTurn(direction, change);
           } else if (clauses[i].substring(0, 3) == "go ") {
+            hasTurned = true;
             if (clauses[i].substring(3, 10) == "to the ") {
               direction = clauses[i].substring(10);
             } else {
@@ -147,6 +153,11 @@ async function openInput() {
             }
             handleDrop(item);
           } else if (clauses[i].substring(0, 6) == "equip ") {
+            if (hasEquipped == true) {
+              quickPrint("You have already equipped this turn.");
+              continue;
+            }
+            hasEquipped = true;
             if (clauses[i].substring(6, 8) == "a ") {
               item = clauses[i].substring(8);
             } else if (clauses[i].substring(6, 9) == "an ") {
@@ -157,7 +168,12 @@ async function openInput() {
               item = clauses[i].substring(6);
             }
             handleEquip(item);
-          } else if (clauses[i].substring(0, 7) == "put on ") { 
+          } else if (clauses[i].substring(0, 7) == "put on ") {
+            if (hasEquipped == true) {
+              quickPrint("You have already equipped this turn.");
+              continue;
+            } 
+            hasEquipped = true;
             if (clauses[i].substring(7, 9) == "a ") {
               item = clauses[i].substring(9);
             } else if (clauses[i].substring(7, 10) == "an ") {
@@ -169,6 +185,11 @@ async function openInput() {
             }
             handleEquip(item);
           } else if (clauses[i].substring(0, 6) == "remove ") {
+            if (hasUnequipped == true) {
+              quickPrint("You have already unequipped this turn.");
+              continue;
+            }
+            hasUnequipped = true;
             if (clauses[i].substring(6, 8) == "a ") {
               item = clauses[i].substring(8);
             } else if (clauses[i].substring(6, 9) == "an ") {
@@ -180,6 +201,11 @@ async function openInput() {
             }
             handleUnequip(item);
           } else if (clauses[i].substring(0, 8) == "unequip ") {
+            if (hasUnequipped == true) {
+              quickPrint("You have already unequipped this turn.");
+              continue;
+            }
+            hasUnequipped = true;
             if (clauses[i].substring(8, 10) == "a ") {
               item = clauses[i].substring(10);
             } else if (clauses[i].substring(8, 11) == "an ") {
@@ -191,6 +217,11 @@ async function openInput() {
             }
             handleUnequip(item);
           } else if (clauses[i].substring(0, 9) == "take off ") {
+            if (hasUnequipped == true) {
+              quickPrint("You have already unequipped this turn.");
+              continue;
+            }
+            hasUnequipped = true;
             if (clauses[i].substring(9, 11) == "a ") {
               item = clauses[i].substring(11);
             } else if (clauses[i].substring(9, 12) == "an ") {
@@ -205,22 +236,22 @@ async function openInput() {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == false) {
-              handleAttack();
               hasActed = true;
+              handleAttack();
             }
           } else if (clauses[i].substring(0, 6) == "attack") {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == false) {
-              handleAttack();
               hasActed = true;
+              handleAttack();
             }
           } else if (clauses[i].substring(0, 10) == "use weapon") {
             if (isCombat == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == false) {
-              handleAttack();
               hasActed = true;
+              handleAttack();
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
             var words = clauses[i].substring(4);
