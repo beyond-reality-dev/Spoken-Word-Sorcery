@@ -514,10 +514,6 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
-    console.log(enemy);
-    console.log(enemy.name);
-    console.log(enemy.health);
-    console.log(enemy.position);
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
   }
   quickPrint(`You are facing ${getValue("direction")}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`);
@@ -549,7 +545,6 @@ function getRandomInt(max) {
 function handleAttack() {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
-  console.log(currentLocation);
   var enemies = currentLocation.enemies;
   try {
     for (let i = 0; i < enemies.length; i++) {
@@ -585,6 +580,7 @@ function handleAttack() {
 
 function handleSpell(words) {
   words = words.split(" ");
+  console.log(words);
   var phrase = "";
   var knownSpells = getValue("knownSpells");
   var spokenSpells = getValue("spokenSpells");
@@ -629,9 +625,11 @@ function handleSpell(words) {
             break;
           }
         }
-        for (let i = 0; i < spokenSpells.length; i++) {
-          spellName = spokenSpells[i]["name"];
+        for (let j = 0; j < spokenSpells.length; j++) {
+          spellName = spokenSpells[j]["name"];
           if (spellName == spell.name) {
+            currentSpell = eval("new " + toTitleCase(words[i]) + "()");
+            console.log(currentSpell);
             descriptor = currentSpell.descriptor;
             phrase = phrase.concat(descriptor);
             var matchSpoken = true;
@@ -706,50 +704,34 @@ function handleSpell(words) {
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
-  console.log(getValue("location"));
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
-  console.log(currentLocation);
   var enemies = currentLocation.enemies;
-  console.log(enemies);
   changeValue("direction", spellDirection);
-  console.log(getValue("direction"));
-  console.log(0);
   for (let i = 0; i < enemies.length; i++) {
-    var enemy = eval(enemies[i]);
+    var enemy = enemies[i]; // Direct reference to the object in the array
     if (enemy.position == getValue("direction")) {
-      break;
+      console.log("right");
+      var spellPower = getRandomInt(spell.power);
+      var enemyDefense = getRandomInt(enemy.armor);
+      var enemyDamage = Math.max(spellPower - enemyDefense, 0);
+      enemy.health = Math.max(enemy.health - enemyDamage, 0);
+      quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+      if (enemy.health <= 0) {
+        quickPrint(`You have defeated ${enemy.name}.`);
+        calculateValue("experience", "add", enemy.xp);
+        calculateValue("gold", "add", enemy.gold);
+        for (i = 0; i < enemy.items.length; i++) {
+          var item = enemy.items[i];
+          addEntity(item, "inventory");
+        }
+        var index = enemies.indexOf(enemy);
+        enemies.splice(index, 1);
+        }
     }
-    enemy = null;
   }
-  if (enemy != null) {
-    var spellPower = spell.power;
-    var enemyHealth = enemy.health;
-    console.log(1);
-    var enemyDefense = getRandomInt(enemy.armor);
-    console.log(2);
-    var enemyDamage = Math.max(spellPower - enemyDefense, 0);
-    console.log(3);
-    enemyHealth = Math.max(enemyHealth - enemyDamage, 0);
-    console.log(4);
-    enemy.health = enemyHealth;
-    console.log(enemy.health);
-    console.log(enemy);
-    console.log(5);
-    quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-    console.log(6);
-    if (enemyHealth <= 0) {
-      quickPrint(`You have defeated ${enemy.name}.`);
-      calculateValue("experience", "add", enemy.xp);
-      calculateValue("gold", "add", enemy.gold);
-      for (i = 0; i < enemy.items.length; i++) {
-        var item = enemy.items[i];
-        addEntity(item, "inventory");
-      }
-      var index = enemies.indexOf(enemy);
-      enemies.splice(index, 1);
-    }
-  } else if (enemy == null) {
-    quickPrint("There is no enemy in that direction.");
-  }
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var locations = playerData["locations"];
+  locations[currentLocation.name]["enemies"] = enemies;
+  localStorage.setItem("playerData", JSON.stringify(playerData));
 }
