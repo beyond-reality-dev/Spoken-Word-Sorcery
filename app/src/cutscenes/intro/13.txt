@@ -5,7 +5,6 @@ Immediately after you finished Speaking, a roughly circular shimmer in the air f
 "Try it now. First, turn in any direction away from me. Then, say the element Word, followed by the shape Word, and then the direction Word."
 "Actually, on second thought, why don't you describe exactly what you'll do, before you actually do it."
 "You can start by saying 'I' if you want to, and then describe your actions, although that part is up to you."
-"You can say something like 'look,' or 'turn,' and then say a direction like 'left,' 'right,' 'forward,' or 'backward.'
-"Although in this case it will have to be a direction other than forward."
+"You can say something like 'look,' or 'turn,' and then say a direction like 'left,' or 'right.'"
 "Then describe the spell, making sure to use 'and' in between the clauses in the same sentence."
 "You can tell me that you 'say,' or 'speak,' followed by the spell phrase."

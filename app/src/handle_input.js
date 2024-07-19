@@ -522,6 +522,10 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
+    console.log(enemy);
+    console.log(enemy.name);
+    console.log(enemy.health);
+    console.log(enemy.position);
     quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
   }
   quickPrint(`You are facing ${getValue("direction")}.`);
@@ -576,7 +580,9 @@ async function handlePlayerTurn(enemies, length) {
       validInput = false;
       while (validInput == false) {
         try {
-          var spellPower = handleSpell(words);
+          var spellAspects = handleSpell(words);
+          var spellPower = spellAspects[0];
+          var spellDirection = spellAspects[1];
           var enemyHealth = enemy.health;
           var enemyDefense = getRandomInt(enemy.armor);
           var enemyDamage = Math.max(spellPower - enemyDefense, 0);
@@ -692,7 +698,7 @@ function handleSpell(words) {
         }
       }
       calculateValue("currentMana", "subtract", spell.manaCost);
-      return spell.power;
+      return [spell.power, direction];
     }
   }
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
