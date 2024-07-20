@@ -249,36 +249,49 @@ function updateMap() {
     const northDiv = document.createElement("div");
     northDiv.style.width = `${north["width"]*10}px`;
     northDiv.style.height = `${north["height"]*10}px`;
-    northDiv.style.position = "relative";
+    northDiv.style.position = "absolute";
+    northDiv.style.bottom = (startingDiv.getBoundingClientRect().top + north["width"]*10).toString() + "px";
     northDiv.style.left = "50%";
     northDiv.style.transform = "translateX(-50%)";
     northDiv.className = "map-tile";
-    northDiv.innerHTML = `<div>North</div>`;
+    northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.insertBefore(northDiv, startingDiv);
-  } else if (exits["east"]) {
+  } 
+  if (exits["east"]) {
     const east = eval(exits["east"]);
     const eastDiv = document.createElement("div");
     eastDiv.style.width = `${east["width"]*10}px`;
     eastDiv.style.height = `${east["height"]*10}px`;
     eastDiv.style.position = "absolute";
-    eastDiv.style.left = "50%";
-    eastDiv.style.transform = "translateX(-50%)";
+    eastDiv.style.bottom = (startingDiv.getBoundingClientRect().bottom - east["height"]*5.9).toString() + "px";
+    eastDiv.style.left = (startingDiv.getBoundingClientRect().left + east["width"]*10).toString() + "px";
     eastDiv.className = "map-tile";
-    eastDiv.innerHTML = `<div>East</div>`;
-    map.appendChild(eastDiv);
-  } else if (exits["south"]) {
+    eastDiv.innerHTML = `<div>${east["name"]}</div>`;
+    map.insertBefore(eastDiv, startingDiv);
+  } 
+  if (exits["south"]) {
+    const south = eval(exits["south"]);
     const southDiv = document.createElement("div");
-    southDiv.style.width = `${currentLocation["exits"]["south"]["width"]*10}px`;
-    southDiv.style.height = `${currentLocation["exits"]["south"]["height"]*10}px`;
+    southDiv.style.width = `${south["width"]*10}px`;
+    southDiv.style.height = `${south["height"]*10}px`;
+    southDiv.style.position = "absolute";
+    southDiv.style.top = (startingDiv.getBoundingClientRect().top + currentLocation["height"]*10).toString() + "px";
+    southDiv.style.left = "50%";
+    southDiv.style.transform = "translateX(-50%)";
     southDiv.className = "map-tile";
-    southDiv.innerHTML = `<div>South</div>`;
+    southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
-  } else if (exits["west"]) {
+  } 
+  if (exits["west"]) {
+    const west = eval(exits["west"]);
     const westDiv = document.createElement("div");
-    westDiv.style.width = `${currentLocation["exits"]["west"]["width"]*10}px`;
-    westDiv.style.height = `${currentLocation["exits"]["west"]["height"]*10}px`;
+    westDiv.style.width = `${west["width"]*10}px`;
+    westDiv.style.height = `${west["height"]*10}px`;
+    westDiv.style.position = "absolute";
+    westDiv.style.bottom = (startingDiv.getBoundingClientRect().bottom - west["height"]*5.9).toString() + "px";
+    westDiv.style.left = (startingDiv.getBoundingClientRect().left - west["width"]*10).toString() + "px";
     westDiv.className = "map-tile";
-    westDiv.innerHTML = `<div>West</div>`;
+    westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
   }
 }

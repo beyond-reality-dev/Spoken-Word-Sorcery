@@ -84,8 +84,8 @@ class CommonRoom extends Room {
       "Common Room",
       "commonRoom",
       "The common room is a large room with a few tables and chairs. There is a door to the north, leading to the grand hall, a door to the south, leading to the training room, a door to the east, leading to the kitchen, and a door to the west, leading to the barracks.",
-      "20",
-      "20"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
@@ -123,8 +123,8 @@ class Barracks extends Room {
       "Barracks",
       "barracks",
       "The barracks is a large room with a few beds and footlockers. There is a door to the east, leading to the common room.",
-      "20",
-      "20"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
@@ -143,8 +143,8 @@ class GrandHall extends Room {
       "Grand Hall",
       "grandHall",
       "The grand hall is an enormous hall, and normally an impressive sight. Right now, however, it's a mess. Guards line the doorways, and the doors are barricaded. There is a door to the north, leading to a long passageway, a door to the east leading to the Academy's vault, a door to the west leading to the rest of the Academy, and a door to the south leading to the common room.",
-      "80",
-      "40"
+      "30",
+      "20"
     );
     this.items = {};
     this.exits = {
@@ -206,7 +206,7 @@ class ShortHallway extends Room {
       "Short Hallway",
       "shortHallway",
       "The short hallway is a small, dark hallway. There is a door to the east, leading to the hall gates.",
-      "10",
+      "15",
       "10"
     );
     this.items = {};
@@ -242,8 +242,8 @@ class LongPassageway extends Room {
       "Long Passageway",
       "longPassageway",
       "The long passageway is a long, dark passageway. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
-      "60",
-      "20"
+      "10",
+      "30"
     );
     this.items = {};
     this.exits = {
@@ -261,8 +261,8 @@ class MilitaryAnnex extends Room {
       "Military Annex",
       "militaryAnnex",
       "The military annex is a large, empty room. There is a door to the north, leading to the armory, a door to the east, leading to the first barracks, a door to the west, leading to the second barracks, and a door to the south, leading back to the long passageway.",
-      "40",
-      "40"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
@@ -289,8 +289,8 @@ class FirstBarracks extends Room {
       "First Barracks",
       "firstBarracks",
       "The first barracks is a large room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
-      "20",
-      "20"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
@@ -307,8 +307,8 @@ class SecondBarracks extends Room {
       "Second Barracks",
       "secondBarracks",
       "The second barracks is a large room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
-      "20",
-      "20"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
@@ -325,8 +325,8 @@ class Armory extends Room {
       "Armory",
       "armory",
       "The armory is a large room with a few weapons racks and a few stands for pieces of armor. Oddly, much of the furniture has been strewn about, and none of the equipment remains. There is a door to the south, leading back to the military annex.",
-      "20",
-      "20"
+      "15",
+      "15"
     );
     this.items = {};
     this.exits = {
