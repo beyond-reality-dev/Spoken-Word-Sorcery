@@ -235,14 +235,24 @@ function updateMap() {
   var locations = playerData["locations"];
   var currentLocation = locations[location];
   var locationName = currentLocation["name"];
+  locationName = locationName.replace(/([A-Z])/g, " $1").trim();
+  locationName = locationName.charAt(0).toUpperCase() + locationName.slice(1);
   var exits = currentLocation["exits"];
-  var map = document.getElementById("map");
-  map.innerHTML = `<h2>Current Location: ${locationName}</h2>`;
-  Object.keys(exits).forEach(direction => {
-    var exitLocationName = exits[direction];
-    var div = document.createElement("div");
-    div.textContent = `Go ${direction} to ${exitLocationName}`;
-    map.appendChild(div);
+  map.innerHTML = "";
+  map.innerHTML += `<h2>Current Location: ${locationName}</h2>`;
+  Object.keys(exits).forEach((exit) => {
+    var exitName = exits[exit];
+    exitName = exitName.replace(/([A-Z])/g, " $1").trim();
+    exitName = exitName.charAt(0).toUpperCase() + exitName.slice(1);
+    map.innerHTML += `<div class="map-tile"><div class="tile-text">${exitName}</div></div>`;
+    exits = exit[exit]["exits"];
+    console.log(exits);
+    Object.keys(exits).forEach((exit) => {
+      var exitName = exits[exit];
+      exitName = exitName.replace(/([A-Z])/g, " $1").trim();
+      exitName = exitName.charAt(0).toUpperCase() + exitName.slice(1);
+      map.innerHTML += `<div class="map-tile"><div class="tile-text">${exitName}</div></div>`;
+    });
   });
 }
 

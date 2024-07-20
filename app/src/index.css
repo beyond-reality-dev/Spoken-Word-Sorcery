@@ -275,3 +275,17 @@ body {
   width: 100%;
   font-size: large;
 }
+
+.map-tile {
+  width: 10vh;
+  height: 10vh;
+  display: inline-block;
+  border: solid black;
+  text-align: center;
+  margin: auto;
+  padding: 5vh;
+}
+
+.tile-text {
+  font-size: x-large;
+}
