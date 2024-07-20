@@ -409,14 +409,14 @@ function handleMovement(direction) {
         return;
       }
     }
-    changeValue("location", newLocation.name);
+    changeValue("location", newLocation.id);
     changeValue("direction", direction);
     quickPrint(newLocation.description);
     if (newLocation.hasOwnProperty("isVisited")) {
       newLocation.isVisited = true;
       var playerData = JSON.parse(localStorage.getItem("playerData"));
       var locations = playerData["locations"];
-      locations[currentLocation.name]["isVisited"] = true;
+      locations[currentLocation.id]["isVisited"] = true;
       localStorage.setItem("playerData", JSON.stringify(playerData));
     }
     if (newLocation.hasOwnProperty("cutscene")) {
@@ -443,7 +443,7 @@ function handlePickup(item) {
     delete items[item];
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
-    locations[currentLocation.name]["items"] = items;
+    locations[currentLocation.id]["items"] = items;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
   } else {

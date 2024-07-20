@@ -235,25 +235,52 @@ function updateMap() {
   var locations = playerData["locations"];
   var currentLocation = locations[location];
   var locationName = currentLocation["name"];
-  locationName = locationName.replace(/([A-Z])/g, " $1").trim();
-  locationName = locationName.charAt(0).toUpperCase() + locationName.slice(1);
   var exits = currentLocation["exits"];
   map.innerHTML = "";
   map.innerHTML += `<h2>Current Location: ${locationName}</h2>`;
-  Object.keys(exits).forEach((exit) => {
-    var exitName = exits[exit];
-    exitName = exitName.replace(/([A-Z])/g, " $1").trim();
-    exitName = exitName.charAt(0).toUpperCase() + exitName.slice(1);
-    map.innerHTML += `<div class="map-tile"><div class="tile-text">${exitName}</div></div>`;
-    exits = exit[exit]["exits"];
-    console.log(exits);
-    Object.keys(exits).forEach((exit) => {
-      var exitName = exits[exit];
-      exitName = exitName.replace(/([A-Z])/g, " $1").trim();
-      exitName = exitName.charAt(0).toUpperCase() + exitName.slice(1);
-      map.innerHTML += `<div class="map-tile"><div class="tile-text">${exitName}</div></div>`;
-    });
-  });
+  const startingDiv = document.createElement("div");
+  startingDiv.style.width = `${currentLocation["width"]*10}px`;
+  startingDiv.style.height = `${currentLocation["height"]*10}px`;
+  startingDiv.className = "starting-tile";
+  startingDiv.innerHTML = `<div>${locationName}</div>`;
+  map.appendChild(startingDiv);
+  if (exits["north"]) {
+    const north = eval(exits["north"]);
+    const northDiv = document.createElement("div");
+    northDiv.style.width = `${north["width"]*10}px`;
+    northDiv.style.height = `${north["height"]*10}px`;
+    northDiv.style.position = "relative";
+    northDiv.style.left = "50%";
+    northDiv.style.transform = "translateX(-50%)";
+    northDiv.className = "map-tile";
+    northDiv.innerHTML = `<div>North</div>`;
+    map.insertBefore(northDiv, startingDiv);
+  } else if (exits["east"]) {
+    const east = eval(exits["east"]);
+    const eastDiv = document.createElement("div");
+    eastDiv.style.width = `${east["width"]*10}px`;
+    eastDiv.style.height = `${east["height"]*10}px`;
+    eastDiv.style.position = "absolute";
+    eastDiv.style.left = "50%";
+    eastDiv.style.transform = "translateX(-50%)";
+    eastDiv.className = "map-tile";
+    eastDiv.innerHTML = `<div>East</div>`;
+    map.appendChild(eastDiv);
+  } else if (exits["south"]) {
+    const southDiv = document.createElement("div");
+    southDiv.style.width = `${currentLocation["exits"]["south"]["width"]*10}px`;
+    southDiv.style.height = `${currentLocation["exits"]["south"]["height"]*10}px`;
+    southDiv.className = "map-tile";
+    southDiv.innerHTML = `<div>South</div>`;
+    map.appendChild(southDiv);
+  } else if (exits["west"]) {
+    const westDiv = document.createElement("div");
+    westDiv.style.width = `${currentLocation["exits"]["west"]["width"]*10}px`;
+    westDiv.style.height = `${currentLocation["exits"]["west"]["height"]*10}px`;
+    westDiv.className = "map-tile";
+    westDiv.innerHTML = `<div>West</div>`;
+    map.appendChild(westDiv);
+  }
 }
 
 function addEntity(entity, target) {
