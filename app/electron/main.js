@@ -20,7 +20,7 @@ function createWindow() {
   window.maximize();
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
-        const { saveGame, loadGame, changeValue } = require("./save_data.js");
+        const { saveGame, loadGame, changeValue, updateMap } = require("./save_data.js");
         const { intro } = require("./cutscenes/intro/intro.js");
 
         // Start menu functions.
@@ -92,6 +92,7 @@ function createWindow() {
         document.getElementById("map-button").onclick = function () {
           switchScreen("map-screen");
           switchButton("map-button");
+          updateMap();
         }
 
         document.getElementById("home-button").onclick = function () {

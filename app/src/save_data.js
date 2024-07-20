@@ -1,6 +1,5 @@
-module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue };
+module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue, updateMap };
 
-const { toTitleCase } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
 const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, academyGates, longPassageway, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
 
@@ -83,7 +82,6 @@ function updateUI() {
   updateSpellbook("memories");
   updateInventory();
   updateEquipment();
-  updateMap();
 }
 
 function updateTitleBar() {
@@ -236,16 +234,16 @@ function updateMap() {
   var location = playerData["location"];
   var locations = playerData["locations"];
   var currentLocation = locations[location];
+  var locationName = currentLocation["name"];
   var exits = currentLocation["exits"];
   var map = document.getElementById("map");
-  map.innerHTML = "";
-  for (let i = 0; i < exits.length; i++) {
-    var exit = exits[i];
-    var exitName = exit["name"];
-    var exitDirection = exit["direction"];
-    map.innerHTML += `<option id="${exitName}">${exitName} | ${exitDirection}</option>`;
-  }
-  document.getElementById("location").innerHTML = toTitleCase("Current Location:" + currentLocation["name"]);
+  map.innerHTML = `<h2>Current Location: ${locationName}</h2>`;
+  Object.keys(exits).forEach(direction => {
+    var exitLocationName = exits[direction];
+    var div = document.createElement("div");
+    div.textContent = `Go ${direction} to ${exitLocationName}`;
+    map.appendChild(div);
+  });
 }
 
 function addEntity(entity, target) {

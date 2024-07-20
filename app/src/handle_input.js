@@ -8,6 +8,7 @@ const {
   changeValue,
   calculateValue,
   updateUI,
+  updateMap,
 } = require("./save_data");
 
 const { toTitleCase, quickPrint, requireAnswer } = require("./general");
@@ -426,6 +427,7 @@ function handleMovement(direction) {
   } catch (error) {
     quickPrint("You cannot go that way.");
   }
+  updateMap();
 }
 
 function handlePickup(item) {
