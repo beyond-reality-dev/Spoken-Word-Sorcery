@@ -212,11 +212,29 @@ class ShortHallway extends Room {
     this.items = {};
     this.exits = {
       east: "hallGates",
+      west: "restOfAcademy",
     };
   }
 }
 
 var shortHallway = new ShortHallway();
+
+class RestOfAcademy extends Room {
+  constructor() {
+    super(
+      "Rest of the Academy",
+      "restOfAcademy",
+      "The rest of the Academy is a large, open area. There is a door to the east, leading to the short hallway.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      east: "shortHallway",
+    };
+    this.cutscene = "restOfAcademy";
+  }
+}
 
 class LongPassageway extends Room {
   constructor() {
