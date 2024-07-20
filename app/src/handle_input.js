@@ -427,7 +427,6 @@ function handleMovement(direction) {
   } catch (error) {
     quickPrint("You cannot go that way.");
   }
-  updateMap();
 }
 
 function handlePickup(item) {

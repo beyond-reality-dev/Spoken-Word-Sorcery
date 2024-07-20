@@ -244,13 +244,19 @@ function updateMap() {
   startingDiv.className = "starting-tile";
   startingDiv.innerHTML = `<div>${locationName}</div>`;
   map.appendChild(startingDiv);
+  buildRooms(exits, startingDiv);
+}
+
+function buildRooms(exits, startingDiv, level=0) {
   if (exits["north"]) {
     const north = eval(exits["north"]);
+    if (document.getElementById(north["id"])) { return; }
     const northDiv = document.createElement("div");
+    northDiv.setAttribute("id", north["id"]);
     northDiv.style.width = `${north["width"]*10}px`;
     northDiv.style.height = `${north["height"]*10}px`;
     northDiv.style.position = "absolute";
-    northDiv.style.bottom = (startingDiv.getBoundingClientRect().top + north["width"]*10).toString() + "px";
+    northDiv.style.bottom = (startingDiv.getBoundingClientRect().top - 2).toString() + "px";
     northDiv.style.left = "50%";
     northDiv.style.transform = "translateX(-50%)";
     northDiv.className = "map-tile";
@@ -259,23 +265,27 @@ function updateMap() {
   } 
   if (exits["east"]) {
     const east = eval(exits["east"]);
+    if (document.getElementById(east["id"])) { return; }
     const eastDiv = document.createElement("div");
+    eastDiv.setAttribute("id", east["id"]);
     eastDiv.style.width = `${east["width"]*10}px`;
     eastDiv.style.height = `${east["height"]*10}px`;
     eastDiv.style.position = "absolute";
-    eastDiv.style.bottom = (startingDiv.getBoundingClientRect().bottom - east["height"]*5.9).toString() + "px";
-    eastDiv.style.left = (startingDiv.getBoundingClientRect().left + east["width"]*10).toString() + "px";
+    eastDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
+    eastDiv.style.left = (startingDiv.getBoundingClientRect().right - 2).toString() + "px";
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.insertBefore(eastDiv, startingDiv);
   } 
   if (exits["south"]) {
     const south = eval(exits["south"]);
+    if (document.getElementById(south["id"])) { return; }
     const southDiv = document.createElement("div");
+    southDiv.setAttribute("id", south["id"]);
     southDiv.style.width = `${south["width"]*10}px`;
     southDiv.style.height = `${south["height"]*10}px`;
     southDiv.style.position = "absolute";
-    southDiv.style.top = (startingDiv.getBoundingClientRect().top + currentLocation["height"]*10).toString() + "px";
+    southDiv.style.top = (startingDiv.getBoundingClientRect().bottom - 2).toString() + "px";
     southDiv.style.left = "50%";
     southDiv.style.transform = "translateX(-50%)";
     southDiv.className = "map-tile";
@@ -284,12 +294,14 @@ function updateMap() {
   } 
   if (exits["west"]) {
     const west = eval(exits["west"]);
+    if (document.getElementById(west["id"])) { return; }
     const westDiv = document.createElement("div");
+    westDiv.setAttribute("id", west["id"]);
     westDiv.style.width = `${west["width"]*10}px`;
     westDiv.style.height = `${west["height"]*10}px`;
     westDiv.style.position = "absolute";
-    westDiv.style.bottom = (startingDiv.getBoundingClientRect().bottom - west["height"]*5.9).toString() + "px";
-    westDiv.style.left = (startingDiv.getBoundingClientRect().left - west["width"]*10).toString() + "px";
+    westDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
+    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 2).toString() + "px";
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);

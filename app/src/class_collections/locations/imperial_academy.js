@@ -188,7 +188,7 @@ class HallGates extends Room {
       "10",
       "10",
       true,
-      "The Academy gates are barricaded and guarded by a pair of imposing soldiers, who inform you that the Grandmaster is only allowing movement between the interior and main part of the Academy with his explicit command."
+      "The hall gates are barricaded and guarded by a pair of imposing soldiers, who inform you that the Grandmaster is only allowing movement between the interior and main part of the Academy with his explicit command."
     );
     this.items = {};
     this.exits = {
