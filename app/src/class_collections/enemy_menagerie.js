@@ -25,7 +25,7 @@ class Enemy {
 }
 
 class Rebel extends Enemy {
-  constructor(name, position, items = []) {
+  constructor(name, position, items = ["ironSword"]) {
     super(name, position, 50, 10, 10, 10, 1, 5, 10, items);
   }
 }

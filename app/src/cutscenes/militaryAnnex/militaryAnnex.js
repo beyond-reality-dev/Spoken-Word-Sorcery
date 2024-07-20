@@ -1,6 +1,6 @@
 const { printLines, requireAnswer } = require("../../general");
 const { getValue } = require("../../save_data");
-const { inputLoop, handleCombat } = require("../../handle_input");
+const { handleCombat } = require("../../handle_input");
 
 async function militaryAnnex() {
   if (
