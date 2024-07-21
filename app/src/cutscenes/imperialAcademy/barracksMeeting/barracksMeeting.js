@@ -1,9 +1,9 @@
-const { printLines } = require("../../general");
-const { getValue, changeValue } = require("../../save_data");
+const { printLines } = require("../../../general");
+const { getValue, changeValue } = require("../../../save_data");
 
 async function barracksMeeting() {
   if (getValue("barracks", true).cutscenePlayed == false) {
-    printLines("app/src/cutscenes/barracksMeeting/1.txt");
+    printLines("app/src/cutscenes/imperialAcademy/barracksMeeting/1.txt");
     changeValue("['barracks']['cutscenePlayed']", true, "locations")
   }
 }

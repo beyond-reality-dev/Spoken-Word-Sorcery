@@ -1,4 +1,4 @@
-const { Rebel } = require("../enemy_menagerie");
+const { Enemy, Rebel } = require("../enemy_menagerie");
 
 class Room {
   constructor(
@@ -180,8 +180,11 @@ class Vault extends Room {
     };
     this.cutscene = "vault";
     this.cutscenePlayed = false;
+    this.enemies = [vaultDoor];
   }
 }
+
+var vaultDoor = new Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0);
 
 var vault = new Vault();
 
@@ -242,6 +245,8 @@ class RestOfAcademy extends Room {
     this.cutscenePlayed = "false";
   }
 }
+
+var restOfAcademy = new RestOfAcademy();
 
 class LongPassage extends Room {
   constructor() {
@@ -359,6 +364,7 @@ module.exports = {
   vault,
   hallGates,
   shortHallway,
+  restOfAcademy,
   longPassage,
   militaryAnnex,
   firstBarracks,

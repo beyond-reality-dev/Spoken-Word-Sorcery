@@ -1,7 +1,7 @@
 module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue, updateMap };
 
 const { inputLoop, handleMovement } = require("./handle_input");
-const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, academyGates, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
+const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, hallGates, shortHallway, restOfAcademy, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
 
 function initializeData() {
   var playerData = {
@@ -43,7 +43,9 @@ function initializeData() {
     barracks: barracks,
     grandHall: grandHall,
     vault: vault,
-    academyGates: academyGates,
+    hallGates: hallGates,
+    shortHallway: shortHallway,
+    restOfAcademy: restOfAcademy,
     longPassage: longPassage,
     militaryAnnex: militaryAnnex,
     firstBarracks: firstBarracks,

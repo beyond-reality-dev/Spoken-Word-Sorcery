@@ -26,11 +26,11 @@ const {
 
 const { Arrow } = require("./class_collections/item_catalog");
 
-const { grandHallEncounter } = require("./cutscenes/grandHall/grandHall");
-const { barracksMeeting } = require("./cutscenes/barracksMeeting/barracksMeeting");
-const { militaryAnnex } = require("./cutscenes/militaryAnnex/militaryAnnex");
-const { restOfAcademy } = require("./cutscenes/restOfAcademy/restOfAcademy");
-const { vault } = require("./cutscenes/vault/vault");
+const { grandHallEncounter } = require("./cutscenes/imperialAcademy/grandHall/grandHall");
+const { barracksMeeting } = require("./cutscenes/imperialAcademy/barracksMeeting/barracksMeeting");
+const { militaryAnnex } = require("./cutscenes/imperialAcademy/militaryAnnex/militaryAnnex");
+const { restOfAcademy } = require("./cutscenes/imperialAcademy/restOfAcademy/restOfAcademy");
+const { vault } = require("./cutscenes/imperialAcademy/vault/vault");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";

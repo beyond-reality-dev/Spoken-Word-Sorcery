@@ -21,7 +21,7 @@ function createWindow() {
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
         const { saveGame, loadGame, changeValue, updateMap } = require("./save_data.js");
-        const { intro } = require("./cutscenes/intro/intro.js");
+        const { intro } = require("./cutscenes/imperialAcademy/intro/intro.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {

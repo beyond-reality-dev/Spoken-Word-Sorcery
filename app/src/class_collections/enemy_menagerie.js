@@ -48,4 +48,4 @@ class RebelWarlord extends Enemy {
   }
 }
 
-module.exports = { Rebel, RebelCaptain, RebelGeneral, RebelWarlord };
+module.exports = { Enemy, Rebel, RebelCaptain, RebelGeneral, RebelWarlord };

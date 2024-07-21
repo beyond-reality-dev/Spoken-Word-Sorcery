@@ -1,6 +1,6 @@
-const { printLines, requireAnswer } = require("../../general");
-const { getValue } = require("../../save_data");
-const { handleCombat } = require("../../handle_input");
+const { printLines, requireAnswer } = require("../../../general");
+const { getValue } = require("../../../save_data");
+const { handleCombat } = require("../../../handle_input");
 
 async function militaryAnnex() {
   if (
@@ -8,11 +8,11 @@ async function militaryAnnex() {
     getValue("militaryAnnex", true).cutscenePlayed == false &&
     getValue("armory", true).isVisited == true
   ) {
-    await printLines("app/src/cutscenes/militaryAnnex/1.txt");
+    await printLines("app/src/cutscenes/imperialAcademy/militaryAnnex/1.txt");
     await requireAnswer(["any"], "unreachable");
     await handleCombat();
     if (getValue("location") == "militaryAnnex") {
-      await printLines("app/src/cutscenes/militaryAnnex/2.txt");
+      await printLines("app/src/cutscenes/imperialAcademy/militaryAnnex/2.txt");
       changeValue("['militaryAnnex']['cutscenePlayed']", true, "locations")
     }
   }
