@@ -18,6 +18,12 @@ class WoodenStaff extends Weapon {
   }
 }
 
+class ImperialDagger extends Weapon {
+  constructor(quantity=1) {
+    super("Imperial Dagger", "A dagger that once belonged to an Imperial Adept, before he sacrificed his life for your benefit", "mainHand", 10, 10, 1, 5, quantity);
+  }
+}
+
 class IronSword extends Weapon {
   constructor(quantity=1) {
     super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5, quantity);
@@ -172,4 +178,4 @@ class Miscellaneous {
   }
 }
 
-module.exports = { Weapon, Armor, Consumable, Miscellaneous, Arrow };
+module.exports = { Weapon, Armor, Consumable, Miscellaneous, ImperialDagger, Arrow };

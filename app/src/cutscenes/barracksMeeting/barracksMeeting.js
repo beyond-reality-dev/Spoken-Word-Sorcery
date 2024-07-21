@@ -1,9 +1,10 @@
 const { printLines } = require("../../general");
-const { getValue } = require("../../save_data");
+const { getValue, changeValue } = require("../../save_data");
 
 async function barracksMeeting() {
-  if (getValue("barracks", true).isVisited == false) {
+  if (getValue("barracks", true).cutscenePlayed == false) {
     printLines("app/src/cutscenes/barracksMeeting/1.txt");
+    changeValue("['barracks']['cutscenePlayed']", true, "locations")
   }
 }
 

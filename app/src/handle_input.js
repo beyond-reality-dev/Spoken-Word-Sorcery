@@ -7,11 +7,10 @@ const {
   getValue,
   changeValue,
   calculateValue,
-  updateUI,
-  updateMap,
+  updateUI
 } = require("./save_data");
 
-const { toTitleCase, quickPrint, requireAnswer } = require("./general");
+const { toTitleCase, quickPrint } = require("./general");
 
 const { Rebel } = require("./class_collections/enemy_menagerie");
 
@@ -30,6 +29,8 @@ const { Arrow } = require("./class_collections/item_catalog");
 const { grandHallEncounter } = require("./cutscenes/grandHall/grandHall");
 const { barracksMeeting } = require("./cutscenes/barracksMeeting/barracksMeeting");
 const { militaryAnnex } = require("./cutscenes/militaryAnnex/militaryAnnex");
+const { restOfAcademy } = require("./cutscenes/restOfAcademy/restOfAcademy");
+const { vault } = require("./cutscenes/vault/vault");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -420,7 +421,9 @@ function handleMovement(direction) {
       localStorage.setItem("playerData", JSON.stringify(playerData));
     }
     if (newLocation.hasOwnProperty("cutscene")) {
+      if (newLocation.cutscenePlayed == false) {
         eval(newLocation.cutscene + "()");
+      }
     } else if (newLocation.hasOwnProperty("enemies")) {
       handleCombat();
     }
@@ -654,8 +657,6 @@ function handleSpell(words) {
           var currentSpell = eval("new " + toTitleCase(words[i]) + "()");
           var spellName = knownSpells[j]["name"];
           if (spellName == currentSpell.name) {
-            var descriptor = currentSpell.descriptor;
-            phrase = phrase.concat(descriptor);
             var matchKnown = true;
             addEntity(currentSpell, "spokenSpells");
             break;
@@ -665,8 +666,6 @@ function handleSpell(words) {
           spellName = spokenSpells[j]["name"];
           if (spellName == spell.name) {
             currentSpell = eval("new " + toTitleCase(words[i]) + "()");
-            descriptor = currentSpell.descriptor;
-            phrase = phrase.concat(descriptor);
             var matchSpoken = true;
             break;
           }
@@ -676,6 +675,7 @@ function handleSpell(words) {
           break;
         }
       }
+      phrase = `${element.descriptor}${spell.descriptor}${direction.descriptor}`;
       calculateValue("currentMana", "subtract", spell.manaCost);
       if (direction.name == "Away") {
         var spellDirection = getValue("direction");

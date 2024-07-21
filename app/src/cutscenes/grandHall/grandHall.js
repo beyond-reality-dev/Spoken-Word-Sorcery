@@ -18,7 +18,7 @@ async function grandHallEncounter() {
     await requireAnswer(["no", "n"], "You try to speak, but the words catch in your throat. Your oath requires you to answer honestly.");
     printLines("app/src/cutscenes/grandHall/5.txt");
     await requireAnswer(["yes", "y"], '"Is that clear?"');
-  } else {
+  } else if (getValue("grandHall", true).cutscenePlayed == false) {
     printLines("app/src/cutscenes/grandHall/6.txt");
     requireAnswer(["any"], "unreachable");
     printLines("app/src/cutscenes/grandHall/7.txt");
@@ -29,6 +29,7 @@ async function grandHallEncounter() {
     changeValue("['commonRoom']['lockedDescription']", "The door to the common room has collapsed, blocking the way.", "locations");
     changeValue("['grandHall']['description']", "The grand hall, once impressive, is now desolate. Nothing of value remains, with even the soldiers' weapons and armor having been stripped from their bodies. By whom, you cannot say.", "locations");
     handleMovement("load");
+    changeValue("['grandHall']['cutscenePlayed']", true, "locations")
   }
 }
 

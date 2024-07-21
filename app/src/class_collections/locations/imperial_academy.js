@@ -133,6 +133,7 @@ class Barracks extends Room {
       east: "commonRoom",
     };
     this.cutscene = "barracksMeeting";
+    this.cutscenePlayed = "false";
     this.isVisited = false;
   }
 }
@@ -156,6 +157,7 @@ class GrandHall extends Room {
       south: "commonRoom",
     };
     this.cutscene = "grandHallEncounter";
+    this.cutscenePlayed = "false";
   }
 }
 
@@ -176,6 +178,8 @@ class Vault extends Room {
     this.exits = {
       west: "grandHall",
     };
+    this.cutscene = "vault";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -235,6 +239,7 @@ class RestOfAcademy extends Room {
       east: "shortHallway",
     };
     this.cutscene = "restOfAcademy";
+    this.cutscenePlayed = "false";
   }
 }
 
@@ -277,13 +282,14 @@ class MilitaryAnnex extends Room {
     };
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
-    this.enemies = [barracksRebelOne, barracksRebelTwo, barracksRebelThree];
+    this.cutscenePlayed = "false";
+    this.enemies = [annexRebelOne, annexRebelTwo, annexRebelThree];
   }
 }
 
-var barracksRebelOne = new Rebel("Rebel 1", "southwest");
-var barracksRebelTwo = new Rebel("Rebel 2", "south");
-var barracksRebelThree = new Rebel("Rebel 3", "southeast");
+var annexRebelOne = new Rebel("Rebel 1", "southwest");
+var annexRebelTwo = new Rebel("Rebel 2", "south");
+var annexRebelThree = new Rebel("Rebel 3", "southeast");
 
 var militaryAnnex = new MilitaryAnnex();
 
