@@ -378,8 +378,8 @@ function changeValue(target, newValue, i=0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
-  } else if (i="locations") {
-    eval(`playerData["locations"]${target}`) = newValue;
+  } else if (i == "locations") {
+    eval(`playerData["locations"]${target} = newValue`);
   } else {
     playerData[target] = newValue;
   }

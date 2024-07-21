@@ -85,7 +85,9 @@ class CommonRoom extends Room {
       "commonRoom",
       "The common room is a large room with a few tables and chairs. There is a door to the north, leading to the grand hall, a door to the south, leading to the training room, a door to the east, leading to the kitchen, and a door to the west, leading to the barracks.",
       "15",
-      "15"
+      "15",
+      false,
+      "unreachable"
     );
     this.items = {};
     this.exits = {
@@ -243,7 +245,9 @@ class LongPassage extends Room {
       "longPassage",
       "The long passage is a long, dark passage. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
       "10",
-      "20"
+      "20",
+      false,
+      "unreachable"
     );
     this.items = {};
     this.exits = {

@@ -1,6 +1,8 @@
-const { printLines } = require("../../general");
+const { printLines, requireAnswer } = require("../../general");
 
 async function restOfAcademy() {
+  printLines("app/src/cutscenes/restOfAcademy/1.txt");
+  await requireAnswer(["yes", "y"], '"Really?" he asks incredulously. "Come on. Don\'t you want to know?"')
   printLines("app/src/cutscenes/restOfAcademy/1.txt");
 }
 
