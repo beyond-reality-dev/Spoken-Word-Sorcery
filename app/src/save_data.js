@@ -1,7 +1,7 @@
 module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue, updateMap };
 
 const { inputLoop, handleMovement } = require("./handle_input");
-const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, academyGates, longPassageway, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
+const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, academyGates, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
 
 function initializeData() {
   var playerData = {
@@ -44,7 +44,7 @@ function initializeData() {
     grandHall: grandHall,
     vault: vault,
     academyGates: academyGates,
-    longPassageway: longPassageway,
+    longPassage: longPassage,
     militaryAnnex: militaryAnnex,
     firstBarracks: firstBarracks,
     secondBarracks: secondBarracks,
@@ -378,6 +378,8 @@ function changeValue(target, newValue, i=0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
+  } else if (i="locations") {
+    eval(`playerData["locations"]${target}`) = newValue;
   } else {
     playerData[target] = newValue;
   }

@@ -27,7 +27,7 @@ const {
 
 const { Arrow } = require("./class_collections/item_catalog");
 
-const { grandHall } = require("./cutscenes/grandHall/grandHall");
+const { grandHallEncounter } = require("./cutscenes/grandHall/grandHall");
 const { barracksMeeting } = require("./cutscenes/barracksMeeting/barracksMeeting");
 const { militaryAnnex } = require("./cutscenes/militaryAnnex/militaryAnnex");
 

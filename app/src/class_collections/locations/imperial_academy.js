@@ -142,18 +142,18 @@ class GrandHall extends Room {
     super(
       "Grand Hall",
       "grandHall",
-      "The grand hall is an enormous hall, and normally an impressive sight. Right now, however, it's a mess. Guards line the doorways, and the doors are barricaded. There is a door to the north, leading to a long passageway, a door to the east leading to the Academy's vault, a door to the west leading to the rest of the Academy, and a door to the south leading to the common room.",
+      "The grand hall is an enormous hall, and normally an impressive sight. Right now, however, it's a mess. Guards line the doorways, and the doors are barricaded. There is a door to the north, leading to a long passage, a door to the east leading to the Academy's vault, a door to the west leading to the rest of the Academy, and a door to the south leading to the common room.",
       "30",
       "20"
     );
     this.items = {};
     this.exits = {
-      north: "longPassageway",
+      north: "longPassage",
       east: "vault",
-      west: "academyGates",
+      west: "hallGates",
       south: "commonRoom",
     };
-    this.cutscene = "grandHall";
+    this.cutscene = "grandHallEncounter";
   }
 }
 
@@ -236,14 +236,14 @@ class RestOfAcademy extends Room {
   }
 }
 
-class LongPassageway extends Room {
+class LongPassage extends Room {
   constructor() {
     super(
-      "Long Passageway",
-      "longPassageway",
-      "The long passageway is a long, dark passageway. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
+      "Long Passage",
+      "longPassage",
+      "The long passage is a long, dark passage. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
       "10",
-      "30"
+      "20"
     );
     this.items = {};
     this.exits = {
@@ -253,14 +253,14 @@ class LongPassageway extends Room {
   }
 }
 
-var longPassageway = new LongPassageway();
+var longPassage = new LongPassage();
 
 class MilitaryAnnex extends Room {
   constructor() {
     super(
       "Military Annex",
       "militaryAnnex",
-      "The military annex is a large, empty room. There is a door to the north, leading to the armory, a door to the east, leading to the first barracks, a door to the west, leading to the second barracks, and a door to the south, leading back to the long passageway.",
+      "The military annex is a large, empty room. There is a door to the north, leading to the armory, a door to the east, leading to the first barracks, a door to the west, leading to the second barracks, and a door to the south, leading back to the long passage.",
       "15",
       "15"
     );
@@ -269,7 +269,7 @@ class MilitaryAnnex extends Room {
       north: "armory",
       east: "firstBarracks",
       west: "secondBarracks",
-      south: "longPassageway",
+      south: "longPassage",
     };
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
@@ -349,7 +349,7 @@ module.exports = {
   vault,
   hallGates,
   shortHallway,
-  longPassageway,
+  longPassage,
   militaryAnnex,
   firstBarracks,
   secondBarracks,
