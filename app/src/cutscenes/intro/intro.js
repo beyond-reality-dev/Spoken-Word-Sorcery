@@ -201,10 +201,10 @@ async function intro() {
   printLines("app/src/cutscenes/intro/13.txt");
   var away = new Away();
   addEntity(away, "knownSpells");
-  await openInput();
+  await openInput(true);
   while (getValue("direction") == "North" || getValue("currentMana") >= 40) {
     printLines("app/src/cutscenes/intro/14.txt");
-    await openInput();
+    await openInput(true);
   }
   await printLines("app/src/cutscenes/intro/15.txt");
   changeValue("currentMana", 50);

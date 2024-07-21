@@ -61,7 +61,7 @@ async function closedInput() {
   });
 }
 
-async function openInput() {
+async function openInput(combatOverride = false) {
   return new Promise(function (resolve) {
     const input = document.getElementById("input-bar");
     function handleKeyPress(event) {
@@ -273,7 +273,7 @@ async function openInput() {
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
-            if (isCombat == false) {
+            if (isCombat == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -289,7 +289,7 @@ async function openInput() {
             clauses[i].substring(0, 5) == "yell " ||
             clauses[i].substring(0, 5) == "cast "
           ) {
-            if (isCombat == false) {
+            if (isCombat == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -307,7 +307,7 @@ async function openInput() {
             clauses[i].substring(0, 6) == "speak " ||
             clauses[i].substring(0, 6) == "utter "
           ) {
-            if (isCombat == false) {
+            if (isCombat == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -320,7 +320,7 @@ async function openInput() {
               text = ["spell", spellPower, spellDirection];
             }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
-            if (isCombat == false) {
+            if (isCombat == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");

@@ -19,10 +19,7 @@ async function grandHallEncounter() {
     printLines("app/src/cutscenes/grandHall/5.txt");
     await requireAnswer(["yes", "y"], '"Is that clear?"');
   } else {
-    console.log(1);
     printLines("app/src/cutscenes/grandHall/6.txt");
-    changeValue("currentMana", getValue("maxMana"));
-    changeValue("currentHealth", getValue("maxHealth"));
     requireAnswer(["any"], "unreachable");
     printLines("app/src/cutscenes/grandHall/7.txt");
     changeValue("['longPassage']['isLocked']", true, "locations");
