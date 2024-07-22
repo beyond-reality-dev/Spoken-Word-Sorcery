@@ -24,7 +24,7 @@ class ImperialDagger extends Weapon {
   }
 }
 
-class IronSword extends Weapon {
+class ShortSword extends Weapon {
   constructor(quantity=1) {
     super("Sword", "A simple sword", "mainHand", 10, 10, 1, 5, quantity);
   }

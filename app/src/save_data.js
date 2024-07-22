@@ -303,7 +303,7 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.style.height = `${west["height"]*10}px`;
     westDiv.style.position = "absolute";
     westDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
-    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 2).toString() + "px";
+    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 3).toString() + "px";
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);

@@ -48,4 +48,22 @@ class RebelWarlord extends Enemy {
   }
 }
 
+class Bandit extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 75, 15, 15, 15, 1, 10, 15, items);
+  }
+}
+
+class BanditLeader extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 150, 30, 30, 30, 1, 20, 30, items);
+  }
+}
+
+class BanditKing extends Enemy {
+  constructor(name, position, items = []) {
+    super(name, position, 300, 60, 60, 60, 1, 40, 60, items);
+  }
+}
+
 module.exports = { Enemy, Rebel, RebelCaptain, RebelGeneral, RebelWarlord };

@@ -153,8 +153,8 @@ class GrandHall extends Room {
     this.exits = {
       north: "longPassage",
       east: "vault",
-      west: "hallGates",
       south: "commonRoom",
+      west: "hallGates",
     };
     this.cutscene = "grandHallEncounter";
     this.cutscenePlayed = "false";
