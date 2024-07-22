@@ -328,6 +328,21 @@ function addEntity(entity, target) {
       playerData["knownSpells"].splice(index, 1);
     }
     playerData["spokenSpells"].push(entity);
+  } else if (target == "knownSpells") {
+    for (
+      let i = 0;
+      i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
+      i++
+    ) {
+      if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
+        var matchKnown = true;
+        var index = i;
+        break;
+      }
+    }
+    if (matchKnown == false) {
+      playerData["knownSpells"].push(entity);
+    }
   } else if (target == "equipment") {
     for (let i = 0; i < playerData["equipment"].length; i++) {
       if (playerData["equipment"][i]["position"] == entity["position"]) {

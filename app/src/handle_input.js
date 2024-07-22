@@ -24,7 +24,7 @@ const {
   Away,
 } = require("./class_collections/spellbook");
 
-const { Arrow } = require("./class_collections/item_catalog");
+const { Arrow, WoodenStaff } = require("./class_collections/item_catalog");
 
 const { grandHallEncounter } = require("./cutscenes/imperialAcademy/grandHall/grandHall");
 const { barracksMeeting } = require("./cutscenes/imperialAcademy/barracksMeeting/barracksMeeting");

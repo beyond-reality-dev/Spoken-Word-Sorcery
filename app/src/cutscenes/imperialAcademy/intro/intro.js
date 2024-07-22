@@ -202,11 +202,11 @@ async function intro() {
   var away = new Away();
   addEntity(away, "knownSpells");
   await openInput(true);
-  while (getValue("direction") == "North" || getValue("currentMana") >= 40) {
+  while (getValue("direction") == "north" || getValue("currentMana") >= 40) {
     printLines("app/src/cutscenes/imperialAcademy/intro/14.txt");
     await openInput(true);
   }
-  await printLines("app/src/imperialAcademy/cutscenes/intro/15.txt");
+  await printLines("app/src/cutscenes/imperialAcademy/intro/15.txt");
   changeValue("currentMana", 50);
   inputLoop();
 }

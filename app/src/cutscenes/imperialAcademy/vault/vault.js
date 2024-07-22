@@ -1,4 +1,4 @@
-const { printLines, requireAnswer } = require("../../../general");
+const { printLines, requireAnswer, quickPrint } = require("../../../general");
 const { getValue } = require("../../../save_data");
 const { handleCombat } = require("../../../handle_input");
 
@@ -9,6 +9,13 @@ async function vault() {
     await handleCombat();
     if (getValue("location") == "vault") {
       await printLines("app/src/cutscenes/imperialAcademy/vault/2.txt");
+      var response = await requireAnswer(["yes", "y", "no", "n"], "Do you reach out and touch the field?");
+      if (response == "yes" || response == "y") {
+        quickPrint("The field offers no resistance as you pass through it.");
+      } else if (response = "no" || response == "n") {
+        quickPrint("As you turn away from the field, you stumble and fall through it.");
+      }
+      await printLines("app/src/cutscenes/imperialAcademy/vault/3.txt");
       changeValue("['vault']['cutscenePlayed']", true, "locations")
     }
   }

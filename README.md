@@ -8,6 +8,7 @@
   - [Game Speed Settings](#game-speed-settings)
   - [Inventory System](#inventory-system)
   - [Combat System](#combat-system)
+  - [Visual Map](#visual-map)
 - [Future Changes](#future-changes)
   - [Better Grammar Parsing](#better-grammar-parsing)
   - [Open World Features](#open-world-features)
@@ -23,11 +24,11 @@ This is the official repository for Spoken Word Sorcery, a text-based role-playi
 
 ### Introduction
 
-Currently the only part of the game that is playable is a short introduction that gives some insight into some of the game's lore and mechanics but is not an accurate reflection of how the game will be once completed. It can be thought of as roughly half the content the whole tutorial will need to eventually be.
+Currently the only part of the game that is playable is an introduction that gives some insight into some of the game's lore and mechanics but does not include the procedural generation and open world format that the game will eventually include.
 
 ### Game Speed Settings
 
-Users can select how much of a delay they want between lines being printed on the screen. The options range from no delay to a four second delay, which is roughly the speed that it takes to read most of the lines as they are being printed. The default is a one second delay.
+Users can select how much of a delay they want between lines being printed on the screen. The options range from no delay to a four second delay, which is roughly the speed that it takes to easily read most of the lines as they are being printed. The default is a one second delay.
 
 ### Inventory System
 
@@ -35,7 +36,11 @@ Users can pick up, drop, equip, and unequip items, and view their items in the i
 
 ### Combat System
 
-A simple combat system has already been implemented, with which the user may select an enemy to attack and then select a weapon or spell to use to attack. In the future, this system will be replaced by a direction-based combat system, where the user will be able to move around the battlefield and attack enemies in different directions.
+The combat system is turn-based, with the player and enemies taking turns to attack. The enemies occupy a certain direction in a room, and the player can change the direction that they are facing in order to target their desired enemy. They may then use a weapon or spell to attack those enemies.
+
+### Visual Map
+
+The game has a visual map that shows the player's current location and the locations of the rooms that are directly connected to it. In the future, there will be a recursive map that shows rooms that branch off of directly connected rooms.
 
 ## Future Changes
 

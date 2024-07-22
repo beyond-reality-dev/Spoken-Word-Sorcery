@@ -178,4 +178,4 @@ class Miscellaneous {
   }
 }
 
-module.exports = { Weapon, Armor, Consumable, Miscellaneous, ImperialDagger, Arrow };
+module.exports = { Weapon, Armor, Consumable, Miscellaneous, ImperialDagger, Arrow, WoodenStaff };

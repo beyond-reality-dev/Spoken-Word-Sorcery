@@ -33,6 +33,18 @@ class Water extends Element {
   }
 }
 
+class Life extends Element {
+  constructor() {
+    super("Life", "The element of living things", "A living ", "Death", "None");
+  }
+}
+
+class Death extends Element {
+  constructor() {
+    super("Death", "The element of decay and destruction", "A decaying ", "Life", "None");
+  }
+}
+
 class Spell {
   constructor(name, description, descriptor, manaCost, power, range, isOffensive, isSupport, attackIncrease, healthIncrease, armorIncrease, speedIncrease, rangeIncrease) {
     this.name = name;
@@ -103,4 +115,4 @@ class Remember extends Direction {
   }
 }
 
-module.exports = { Aether, Earth, Fire, Water, Spear, Shield, Away, Left, Right, Behind, Remember };
+module.exports = { Aether, Earth, Fire, Water, Life, Death, Spear, Shield, Away, Left, Right, Behind, Remember };
