@@ -58,7 +58,7 @@ body {
   padding-inline: 2.5%;
   float: left;
   background-color: #ffffff;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .about-text {
