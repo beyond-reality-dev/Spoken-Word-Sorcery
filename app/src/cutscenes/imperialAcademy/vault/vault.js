@@ -1,6 +1,7 @@
 const { printLines, requireAnswer, quickPrint } = require("../../../general");
-const { getValue } = require("../../../save_data");
+const { getValue, addEntity } = require("../../../save_data");
 const { handleCombat } = require("../../../handle_input");
+const { Miscellaneous } = require("../../../class_collections/item_catalog");
 
 async function vault() {
   if (getValue("vault", true).cutscenePlayed == false) {
@@ -17,6 +18,8 @@ async function vault() {
       }
       await printLines("app/src/cutscenes/imperialAcademy/vault/3.txt");
       changeValue("['vault']['cutscenePlayed']", true, "locations")
+      var codex = new Miscellaneous("Codex", "The book that supposedly contains all the Words discovered by the Empire", "accessory", 0, 1, 1)
+      addEntity(codex, "inventory");
     }
   }
 }
