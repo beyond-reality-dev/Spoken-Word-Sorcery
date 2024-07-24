@@ -264,9 +264,6 @@ function buildRooms(exits, startingDiv, level=0) {
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.insertBefore(northDiv, startingDiv);
-    if (level < 1) {
-      buildRooms(north["exits"], northDiv, level + 1);
-    }
   } 
   if (exits["east"]) {
     const east = eval(exits["east"]);
@@ -281,9 +278,6 @@ function buildRooms(exits, startingDiv, level=0) {
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.insertBefore(eastDiv, startingDiv);
-    if (level < 1) {
-      buildRooms(east["exits"], eastDiv, level + 1);
-    }
   } 
   if (exits["south"]) {
     const south = eval(exits["south"]);
@@ -299,9 +293,6 @@ function buildRooms(exits, startingDiv, level=0) {
     southDiv.className = "map-tile";
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
-    if (level < 1) {
-      buildRooms(south["exits"], southDiv, level + 1);
-    }
   } 
   if (exits["west"]) {
     const west = eval(exits["west"]);
@@ -316,9 +307,6 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
-    if (level < 1) {
-      buildRooms(west["exits"], westDiv, level + 1);
-    }
   }
 }
 
