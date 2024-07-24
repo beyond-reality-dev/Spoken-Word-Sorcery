@@ -41,17 +41,49 @@ class AcademyBridge extends Room {
     super(
       "Academy Bridge",
       "academyBridge",
-      "The Academy Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading back to the Academy Entrance, and a path to the south, leading to the Imperial Citadel.",
+      "The Academy Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading to the Academy Entrance, and a path to the south, leading to two guard towers.",
       "10",
       "10"
     );
     this.exits = {
       north: "academyEntrance",
-      south: "imperialCitadel"
+      south: "guardTowers"
     };
   }
 }
 
 var academyBridge = new AcademyBridge();
+
+class GuardTowers extends Room {
+  constructor() {
+    super(
+      "Guard Towers",
+      "guardTowers",
+      "The two guard towers are large, stone towers that overlook the Academy Bridge. There is a path to the north, leading to the Academy Bridge, and a path to the south, leading to the nexus of the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "academyBridge"
+    };
+  }
+}
+
+var guardTowers = new GuardTowers();
+
+class Nexus extends Room {
+  constructor() {
+    super(
+      "Nexus",
+      "nexus",
+      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "guardTowers",
+    };
+  }
+}
 
 module.exports = { survivorCamp, academyEntrance, academyBridge };
