@@ -253,22 +253,6 @@ function updateMap() {
 
 function buildRooms(exits, startingDiv, level=0) {
   const map = document.getElementById("map");
-  if (exits["north"]) {
-    var north = eval(exits["north"]);
-    if (document.getElementById(north["id"])) { return; }
-    var northDiv = document.createElement("div");
-    northDiv.setAttribute("id", north["id"]);
-    northDiv.style.width = `${north["width"]*10}px`;
-    northDiv.style.height = `${north["height"]*10}px`;
-    northDiv.style.position = "absolute";
-    console.log(startingDiv);
-    northDiv.style.bottom = (startingDiv.getBoundingClientRect().top - 2).toString() + "px";
-    northDiv.style.left = (startingDiv.getBoundingClientRect().left + startingDiv.getBoundingClientRect().width*0.5).toString() + "px";
-    northDiv.style.transform = "translateX(-50%)";
-    northDiv.className = "map-tile";
-    northDiv.innerHTML = `<div>${north["name"]}</div>`;
-    map.appendChild(northDiv);
-  } 
   if (exits["west"]) {
     var west = eval(exits["west"]);
     if (document.getElementById(west["id"])) { return; }
@@ -278,11 +262,27 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.style.height = `${west["height"]*10}px`;
     westDiv.style.position = "absolute";
     westDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
-    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 3).toString() + "px";
+    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 2).toString() + "px";
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
   }
+  if (exits["north"]) {
+    var north = eval(exits["north"]);
+    if (document.getElementById(north["id"])) { return; }
+    var northDiv = document.createElement("div");
+    northDiv.setAttribute("id", north["id"]);
+    northDiv.style.width = `${north["width"]*10}px`;
+    northDiv.style.height = `${north["height"]*10}px`;
+    northDiv.style.position = "absolute";
+    console.log(startingDiv);
+    northDiv.style.top = (startingDiv.getBoundingClientRect().top - north["height"]*10 - 2).toString() + "px";
+    northDiv.style.left = (startingDiv.getBoundingClientRect().left + startingDiv.getBoundingClientRect().width*0.5).toString() + "px";
+    northDiv.style.transform = "translateX(-50%)";
+    northDiv.className = "map-tile";
+    northDiv.innerHTML = `<div>${north["name"]}</div>`;
+    map.appendChild(northDiv);
+  } 
   if (exits["east"]) {
     var east = eval(exits["east"]);
     if (document.getElementById(east["id"])) { return; }
@@ -313,25 +313,26 @@ function buildRooms(exits, startingDiv, level=0) {
     map.appendChild(southDiv);
   }
   if (level < 1) {
+    level++
     if (north) {
-      const northConst = north;
-      const northDivConst = northDiv;
-      buildRooms(northConst["exits"], northDivConst, level);
+      const northExits = north["exits"];
+      const northStart = northDiv;
+      buildRooms(northExits, northStart, level);
     }
     if (west) {
-      const westConst = west;
-      const westDivConst = westDiv;
-      buildRooms(westConst["exits"], westDivConst, level);
+      const westExits = west["exits"];
+      const westStart = westDiv;
+      buildRooms(westExits, westStart, level);
     }
     if (east) {
-      const eastConst = east;
-      const eastDivConst = eastDiv;
-      buildRooms(eastConst["exits"], eastDivConst, level);
+      const eastExits = east["exits"];
+      const eastStart = eastDiv;
+      buildRooms(eastExits, eastStart, level);
     }
     if (south) {
-      const southConst = south;
-      const southDivConst = southDiv;
-      buildRooms(southConst["exits"], southDivConst, level);
+      const southExits = south["exits"];
+      const southStart = southDiv;
+      buildRooms(southExits, southStart, level);
     }
   }
 }

@@ -86,4 +86,6 @@ class Nexus extends Room {
   }
 }
 
-module.exports = { survivorCamp, academyEntrance, academyBridge };
+var nexus = new Nexus();
+
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus };
