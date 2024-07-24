@@ -313,20 +313,26 @@ function buildRooms(exits, startingDiv, level=0) {
     map.appendChild(southDiv);
   }
   if (level < 1) {
-    const northConst = northVar;
-    const northDivConst = northDivVar;
-    const westConst = westVar;
-    const westDivConst = westDivVar;
-    const eastConst = eastVar;
-    const eastDivConst = eastDivVar;
-    const southConst = southVar;
-    const southDivConst = southDivVar;
-    level++;
-    console.log(level);
-    buildRooms(northConst["exits"], northDivConst, level);
-    buildRooms(westConst["exits"], westDivConst, level);
-    buildRooms(eastConst["exits"], eastDivConst, level);
-    buildRooms(southConst["exits"], southDivConst, level);
+    if (north) {
+      const northConst = north;
+      const northDivConst = northDiv;
+      buildRooms(northConst["exits"], northDivConst, level);
+    }
+    if (west) {
+      const westConst = west;
+      const westDivConst = westDiv;
+      buildRooms(westConst["exits"], westDivConst, level);
+    }
+    if (east) {
+      const eastConst = east;
+      const eastDivConst = eastDiv;
+      buildRooms(eastConst["exits"], eastDivConst, level);
+    }
+    if (south) {
+      const southConst = south;
+      const southDivConst = southDiv;
+      buildRooms(southConst["exits"], southDivConst, level);
+    }
   }
 }
 
