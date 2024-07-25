@@ -59,6 +59,7 @@ body {
   padding-inline: 2.5%;
   float: left;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
 .about-text {
@@ -276,28 +277,16 @@ body {
   font-size: large;
 }
 
-.starting-tile {
-  display: inline-block;
-  border: solid black;
-  text-align: center;
-  position: absolute; 
-  top: 50%;
-  bottom: 50%;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
-  font-size: x-large;
-}
-
 .map {
+  display: flex;
   width: 100%;
   height: 100%;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
 .map-tile {
-  display: inline-block;
+  display: flexbox;
   border: solid black;
   text-align: center;
   margin-left: auto; 

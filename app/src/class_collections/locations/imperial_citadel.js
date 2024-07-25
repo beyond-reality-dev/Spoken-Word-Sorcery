@@ -77,18 +77,34 @@ class Nexus extends Room {
     super(
       "Nexus",
       "nexus",
-      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy and a path to the south leading to the guard towers of the Imperial Palace.",
+      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy, a path to the east leading to the market, and a path to the south leading to the guard towers of the Imperial Palace.",
       "10",
       "10"
     );
     this.exits = {
       north: "guardTowers1",
+      east: "market",
       south: "guardTowers2"
     };
   }
 }
 
 var nexus = new Nexus();
+
+class Market extends Room {
+  constructor() {
+    super(
+      "Market",
+      "market",
+      "The market is a large, open area, with numerous stalls and shops. There is a path to the west leading to the nexus of the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      west: "nexus"
+    };
+  }
+}
 
 class GuardTowers2 extends Room {
   constructor() {

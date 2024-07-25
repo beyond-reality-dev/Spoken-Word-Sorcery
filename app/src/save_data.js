@@ -240,12 +240,16 @@ function updateMap() {
   var exits = currentLocation["exits"];
   const map = document.getElementById("map");
   map.innerHTML = "";
-  map.innerHTML += `<h2>Current Location: ${locationName}</h2>`;
+  const mapTitle = document.getElementById("map-title");
+  mapTitle.innerHTML = "";
+  mapTitle.innerHTML += `Current Location: ${locationName}`;
   const startDiv = document.createElement("div");
   startDiv.setAttribute("id", currentLocation["id"]);
   startDiv.style.width = `${currentLocation["width"]*10}px`;
   startDiv.style.height = `${currentLocation["height"]*10}px`;
-  startDiv.className = "starting-tile";
+  startDiv.className = "map-tile";
+  startDiv.style.justifyContent = "center";
+  startDiv.style.alignItems = "center";
   startDiv.innerHTML = `<div>${locationName}</div>`;
   map.appendChild(startDiv);
   buildRooms(exits, startDiv);
@@ -260,9 +264,7 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.setAttribute("id", west["id"]);
     westDiv.style.width = `${west["width"]*10}px`;
     westDiv.style.height = `${west["height"]*10}px`;
-    westDiv.style.position = "absolute";
-    westDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
-    westDiv.style.right = (startingDiv.getBoundingClientRect().left + west["width"]*10 + 2).toString() + "px";
+    westDiv.style.justifyContent = "flex-start";
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
@@ -293,6 +295,11 @@ function buildRooms(exits, startingDiv, level=0) {
     eastDiv.style.position = "absolute";
     eastDiv.style.top = startingDiv.getBoundingClientRect().top.toString() + "px";
     eastDiv.style.left = (startingDiv.getBoundingClientRect().right - 2).toString() + "px";
+    if (eastDiv.style.height != startingDiv.style.height) {
+      var difference = Math.abs(parseInt(eastDiv.style.height) - parseInt(startingDiv.style.height));
+      difference = difference * 0.5;
+      eastDiv.style.transform = `translateY(${difference}px)`;
+    }
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.appendChild(eastDiv);
@@ -312,6 +319,7 @@ function buildRooms(exits, startingDiv, level=0) {
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
+  console.log(map);
   if (level < 1) {
     level++
     if (north) {
