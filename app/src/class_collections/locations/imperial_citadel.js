@@ -54,7 +54,7 @@ class AcademyBridge extends Room {
 
 var academyBridge = new AcademyBridge();
 
-class GuardTowers extends Room {
+class GuardTowers1 extends Room {
   constructor() {
     super(
       "Guard Towers",
@@ -69,23 +69,60 @@ class GuardTowers extends Room {
   }
 }
 
-var guardTowers = new GuardTowers();
+var guardTowers1 = new GuardTowers1();
 
 class Nexus extends Room {
   constructor() {
     super(
       "Nexus",
       "nexus",
-      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy",
+      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy and a path to the south leading to the guard towers of the Imperial Palace.",
       "10",
       "10"
     );
     this.exits = {
-      north: "guardTowers",
+      north: "guardTowers1",
+      south: "guardTowers2"
     };
   }
 }
 
 var nexus = new Nexus();
+
+class GuardTowers2 extends Room {
+  constructor() {
+    super(
+      "Guard Towers",
+      "guardTowers",
+      "The two guard towers are large, stone towers that overlook the Academy Bridge. There is a path to the north, leading to the nexus of the Imperial Citadel, and a path to the south, leading to the bridge of the Imperial Palace.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "nexus",
+      south: "palaceBridge"
+    };
+  }
+}
+
+var guardTowers2 = new GuardTowers2();
+
+class PalaceBridge extends Room {
+  constructor() {
+    super(
+      "Palace Bridge",
+      "palaceBridge",
+      "The Palace Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading to the guard towers of the Imperial Palace, and a path to the south, leading to the Imperial Palace.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "guardTowers2",
+      south: "imperialPalace"
+    };
+  }
+}
+
+var palaceBridge = new PalaceBridge();
 
 module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus };
