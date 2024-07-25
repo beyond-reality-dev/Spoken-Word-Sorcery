@@ -64,7 +64,8 @@ class GuardTowers1 extends Room {
       "10"
     );
     this.exits = {
-      north: "academyBridge"
+      north: "academyBridge",
+      south: "nexus"
     };
   }
 }
@@ -112,17 +113,35 @@ class PalaceBridge extends Room {
     super(
       "Palace Bridge",
       "palaceBridge",
-      "The Palace Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading to the guard towers of the Imperial Palace, and a path to the south, leading to the Imperial Palace.",
+      "The Palace Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading to the guard towers of the Imperial Palace, and a path to the south, leading to the entrance of the Imperial Palace.",
       "10",
       "10"
     );
     this.exits = {
       north: "guardTowers2",
-      south: "imperialPalace"
+      south: "palaceEntrance"
     };
   }
 }
 
 var palaceBridge = new PalaceBridge();
 
-module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus };
+class PalaceEntrance extends Room {
+  constructor() {
+    super(
+      "Palace Entrance",
+      "palaceEntrance",
+      "The entrance to the Imperial Palace is a large, open area. The remains of large, iron gates lie shattered in the burnt grass. There is a path to the north, leading to the Palace Bridge, and a road to the south, leading to the Imperial Palace.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "palaceBridge",
+      south: "imperialPalace"
+    };
+  }
+}
+
+var palaceEntrance = new PalaceEntrance();
+
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, guardTowers2, palaceBridge, palaceEntrance };
