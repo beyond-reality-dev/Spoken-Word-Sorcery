@@ -77,19 +77,37 @@ class Nexus extends Room {
     super(
       "Nexus",
       "nexus",
-      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy, a path to the east leading to the market, and a path to the south leading to the guard towers of the Imperial Palace.",
+      "The nexus of the Imperial Citadel is a large, open area, with numerous roads and paths intersecting. There is a path to the north leading to the guard towers of the Imperial Academy, a path to the east leading to the port, a path to the south leading to the guard towers of the Imperial Palace, and a path to the west leading to the market.",
       "10",
       "10"
     );
     this.exits = {
       north: "guardTowers1",
-      east: "market",
-      south: "guardTowers2"
+      east: "port",
+      south: "guardTowers2",
+      west: "market",
     };
   }
 }
 
 var nexus = new Nexus();
+
+class Port extends Room {
+  constructor() {
+    super(
+      "Port",
+      "port",
+      "The port is a large, open area, with numerous docks and ships. There is a path to the west leading to the nexus of the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      west: "nexus"
+    };
+  }
+}
+
+var port = new Port();
 
 class Market extends Room {
   constructor() {
@@ -101,10 +119,12 @@ class Market extends Room {
       "10"
     );
     this.exits = {
-      west: "nexus"
+      east: "nexus"
     };
   }
 }
+
+var market = new Market();
 
 class GuardTowers2 extends Room {
   constructor() {
@@ -160,4 +180,4 @@ class PalaceEntrance extends Room {
 
 var palaceEntrance = new PalaceEntrance();
 
-module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, guardTowers2, palaceBridge, palaceEntrance };
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, port, market, guardTowers2, palaceBridge, palaceEntrance };
