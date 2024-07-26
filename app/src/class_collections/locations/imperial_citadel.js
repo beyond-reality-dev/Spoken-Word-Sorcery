@@ -127,17 +127,35 @@ class Port extends Room {
 
 var port = new Port();
 
+class MarketEntrance extends Room {
+  constructor() {
+    super(
+      "Market Entrance",
+      "marketEntrance",
+      "The entrance to the market is a large, open area. The remains of large, iron gates lie shattered in the burnt grass. There is a path to the east, leading to the nexus of the Imperial Citadel, and a road to the south, leading to the market.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      east: "nexus",
+      south: "market"
+    };
+  }
+}
+
+var marketEntrance = new MarketEntrance();
+
 class Market extends Room {
   constructor() {
     super(
       "Market",
       "market",
-      "The market is a large, open area, with numerous stalls and shops. There is a path to the west leading to the nexus of the Imperial Citadel.",
+      "The market is a large, open area, with numerous stalls and shops. There is a path to the north leading to the market entrance.",
       "10",
       "10"
     );
     this.exits = {
-      east: "nexus"
+      north: "marketEntrance"
     };
   }
 }
@@ -198,4 +216,4 @@ class PalaceEntrance extends Room {
 
 var palaceEntrance = new PalaceEntrance();
 
-module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, port, market, guardTowers2, palaceBridge, palaceEntrance };
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, portEntrance, port, market, marketEntrance, guardTowers2, palaceBridge, palaceEntrance };

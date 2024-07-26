@@ -264,8 +264,7 @@ function buildRooms(exits, startingDiv, level=0) {
     northDiv.setAttribute("id", north["id"]);
     northDiv.style.width = `${north["width"]*10}px`;
     northDiv.style.height = `${north["height"]*10}px`;
-    northDiv.style.alignSelf = "flex-start";
-    northDiv.style.order = "-1";
+    northDiv.style.order = -2 - (level * 2);
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);
@@ -277,13 +276,11 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.setAttribute("id", west["id"]);
     westDiv.style.width = `${west["width"]*10}px`;
     westDiv.style.height = `${west["height"]*10}px`;
-    westDiv.style.justifyContent = "flex-start";
-    westDiv.style.alignSelf = "center";
-    westDiv.style.order = "-1";
+    westDiv.style.order = -1 - (level * 2);
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
-  } 
+  }
   if (exits["east"]) {
     var east = eval(exits["east"]);
     if (document.getElementById(east["id"])) { return; }
@@ -291,13 +288,11 @@ function buildRooms(exits, startingDiv, level=0) {
     eastDiv.setAttribute("id", east["id"]);
     eastDiv.style.width = `${east["width"]*10}px`;
     eastDiv.style.height = `${east["height"]*10}px`;
-    eastDiv.style.justifyContent = "flex-end";
-    eastDiv.style.alignSelf = "center";
-    eastDiv.style.order = "1";
+    eastDiv.style.order = 1 + (level * 2);
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.appendChild(eastDiv);
-  } 
+  }
   if (exits["south"]) {
     var south = eval(exits["south"]);
     if (document.getElementById(south["id"])) { return; }
@@ -305,15 +300,13 @@ function buildRooms(exits, startingDiv, level=0) {
     southDiv.setAttribute("id", south["id"]);
     southDiv.style.width = `${south["width"]*10}px`;
     southDiv.style.height = `${south["height"]*10}px`;
-    southDiv.style.justifyContent = "center";
-    southDiv.style.alignSelf = "flex-end"
-    southDiv.style.order = "2"
+    southDiv.style.order = 2 + (level * 2);
     southDiv.className = "map-tile";
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
   console.log(map);
-  /*if (level < 1) {
+  if (level < 1) {
     level++
     if (north) {
       const northExits = north["exits"];
@@ -335,7 +328,7 @@ function buildRooms(exits, startingDiv, level=0) {
       const southStart = southDiv;
       buildRooms(southExits, southStart, level);
     }
-  }*/
+  }
 }
 
 function addEntity(entity, target) {
