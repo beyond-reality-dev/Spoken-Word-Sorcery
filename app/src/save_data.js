@@ -264,9 +264,8 @@ function buildRooms(exits, startingDiv, level=0) {
     northDiv.setAttribute("id", north["id"]);
     northDiv.style.width = `${north["width"]*10}px`;
     northDiv.style.height = `${north["height"]*10}px`;
-    northDiv.style.justifyContent = "center";
     northDiv.style.alignSelf = "flex-start";
-    northDiv.style.order = "-2";
+    northDiv.style.order = "-1";
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);

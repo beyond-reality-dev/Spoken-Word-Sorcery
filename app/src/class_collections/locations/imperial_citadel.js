@@ -92,17 +92,35 @@ class Nexus extends Room {
 
 var nexus = new Nexus();
 
+class PortEntrance extends Room {
+  constructor() {
+    super(
+      "Port Entrance",
+      "portEntrance",
+      "The entrance to the port is a large, open area. The remains of large, iron gates lie shattered in the burnt grass. There is a path to the west, leading to the nexus of the Imperial Citadel, and a road to the south, leading to the port.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      west: "nexus",
+      south: "port"
+    };
+  }
+}
+
+var portEntrance = new PortEntrance();
+
 class Port extends Room {
   constructor() {
     super(
       "Port",
       "port",
-      "The port is a large, open area, with numerous docks and ships. There is a path to the west leading to the nexus of the Imperial Citadel.",
+      "The port is a large, open area, with numerous docks and ships. There is a path to the north leading to the port entrance.",
       "10",
       "10"
     );
     this.exits = {
-      west: "nexus"
+      north: "portEntrance"
     };
   }
 }
