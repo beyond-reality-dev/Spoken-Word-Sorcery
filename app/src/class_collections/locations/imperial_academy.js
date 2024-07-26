@@ -112,7 +112,7 @@ class Barracks extends Room {
       east: "commonRoom",
     };
     this.cutscene = "barracksMeeting";
-    this.cutscenePlayed = "false";
+    this.cutscenePlayed = false;
     this.isVisited = false;
   }
 }
@@ -136,7 +136,7 @@ class GrandHall extends Room {
       west: "hallGates",
     };
     this.cutscene = "grandHallEncounter";
-    this.cutscenePlayed = "false";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -221,7 +221,7 @@ class RestOfAcademy extends Room {
       east: "shortHallway",
     };
     this.cutscene = "restOfAcademy";
-    this.cutscenePlayed = "false";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -266,7 +266,7 @@ class MilitaryAnnex extends Room {
     };
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
-    this.cutscenePlayed = "false";
+    this.cutscenePlayed = false;
     this.enemies = [annexRebelOne, annexRebelTwo, annexRebelThree];
   }
 }

@@ -268,6 +268,10 @@ function buildRooms(exits, startingDiv, level=0) {
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);
+    var emptyTile = document.createElement("div");
+    emptyTile.style.order = -1 - (level * 2);
+    emptyTile.className = "empty-tile";
+    map.appendChild(emptyTile);
   }
   if (exits["west"]) {
     var west = eval(exits["west"]);
@@ -288,25 +292,29 @@ function buildRooms(exits, startingDiv, level=0) {
     eastDiv.setAttribute("id", east["id"]);
     eastDiv.style.width = `${east["width"]*10}px`;
     eastDiv.style.height = `${east["height"]*10}px`;
-    eastDiv.style.order = 1 + (level * 2);
+    eastDiv.style.order = 0 - (level * 2);
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.appendChild(eastDiv);
   }
   if (exits["south"]) {
+    var emptyTile = document.createElement("div");
+    emptyTile.className = "empty-tile";
+    emptyTile.style.order = 2 + (level * 2);
+    map.appendChild(emptyTile);
     var south = eval(exits["south"]);
     if (document.getElementById(south["id"])) { return; }
     var southDiv = document.createElement("div");
     southDiv.setAttribute("id", south["id"]);
     southDiv.style.width = `${south["width"]*10}px`;
     southDiv.style.height = `${south["height"]*10}px`;
-    southDiv.style.order = 2 + (level * 2);
+    southDiv.style.order = 3 + (level * 2);
     southDiv.className = "map-tile";
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
   console.log(map);
-  if (level < 1) {
+  if (level < 0) {
     level++
     if (north) {
       const northExits = north["exits"];
