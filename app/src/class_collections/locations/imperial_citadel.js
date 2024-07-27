@@ -191,12 +191,48 @@ class MarketStalls extends Room {
       "10"
     );
     this.exits = {
-      north: "market"
+      north: "market",
+      south: "imperialTreasury"
     };
   }
 }
 
 var marketStalls = new MarketStalls();
+
+class ImperialTreasuryExterior extends Room {
+  constructor() {
+    super(
+      "Imperial Treasury Exterior",
+      "imperialTreasuryExterior",
+      "The Imperial Treasury is a large, stone building with a massive, iron door. There is a path to the north leading to the market stalls, and a door to the south leading inside.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "marketStalls",
+      south: "imperialTreasury"
+    };
+  }
+}
+
+var imperialTreasuryExterior = new ImperialTreasuryExterior();
+
+class ImperialTreasury extends Room {
+  constructor() {
+    super(
+      "Imperial Treasury",
+      "imperialTreasury",
+      "The Imperial Treasury is a large, stone building with a massive, iron door. There is a door to the north leading outside.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialTreasuryExterior"
+    };
+  }
+}
+
+var imperialTreasury = new ImperialTreasury();
 
 class GuardTowers2 extends Room {
   constructor() {
