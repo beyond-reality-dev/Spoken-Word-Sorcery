@@ -318,11 +318,12 @@ function updateMap() {
   startDiv.style.alignSelf = "center";
   startDiv.innerHTML = `<div>${locationName}</div>`;
   map.appendChild(startDiv);
-  buildRooms(exits, "start", startDiv);
+  buildRooms(exits, "start");
 }
 
-function buildRooms(exits, startingDirection, startingDiv, level = 0) {
+function buildRooms(exits, startingDirection, level = 0) {
   const map = document.getElementById("map");
+  console.log(exits);
   if (exits["north"]) {
     var north = eval(exits["north"]);
     if (document.getElementById(north["id"])) {
@@ -332,7 +333,11 @@ function buildRooms(exits, startingDirection, startingDiv, level = 0) {
     northDiv.setAttribute("id", north["id"]);
     northDiv.style.width = `${north["width"] * 10}px`;
     northDiv.style.height = `${north["height"] * 10}px`;
-    northDiv.style.order = -2 - level * 2;
+    //if (startingDirection == "north") {
+    //  northDiv.style.order = -2 - (level - 1) * 2;
+    //} else {
+      northDiv.style.order = -2 - level * 2;
+    //}
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);
@@ -390,33 +395,39 @@ function buildRooms(exits, startingDirection, startingDiv, level = 0) {
     southDiv.setAttribute("id", south["id"]);
     southDiv.style.width = `${south["width"] * 10}px`;
     southDiv.style.height = `${south["height"] * 10}px`;
-    southDiv.style.order = 3 + level * 2;
+    if (startingDirection == "south") {
+      southDiv.style.order = 3 + (level + 1) * 2;
+    } else {
+      southDiv.style.order = 3 + level * 2;
+    }
     southDiv.className = "map-tile";
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
   console.log(map);
-  if (level < 2) {
+  if (level < 3) {
+    console.log("less than two, exit tracker:" + exits);
+    console.log(level);
     level++;
     if (north) {
+      console.log("north");
       const northExits = north["exits"];
-      const northDiv = document.getElementById(north["id"]);
-      buildRooms(northExits, "north", southDiv, level);
+      buildRooms(northExits, "north", level);
     }
     if (west) {
+      console.log("west");
       const westExits = west["exits"];
-      const westDiv = document.getElementById(west["id"]);
-      buildRooms(westExits, "west", southDiv, level);
+      buildRooms(westExits, "west", level);
     }
     if (east) {
+      console.log("east");
       const eastExits = east["exits"];
-      const eastDiv = document.getElementById(east["id"]);
-      buildRooms(eastExits, "east", southDiv, level);
+      buildRooms(eastExits, "east", level);
     }
     if (south) {
+      console.log("south")
       const southExits = south["exits"];
-      const southDiv = document.getElementById(south["id"]);
-      buildRooms(southExits, "south", southDiv, level);
+      buildRooms(southExits, "south", level);
     }
   }
 }
