@@ -128,23 +128,6 @@ class Port extends Room {
 
 var port = new Port();
 
-class ImperialDreadnought extends Room {
-  constructor() {
-    super(
-      "Imperial Dreadnought",
-      "imperialDreadnought",
-      "The Imperial Dreadnought is a massive, ironclad warship. There is a path to the north, leading to the port.",
-      "10",
-      "10"
-    );
-    this.exits = {
-      north: "port"
-    };
-  }
-}
-
-var imperialDreadnought = new ImperialDreadnought();
-
 class MarketEntrance extends Room {
   constructor() {
     super(
@@ -216,23 +199,6 @@ class ImperialTreasuryExterior extends Room {
 }
 
 var imperialTreasuryExterior = new ImperialTreasuryExterior();
-
-class ImperialTreasury extends Room {
-  constructor() {
-    super(
-      "Imperial Treasury",
-      "imperialTreasury",
-      "The Imperial Treasury is a large, stone building with a massive, iron door. There is a door to the north leading outside.",
-      "10",
-      "10"
-    );
-    this.exits = {
-      north: "imperialTreasuryExterior"
-    };
-  }
-}
-
-var imperialTreasury = new ImperialTreasury();
 
 class GuardTowers2 extends Room {
   constructor() {

@@ -332,11 +332,7 @@ function buildRooms(exits, startingDirection, level = 0) {
     northDiv.setAttribute("id", north["id"]);
     northDiv.style.width = `${north["width"] * 10}px`;
     northDiv.style.height = `${north["height"] * 10}px`;
-    if (startingDirection == "north") {
-      northDiv.style.order = -2 - (level - 1) * 2;
-    } else {
-      northDiv.style.order = -2 - level * 2;
-    }
+    northDiv.style.order = -2 - level * 2;
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);
@@ -355,7 +351,7 @@ function buildRooms(exits, startingDirection, level = 0) {
     westDiv.style.width = `${west["width"] * 10}px`;
     westDiv.style.height = `${west["height"] * 10}px`;
     if (startingDirection == "west") {
-      westDiv.style.order = -1 - (level - 1) * 2;
+      westDiv.style.order = -1 - (level + 1) * 2;
     } else {
       westDiv.style.order = -1 - level * 2;
     }
@@ -403,49 +399,22 @@ function buildRooms(exits, startingDirection, level = 0) {
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
-  console.log(map);
-  if (level < 4) {
-    console.log("less than two, exit tracker:" + exits);
-    console.log(level);
+  if (level < 1) {
     level++;
     if (north) {
-      console.log("north");
       const northExits = north["exits"];
-      console.log(northExits);
-      console.log(northExits["north"]);
-      console.log(northExits["east"]);
-      console.log(northExits["south"]);
-      console.log(northExits["west"]);
       buildRooms(northExits, "north", level);
     }
     if (west) {
-      console.log("west");
       const westExits = west["exits"];
-      console.log(westExits);
-      console.log(westExits["north"]);
-      console.log(westExits["east"]);
-      console.log(westExits["south"]);
-      console.log(westExits["west"]);
       buildRooms(westExits, "west", level);
     }
     if (east) {
-      console.log("east");
       const eastExits = east["exits"];
-      console.log(eastExits);
-      console.log(eastExits["north"]);
-      console.log(eastExits["east"]);
-      console.log(eastExits["south"]);
-      console.log(eastExits["west"]);
       buildRooms(eastExits, "east", level);
     }
     if (south) {
-      console.log("south")
       const southExits = south["exits"];
-      console.log(southExits);
-      console.log(southExits["north"]);
-      console.log(southExits["east"]);
-      console.log(southExits["south"]);
-      console.log(southExits["west"]);
       buildRooms(southExits, "south", level);
     }
   }
