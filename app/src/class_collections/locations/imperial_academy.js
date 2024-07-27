@@ -7,12 +7,12 @@ class TrainingRoom extends Room {
       "Training Room",
       "trainingRoom",
       "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room.",
-      "10",
-      "10"
+      "15",
+      "15"
     );
     this.items = { staff: "WoodenStaff(1)" };
     this.exits = {
-      north: "commonRoom",
+      north: "shortHallway_01",
       east: "practiceYard",
       west: "storageRoom",
     };
@@ -57,6 +57,25 @@ class StorageRoom extends Room {
 
 var storageRoom = new StorageRoom();
 
+class ShortHallway_01 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "shortHallway_01",
+      "The short hallway is a small, dark hallway. There is a door to the south, leading to the training room, and a door to the north, leading to the common room.",
+      "10",
+      "15"
+    );
+    this.items = {};
+    this.exits = {
+      north: "commonRoom",
+      south: "trainingRoom",
+    };
+  }
+}
+
+var shortHallway_01 = new ShortHallway_01();
+
 class CommonRoom extends Room {
   constructor() {
     super(
@@ -71,7 +90,7 @@ class CommonRoom extends Room {
     this.items = {};
     this.exits = {
       north: "grandHall",
-      south: "trainingRoom",
+      south: "shortHallway_01",
       east: "kitchen",
       west: "barracks",
     };
@@ -336,6 +355,7 @@ module.exports = {
   trainingRoom,
   practiceYard,
   storageRoom,
+  shortHallway_01,
   commonRoom,
   kitchen,
   barracks,

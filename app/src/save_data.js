@@ -1,7 +1,7 @@
 module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue, updateMap };
 
 const { inputLoop, handleMovement } = require("./handle_input");
-const { trainingRoom, practiceYard, storageRoom, commonRoom, kitchen, barracks, grandHall, vault, hallGates, shortHallway, restOfAcademy, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
+const { trainingRoom, practiceYard, storageRoom, commonRoom, shortHallway_01, kitchen, barracks, grandHall, vault, hallGates, shortHallway, restOfAcademy, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
 
 function initializeData() {
   var playerData = {
@@ -39,6 +39,7 @@ function initializeData() {
     practiceYard: practiceYard,
     storageRoom: storageRoom,
     commonRoom: commonRoom,
+    shortHallway_01: shortHallway_01,
     kitchen: kitchen,
     barracks: barracks,
     grandHall: grandHall,
@@ -248,14 +249,14 @@ function updateMap() {
   startDiv.style.width = `${currentLocation["width"]*10}px`;
   startDiv.style.height = `${currentLocation["height"]*10}px`;
   startDiv.className = "map-tile";
-  startDiv.style.justifyContent = "center";
+  startDiv.style.justifySelf = "center";
   startDiv.style.alignSelf = "center";
   startDiv.innerHTML = `<div>${locationName}</div>`;
   map.appendChild(startDiv);
-  buildRooms(exits, startDiv);
+  buildRooms(exits, "start");
 }
 
-function buildRooms(exits, startingDiv, level=0) {
+function buildRooms(exits, startingDirection, level=0) {
   const map = document.getElementById("map");
   if (exits["north"]) {
     var north = eval(exits["north"]);
@@ -280,7 +281,11 @@ function buildRooms(exits, startingDiv, level=0) {
     westDiv.setAttribute("id", west["id"]);
     westDiv.style.width = `${west["width"]*10}px`;
     westDiv.style.height = `${west["height"]*10}px`;
-    westDiv.style.order = -1 - (level * 2);
+    if (startingDirection == "west") {
+      westDiv.style.order = -1 - ((level - 1) * 2);
+    } else {
+      westDiv.style.order = -1 - (level * 2);
+    }
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
     map.appendChild(westDiv);
@@ -292,7 +297,11 @@ function buildRooms(exits, startingDiv, level=0) {
     eastDiv.setAttribute("id", east["id"]);
     eastDiv.style.width = `${east["width"]*10}px`;
     eastDiv.style.height = `${east["height"]*10}px`;
-    eastDiv.style.order = 0 - (level * 2);
+    if (startingDirection == "east") {
+      eastDiv.style.order = 0 - ((level - 1) * 2);
+    } else {
+      eastDiv.style.order = 0 - (level * 2);
+    }
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
     map.appendChild(eastDiv);
@@ -314,27 +323,23 @@ function buildRooms(exits, startingDiv, level=0) {
     map.appendChild(southDiv);
   }
   console.log(map);
-  if (level < 0) {
+  if (level < 2) {
     level++
     if (north) {
       const northExits = north["exits"];
-      const northStart = northDiv;
-      buildRooms(northExits, northStart, level);
+      buildRooms(northExits, "north", level);
     }
     if (west) {
       const westExits = west["exits"];
-      const westStart = westDiv;
-      buildRooms(westExits, westStart, level);
+      buildRooms(westExits, "west", level);
     }
     if (east) {
       const eastExits = east["exits"];
-      const eastStart = eastDiv;
-      buildRooms(eastExits, eastStart, level);
+      buildRooms(eastExits, "east", level);
     }
     if (south) {
       const southExits = south["exits"];
-      const southStart = southDiv;
-      buildRooms(southExits, southStart, level);
+      buildRooms(southExits, "south", level);
     }
   }
 }

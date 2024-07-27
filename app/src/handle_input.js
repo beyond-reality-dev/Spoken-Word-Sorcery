@@ -428,6 +428,10 @@ function handleMovement(direction) {
       handleCombat();
     }
   } catch (error) {
+    var newLocation = currentLocation.exits[direction];
+    console.log(error);
+    console.log(newLocation);
+    console.log(getValue(newLocation, true));
     quickPrint("You cannot go that way.");
   }
 }
