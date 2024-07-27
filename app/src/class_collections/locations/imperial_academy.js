@@ -89,7 +89,7 @@ class CommonRoom extends Room {
     );
     this.items = {};
     this.exits = {
-      north: "grandHall",
+      north: "shortHallway_02",
       south: "shortHallway_01",
       east: "kitchen",
       west: "barracks",
@@ -122,9 +122,9 @@ class Barracks extends Room {
     super(
       "Barracks",
       "barracks",
-      "The barracks is a large room with a few beds and footlockers. There is a door to the east, leading to the common room.",
-      "15",
-      "15"
+      "The barracks is a small room with a few beds and footlockers. There is a door to the east, leading to the common room.",
+      "10",
+      "10"
     );
     this.items = {};
     this.exits = {
@@ -137,6 +137,25 @@ class Barracks extends Room {
 }
 
 var barracks = new Barracks();
+
+class ShortHallway_02 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "shortHallway_02",
+      "The short hallway is a small, dark hallway. There is a door to the north, leading to the grand hall, and a door to the south, leading to the common room.",
+      "10",
+      "15"
+    );
+    this.items = {};
+    this.exits = {
+      north: "grandHall",
+      south: "commonRoom",
+    };
+  }
+}
+
+var shortHallway_02 = new ShortHallway_02();
 
 class GrandHall extends Room {
   constructor() {
@@ -151,7 +170,7 @@ class GrandHall extends Room {
     this.exits = {
       north: "longPassage",
       east: "vault",
-      south: "commonRoom",
+      south: "shortHallway_02",
       west: "hallGates",
     };
     this.cutscene = "grandHallEncounter";
@@ -200,14 +219,14 @@ class HallGates extends Room {
     this.items = {};
     this.exits = {
       east: "grandHall",
-      west: "shortHallway",
+      west: "shortHallway_03",
     };
   }
 }
 
 var hallGates = new HallGates();
 
-class ShortHallway extends Room {
+class ShortHallway_03 extends Room {
   constructor() {
     super(
       "Short Hallway",
@@ -224,7 +243,7 @@ class ShortHallway extends Room {
   }
 }
 
-var shortHallway = new ShortHallway();
+var shortHallway_03 = new ShortHallway_03();
 
 class RestOfAcademy extends Room {
   constructor() {
@@ -237,7 +256,7 @@ class RestOfAcademy extends Room {
     );
     this.items = {};
     this.exits = {
-      east: "shortHallway",
+      east: "shortHallway_03",
     };
     this.cutscene = "restOfAcademy";
     this.cutscenePlayed = false;
@@ -359,10 +378,11 @@ module.exports = {
   commonRoom,
   kitchen,
   barracks,
+  shortHallway_02,
   grandHall,
   vault,
   hallGates,
-  shortHallway,
+  shortHallway_03,
   restOfAcademy,
   longPassage,
   militaryAnnex,
