@@ -115,17 +115,35 @@ class Port extends Room {
     super(
       "Port",
       "port",
-      "The port is a large, open area, with numerous docks and ships. There is a path to the north leading to the port entrance.",
+      "The port is a large, open area, with numerous docks and ships. There is a path to the north leading to the port entrance, and a path to the south leading to the Imperial Dreadnought.",
       "10",
       "10"
     );
     this.exits = {
-      north: "portEntrance"
+      north: "portEntrance",
+      south: "imperialDreadnought"
     };
   }
 }
 
 var port = new Port();
+
+class ImperialDreadnought extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought",
+      "imperialDreadnought",
+      "The Imperial Dreadnought is a massive, ironclad warship. There is a path to the north, leading to the port.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "port"
+    };
+  }
+}
+
+var imperialDreadnought = new ImperialDreadnought();
 
 class MarketEntrance extends Room {
   constructor() {
@@ -150,17 +168,35 @@ class Market extends Room {
     super(
       "Market",
       "market",
-      "The market is a large, open area, with numerous stalls and shops. There is a path to the north leading to the market entrance.",
+      "The market is a large, open area, with numerous stalls and shops. There is a path to the north leading to the market entrance, and a path to the south leading to the market stalls.",
       "10",
       "10"
     );
     this.exits = {
-      north: "marketEntrance"
+      north: "marketEntrance",
+      south: "marketStalls"
     };
   }
 }
 
 var market = new Market();
+
+class MarketStalls extends Room {
+  constructor() {
+    super(
+      "Market Stalls",
+      "marketStalls",
+      "The market stalls have a wide variety of merchants selling various wares. There is a path to the north leading to the market.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "market"
+    };
+  }
+}
+
+var marketStalls = new MarketStalls();
 
 class GuardTowers2 extends Room {
   constructor() {
@@ -216,4 +252,4 @@ class PalaceEntrance extends Room {
 
 var palaceEntrance = new PalaceEntrance();
 
-module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, portEntrance, port, market, marketEntrance, guardTowers2, palaceBridge, palaceEntrance };
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, portEntrance, port, imperialDreadnought, marketEntrance, market, marketStalls, guardTowers2, palaceBridge, palaceEntrance };
