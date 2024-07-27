@@ -1,7 +1,37 @@
-module.exports = { initializeData, saveGame, loadGame, updateUI, addEntity, removeEntity, getValue, changeValue, calculateValue, updateMap };
+module.exports = {
+  initializeData,
+  saveGame,
+  loadGame,
+  updateUI,
+  addEntity,
+  removeEntity,
+  getValue,
+  changeValue,
+  calculateValue,
+  updateMap,
+};
 
 const { inputLoop, handleMovement } = require("./handle_input");
-const { trainingRoom, practiceYard, storageRoom, commonRoom, shortHallway_01, kitchen, barracks, shortHallway_02, grandHall, vault, hallGates, shortHallway_03, restOfAcademy, longPassage, militaryAnnex, firstBarracks, secondBarracks, armory } = require("./class_collections/locations/imperial_academy");
+const {
+  trainingRoom,
+  practiceYard,
+  storageRoom,
+  commonRoom,
+  shortHallway_01,
+  kitchen,
+  barracks,
+  shortHallway_02,
+  grandHall,
+  vault,
+  hallGates,
+  shortHallway_03,
+  restOfAcademy,
+  longPassage,
+  militaryAnnex,
+  firstBarracks,
+  secondBarracks,
+  armory,
+} = require("./class_collections/locations/imperial_academy");
 
 function initializeData() {
   var playerData = {
@@ -92,11 +122,17 @@ function updateTitleBar() {
   document.getElementById("name-text").innerHTML = `Name: ${getValue("name")}`;
   document.getElementById("health-bar").value = getValue("currentHealth");
   document.getElementById("health-bar").max = getValue("maxHealth");
-  document.getElementById("health-text").innerHTML = `Health: ${getValue("currentHealth")}/${getValue("maxHealth")}`;
-  document.getElementById("level-text").innerHTML = `Level: ${getValue("level")}`;
+  document.getElementById("health-text").innerHTML = `Health: ${getValue(
+    "currentHealth"
+  )}/${getValue("maxHealth")}`;
+  document.getElementById("level-text").innerHTML = `Level: ${getValue(
+    "level"
+  )}`;
   document.getElementById("mana-bar").value = getValue("currentMana");
   document.getElementById("mana-bar").max = getValue("maxMana");
-  document.getElementById("mana-text").innerHTML = `Mana: ${getValue("currentMana")}/${getValue("maxMana")}`;
+  document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
+    "currentMana"
+  )}/${getValue("maxMana")}`;
 }
 
 function updateSpellbook(target) {
@@ -112,8 +148,12 @@ function updateSpellbook(target) {
       var spellDescription = spells[i]["description"];
       var spellType = spells[i]["type"];
       if (spellType == "Element" || spellType == "Direction") {
-        if (document.getElementById(spellName)) { document.getElementById(spellName).remove(); }
-        document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
+        if (document.getElementById(spellName)) {
+          document.getElementById(spellName).remove();
+        }
+        document.getElementById(
+          targetElement
+        ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription}</option>`;
       } else if (spellType == "Spell") {
         var spellPower = spells[i]["power"];
         var spellRange = spells[i]["range"];
@@ -123,11 +163,17 @@ function updateSpellbook(target) {
         var spellArmorIncrease = spells[i]["armorIncrease"];
         var spellSpeedIncrease = spells[i]["speedIncrease"];
         var spellRangeIncrease = spells[i]["rangeIncrease"];
-        if (document.getElementById(spellName)) { document.getElementById(spellName).remove(); }
+        if (document.getElementById(spellName)) {
+          document.getElementById(spellName).remove();
+        }
         if (spells[i]["isSupport"] == false) {
-          document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
+          document.getElementById(
+            targetElement
+          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
         } else if (spells[i]["isSupport"] == true) {
-          document.getElementById(targetElement).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
+          document.getElementById(
+            targetElement
+          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
         }
       }
     }
@@ -135,7 +181,9 @@ function updateSpellbook(target) {
     for (let i = 0; i < spells.length; i++) {
       var memory = spells[i];
       if (!document.getElementById(memory)) {
-        document.getElementById("memories").innerHTML += `<option id="${memory}">${memory}</option>`;
+        document.getElementById(
+          "memories"
+        ).innerHTML += `<option id="${memory}">${memory}</option>`;
       }
     }
   }
@@ -175,7 +223,9 @@ function updateInventory() {
     var itemGoldValue = items[i]["goldValue"];
     var itemWeight = items[i]["weight"];
     var itemQuantity = items[i]["quantity"];
-    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    if (document.getElementById(itemName)) {
+      document.getElementById(itemName).remove();
+    }
     if (itemQuantity == 0) {
       items.splice(i, 1);
       continue;
@@ -183,17 +233,25 @@ function updateInventory() {
     if (items[i]["type"] == "Weapon") {
       var itemAttackValue = items[i]["attackValue"];
       var itemRangeValue = items[i]["rangeValue"];
-      document.getElementById("weapons").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      document.getElementById(
+        "weapons"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
       var itemArmorValue = items[i]["armorValue"];
-      document.getElementById("armor").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      document.getElementById(
+        "armor"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Consumable") {
       var itemHealthValue = items[i]["healthValue"];
       var itemManaValue = items[i]["manaValue"];
       var itemSpeedValue = items[i]["speedValue"];
-      document.getElementById("consumables").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      document.getElementById(
+        "consumables"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | HP↑: ${itemHealthValue} | Mana↑: ${itemManaValue} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Miscellaneous") {
-      document.getElementById("miscellaneous").innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      document.getElementById(
+        "miscellaneous"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
   }
   sortList("weapons");
@@ -205,7 +263,9 @@ function updateInventory() {
 function updateEquipment() {
   var equipment = getValue("equipment");
   for (let i = 0; i < equipment.length; i++) {
-    if (document.getElementById(itemName)) { document.getElementById(itemName).remove(); }
+    if (document.getElementById(itemName)) {
+      document.getElementById(itemName).remove();
+    }
     var position = equipment[i]["position"];
     if (
       position == "head" ||
@@ -217,7 +277,9 @@ function updateEquipment() {
       var itemDescription = equipment[i]["description"];
       var itemArmorValue = equipment[i]["armorValue"];
       var itemWeight = equipment[i]["weight"];
-      document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      document.getElementById(
+        position
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     } else if (
       position == "mainHand" ||
       position == "offHand" ||
@@ -228,7 +290,9 @@ function updateEquipment() {
       var itemAttackValue = equipment[i]["attackValue"];
       var itemRangeValue = equipment[i]["rangeValue"];
       var itemWeight = equipment[i]["weight"];
-      document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      document.getElementById(
+        position
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
     }
   }
 }
@@ -247,45 +311,49 @@ function updateMap() {
   mapTitle.innerHTML += `Current Location: ${locationName}`;
   const startDiv = document.createElement("div");
   startDiv.setAttribute("id", currentLocation["id"]);
-  startDiv.style.width = `${currentLocation["width"]*10}px`;
-  startDiv.style.height = `${currentLocation["height"]*10}px`;
+  startDiv.style.width = `${currentLocation["width"] * 10}px`;
+  startDiv.style.height = `${currentLocation["height"] * 10}px`;
   startDiv.className = "map-tile";
   startDiv.style.justifySelf = "center";
   startDiv.style.alignSelf = "center";
   startDiv.innerHTML = `<div>${locationName}</div>`;
   map.appendChild(startDiv);
-  buildRooms(exits, "start");
+  buildRooms(exits, "start", startDiv);
 }
 
-function buildRooms(exits, startingDirection, level=0) {
+function buildRooms(exits, startingDirection, startingDiv, level = 0) {
   const map = document.getElementById("map");
   if (exits["north"]) {
     var north = eval(exits["north"]);
-    if (document.getElementById(north["id"])) { return; }
+    if (document.getElementById(north["id"])) {
+      return;
+    }
     var northDiv = document.createElement("div");
     northDiv.setAttribute("id", north["id"]);
-    northDiv.style.width = `${north["width"]*10}px`;
-    northDiv.style.height = `${north["height"]*10}px`;
-    northDiv.style.order = -2 - (level * 2);
+    northDiv.style.width = `${north["width"] * 10}px`;
+    northDiv.style.height = `${north["height"] * 10}px`;
+    northDiv.style.order = -2 - level * 2;
     northDiv.className = "map-tile";
     northDiv.innerHTML = `<div>${north["name"]}</div>`;
     map.appendChild(northDiv);
     var emptyTile = document.createElement("div");
-    emptyTile.style.order = -1 - (level * 2);
+    emptyTile.style.order = -1 - level * 2;
     emptyTile.className = "empty-tile";
     map.appendChild(emptyTile);
   }
   if (exits["west"]) {
     var west = eval(exits["west"]);
-    if (document.getElementById(west["id"])) { return; }
+    if (document.getElementById(west["id"])) {
+      return;
+    }
     var westDiv = document.createElement("div");
     westDiv.setAttribute("id", west["id"]);
-    westDiv.style.width = `${west["width"]*10}px`;
-    westDiv.style.height = `${west["height"]*10}px`;
+    westDiv.style.width = `${west["width"] * 10}px`;
+    westDiv.style.height = `${west["height"] * 10}px`;
     if (startingDirection == "west") {
-      westDiv.style.order = -1 - ((level - 1) * 2);
+      westDiv.style.order = -1 - (level - 1) * 2;
     } else {
-      westDiv.style.order = -1 - (level * 2);
+      westDiv.style.order = -1 - level * 2;
     }
     westDiv.className = "map-tile";
     westDiv.innerHTML = `<div>${west["name"]}</div>`;
@@ -293,15 +361,17 @@ function buildRooms(exits, startingDirection, level=0) {
   }
   if (exits["east"]) {
     var east = eval(exits["east"]);
-    if (document.getElementById(east["id"])) { return; }
+    if (document.getElementById(east["id"])) {
+      return;
+    }
     var eastDiv = document.createElement("div");
     eastDiv.setAttribute("id", east["id"]);
-    eastDiv.style.width = `${east["width"]*10}px`;
-    eastDiv.style.height = `${east["height"]*10}px`;
+    eastDiv.style.width = `${east["width"] * 10}px`;
+    eastDiv.style.height = `${east["height"] * 10}px`;
     if (startingDirection == "east") {
-      eastDiv.style.order = 0 - ((level - 1) * 2);
+      eastDiv.style.order = 0 - (level - 1) * 2;
     } else {
-      eastDiv.style.order = 0 - (level * 2);
+      eastDiv.style.order = 0 - level * 2;
     }
     eastDiv.className = "map-tile";
     eastDiv.innerHTML = `<div>${east["name"]}</div>`;
@@ -310,37 +380,43 @@ function buildRooms(exits, startingDirection, level=0) {
   if (exits["south"]) {
     var emptyTile = document.createElement("div");
     emptyTile.className = "empty-tile";
-    emptyTile.style.order = 2 + (level * 2);
+    emptyTile.style.order = 2 + level * 2;
     map.appendChild(emptyTile);
     var south = eval(exits["south"]);
-    if (document.getElementById(south["id"])) { return; }
+    if (document.getElementById(south["id"])) {
+      return;
+    }
     var southDiv = document.createElement("div");
     southDiv.setAttribute("id", south["id"]);
-    southDiv.style.width = `${south["width"]*10}px`;
-    southDiv.style.height = `${south["height"]*10}px`;
-    southDiv.style.order = 3 + (level * 2);
+    southDiv.style.width = `${south["width"] * 10}px`;
+    southDiv.style.height = `${south["height"] * 10}px`;
+    southDiv.style.order = 3 + level * 2;
     southDiv.className = "map-tile";
     southDiv.innerHTML = `<div>${south["name"]}</div>`;
     map.appendChild(southDiv);
   }
   console.log(map);
   if (level < 2) {
-    level++
+    level++;
     if (north) {
       const northExits = north["exits"];
-      buildRooms(northExits, "north", level);
+      const northDiv = document.getElementById(north["id"]);
+      buildRooms(northExits, "north", southDiv, level);
     }
     if (west) {
       const westExits = west["exits"];
-      buildRooms(westExits, "west", level);
+      const westDiv = document.getElementById(west["id"]);
+      buildRooms(westExits, "west", southDiv, level);
     }
     if (east) {
       const eastExits = east["exits"];
-      buildRooms(eastExits, "east", level);
+      const eastDiv = document.getElementById(east["id"]);
+      buildRooms(eastExits, "east", southDiv, level);
     }
     if (south) {
       const southExits = south["exits"];
-      buildRooms(southExits, "south", level);
+      const southDiv = document.getElementById(south["id"]);
+      buildRooms(southExits, "south", southDiv, level);
     }
   }
 }
@@ -353,7 +429,11 @@ function addEntity(entity, target) {
       i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
       i++
     ) {
-      if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
+      if (
+        JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i][
+          "name"
+        ] == entity["name"]
+      ) {
         var matchKnown = true;
         var index = i;
         break;
@@ -369,7 +449,11 @@ function addEntity(entity, target) {
       i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
       i++
     ) {
-      if (JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i]["name"] == entity["name"]) {
+      if (
+        JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i][
+          "name"
+        ] == entity["name"]
+      ) {
         var matchKnown = true;
         var index = i;
         break;
@@ -414,7 +498,7 @@ function removeEntity(entity, target) {
   updateUI();
 }
 
-function getValue(target, locations=false) {
+function getValue(target, locations = false) {
   if (locations) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
@@ -426,7 +510,7 @@ function getValue(target, locations=false) {
   return value;
 }
 
-function changeValue(target, newValue, i=0) {
+function changeValue(target, newValue, i = 0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
