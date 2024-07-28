@@ -121,12 +121,30 @@ class Port extends Room {
     );
     this.exits = {
       north: "portEntrance",
-      south: "imperialDreadnought"
+      south: "imperialDreadnoughtExterior"
     };
   }
 }
 
 var port = new Port();
+
+class ImperialDreadnoughtExterior extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought",
+      "imperialDreadnought",
+      "The Imperial Dreadnought is a massive, armored ship with a large, iron door. There is a door to the north leading to the port, and a ladder to the south leading to the upper deck.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "port",
+      south: "imperialDreadnoughtUpperDeck"
+    };
+  }
+}
+
+var imperialDreadnoughtExterior = new ImperialDreadnoughtExterior();
 
 class MarketEntrance extends Room {
   constructor() {
@@ -254,4 +272,4 @@ class PalaceEntrance extends Room {
 
 var palaceEntrance = new PalaceEntrance();
 
-module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, portEntrance, port, imperialDreadnought, marketEntrance, market, marketStalls, guardTowers2, palaceBridge, palaceEntrance };
+module.exports = { survivorCamp, academyEntrance, academyBridge, guardTowers, nexus, portEntrance, port, imperialDreadnoughtExterior, marketEntrance, market, marketStalls, guardTowers2, palaceBridge, palaceEntrance };

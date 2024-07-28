@@ -40,7 +40,7 @@ The combat system is turn-based, with the player and enemies taking turns to att
 
 ### Visual Map
 
-The game has a visual map that shows the player's current location and the locations of the rooms that are directly connected to it. In the future, there will be a recursive map that shows rooms that branch off of directly connected rooms.
+The game has a visual map that shows the player's current location and the locations of the rooms that are directly connected to it, and those that are connected to those rooms, and so on. Currently only one iteration of rooms is shown, but in the future the map will be able to show the entire world.
 
 ## Future Changes
 

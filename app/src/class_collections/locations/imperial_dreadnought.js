@@ -1,20 +1,21 @@
 const Room = require("./room.js").Room;
 
-class ImperialDreadnought extends Room {
+class imperialDreadnoughtUpperDeck extends Room {
   constructor() {
     super(
-      "Imperial Dreadnought",
-      "imperialDreadnought",
-      "The Imperial Dreadnought is a massive, armored ship with a large, iron door. There is a door to the north leading outside.",
+      "Imperial Dreadnought Upper Deck",
+      "imperialDreadnoughtUpperDeck",
+      "The upper deck of the Imperial Dreadnought is a large, open area with a few crates and barrels scattered about. There is a ladder to the north, leading to the ship's exterior, and a door to the west, leading below deck.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialDreadnoughtExterior"
+      north: "imperialDreadnoughtExterior",
+      west: "imperialDreadnoughtLowerDeck"
     };
   }
 }
 
-var imperialDreadnought = new ImperialDreadnought();
+var imperialDreadnoughtUpperDeck = new ImperialDreadnoughtUpperDeck();
 
-module.exports = { imperialDreadnought };
+module.exports = { imperialDreadnoughtUpperDeck };
