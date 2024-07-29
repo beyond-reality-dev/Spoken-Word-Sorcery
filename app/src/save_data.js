@@ -215,7 +215,7 @@ function sortList(list) {
 
 function updateInventory() {
   var gold = getValue("gold");
-  document.getElementById("gold-counter").innerHTML = `Gold: ${gold}`;
+  var encumbrance = 0;
   var items = getValue("inventory");
   for (let i = 0; i < items.length; i++) {
     var itemName = items[i]["name"];
@@ -254,6 +254,7 @@ function updateInventory() {
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
   }
+  document.getElementById("gold-counter").innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance}`;
   sortList("weapons");
   sortList("armor");
   sortList("consumables");
@@ -320,6 +321,41 @@ function updateEquipment() {
       }
     }
   }
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var armorValue = 0;
+  if (equipment["head"] != null) {
+    armorValue = armorValue + equipment["head"]["armorValue"];
+  }
+  if (equipment["chest"] != null) {
+    armorValue = armorValue + equipment["chest"]["armorValue"];
+  }
+  if (equipment["legs"] != null) {
+    armorValue = armorValue + equipment["legs"]["armorValue"];
+  }
+  if (equipment["feet"] != null) {
+    armorValue = armorValue + equipment["feet"]["armorValue"];
+  }
+  if (equipment["offHand"] != null) {
+    armorValue = armorValue + equipment["offHand"]["armorValue"];
+  }
+  playerData["armor"] = armorValue;
+  var attackValue = 0;
+  if (equipment["mainHand"] != null) {
+    attackValue = attackValue + equipment["mainHand"]["attackValue"];
+  }
+  if (equipment["offHand"] != null) {
+    attackValue = attackValue + equipment["offHand"]["attackValue"];
+  }
+  playerData["attack"] = attackValue;
+  var speedValue = 10;
+  if (equipment["accessory"] != null) {
+    if (equipment["accesory"]["speedValue"] != 0) {
+      speedValue = speedValue + equipment["accessory"]["speedValue"];
+    }
+  }
+  playerData["speed"] = speedValue;
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+  document.getElementById("stats-display").innerHTML = `Attack: ${getValue("attack")} | Defense: ${getValue("armor")} | Speed: ${getValue("speed")}`;
 }
 
 function updateMap() {

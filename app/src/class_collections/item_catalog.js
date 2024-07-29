@@ -166,6 +166,21 @@ class Arrow extends Consumable {
   }
 }
 
+class Accessory {
+  constructor(name, description, position, goldValue, healthValue, manaValue, speedValue, weight, quantity) {
+    this.name = name;
+    this.description = description;
+    this.position = position;
+    this.type = "Accessory";
+    this.goldValue = goldValue;
+    this.healthValue = healthValue;
+    this.manaValue = manaValue;
+    this.speedValue = speedValue;
+    this.weight = weight;
+    this.quantity = quantity;
+  }
+}
+
 class Miscellaneous {
   constructor(name, description, position, goldValue, weight, quantity) {
     this.name = name;
@@ -178,4 +193,4 @@ class Miscellaneous {
   }
 }
 
-module.exports = { Weapon, Armor, Consumable, Miscellaneous, ImperialDagger, Arrow, WoodenStaff };
+module.exports = { Weapon, Armor, Consumable, Accessory, Miscellaneous, ImperialDagger, Arrow, WoodenStaff };
