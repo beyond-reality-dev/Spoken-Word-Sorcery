@@ -282,17 +282,42 @@ function updateEquipment() {
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     } else if (
       position == "mainHand" ||
-      position == "offHand" ||
+      position == "offHand"
+    ) {
+      var itemName = equipment[i]["name"];
+      var itemDescription = equipment[i]["description"];
+      var itemWeight = equipment[i]["weight"];
+      if (equipment[i]["attackValue"] != 0) {
+        var itemAttackValue = equipment[i]["attackValue"];
+        var itemRangeValue = equipment[i]["rangeValue"];
+        document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      } else if (equipment[i]["armorValue"] != 0) {
+        var itemArmorValue = equipment[i]["armorValue"];
+        document.getElementById(
+          position
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      }
+    } else if (
       position == "accessory"
     ) {
       var itemName = equipment[i]["name"];
       var itemDescription = equipment[i]["description"];
-      var itemAttackValue = equipment[i]["attackValue"];
-      var itemRangeValue = equipment[i]["rangeValue"];
       var itemWeight = equipment[i]["weight"];
-      document.getElementById(
-        position
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      if (equipment[i]["manaValue"] != 0) {
+        var itemManaValue = equipment[i]["manaValue"];
+        document.getElementById(
+          position
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
+      } else if (equipment[i]["speedValue"] != 0) {
+        var itemSpeedValue = equipment[i]["speedValue"];
+        document.getElementById(
+          position
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
+      } else {
+        document.getElementById(
+          position
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
+      }
     }
   }
 }
