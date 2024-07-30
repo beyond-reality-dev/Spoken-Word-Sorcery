@@ -253,6 +253,7 @@ function updateInventory() {
         "miscellaneous"
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     }
+    encumbrance = encumbrance + itemWeight * itemQuantity;
   }
   document.getElementById("gold-counter").innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance}`;
   sortList("weapons");
