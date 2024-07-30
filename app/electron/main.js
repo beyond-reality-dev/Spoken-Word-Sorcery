@@ -20,7 +20,8 @@ function createWindow() {
   window.maximize();
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
-        const { saveGame, loadGame, changeValue, updateMap } = require("./save_data.js");
+        const { saveGame, loadGame, changeValue } = require("./save_data.js");
+        const { updateMap } = require("./map.js");
         const { intro } = require("./cutscenes/imperialAcademy/intro/intro.js");
 
         // Start menu functions.
