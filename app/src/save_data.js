@@ -264,6 +264,7 @@ function updateInventory() {
 
 function updateEquipment() {
   var equipment = getValue("equipment");
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
   for (let i = 0; i < equipment.length; i++) {
     if (document.getElementById(itemName)) {
       document.getElementById(itemName).remove();
@@ -281,8 +282,29 @@ function updateEquipment() {
       var itemWeight = equipment[i]["weight"];
       document.getElementById(
         position
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
-    } else if (
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    } else if (position == "eitherHand") {
+      if (equipment["offHand"] == null) {
+        position = "offHand";
+      } else {
+        position = "mainHand";
+      }
+    } else if (position == "bothHands") {
+      var itemName = equipment[i]["name"];
+      var itemDescription = equipment[i]["description"];
+      var itemWeight = equipment[i]["weight"];
+      var itemAttackValue = equipment[i]["attackValue"];
+      var itemRangeValue = equipment[i]["rangeValue"];
+      var offHand = equipment["offHand"];
+      if (offHand != null) {
+        equipment["offHand"] = null;
+        playerData["equipment"] = equipment;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+      }
+      document.getElementById("mainHand").innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      document.getElementById("offHand").innerHTML = "";
+    }
+    if (
       position == "mainHand" ||
       position == "offHand"
     ) {
@@ -292,12 +314,12 @@ function updateEquipment() {
       if (equipment[i]["attackValue"] != 0) {
         var itemAttackValue = equipment[i]["attackValue"];
         var itemRangeValue = equipment[i]["rangeValue"];
-        document.getElementById(position).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+        document.getElementById(position).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
       } else if (equipment[i]["armorValue"] != 0) {
         var itemArmorValue = equipment[i]["armorValue"];
         document.getElementById(
           position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       }
     } else if (
       position == "accessory"
@@ -309,20 +331,19 @@ function updateEquipment() {
         var itemManaValue = equipment[i]["manaValue"];
         document.getElementById(
           position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
       } else if (equipment[i]["speedValue"] != 0) {
         var itemSpeedValue = equipment[i]["speedValue"];
         document.getElementById(
           position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
       } else {
         document.getElementById(
           position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
       }
     }
   }
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   if (equipment["head"] != null) {
     armorValue = armorValue + equipment["head"]["armorValue"];
