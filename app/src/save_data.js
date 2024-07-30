@@ -255,7 +255,9 @@ function updateInventory() {
     }
     encumbrance = encumbrance + itemWeight * itemQuantity;
   }
-  document.getElementById("gold-counter").innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance}`;
+  document.getElementById(
+    "gold-counter"
+  ).innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance}`;
   sortList("weapons");
   sortList("armor");
   sortList("consumables");
@@ -282,48 +284,24 @@ function updateEquipment() {
       var itemWeight = equipment[i]["weight"];
       document.getElementById(
         position
-      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
-    } else if (position == "eitherHand") {
-      if (equipment["offHand"] == null) {
-        position = "offHand";
-      } else {
-        position = "mainHand";
-      }
-    } else if (position == "bothHands") {
-      var itemName = equipment[i]["name"];
-      var itemDescription = equipment[i]["description"];
-      var itemWeight = equipment[i]["weight"];
-      var itemAttackValue = equipment[i]["attackValue"];
-      var itemRangeValue = equipment[i]["rangeValue"];
-      var offHand = equipment["offHand"];
-      if (offHand != null) {
-        equipment["offHand"] = null;
-        playerData["equipment"] = equipment;
-        localStorage.setItem("playerData", JSON.stringify(playerData));
-      }
-      document.getElementById("mainHand").innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      document.getElementById("offHand").innerHTML = "";
-    }
-    if (
-      position == "mainHand" ||
-      position == "offHand"
-    ) {
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    } else if (position == "mainHand" || position == "offHand") {
       var itemName = equipment[i]["name"];
       var itemDescription = equipment[i]["description"];
       var itemWeight = equipment[i]["weight"];
       if (equipment[i]["attackValue"] != 0) {
         var itemAttackValue = equipment[i]["attackValue"];
         var itemRangeValue = equipment[i]["rangeValue"];
-        document.getElementById(position).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+        document.getElementById(
+          position
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
       } else if (equipment[i]["armorValue"] != 0) {
         var itemArmorValue = equipment[i]["armorValue"];
         document.getElementById(
           position
-        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       }
-    } else if (
-      position == "accessory"
-    ) {
+    } else if (position == "accessory") {
       var itemName = equipment[i]["name"];
       var itemDescription = equipment[i]["description"];
       var itemWeight = equipment[i]["weight"];
@@ -331,16 +309,16 @@ function updateEquipment() {
         var itemManaValue = equipment[i]["manaValue"];
         document.getElementById(
           position
-        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
       } else if (equipment[i]["speedValue"] != 0) {
         var itemSpeedValue = equipment[i]["speedValue"];
         document.getElementById(
           position
-        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
       } else {
         document.getElementById(
           position
-        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
       }
     }
   }
@@ -377,7 +355,9 @@ function updateEquipment() {
   }
   playerData["speed"] = speedValue;
   localStorage.setItem("playerData", JSON.stringify(playerData));
-  document.getElementById("stats-display").innerHTML = `Attack: ${getValue("attack")} | Defense: ${getValue("armor")} | Speed: ${getValue("speed")}`;
+  document.getElementById("stats-display").innerHTML = `Attack: ${getValue(
+    "attack"
+  )} | Defense: ${getValue("armor")} | Speed: ${getValue("speed")}`;
 }
 
 function updateMap() {
@@ -505,6 +485,7 @@ function buildRooms(exits, startingDirection, level = 0) {
 
 function addEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
+  console.log(target);
   if (target == "spokenSpells") {
     for (
       let i = 0;
@@ -545,12 +526,27 @@ function addEntity(entity, target) {
       playerData["knownSpells"].push(entity);
     }
   } else if (target == "equipment") {
-    for (let i = 0; i < playerData["equipment"].length; i++) {
-      if (playerData["equipment"][i]["position"] == entity["position"]) {
-        playerData["equipment"].splice(i, 1);
+    console.log("continuing to equip");
+    var position = entity["position"];
+    if (position == "bothHands") {
+      playerData["equipment"]["offHand"] = null;
+      playerData["equipment"]["mainHand"] = entity;
+    } else if (position == "eitherHand") {
+      if (
+        playerData["equipment"]["mainHand"] == null &&
+        playerData["equipment"]["offHand"] == null
+      ) {
+        playerData["equipment"]["mainHand"] = entity;
+      } else if (playerData["equipment"]["mainHand"] == null) {
+        playerData["equipment"]["mainHand"] = entity;
+      } else if (playerData["equipment"]["offHand"]) {
+        playerData["equipment"]["offhand"] = entity;
+      } else {
+        playerData["equipment"]["mainHand"] = entity;
       }
-      playerData["equipment"].push(entity);
     }
+    console.log(entity);
+    console.log(playerData["equipment"]);
   } else {
     playerData[target].push(entity);
   }

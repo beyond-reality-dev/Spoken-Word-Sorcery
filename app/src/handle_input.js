@@ -473,6 +473,7 @@ function handleDrop(item) {
 }
 
 function handleEquip(item) {
+  console.log("equipping...");
   var items = getValue("inventory");
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);
@@ -482,6 +483,8 @@ function handleEquip(item) {
       addEntity(items[i], "equipment");
       quickPrint(`You equipped ${item}.`);
       break;
+    } else {
+      quickPrint(`You do not have ${item}.`);
     }
   }
 }
@@ -497,6 +500,8 @@ function handleUnequip(item) {
       changeValue("itemQuantity", current - 1, i);
       quickPrint(`You unequipped ${item}.`);
       break;
+    } else {
+      quickPrint(`You do not have ${item} equipped.`);
     }
   }
 }

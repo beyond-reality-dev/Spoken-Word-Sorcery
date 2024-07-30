@@ -1,6 +1,6 @@
 const { printLines, requireAnswer } = require("../../../general");
 const { getValue, changeValue } = require("../../../save_data");
-const { grandHall, longPassage, commonRoom, hallGates } = require("../../../class_collections/locations/imperial_academy");
+const { grandHall, longPassage, commonRoom, hallGates, militaryAnnex } = require("../../../class_collections/locations/imperial_academy");
 const { handleMovement } = require("../../../handle_input");
 
 async function grandHallEncounter() {
@@ -18,10 +18,11 @@ async function grandHallEncounter() {
     await requireAnswer(["no", "n"], "You try to speak, but the words catch in your throat. Your oath requires you to answer honestly.");
     printLines("app/src/cutscenes/imperialAcademy/grandHall/5.txt");
     await requireAnswer(["yes", "y"], '"Is that clear?"');
-  } else if (getValue("grandHall", true).cutscenePlayed == false) {
     printLines("app/src/cutscenes/imperialAcademy/grandHall/6.txt");
-    requireAnswer(["any"], "unreachable");
+  } else if (getValue("militaryAnnex", true).cutscenePlayed == true) {
     printLines("app/src/cutscenes/imperialAcademy/grandHall/7.txt");
+    await requireAnswer(["any"], "unreachable");
+    printLines("app/src/cutscenes/imperialAcademy/grandHall/8.txt");
     changeValue("['longPassage']['isLocked']", true, "locations");
     changeValue("['commonRoom']['isLocked']", true, "locations");
     changeValue("['hallGates']['isLocked']", false, "locations");

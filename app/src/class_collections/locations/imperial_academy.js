@@ -1,4 +1,4 @@
-const { Room } = require("../locations/room")
+const { Room } = require("../locations/room");
 const { Enemy, Rebel } = require("../enemy_menagerie");
 
 class TrainingRoom extends Room {
@@ -6,11 +6,11 @@ class TrainingRoom extends Room {
     super(
       "Training Room",
       "trainingRoom",
-      "The training room is a large room with a few training dummies and a practice wooden staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room.",
+      "The training room is a large room with a few training dummies and a practice staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room.",
       "15",
       "15"
     );
-    this.items = { staff: "WoodenStaff(1)" };
+    this.items = { "staff": "WoodenStaff()" };
     this.exits = {
       north: "shortHallway_01",
       east: "practiceYard",
@@ -257,6 +257,7 @@ class RestOfAcademy extends Room {
     this.items = {};
     this.exits = {
       east: "shortHallway_03",
+      south: "survivorsCamp",
     };
     this.cutscene = "restOfAcademy";
     this.cutscenePlayed = false;
@@ -298,8 +299,8 @@ class MilitaryAnnex extends Room {
     this.items = {};
     this.exits = {
       north: "armory",
-      east: "firstBarracks",
-      west: "secondBarracks",
+      east: "secondBarracks",
+      west: "firstBarracks",
       south: "longPassage",
     };
     this.isVisited = false;
@@ -321,8 +322,8 @@ class FirstBarracks extends Room {
       "First Barracks",
       "firstBarracks",
       "The first barracks is a large room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
-      "15",
-      "15"
+      "10",
+      "10"
     );
     this.items = {};
     this.exits = {
@@ -339,8 +340,8 @@ class SecondBarracks extends Room {
       "Second Barracks",
       "secondBarracks",
       "The second barracks is a large room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
-      "15",
-      "15"
+      "10",
+      "10"
     );
     this.items = {};
     this.exits = {
@@ -357,8 +358,8 @@ class Armory extends Room {
       "Armory",
       "armory",
       "The armory is a large room with a few weapons racks and a few stands for pieces of armor. Oddly, much of the furniture has been strewn about, and none of the equipment remains. There is a door to the south, leading back to the military annex.",
-      "15",
-      "15"
+      "10",
+      "10"
     );
     this.items = {};
     this.exits = {

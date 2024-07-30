@@ -23,7 +23,7 @@ class Weapon {
 
 class WoodenStaff extends Weapon {
   constructor(quantity = 1) {
-    super("Staff", "A simple staff", "bothHands", 5, 5, 1, 5, quantity);
+    super("Staff", "A wooden staff", "bothHands", 5, 5, 1, 5, quantity);
   }
 }
 
