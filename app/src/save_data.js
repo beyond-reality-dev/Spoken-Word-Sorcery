@@ -267,93 +267,108 @@ function updateInventory() {
 function updateEquipment() {
   var equipment = getValue("equipment");
   var playerData = JSON.parse(localStorage.getItem("playerData"));
-  for (let i = 0; i < equipment.length; i++) {
-    if (document.getElementById(itemName)) {
-      document.getElementById(itemName).remove();
-    }
-    var position = equipment[i]["position"];
-    if (
-      position == "head" ||
-      position == "chest" ||
-      position == "legs" ||
-      position == "feet"
-    ) {
-      var itemName = equipment[i]["name"];
-      var itemDescription = equipment[i]["description"];
-      var itemArmorValue = equipment[i]["armorValue"];
-      var itemWeight = equipment[i]["weight"];
-      document.getElementById(
-        position
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
-    } else if (position == "mainHand" || position == "offHand") {
-      var itemName = equipment[i]["name"];
-      var itemDescription = equipment[i]["description"];
-      var itemWeight = equipment[i]["weight"];
-      if (equipment[i]["attackValue"] != 0) {
-        var itemAttackValue = equipment[i]["attackValue"];
-        var itemRangeValue = equipment[i]["rangeValue"];
-        document.getElementById(
-          position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      } else if (equipment[i]["armorValue"] != 0) {
-        var itemArmorValue = equipment[i]["armorValue"];
-        document.getElementById(
-          position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
-      }
-    } else if (position == "accessory") {
-      var itemName = equipment[i]["name"];
-      var itemDescription = equipment[i]["description"];
-      var itemWeight = equipment[i]["weight"];
-      if (equipment[i]["manaValue"] != 0) {
-        var itemManaValue = equipment[i]["manaValue"];
-        document.getElementById(
-          position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
-      } else if (equipment[i]["speedValue"] != 0) {
-        var itemSpeedValue = equipment[i]["speedValue"];
-        document.getElementById(
-          position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
-      } else {
-        document.getElementById(
-          position
-        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
-      }
-    }
-  }
   var armorValue = 0;
+  var attackValue = 0;
   if (equipment["head"] != null) {
-    armorValue = armorValue + equipment["head"]["armorValue"];
+    var itemName = equipment["head"]["name"];
+    var itemDescription = equipment["head"]["description"];
+    var itemArmorValue = equipment["head"]["armorValue"];
+    var itemWeight = equipment["head"]["weight"];
+    document.getElementById(
+      "head"
+    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    armorValue = armorValue + itemArmorValue;
   }
   if (equipment["chest"] != null) {
-    armorValue = armorValue + equipment["chest"]["armorValue"];
+    itemName = equipment["chest"]["name"];
+    itemDescription = equipment["chest"]["description"];
+    itemArmorValue = equipment["chest"]["armorValue"];
+    itemWeight = equipment["chest"]["weight"];
+    document.getElementById(
+      "chest"
+    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    armorValue = armorValue + itemArmorValue;
   }
   if (equipment["legs"] != null) {
-    armorValue = armorValue + equipment["legs"]["armorValue"];
+    itemName = equipment["legs"]["name"];
+    itemDescription = equipment["legs"]["description"];
+    itemArmorValue = equipment["legs"]["armorValue"];
+    itemWeight = equipment["legs"]["weight"];
+    document.getElementById(
+      "legs"
+    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    armorValue = armorValue + itemArmorValue;
   }
   if (equipment["feet"] != null) {
-    armorValue = armorValue + equipment["feet"]["armorValue"];
+    itemName = equipment["feet"]["name"];
+    itemDescription = equipment["feet"]["description"];
+    itemArmorValue = equipment["feet"]["armorValue"];
+    itemWeight = equipment["feet"]["weight"];
+    document.getElementById(
+      "feet"
+    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    armorValue = armorValue + itemArmorValue;
   }
-  if (equipment["offHand"] != null) {
-    armorValue = armorValue + equipment["offHand"]["armorValue"];
-  }
-  playerData["armor"] = armorValue;
-  var attackValue = 0;
   if (equipment["mainHand"] != null) {
-    attackValue = attackValue + equipment["mainHand"]["attackValue"];
-  }
-  if (equipment["offHand"] != null) {
-    attackValue = attackValue + equipment["offHand"]["attackValue"];
-  }
-  playerData["attack"] = attackValue;
-  var speedValue = 10;
-  if (equipment["accessory"] != null) {
-    if (equipment["accesory"]["speedValue"] != 0) {
-      speedValue = speedValue + equipment["accessory"]["speedValue"];
+    itemName = equipment["mainHand"]["name"];
+    itemDescription = equipment["mainHand"]["description"];
+    itemWeight = equipment["mainHand"]["weight"];
+    if (equipment["mainHand"]["attackValue"] != 0) {
+      var itemAttackValue = equipment["mainHand"]["attackValue"];
+      var itemRangeValue = equipment["mainHand"]["rangeValue"];
+      document.getElementById(
+        "mainHand"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      attackValue = attackValue + itemAttackValue;
+    } else if (equipment["mainHand"]["armorValue"] != 0) {
+      var itemArmorValue = equipment["mainHand"]["armorValue"];
+      document.getElementById(
+        "mainHand"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      armorValue = armorValue + itemArmorValue;
     }
   }
-  playerData["speed"] = speedValue;
+  if (equipment["offHand"] != null) {
+    itemName = equipment["offHand"]["name"];
+    itemDescription = equipment["offHand"]["description"];
+    itemWeight = equipment["offHand"]["weight"];
+    if (equipment["offHand"]["attackValue"] != 0) {
+      itemAttackValue = equipment["offHand"]["attackValue"];
+      itemRangeValue = equipment["offHand"]["rangeValue"];
+      document.getElementById(
+        "offHand"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      attackValue = attackValue + itemAttackValue;
+    } else if (equipment["offHand"]["armorValue"] != 0) {
+      itemArmorValue = equipment["offHand"]["armorValue"];
+      document.getElementById(
+        "offHand"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      armorValue = armorValue + itemArmorValue;
+    }
+  }
+  if (equipment["accessory"] != null) {
+    itemName = equipment["accessory"]["name"];
+    itemDescription = equipment["accessory"]["description"];
+    itemWeight = equipment["accessory"]["weight"];
+    if (equipment["accessory"]["manaValue"] != 0) {
+      var itemManaValue = equipment["accessory"]["manaValue"];
+      document.getElementById(
+        "accessory"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
+    } else if (equipment["accessory"]["speedValue"] != 0) {
+      var itemSpeedValue = equipment["accessory"]["speedValue"];
+      document.getElementById(
+        "accessory"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
+    } else {
+      document.getElementById(
+        "accessory"
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
+    }
+  }
+  playerData["attack"] = attackValue;
+  playerData["armor"] = armorValue;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   document.getElementById("stats-display").innerHTML = `Attack: ${getValue(
     "attack"
