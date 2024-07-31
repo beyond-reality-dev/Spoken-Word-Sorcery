@@ -572,7 +572,7 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
-        calculateValue("experience", "add", enemy.xp);
+        calculateValue("experiencePoints", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
           var item = enemy.items[i];
@@ -599,7 +599,7 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
-        calculateValue("experience", "add", enemy.xp);
+        calculateValue("experiencePoints", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
           var item = enemy.items[i];

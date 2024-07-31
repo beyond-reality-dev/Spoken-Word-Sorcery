@@ -36,7 +36,7 @@ function initializeData() {
   var playerData = {
     name: "",
     level: 1,
-    experience: 0,
+    experiencePoints: 0,
     insanity: 0,
     maxHealth: 100,
     currentHealth: 100,
