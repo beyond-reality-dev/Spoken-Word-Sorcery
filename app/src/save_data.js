@@ -31,6 +31,7 @@ const {
   secondBarracks,
   armory,
 } = require("./class_collections/locations/imperial_academy");
+const { quickPrint } = require("./general");
 
 function initializeData() {
   var playerData = {
@@ -487,6 +488,9 @@ function changeValue(target, newValue, i = 0) {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {
     eval(`playerData["locations"]${target} = newValue`);
+  } else if (target == "experiencePoints") {
+    playerData[target] = newValue;
+    levelChecker();
   } else {
     playerData[target] = newValue;
   }
@@ -506,4 +510,38 @@ function calculateValue(target, operation, amount) {
     value = value / amount;
   }
   changeValue(target, value);
+}
+
+function levelChecker() {
+  var level = getValue("level");
+  var experiencePoints = getValue("experiencePoints")
+  if (level == 1 && experiencePoints >= 100) {
+    var difference = experiencePoints - 100
+    changeValue("experiencePoints", difference)
+    changeValue("level", 2)
+    levelUp();
+  }
+}
+
+function levelUp() {
+  var level = getValue("level");
+  var previousHealth = getValue("maxHealth");
+  var previousHealth = getValue("maxMana");
+  var previousSpeed = getValue("speed");
+  var diceRoll = getRandomInt(10) + 10;
+  calculateValue("maxHealth", "add", diceRoll);
+  var maxHealth = getValue("maxHealth");
+  changeValue("currentHealth", maxHealth);
+  diceRoll = getRandomInt(5) + 5;
+  calculateValue("maxMana", "add", diceRoll);
+  var maxMana = getValue("maxMana");
+  changeValue("currentMana", maxMana);
+  calculateValue("speed", "add", 1);
+  var speed = getValue("speed");
+  quickPrint(`You have leveled up! Your maximum health has increased from ${previousHealth} to ${maxHealth}, your maximum mana has increased from ${previousMana} to ${maxMana}, and your speed has increased from ${previousSpeed} to ${speed}!`);
+  updateUI();
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
