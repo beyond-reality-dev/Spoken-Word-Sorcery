@@ -12,8 +12,14 @@ async function militaryAnnex() {
     await requireAnswer(["any"], "unreachable");
     await handleCombat();
     if (getValue("location") == "imperialAcademy.militaryAnnex") {
-      await printLines("app/src/cutscenes/imperial_academy/military_annex/2.txt");
-      changeValue("['imperialAcademy.militaryAnnex']['cutscenePlayed']", true, "locations")
+      await printLines(
+        "app/src/cutscenes/imperial_academy/military_annex/2.txt"
+      );
+      changeValue(
+        "['imperialAcademy.militaryAnnex']['cutscenePlayed']",
+        true,
+        "locations"
+      );
     }
   }
 }

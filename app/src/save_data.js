@@ -49,7 +49,7 @@ function initializeData() {
   var locations = {};
   var keys = Object.keys(locationsObjects);
   for (let i = 0; i < keys.length; i++) {
-    locations[keys[i]] = eval("locationsObjects."+keys[i]);
+    locations[keys[i]] = eval("locationsObjects." + keys[i]);
   }
   playerData["knownSpells"] = knownSpells;
   playerData["spokenSpells"] = spokenSpells;
@@ -455,7 +455,9 @@ function changeValue(target, newValue, i = 0) {
   } else if (i == "locations") {
     var primaryTarget = target.split(".")[0];
     var secondaryTarget = target.split(".")[1];
-    eval(`playerData["locations"][${primaryTarget}][${secondaryTarget}] = newValue`);
+    eval(
+      `playerData["locations"][${primaryTarget}][${secondaryTarget}] = newValue`
+    );
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
     levelChecker();
@@ -482,11 +484,11 @@ function calculateValue(target, operation, amount) {
 
 function levelChecker() {
   var level = getValue("level");
-  var experiencePoints = getValue("experiencePoints")
-  if (level == 1 && experiencePoints >= (level * 100)) {
-    var difference = experiencePoints - 100
-    changeValue("experiencePoints", difference)
-    changeValue("level", 2)
+  var experiencePoints = getValue("experiencePoints");
+  if (level == 1 && experiencePoints >= level * 100) {
+    var difference = experiencePoints - 100;
+    changeValue("experiencePoints", difference);
+    changeValue("level", 2);
     levelUp();
   }
 }
@@ -505,6 +507,8 @@ function levelUp() {
   changeValue("currentMana", maxMana);
   calculateValue("speed", "add", 1);
   var speed = getValue("speed");
-  quickPrint(`You have leveled up! Your maximum health has increased from ${previousHealth} to ${maxHealth}, your maximum mana has increased from ${previousMana} to ${maxMana}, and your speed has increased from ${previousSpeed} to ${speed}!`);
+  quickPrint(
+    `You have leveled up! Your maximum health has increased from ${previousHealth} to ${maxHealth}, your maximum mana has increased from ${previousMana} to ${maxMana}, and your speed has increased from ${previousSpeed} to ${speed}!`
+  );
   updateUI();
 }

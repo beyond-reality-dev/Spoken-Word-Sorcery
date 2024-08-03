@@ -10,7 +10,7 @@ class TrainingRoom extends Room {
       "15",
       "15"
     );
-    this.items = { "staff": "WoodenStaff()" };
+    this.items = { staff: "WoodenStaff()" };
     this.exits = {
       north: "imperialAcademy.shortHallway_01",
       east: "imperialAcademy.practiceYard",
@@ -400,7 +400,7 @@ class AcademyEntrance extends Room {
     );
     this.exits = {
       north: "imperialAcademy.survivorCamp",
-      south: "imperialAcademy.academyBridge"
+      south: "imperialAcademy.academyBridge",
     };
   }
 }
@@ -418,14 +418,14 @@ class AcademyBridge extends Room {
     );
     this.exits = {
       north: "imperialAcademy.academyEntrance",
-      south: "imperialAcademy.guardTowers"
+      south: "imperialAcademy.guardTowers",
     };
   }
 }
 
 var academyBridge = new AcademyBridge();
 
-class GuardTowers1 extends Room {
+class GuardTowers extends Room {
   constructor() {
     super(
       "Guard Towers",
@@ -436,12 +436,12 @@ class GuardTowers1 extends Room {
     );
     this.exits = {
       north: "imperialAcademy.academyBridge",
-      south: "imperialAcademy.nexus"
+      south: "imperialCitadel.nexus",
     };
   }
 }
 
-var guardTowers1 = new GuardTowers1();
+var guardTowers = new GuardTowers();
 
 module.exports = {
   trainingRoom,
@@ -465,5 +465,5 @@ module.exports = {
   survivorCamp,
   academyEntrance,
   academyBridge,
-  guardTowers1
+  guardTowers,
 };

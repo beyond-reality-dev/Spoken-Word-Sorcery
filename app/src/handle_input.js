@@ -1,4 +1,12 @@
-module.exports = { allowInput, blockInput, closedInput, openInput, inputLoop, handleMovement, handleCombat };
+module.exports = {
+  allowInput,
+  blockInput,
+  closedInput,
+  openInput,
+  inputLoop,
+  handleMovement,
+  handleCombat,
+};
 
 var isCombat = false;
 
@@ -7,7 +15,7 @@ const {
   getValue,
   changeValue,
   calculateValue,
-  updateUI
+  updateUI,
 } = require("./save_data");
 
 const { toTitleCase, quickPrint, getRandomInt } = require("./general");
@@ -181,7 +189,7 @@ async function openInput(combatOverride = false) {
             if (hasEquipped == true) {
               quickPrint("You have already equipped this turn.");
               continue;
-            } 
+            }
             hasEquipped = true;
             if (clauses[i].substring(7, 9) == "a ") {
               item = clauses[i].substring(9);
@@ -246,8 +254,7 @@ async function openInput(combatOverride = false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
-            } 
-            else if (hasActed == false) {
+            } else if (hasActed == false) {
               hasActed = true;
               text = ["weapon"];
             }
@@ -441,7 +448,7 @@ function handlePickup(item) {
     item = item.substring(0, item.length - 1);
   }
   if (items.hasOwnProperty(item)) {
-    var itemClass = eval("new " + items[item])
+    var itemClass = eval("new " + items[item]);
     addEntity(itemClass, "inventory");
     delete items[item];
     var playerData = JSON.parse(localStorage.getItem("playerData"));
@@ -542,9 +549,17 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
-    quickPrint(`${i+1}. ${enemy.name} has ${enemy.health} health and is standing in the ${enemy.position} of the room.`);
+    quickPrint(
+      `${i + 1}. ${enemy.name} has ${
+        enemy.health
+      } health and is standing in the ${enemy.position} of the room.`
+    );
   }
-  quickPrint(`You are facing ${getValue("direction")}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`);
+  quickPrint(
+    `You are facing ${getValue(
+      "direction"
+    )}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`
+  );
   choiceInput = await openInput();
   var choice = choiceInput[0];
   if (choiceInput.length > 1) {
@@ -650,7 +665,7 @@ function handleSpell(words) {
     ) {
       phrase = "Nothing happens.";
     } else if (spell.manaCost > getValue("currentMana")) {
-      phrase = "You don't have enough mana to cast this spell."
+      phrase = "You don't have enough mana to cast this spell.";
     } else {
       var matchKnown = false;
       for (let i = 0; i < words.length; i++) {
