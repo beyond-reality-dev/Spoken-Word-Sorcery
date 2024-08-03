@@ -26,11 +26,7 @@ const {
 
 const { Arrow, WoodenStaff } = require("./class_collections/item_catalog");
 
-const { grandHallEncounter } = require("./cutscenes/imperial_academy/grand_hall/grand_hall");
-const { barracksMeeting } = require("./cutscenes/imperial_academy/barracks_meeting/barracks_meeting");
-const { militaryAnnex } = require("./cutscenes/imperial_academy/military_annex/military_annex");
-const { restOfAcademy } = require("./cutscenes/imperial_academy/rest_of_academy/rest_of_academy");
-const { vault } = require("./cutscenes/imperial_academy/vault/vault");
+const cutscenes = require("./cutscenes");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -413,22 +409,25 @@ function handleMovement(direction) {
     changeValue("location", newLocation.id);
     changeValue("direction", direction);
     quickPrint(newLocation.description);
-    console.log(newLocation);
     if (newLocation.hasOwnProperty("isVisited")) {
+      var primaryLocation = currentLocation.id.split(".")[0];
+      var secondaryLocation = currentLocation.id.split(".")[1];
       newLocation.isVisited = true;
       var playerData = JSON.parse(localStorage.getItem("playerData"));
       var locations = playerData["locations"];
-      locations[currentLocation.id]["isVisited"] = true;
+      locations[primaryLocation][secondaryLocation]["isVisited"] = true;
       localStorage.setItem("playerData", JSON.stringify(playerData));
     }
     if (newLocation.hasOwnProperty("cutscene")) {
       if (newLocation.cutscenePlayed == false) {
-        eval(newLocation.cutscene + "()");
+        var cutsceneName = newLocation.cutscene;
+        cutscenes[cutsceneName][cutsceneName]();
       }
     } else if (newLocation.hasOwnProperty("enemies")) {
       handleCombat();
     }
   } catch (error) {
+    console.log(error);
     var newLocation = currentLocation.exits[direction];
     quickPrint("You cannot go that way.");
   }

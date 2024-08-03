@@ -17,7 +17,7 @@ async function restOfAcademy() {
   addEntity(life, "knownSpells");
   changeValue("currentMana", getValue("maxMana"));
   changeValue("currentHealth", getValue("maxHealth"));
-  changeValue("['vault']['isLocked']", false, "locations");
+  changeValue("['imperialAcademy.vault']['isLocked']", false, "locations");
 }
 
 module.exports = { restOfAcademy };

@@ -4,8 +4,8 @@ const { grandHall, longPassage, commonRoom, hallGates, militaryAnnex } = require
 const { handleMovement } = require("../../../handle_input");
 
 async function grandHallEncounter() {
-  if (getValue("armory", true).isVisited == false || getValue("militaryAnnex", true).isVisited == false) {
-    if (getValue("barracks", true).isVisited == false) {
+  if (getValue("imperialAcademy.armory", true).isVisited == false || getValue("militaryAnnex", true).isVisited == false) {
+    if (getValue("imperialAcademy.barracks", true).isVisited == false) {
       printLines("app/src/cutscenes/imperial_academy/grand_hall/1.txt");
       return;
     } else {
@@ -23,14 +23,14 @@ async function grandHallEncounter() {
     printLines("app/src/cutscenes/imperial_academy/grand_hall/7.txt");
     await requireAnswer(["any"], "unreachable");
     printLines("app/src/cutscenes/imperial_academy/grand_hall/8.txt");
-    changeValue("['longPassage']['isLocked']", true, "locations");
-    changeValue("['commonRoom']['isLocked']", true, "locations");
-    changeValue("['hallGates']['isLocked']", false, "locations");
-    changeValue("['longPassage']['lockedDescription']", "The door to the long passage has collapsed, blocking the way.", "locations");
-    changeValue("['commonRoom']['lockedDescription']", "The door to the common room has collapsed, blocking the way.", "locations");
-    changeValue("['grandHall']['description']", "The grand hall, once impressive, is now desolate. Nothing of value remains, with even the soldiers' weapons and armor having been stripped from their bodies. By whom, you cannot say.", "locations");
+    changeValue("['imperialAcademy.longPassage']['isLocked']", true, "locations");
+    changeValue("['imperialAcademy.commonRoom']['isLocked']", true, "locations");
+    changeValue("['imperialAcademy.hallGates']['isLocked']", false, "locations");
+    changeValue("['imperialAcademy.longPassage']['lockedDescription']", "The door to the long passage has collapsed, blocking the way.", "locations");
+    changeValue("['imperialAcademy.commonRoom']['lockedDescription']", "The door to the common room has collapsed, blocking the way.", "locations");
+    changeValue("['imperialAcademy.grandHall']['description']", "The grand hall, once impressive, is now desolate. Nothing of value remains, with even the soldiers' weapons and armor having been stripped from their bodies. By whom, you cannot say.", "locations");
     handleMovement("load");
-    changeValue("['grandHall']['cutscenePlayed']", true, "locations")
+    changeValue("['imperialAcademy.grandHall']['cutscenePlayed']", true, "locations")
   }
 }
 

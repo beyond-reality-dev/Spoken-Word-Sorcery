@@ -453,7 +453,9 @@ function changeValue(target, newValue, i = 0) {
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {
-    eval(`playerData["locations"]${target} = newValue`);
+    var primaryTarget = target.split(".")[0];
+    var secondaryTarget = target.split(".")[1];
+    eval(`playerData["locations"][${primaryTarget}][${secondaryTarget}] = newValue`);
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
     levelChecker();

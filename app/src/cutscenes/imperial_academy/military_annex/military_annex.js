@@ -4,16 +4,16 @@ const { handleCombat } = require("../../../handle_input");
 
 async function militaryAnnex() {
   if (
-    getValue("militaryAnnex", true).isVisited == true &&
-    getValue("militaryAnnex", true).cutscenePlayed == false &&
-    getValue("armory", true).isVisited == true
+    getValue("imperialAcademy.militaryAnnex", true).isVisited == true &&
+    getValue("imperialAcademy.militaryAnnex", true).cutscenePlayed == false &&
+    getValue("imperialAcademy.armory", true).isVisited == true
   ) {
     await printLines("app/src/cutscenes/imperial_academy/military_annex/1.txt");
     await requireAnswer(["any"], "unreachable");
     await handleCombat();
-    if (getValue("location") == "militaryAnnex") {
+    if (getValue("location") == "imperialAcademy.militaryAnnex") {
       await printLines("app/src/cutscenes/imperial_academy/military_annex/2.txt");
-      changeValue("['militaryAnnex']['cutscenePlayed']", true, "locations")
+      changeValue("['imperialAcademy.militaryAnnex']['cutscenePlayed']", true, "locations")
     }
   }
 }
