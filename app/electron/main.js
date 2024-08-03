@@ -22,7 +22,7 @@ function createWindow() {
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
         const { saveGame, loadGame, changeValue } = require("./save_data.js");
         const { updateMap } = require("./map.js");
-        const { intro } = require("./cutscenes/imperialAcademy/intro/intro.js");
+        const { intro } = require("./cutscenes/imperial_academy/intro/intro.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {

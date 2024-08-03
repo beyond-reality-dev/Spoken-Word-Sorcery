@@ -30,7 +30,7 @@ function initializeData() {
     gold: 0,
     encumbrance: 0,
     direction: "north",
-    location: "trainingRoom",
+    location: "imperialAcademy.trainingRoom",
     gameSpeed: 1000,
   };
   var inventory = [];
@@ -47,9 +47,9 @@ function initializeData() {
   var spokenSpells = [];
   var memories = [];
   var locations = {};
-  keys = Object.keys(locationsObjects)
+  var keys = Object.keys(locationsObjects);
   for (let i = 0; i < keys.length; i++) {
-    locations[keys[i]] = keys[i];
+    locations[keys[i]] = eval("locationsObjects."+keys[i]);
   }
   playerData["knownSpells"] = knownSpells;
   playerData["spokenSpells"] = spokenSpells;
@@ -222,7 +222,9 @@ function updateInventory() {
     }
     encumbrance = encumbrance + itemWeight * itemQuantity;
   }
-  changeValue("encumbrance", encumbrance);
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  playerData["encumbrance"] = encumbrance;
+  localStorage.setItem("playerData", JSON.stringify(playerData));
   document.getElementById(
     "gold-counter"
   ).innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance} lbs`;
@@ -345,7 +347,6 @@ function updateEquipment() {
 
 function addEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
-  console.log(target);
   if (target == "spokenSpells") {
     for (
       let i = 0;
@@ -386,7 +387,6 @@ function addEntity(entity, target) {
       playerData["knownSpells"].push(entity);
     }
   } else if (target == "equipment") {
-    console.log("continuing to equip");
     var position = entity["position"];
     if (position == "bothHands") {
       playerData["equipment"]["offHand"] = null;
@@ -405,8 +405,6 @@ function addEntity(entity, target) {
         playerData["equipment"]["mainHand"] = entity;
       }
     }
-    console.log(entity);
-    console.log(playerData["equipment"]);
   } else {
     playerData[target].push(entity);
   }
@@ -440,7 +438,9 @@ function getValue(target, locations = false) {
   if (locations) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
-    var value = locations[target];
+    var primaryTarget = target.split(".")[0];
+    var secondaryTarget = target.split(".")[1];
+    var value = locations[primaryTarget][secondaryTarget];
     return value;
   }
   var playerData = JSON.parse(localStorage.getItem("playerData"));

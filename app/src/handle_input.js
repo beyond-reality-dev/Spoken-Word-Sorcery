@@ -413,6 +413,7 @@ function handleMovement(direction) {
     changeValue("location", newLocation.id);
     changeValue("direction", direction);
     quickPrint(newLocation.description);
+    console.log(newLocation);
     if (newLocation.hasOwnProperty("isVisited")) {
       newLocation.isVisited = true;
       var playerData = JSON.parse(localStorage.getItem("playerData"));
@@ -429,9 +430,6 @@ function handleMovement(direction) {
     }
   } catch (error) {
     var newLocation = currentLocation.exits[direction];
-    console.log(error);
-    console.log(newLocation);
-    console.log(getValue(newLocation, true));
     quickPrint("You cannot go that way.");
   }
 }
@@ -473,7 +471,6 @@ function handleDrop(item) {
 }
 
 function handleEquip(item) {
-  console.log("equipping...");
   var items = getValue("inventory");
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);

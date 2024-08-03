@@ -1,8 +1,16 @@
+const { imperialAcademy } = require("./class_collections/locations");
+const { imperialMarket } = require("./class_collections/locations");
+const { imperialNexus } = require("./class_collections/locations");
+const { imperialPalace } = require("./class_collections/locations");
+const { imperialPort } = require("./class_collections/locations");
+
 function updateMap() {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var location = playerData["location"];
+  var primaryLocation = location.split(".")[0];
+  var secondaryLocation = location.split(".")[1];
   var locations = playerData["locations"];
-  var currentLocation = locations[location];
+  var currentLocation = locations[primaryLocation][secondaryLocation];
   var locationName = currentLocation["name"];
   var exits = currentLocation["exits"];
   const map = document.getElementById("map");

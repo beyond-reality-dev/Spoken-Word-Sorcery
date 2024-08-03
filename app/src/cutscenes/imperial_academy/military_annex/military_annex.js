@@ -8,11 +8,11 @@ async function militaryAnnex() {
     getValue("militaryAnnex", true).cutscenePlayed == false &&
     getValue("armory", true).isVisited == true
   ) {
-    await printLines("app/src/cutscenes/imperialAcademy/militaryAnnex/1.txt");
+    await printLines("app/src/cutscenes/imperial_academy/military_annex/1.txt");
     await requireAnswer(["any"], "unreachable");
     await handleCombat();
     if (getValue("location") == "militaryAnnex") {
-      await printLines("app/src/cutscenes/imperialAcademy/militaryAnnex/2.txt");
+      await printLines("app/src/cutscenes/imperial_academy/military_annex/2.txt");
       changeValue("['militaryAnnex']['cutscenePlayed']", true, "locations")
     }
   }
