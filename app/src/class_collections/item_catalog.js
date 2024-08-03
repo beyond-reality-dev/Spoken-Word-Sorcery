@@ -21,7 +21,7 @@ class Weapon {
   }
 }
 
-class WoodenStaff extends Weapon {
+class Staff extends Weapon {
   constructor(quantity = 1) {
     super("Staff", "A wooden staff", "bothHands", 5, 5, 1, 5, quantity);
   }
@@ -345,5 +345,5 @@ module.exports = {
   Miscellaneous,
   ImperialDagger,
   Arrow,
-  WoodenStaff,
+  Staff,
 };

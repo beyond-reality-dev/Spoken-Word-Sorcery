@@ -452,6 +452,7 @@ function changeValue(target, newValue, i = 0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
+    console.log(playerData["inventory"][i]["quantity"]);
   } else if (i == "locations") {
     var primaryTarget = target.split(".")[0];
     var secondaryTarget = target.split(".")[1];

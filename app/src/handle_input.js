@@ -32,7 +32,7 @@ const {
   Away,
 } = require("./class_collections/spellbook");
 
-const { Arrow, WoodenStaff } = require("./class_collections/item_catalog");
+const { Arrow, Staff } = require("./class_collections/item_catalog");
 
 const cutscenes = require("./cutscenes");
 
@@ -453,9 +453,15 @@ function handlePickup(item) {
     delete items[item];
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
-    locations[currentLocation.id]["items"] = items;
+    var primaryLocation = currentLocation.id.split(".")[0];
+    var secondaryLocation = currentLocation.id.split(".")[1];
+    locations[primaryLocation][secondaryLocation]["items"] = items;
     localStorage.setItem("playerData", JSON.stringify(playerData));
-    quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
+    if (itemClass.quantity == 1) {
+      quickPrint(`You picked up a ${item}.`);
+    } else {
+      quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
+    }
   } else {
     quickPrint("There is no " + item + " here.");
   }
@@ -470,7 +476,71 @@ function handleDrop(item) {
     if (items[i].name == toTitleCase(item)) {
       var current = items[i].quantity;
       changeValue("itemQuantity", current - 1, i);
-      quickPrint(`You dropped a ${item}.`);
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      current = playerData["inventory"][i].quantity;
+      if (current == 0) {
+        items.splice(i, 1);
+      }
+      var currentLocation = getValue("location");
+      var locationItems = eval(getValue(currentLocation, true).items);
+      locationItems[item] = toTitleCase(item) + "()";
+      var locations = playerData["locations"];
+      var primaryLocation = currentLocation.split(".")[0];
+      var secondaryLocation = currentLocation.split(".")[1];
+      locations[primaryLocation][secondaryLocation]["items"] = locationItems;
+      playerData["inventory"] = items;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      if (item.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You dropped an ${item}.`);
+      } else {
+        quickPrint(`You dropped a ${item}.`);
+      }
+      var equipment = getValue("equipment");
+      var head = equipment["head"];
+      if (head != null) {
+        if (head.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var chest = equipment["chest"];
+      if (chest != null) {
+        if (chest.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var legs = equipment["legs"];
+      if (legs != null) {
+        if (legs.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var feet = equipment["feet"];
+      if (feet != null) {
+        if (feet.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var mainHand = equipment["mainHand"];
+      if (mainHand != null) {
+        console.log(mainHand);
+        if (mainHand.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var offHand = equipment["offHand"];
+      if (offHand != null) {
+        if (offHand.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      var accessory = equipment["accessory"];
+      if (accessory != null) {
+        if (accessory.name == toTitleCase(item)) {
+          handleUnequip(item);
+        }
+      }
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      updateUI();
       break;
     }
   }
@@ -484,29 +554,94 @@ function handleEquip(item) {
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
       addEntity(items[i], "equipment");
-      quickPrint(`You equipped ${item}.`);
+      if (item.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You equipped an ${item}.`);
+      } else {
+        quickPrint(`You equipped a ${item}.`);
+      }
       break;
     } else {
-      quickPrint(`You do not have ${item}.`);
+      if (item.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You do not have an ${item}.`);
+      } else {
+        quickPrint(`You do not have a ${item}.`);
+      }
     }
   }
 }
 
 function handleUnequip(item) {
   var equipment = getValue("equipment");
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var unequipped = false;
   if (item.charAt(item.length - 1) == "s") {
     item = item.substring(0, item.length - 1);
   }
-  for (let i = 0; i < equipment.length; i++) {
-    if (equipment[i].name == toTitleCase(item)) {
-      var current = equipment[i].quantity;
-      changeValue("itemQuantity", current - 1, i);
-      quickPrint(`You unequipped ${item}.`);
-      break;
-    } else {
-      quickPrint(`You do not have ${item} equipped.`);
+  if (equipment["head"] != null) {
+    if (equipment["head"].name == toTitleCase(item)) {
+      equipment["head"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
     }
   }
+  if (equipment["chest"] != null) {
+    if (equipment["chest"].name == toTitleCase(item)) {
+      equipment["chest"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (equipment["legs"] != null) {
+    if (equipment["legs"].name == toTitleCase(item)) {
+      equipment["legs"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (equipment["feet"] != null) {
+    if (equipment["feet"].name == toTitleCase(item)) {
+      equipment["feet"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (equipment["mainHand"] != null) {
+    if (equipment["mainHand"].name == toTitleCase(item)) {
+      equipment["mainHand"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (equipment["offHand"] != null) {
+    if (equipment["offHand"].name == toTitleCase(item)) {
+      equipment["offHand"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (equipment["accessory"] != null) {
+    if (equipment["accessory"].name == toTitleCase(item)) {
+      equipment["accessory"] = null;
+      playerData["equipment"] = equipment;
+      quickPrint(`You unequipped the ${item}.`);
+      unequipped = true;
+    }
+  }
+  if (unequipped == false) {
+    if (item.charAt(0).match(/[aeiou]/i)) {
+      quickPrint(`You do not have an ${item} equipped.`);
+    } else {
+      quickPrint(`You do not have a ${item} equipped.`);
+    }
+  }
+  localStorage.setItem("playerData", JSON.stringify(playerData));
+  updateUI();
 }
 
 async function handleCombat() {

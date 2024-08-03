@@ -10,7 +10,7 @@ class TrainingRoom extends Room {
       "15",
       "15"
     );
-    this.items = { staff: "WoodenStaff()" };
+    this.items = { staff: "Staff()" };
     this.exits = {
       north: "imperialAcademy.shortHallway_01",
       east: "imperialAcademy.practiceYard",
