@@ -515,7 +515,7 @@ function calculateValue(target, operation, amount) {
 function levelChecker() {
   var level = getValue("level");
   var experiencePoints = getValue("experiencePoints")
-  if (level == 1 && experiencePoints >= 100) {
+  if (level == 1 && experiencePoints >= (level * 100)) {
     var difference = experiencePoints - 100
     changeValue("experiencePoints", difference)
     changeValue("level", 2)
@@ -524,7 +524,6 @@ function levelChecker() {
 }
 
 function levelUp() {
-  var level = getValue("level");
   var previousHealth = getValue("maxHealth");
   var previousHealth = getValue("maxMana");
   var previousSpeed = getValue("speed");
