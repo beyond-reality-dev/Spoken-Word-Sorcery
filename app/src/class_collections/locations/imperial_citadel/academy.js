@@ -1,4 +1,4 @@
-const { Room } = require("../locations/room");
+const { Room } = require("./room");
 const { Enemy, Rebel } = require("../enemy_menagerie");
 
 class TrainingRoom extends Room {

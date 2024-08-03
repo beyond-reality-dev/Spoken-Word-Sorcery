@@ -10,28 +10,9 @@ module.exports = {
   calculateValue,
 };
 
+const { quickPrint, getRandomInt } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
-const {
-  trainingRoom,
-  practiceYard,
-  storageRoom,
-  commonRoom,
-  shortHallway_01,
-  kitchen,
-  barracks,
-  shortHallway_02,
-  grandHall,
-  vault,
-  hallGates,
-  shortHallway_03,
-  restOfAcademy,
-  longPassage,
-  militaryAnnex,
-  firstBarracks,
-  secondBarracks,
-  armory,
-} = require("./class_collections/locations/imperial_academy");
-const { quickPrint } = require("./general");
+const locationsObjects = require("./class_collections/locations");
 
 function initializeData() {
   var playerData = {
@@ -65,26 +46,11 @@ function initializeData() {
   var knownSpells = [];
   var spokenSpells = [];
   var memories = [];
-  var locations = {
-    trainingRoom: trainingRoom,
-    practiceYard: practiceYard,
-    storageRoom: storageRoom,
-    commonRoom: commonRoom,
-    shortHallway_01: shortHallway_01,
-    kitchen: kitchen,
-    barracks: barracks,
-    shortHallway_02: shortHallway_02,
-    grandHall: grandHall,
-    vault: vault,
-    hallGates: hallGates,
-    shortHallway_03: shortHallway_03,
-    restOfAcademy: restOfAcademy,
-    longPassage: longPassage,
-    militaryAnnex: militaryAnnex,
-    firstBarracks: firstBarracks,
-    secondBarracks: secondBarracks,
-    armory: armory,
-  };
+  var locations = {};
+  keys = Object.keys(locationsObjects)
+  for (let i = 0; i < keys.length; i++) {
+    locations[keys[i]] = keys[i];
+  }
   playerData["knownSpells"] = knownSpells;
   playerData["spokenSpells"] = spokenSpells;
   playerData["memories"] = memories;
@@ -539,8 +505,4 @@ function levelUp() {
   var speed = getValue("speed");
   quickPrint(`You have leveled up! Your maximum health has increased from ${previousHealth} to ${maxHealth}, your maximum mana has increased from ${previousMana} to ${maxMana}, and your speed has increased from ${previousSpeed} to ${speed}!`);
   updateUI();
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
 }

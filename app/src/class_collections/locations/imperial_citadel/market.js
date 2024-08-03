@@ -1,4 +1,4 @@
-const Room = require("./room.js").Room;
+const Room = require("../room.js").Room;
 
 class MarketEntrance extends Room {
   constructor() {

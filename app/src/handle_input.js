@@ -10,7 +10,7 @@ const {
   updateUI
 } = require("./save_data");
 
-const { toTitleCase, quickPrint } = require("./general");
+const { toTitleCase, quickPrint, getRandomInt } = require("./general");
 
 const { Rebel } = require("./class_collections/enemy_menagerie");
 
@@ -26,11 +26,11 @@ const {
 
 const { Arrow, WoodenStaff } = require("./class_collections/item_catalog");
 
-const { grandHallEncounter } = require("./cutscenes/imperialAcademy/grandHall/grandHall");
-const { barracksMeeting } = require("./cutscenes/imperialAcademy/barracksMeeting/barracksMeeting");
-const { militaryAnnex } = require("./cutscenes/imperialAcademy/militaryAnnex/militaryAnnex");
-const { restOfAcademy } = require("./cutscenes/imperialAcademy/restOfAcademy/restOfAcademy");
-const { vault } = require("./cutscenes/imperialAcademy/vault/vault");
+const { grandHallEncounter } = require("./cutscenes/imperial_academy/grand_hall/grand_hall");
+const { barracksMeeting } = require("./cutscenes/imperial_academy/barracks_meeting/barracks_meeting");
+const { militaryAnnex } = require("./cutscenes/imperial_academy/military_annex/military_annex");
+const { restOfAcademy } = require("./cutscenes/imperial_academy/rest_of_academy/rest_of_academy");
+const { vault } = require("./cutscenes/imperial_academy/vault/vault");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -621,10 +621,6 @@ async function handleEnemyTurn(enemy) {
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
 }
 
 function handleSpell(words) {

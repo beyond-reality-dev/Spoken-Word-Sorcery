@@ -1,4 +1,4 @@
-const Room = require("./room.js").Room;
+const Room = require("../room.js").Room;
 
 class PortEntrance extends Room {
   constructor() {

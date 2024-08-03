@@ -5,6 +5,7 @@ module.exports = {
   quickPrint,
   requireAnswer,
   toTitleCase,
+  getRandomInt,
 };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
@@ -83,4 +84,8 @@ function toTitleCase(str) {
     /\w\S*/g,
     (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
   );
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }

@@ -1,6 +1,6 @@
 const { printLines, requireAnswer } = require("../../../general");
 const { getValue, changeValue } = require("../../../save_data");
-const { grandHall, longPassage, commonRoom, hallGates, militaryAnnex } = require("../../../class_collections/locations/imperial_academy");
+const { grandHall, longPassage, commonRoom, hallGates, militaryAnnex } = require("../../../class_collections/locations/academy");
 const { handleMovement } = require("../../../handle_input");
 
 async function grandHallEncounter() {
