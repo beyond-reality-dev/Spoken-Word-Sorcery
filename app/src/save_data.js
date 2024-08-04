@@ -3,6 +3,7 @@ module.exports = {
   saveGame,
   loadGame,
   updateUI,
+  updateEquipment,
   addEntity,
   removeEntity,
   getValue,
@@ -193,7 +194,11 @@ function updateInventory() {
     if (document.getElementById(itemName)) {
       document.getElementById(itemName).remove();
     }
-    if (itemQuantity == 0) {
+    if (itemQuantity <= 0) {
+      if (document.getElementById(itemName)) {
+        console.log("removed "+itemName);
+        document.getElementById(itemName).remove();
+      }
       items.splice(i, 1);
       continue;
     }
@@ -236,6 +241,8 @@ function updateInventory() {
 
 function updateEquipment() {
   var equipment = getValue("equipment");
+  console.log("Updating UI:");
+  console.log(equipment);
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   var attackValue = 0;
@@ -248,6 +255,8 @@ function updateEquipment() {
       "head"
     ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
+  } else {
+    document.getElementById("head").innerHTML = "";
   }
   if (equipment["chest"] != null) {
     itemName = equipment["chest"]["name"];
@@ -258,6 +267,8 @@ function updateEquipment() {
       "chest"
     ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
+  } else {
+    document.getElementById("chest").innerHTML = "";
   }
   if (equipment["legs"] != null) {
     itemName = equipment["legs"]["name"];
@@ -268,6 +279,8 @@ function updateEquipment() {
       "legs"
     ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
+  } else {
+    document.getElementById("legs").innerHTML = "";
   }
   if (equipment["feet"] != null) {
     itemName = equipment["feet"]["name"];
@@ -278,6 +291,8 @@ function updateEquipment() {
       "feet"
     ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
+  } else {
+    document.getElementById("feet").innerHTML = "";
   }
   if (equipment["mainHand"] != null) {
     itemName = equipment["mainHand"]["name"];
@@ -297,6 +312,8 @@ function updateEquipment() {
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       armorValue = armorValue + itemArmorValue;
     }
+  } else {
+    document.getElementById("mainHand").innerHTML = "";
   }
   if (equipment["offHand"] != null) {
     itemName = equipment["offHand"]["name"];
@@ -316,6 +333,8 @@ function updateEquipment() {
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       armorValue = armorValue + itemArmorValue;
     }
+  } else {
+    document.getElementById("offHand").innerHTML = "";
   }
   if (equipment["accessory"] != null) {
     itemName = equipment["accessory"]["name"];
@@ -336,6 +355,8 @@ function updateEquipment() {
         "accessory"
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
     }
+  } else {
+    document.getElementById("accessory").innerHTML = "";
   }
   playerData["attack"] = attackValue;
   playerData["armor"] = armorValue;

@@ -16,6 +16,7 @@ const {
   changeValue,
   calculateValue,
   updateUI,
+  updateEquipment,
 } = require("./save_data");
 
 const { toTitleCase, quickPrint, getRandomInt } = require("./general");
@@ -475,12 +476,9 @@ function handleDrop(item) {
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
       var current = items[i].quantity;
-      changeValue("itemQuantity", current - 1, i);
+      current = current - 1;
+      changeValue("itemQuantity", current, i);
       var playerData = JSON.parse(localStorage.getItem("playerData"));
-      current = playerData["inventory"][i].quantity;
-      if (current == 0) {
-        items.splice(i, 1);
-      }
       var currentLocation = getValue("location");
       var locationItems = eval(getValue(currentLocation, true).items);
       locationItems[item] = toTitleCase(item) + "()";
@@ -488,8 +486,6 @@ function handleDrop(item) {
       var primaryLocation = currentLocation.split(".")[0];
       var secondaryLocation = currentLocation.split(".")[1];
       locations[primaryLocation][secondaryLocation]["items"] = locationItems;
-      playerData["inventory"] = items;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
       if (item.charAt(0).match(/[aeiou]/i)) {
         quickPrint(`You dropped an ${item}.`);
       } else {
@@ -539,6 +535,8 @@ function handleDrop(item) {
           handleUnequip(item);
         }
       }
+      equipment = getValue("equipment");
+      playerData["equipment"] = equipment;
       localStorage.setItem("playerData", JSON.stringify(playerData));
       updateUI();
       break;
@@ -580,7 +578,6 @@ function handleUnequip(item) {
   if (equipment["head"] != null) {
     if (equipment["head"].name == toTitleCase(item)) {
       equipment["head"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -588,7 +585,6 @@ function handleUnequip(item) {
   if (equipment["chest"] != null) {
     if (equipment["chest"].name == toTitleCase(item)) {
       equipment["chest"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -596,7 +592,6 @@ function handleUnequip(item) {
   if (equipment["legs"] != null) {
     if (equipment["legs"].name == toTitleCase(item)) {
       equipment["legs"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -604,7 +599,6 @@ function handleUnequip(item) {
   if (equipment["feet"] != null) {
     if (equipment["feet"].name == toTitleCase(item)) {
       equipment["feet"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -612,7 +606,6 @@ function handleUnequip(item) {
   if (equipment["mainHand"] != null) {
     if (equipment["mainHand"].name == toTitleCase(item)) {
       equipment["mainHand"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -620,7 +613,6 @@ function handleUnequip(item) {
   if (equipment["offHand"] != null) {
     if (equipment["offHand"].name == toTitleCase(item)) {
       equipment["offHand"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -628,7 +620,6 @@ function handleUnequip(item) {
   if (equipment["accessory"] != null) {
     if (equipment["accessory"].name == toTitleCase(item)) {
       equipment["accessory"] = null;
-      playerData["equipment"] = equipment;
       quickPrint(`You unequipped the ${item}.`);
       unequipped = true;
     }
@@ -640,8 +631,11 @@ function handleUnequip(item) {
       quickPrint(`You do not have a ${item} equipped.`);
     }
   }
+  playerData["equipment"] = equipment;
   localStorage.setItem("playerData", JSON.stringify(playerData));
-  updateUI();
+  console.log("After drop:");
+  console.log(getValue("equipment"));
+  updateEquipment();
 }
 
 async function handleCombat() {
