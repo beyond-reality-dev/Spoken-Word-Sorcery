@@ -10,8 +10,15 @@ async function survivorsCamp() {
   );
   quickPrint(`"Ah, Acolyte ${name}."`);
   printLines("app/src/cutscenes/imperial_academy/survivors_camp/2.txt");
-  await requireAnswer("any", "unreachable");
-  printLines("app/src/cutscenes/imperial_academy/survivors_camp/3.txt");
+  var response = await requireAnswer(
+    ["yes", "y", "no", "n"],
+    "Do you tell them about the Codex?"
+  );
+  if (response == "yes" || response == "y") {
+    printLines("app/src/cutscenes/imperial_academy/survivors_camp/3.txt");
+  } else if (response == "no" || response == "n") {
+    printLines("app/src/cutscenes/imperial_academy/survivors_camp/4.txt");
+  }
 }
 
 module.exports = { survivorsCamp };

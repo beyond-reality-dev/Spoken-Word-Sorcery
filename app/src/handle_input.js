@@ -5,10 +5,7 @@ module.exports = {
   openInput,
   inputLoop,
   handleMovement,
-  handleCombat,
 };
-
-var isCombat = false;
 
 const {
   addEntity,
@@ -114,7 +111,7 @@ async function openInput(combatOverride = false) {
             }
             handleTurn(direction, change);
           } else if (clauses[i].substring(0, 3) == "go ") {
-            if (isCombat == true) {
+            if (getValue("isCombat") == true) {
               quickPrint("You cannot move during combat.");
               continue;
             }
@@ -125,7 +122,7 @@ async function openInput(combatOverride = false) {
             }
             handleMovement(direction);
           } else if (clauses[i].substring(0, 4) == "run") {
-            if (isCombat == true) {
+            if (getValue("isCombat") == true) {
               quickPrint("You cannot move during combat.");
               continue;
             }
@@ -140,7 +137,7 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 5) == "move " ||
             clauses[i].substring(0, 5) == "walk "
           ) {
-            if (isCombat == true) {
+            if (getValue("isCombat") == true) {
               quickPrint("You cannot move during combat.");
               continue;
             }
@@ -253,7 +250,7 @@ async function openInput(combatOverride = false) {
             }
             handleUnequip(item);
           } else if (clauses[i].substring(0, 5) == "fight") {
-            if (isCombat == false) {
+            if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -262,7 +259,7 @@ async function openInput(combatOverride = false) {
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 6) == "attack") {
-            if (isCombat == false) {
+            if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -271,7 +268,7 @@ async function openInput(combatOverride = false) {
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 10) == "use weapon") {
-            if (isCombat == false) {
+            if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -280,7 +277,7 @@ async function openInput(combatOverride = false) {
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
-            if (isCombat == false && combatOverride == false) {
+            if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -296,7 +293,7 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 5) == "yell " ||
             clauses[i].substring(0, 5) == "cast "
           ) {
-            if (isCombat == false && combatOverride == false) {
+            if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -314,7 +311,7 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 6) == "speak " ||
             clauses[i].substring(0, 6) == "utter "
           ) {
-            if (isCombat == false && combatOverride == false) {
+            if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -327,7 +324,7 @@ async function openInput(combatOverride = false) {
               text = ["spell", spellPower, spellDirection];
             }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
-            if (isCombat == false && combatOverride == false) {
+            if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
               quickPrint("You have already acted this turn.");
@@ -636,7 +633,6 @@ function handleUnequip(item) {
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateEquipment();
 }
-
 
 function handleSpell(words) {
   words = words.split(" ");

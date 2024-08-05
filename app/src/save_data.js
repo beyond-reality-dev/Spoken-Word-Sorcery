@@ -32,6 +32,7 @@ function initializeData() {
     encumbrance: 0,
     direction: "north",
     location: "imperialAcademy.trainingRoom",
+    isCombat: false,
     gameSpeed: 1000,
   };
   var inventory = [];

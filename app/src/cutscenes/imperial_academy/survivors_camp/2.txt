@@ -6,3 +6,4 @@
 "I would think you a traitor if not for your Oaths."
 "They are still binding, and will remain so until your death."
 "What are your orders?"
+Do you tell them about the Codex?

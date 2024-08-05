@@ -1,6 +1,6 @@
 const { printLines, requireAnswer, quickPrint } = require("../../../general");
 const { getValue, addEntity } = require("../../../save_data");
-const { handleCombat } = require("../../../handle_input");
+const { handleCombat } = require("../../../combat");
 const { Miscellaneous } = require("../../../class_collections/item_catalog");
 
 async function vault() {

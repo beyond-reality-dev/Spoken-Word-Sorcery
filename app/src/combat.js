@@ -1,9 +1,9 @@
-const { getValue, calculateValue, addEntity, updateUI } = require("./save_data");
+const { getValue, changeValue, calculateValue, addEntity, updateUI } = require("./save_data");
 const { quickPrint, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
 
-export async function handleCombat() {
-  isCombat = true;
+async function handleCombat() {
+  changeValue("isCombat", true);
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   var enemies = currentLocation.enemies;
@@ -17,10 +17,10 @@ export async function handleCombat() {
         enemies = await handlePlayerTurn(enemies, enemies.length);
         turnPlayed = true;
         if (enemies.length > 0) {
-          await handleEnemyTurn(enemy);
+          await handleEnemyTurn(enemy, enemies);
         }
       } else {
-        await handleEnemyTurn(enemy);
+        await handleEnemyTurn(enemy, enemies);
       }
     }
     if (turnPlayed == false) {
@@ -35,7 +35,7 @@ export async function handleCombat() {
     localStorage.setItem("playerData", JSON.stringify(save));
     updateUI();
   }
-  isCombat = false;
+  changeValue("isCombat", false);
 }
 
 async function handlePlayerTurn(enemies, length) {
@@ -119,7 +119,7 @@ async function handlePlayerTurn(enemies, length) {
   return enemies;
 }
 
-async function handleEnemyTurn(enemy) {
+async function handleEnemyTurn(enemy, enemies) {
   var enemyAttack = getRandomInt(enemy.attack);
   var playerDefense = getRandomInt(getValue("armor"));
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
