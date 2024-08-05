@@ -384,6 +384,8 @@ class SurvivorCamp extends Room {
       north: "imperialAcademy.restOfAcademy",
       south: "imperialAcademy.academyEntrance",
     };
+    this.cutscene = "survivorCamp";
+    this.cutscenePlayed = false;
   }
 }
 
