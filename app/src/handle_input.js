@@ -758,6 +758,93 @@ async function handleEnemyTurn(enemy) {
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+  var enemyPosition = enemy.position;
+  var playerPosition = getValue("direction");
+  var leftOccupied = false;
+  var rightOccupied = false;
+  if (enemyPosition == playerPosition) {
+    for (let i = 0; i < enemies.length; i++) {
+      var currentEnemy = eval(enemies[i]);
+      if (enemyPosition == "north" && currentEnemy.position == "northeast") {
+        rightOccupied = true;
+      } else if (enemyPosition == "north" && currentEnemy.position == "northwest") {
+        leftOccupied = true;
+      } else if (enemyPosition == "northeast" && currentEnemy.position == "east") {
+        rightOccupied = true;
+      } else if (enemyPosition == "northeast" && currentEnemy.position == "north") {
+        leftOccupied = true;
+      } else if (enemyPosition == "east" && currentEnemy.position == "southeast") {
+        rightOccupied = true;
+      } else if (enemyPosition == "east" && currentEnemy.position == "northeast") {
+        leftOccupied = true;
+      } else if (enemyPosition == "southeast" && currentEnemy.position == "south") {
+        rightOccupied = true;
+      } else if (enemyPosition == "southeast" && currentEnemy.position == "east") {
+        leftOccupied = true;
+      } else if (enemyPosition == "south" && currentEnemy.position == "southwest") {
+        rightOccupied = true;
+      } else if (enemyPosition == "south" && currentEnemy.position == "southeast") {
+        leftOccupied = true;
+      } else if (enemyPosition == "southwest" && currentEnemy.position == "west") {
+        rightOccupied = true;
+      } else if (enemyPosition == "southwest" && currentEnemy.position == "south") {
+        leftOccupied = true;
+      } else if (enemyPosition == "west" && currentEnemy.position == "northwest") {
+        rightOccupied = true;
+      } else if (enemyPosition == "west" && currentEnemy.position == "southwest") {
+        leftOccupied = true;
+      } else if (enemyPosition == "northwest" && currentEnemy.position == "north") {
+        rightOccupied = true;
+      } else if (enemyPosition == "northwest" && currentEnemy.position == "west") {
+        leftOccupied = true;
+      }
+    }
+    if (leftOccupied != true) {
+      if (enemyPosition == "north") {
+        enemy.position = "northwest";
+      } else if (enemyPosition == "northeast") {
+        enemy.position = "north";
+      } else if (enemyPosition == "east") {
+        enemy.position = "northeast";
+      } else if (enemyPosition == "southeast") {
+        enemy.position = "east";
+      } else if (enemyPosition == "south") {
+        enemy.position = "southeast";
+      } else if (enemyPosition == "southwest") {
+        enemy.position = "south";
+      } else if (enemyPosition == "west") {
+        enemy.position = "southwest";
+      } else if (enemyPosition == "northwest") {
+        enemy.position = "west";
+      }
+      quickPrint(`${enemy.name} moved to the ${enemy.position}.`);
+    } else if (rightOccupied != true) {
+      if (enemyPosition == "north") {
+        enemy.position = "northeast";
+      } else if (enemyPosition == "northeast") {
+        enemy.position = "east";
+      } else if (enemyPosition == "east") {
+        enemy.position = "southeast";
+      } else if (enemyPosition == "southeast") {
+        enemy.position = "south";
+      } else if (enemyPosition == "south") {
+        enemy.position = "southwest";
+      } else if (enemyPosition == "southwest") {
+        enemy.position = "west";
+      } else if (enemyPosition == "west") {
+        enemy.position = "northwest";
+      } else if (enemyPosition == "northwest") {
+        enemy.position = "north";
+      }
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      var locations = playerData["locations"];
+      var primaryLocation = getValue("location").split(".")[0];
+      var secondaryLocation = getValue("location").split(".")[1];
+      locations[primaryLocation][secondaryLocation]["enemies"][i]["position"] = enemy.position;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      quickPrint(`${enemy.name} moved to the ${enemy.position}.`);
+    }
+  }
 }
 
 function handleSpell(words) {
