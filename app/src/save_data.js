@@ -185,20 +185,17 @@ function updateInventory() {
   var gold = getValue("gold");
   var encumbrance = 0;
   var items = getValue("inventory");
+  document.getElementById("weapons").innerHTML = "";
+  document.getElementById("armor").innerHTML = "";
+  document.getElementById("consumables").innerHTML = "";
+  document.getElementById("miscellaneous").innerHTML = "";
   for (let i = 0; i < items.length; i++) {
     var itemName = items[i]["name"];
     var itemDescription = items[i]["description"];
     var itemGoldValue = items[i]["goldValue"];
     var itemWeight = items[i]["weight"];
     var itemQuantity = items[i]["quantity"];
-    if (document.getElementById(itemName)) {
-      document.getElementById(itemName).remove();
-    }
     if (itemQuantity <= 0) {
-      if (document.getElementById(itemName)) {
-        console.log("removed "+itemName);
-        document.getElementById(itemName).remove();
-      }
       items.splice(i, 1);
       continue;
     }
@@ -241,8 +238,6 @@ function updateInventory() {
 
 function updateEquipment() {
   var equipment = getValue("equipment");
-  console.log("Updating UI:");
-  console.log(equipment);
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   var attackValue = 0;
@@ -407,6 +402,18 @@ function addEntity(entity, target) {
     if (matchKnown == false) {
       playerData["knownSpells"].push(entity);
     }
+  } else if (target == "inventory") {
+    var hits = 0;
+    for (let i = 0; i < playerData["inventory"].length; i++) {
+      if (playerData["inventory"][i]["name"] == entity["name"]) {
+        playerData["inventory"][i]["quantity"] =
+          playerData["inventory"][i]["quantity"] + entity["quantity"];
+        hits = hits + 1;
+      }
+    }
+    if (hits == 0) {
+      playerData["inventory"].push(entity);
+    }
   } else if (target == "equipment") {
     var position = entity["position"];
     if (position == "bothHands") {
@@ -473,7 +480,6 @@ function changeValue(target, newValue, i = 0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
-    console.log(playerData["inventory"][i]["quantity"]);
   } else if (i == "locations") {
     var primaryTarget = target.split(".")[0];
     var secondaryTarget = target.split(".")[1];

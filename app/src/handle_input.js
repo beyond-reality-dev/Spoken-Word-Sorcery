@@ -518,7 +518,6 @@ function handleDrop(item) {
       }
       var mainHand = equipment["mainHand"];
       if (mainHand != null) {
-        console.log(mainHand);
         if (mainHand.name == toTitleCase(item)) {
           handleUnequip(item);
         }
@@ -633,8 +632,6 @@ function handleUnequip(item) {
   }
   playerData["equipment"] = equipment;
   localStorage.setItem("playerData", JSON.stringify(playerData));
-  console.log("After drop:");
-  console.log(getValue("equipment"));
   updateEquipment();
 }
 
