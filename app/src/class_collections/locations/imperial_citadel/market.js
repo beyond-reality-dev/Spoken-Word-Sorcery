@@ -1,4 +1,5 @@
 const Room = require("../room.js").Room;
+const { enemies } = require("../../../class_collections");
 
 class MarketEntrance extends Room {
   constructor() {
@@ -49,7 +50,13 @@ class MarketStalls extends Room {
       east: "imperialMarket.market",
       west: "imperialMarket.imperialTreasury",
     };
+    this.enemies = [
+      new enemies.Rebel("Rebel 1", "southwest"),
+      new enemies.Rebel("Rebel 2", "west"),
+      new enemies.Rebel("Rebel 3", "northwest"),
+    ];
     this.cutsene = "marketStalls";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -60,14 +67,21 @@ class ImperialTreasuryExterior extends Room {
     super(
       "Imperial Treasury Exterior",
       "imperialMarket.imperialTreasuryExterior",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, and a door to the west leading inside.",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, and a door to the north leading inside.",
       "10",
       "10"
     );
     this.exits = {
+      north: "imperialMarket.imperialTreasury",
       east: "imperialMarket.marketStalls",
-      west: "imperialMarket.imperialTreasury",
     };
+    this.enemies = [
+      new enemies.Rebel("Rebel 1", "northwest"),
+      new enemies.RebelCaptain("Rebel 2", "north"),
+      new enemies.Rebel("Rebel 3", "northeast"),
+    ];
+    this.cutsene = "imperialTreasuryExterior";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -78,12 +92,12 @@ class ImperialTreasury extends Room {
     super(
       "Imperial Treasury",
       "imperialMarket.imperialTreasury",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the east leading outside.",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the south leading outside.",
       "10",
       "10"
     );
     this.exits = {
-      east: "imperialMarket.imperialTreasuryExterior",
+      south: "imperialMarket.imperialTreasuryExterior",
     };
   }
 }
