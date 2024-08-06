@@ -49,6 +49,7 @@ class MarketStalls extends Room {
       east: "imperialMarket.market",
       west: "imperialMarket.imperialTreasury",
     };
+    this.cutsene = "marketStalls";
   }
 }
 

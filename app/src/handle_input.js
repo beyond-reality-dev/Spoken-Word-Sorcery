@@ -278,7 +278,13 @@ async function openInput(combatOverride = false) {
               hasActed = true;
               text = ["weapon"];
             }
-          } else if (clauses[i].substring(0, 6) == "attack") {
+          } else if (
+            clauses[i].substring(0, 6) == "attack" ||
+            clauses[i].substring(0, 6) == "strike" ||
+            clauses[i].substring(0, 6) == "slash " ||
+            clauses[i].substring(0, 6) == "swing " ||
+            clauses[i].substring(0, 6) == "thrust"
+          ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             } else if (hasActed == true) {
