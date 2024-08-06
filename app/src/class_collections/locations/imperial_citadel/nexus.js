@@ -1,4 +1,5 @@
-const { Room } = require("../room")
+const { Room } = require("../room");
+const { enemies } = require("../../../class_collections");
 
 class Nexus extends Room {
   constructor() {
@@ -15,6 +16,11 @@ class Nexus extends Room {
       south: "imperialPalace.guardTowers",
       west: "imperialMarket.marketEntrance",
     };
+    this.enemies = [
+      new enemies.RebelCaptain("Rebel Captain", "south"),
+      new enemies.Rebel("Rebel 1", "southwest"),
+      new enemies.Rebel("Rebel 2", "southwest"),
+    ];
   }
 }
 

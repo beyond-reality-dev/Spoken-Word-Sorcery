@@ -5,13 +5,13 @@ class MarketEntrance extends Room {
     super(
       "Market Entrance",
       "imperialMarket.marketEntrance",
-      "The entrance to the market is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the east, leading to the nexus of the Imperial Citadel, and a road to the south, leading to the market.",
+      "The entrance to the market is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the east, leading to the nexus of the Imperial Citadel, and a road to the west, leading to the market.",
       "10",
       "10"
     );
     this.exits = {
       east: "imperialCitadel.nexus",
-      south: "imperialMarket.market",
+      west: "imperialMarket.market",
     };
   }
 }
@@ -23,13 +23,13 @@ class Market extends Room {
     super(
       "Market",
       "imperialMarket.market",
-      "The market is a large open area with numerous stalls and shops. There is a path to the north leading to the market entrance, and a path to the south leading to the market stalls.",
+      "The market is a large open area with numerous stalls and shops. There is a path to the east leading to the market entrance, and a path to the west leading to the market stalls.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.marketEntrance",
-      south: "imperialMarket.marketStalls",
+      east: "imperialMarket.marketEntrance",
+      west: "imperialMarket.marketStalls",
     };
   }
 }
@@ -41,13 +41,13 @@ class MarketStalls extends Room {
     super(
       "Market Stalls",
       "imperialMarket.marketStalls",
-      "The market stalls have a wide variety of merchants selling various wares. There is a path to the north leading to the market.",
+      "The market stalls have a wide variety of merchants selling various wares. There is a path to the east leading to the market, and a path to the west leading to the Imperial Treasury.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.market",
-      south: "imperialMarket.imperialTreasury",
+      east: "imperialMarket.market",
+      west: "imperialMarket.imperialTreasury",
     };
   }
 }
@@ -59,13 +59,13 @@ class ImperialTreasuryExterior extends Room {
     super(
       "Imperial Treasury Exterior",
       "imperialMarket.imperialTreasuryExterior",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the north leading to the market stalls, and a door to the south leading inside.",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, and a door to the west leading inside.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.marketStalls",
-      south: "imperialMarket.imperialTreasury",
+      east: "imperialMarket.marketStalls",
+      west: "imperialMarket.imperialTreasury",
     };
   }
 }
@@ -77,12 +77,12 @@ class ImperialTreasury extends Room {
     super(
       "Imperial Treasury",
       "imperialMarket.imperialTreasury",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the north leading outside.",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the east leading outside.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.imperialTreasuryExterior",
+      east: "imperialMarket.imperialTreasuryExterior",
     };
   }
 }

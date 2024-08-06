@@ -202,11 +202,11 @@ class Vault extends Room {
     };
     this.cutscene = "vault";
     this.cutscenePlayed = false;
-    this.enemies = [vaultDoor];
+    this.enemies = [
+      new enemies.Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0),
+    ];
   }
 }
-
-var vaultDoor = new enemies.Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0);
 
 var vault = new Vault();
 
@@ -255,7 +255,7 @@ class RestOfAcademy extends Room {
     super(
       "Rest of the Academy",
       "imperialAcademy.restOfAcademy",
-      "The rest of the Academy is a large, open area. There is a door to the east, leading to the short hallway.",
+      "The rest of the Academy is a large, open area. There is a door to the east, leading to the short hallway, and an opening in the wall to the south, leading to the survivor camp.",
       "10",
       "10"
     );
@@ -311,13 +311,13 @@ class MilitaryAnnex extends Room {
     this.isVisited = false;
     this.cutscene = "militaryAnnex";
     this.cutscenePlayed = false;
-    this.enemies = [annexRebelOne, annexRebelTwo, annexRebelThree];
+    this.enemies = [
+      new enemies.Rebel("Rebel 1", "southwest"),
+      new enemies.Rebel("Rebel 2", "south"),
+      new enemies.Rebel("Rebel 3", "southeast"),
+    ];
   }
 }
-
-var annexRebelOne = new enemies.Rebel("Rebel 1", "southwest");
-var annexRebelTwo = new enemies.Rebel("Rebel 2", "south");
-var annexRebelThree = new enemies.Rebel("Rebel 3", "southeast");
 
 var militaryAnnex = new MilitaryAnnex();
 

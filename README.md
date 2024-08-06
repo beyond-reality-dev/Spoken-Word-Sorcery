@@ -8,6 +8,7 @@
   - [Game Speed Settings](#game-speed-settings)
   - [Inventory System](#inventory-system)
   - [Combat System](#combat-system)
+  - [Resting System](#resting-system)
   - [Visual Map](#visual-map)
 - [Future Changes](#future-changes)
   - [Better Grammar Parsing](#better-grammar-parsing)
@@ -37,6 +38,10 @@ Users can pick up, drop, equip, and unequip items, and view their items in the i
 ### Combat System
 
 The combat system is turn-based, with the player and enemies taking turns to attack. The enemies occupy a certain direction in a room, and the player can change the direction that they are facing in order to target their desired enemy. They may then use a weapon or spell to attack those enemies. The damage that the player and enemies inflict is randomized within a specified range, and enemies move in random directions to evade the player's attacks.
+
+### Resting System
+
+Certain rooms in the game allow the player to rest, which will fully restore their health and mana. They cannot rest while in combat or outside of these rooms.
 
 ### Visual Map
 
