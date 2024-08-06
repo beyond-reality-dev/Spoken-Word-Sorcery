@@ -23,7 +23,7 @@ class Weapon {
 
 class Staff extends Weapon {
   constructor(quantity = 1) {
-    super("Staff", "A wooden staff", "bothHands", 5, 5, 1, 5, quantity);
+    super("Staff", "A wooden staff", "bothHands", 5, "1d6", 1, 5, quantity);
   }
 }
 
@@ -34,7 +34,7 @@ class ImperialDagger extends Weapon {
       "A dagger that once belonged to an Imperial Adept, before he sacrificed his life for your benefit",
       "eitherHand",
       10,
-      10,
+      "1d6",
       1,
       5,
       quantity
@@ -44,31 +44,31 @@ class ImperialDagger extends Weapon {
 
 class ShortSword extends Weapon {
   constructor(quantity = 1) {
-    super("Short Sword", "A short sword", "eitherHand", 10, 10, 1, 5, quantity);
+    super("Short Sword", "A short sword", "eitherHand", 10, "1d8", 1, 5, quantity);
   }
 }
 
 class LongSword extends Weapon {
   constructor(quantity = 1) {
-    super("Long Sword", "A long sword", "bothHands", 20, 15, 1, 10, quantity);
+    super("Long Sword", "A long sword", "bothHands", 20, "2d8", 1, 10, quantity);
   }
 }
 
 class GreatSword extends Weapon {
   constructor(quantity = 1) {
-    super("Great Sword", "A great sword", "bothHands", 50, 20, 1, 10, quantity);
+    super("Great Sword", "A great sword", "bothHands", 50, "2d10", 1, 10, quantity);
   }
 }
 
 class ShortBow extends Weapon {
   constructor(quantity = 1) {
-    super("Bow", "A simple bow", "bothHands", 10, 5, 5, 5, quantity);
+    super("Bow", "A simple bow", "bothHands", 10, "1d8", 5, 5, quantity);
   }
 }
 
 class LongBow extends Weapon {
   constructor(quantity = 1) {
-    super("Bow", "A simple bow", "bothHands", 10, 10, 10, 5, quantity);
+    super("Bow", "A simple bow", "bothHands", 10, "2d6", 10, 5, quantity);
   }
 }
 
