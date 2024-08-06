@@ -63,6 +63,7 @@ async function handlePlayerTurn(enemies, length) {
   var choice = choiceInput[0];
   if (choiceInput.length > 1) {
     var spellPower = choiceInput[1];
+    spellPower = getRandomInt(spellPower);
     var spellDirection = choiceInput[2];
   }
   if (choice == "weapon") {
@@ -215,6 +216,14 @@ async function handleEnemyTurn(enemy, enemies) {
         currentEnemy.position == "west"
       ) {
         leftOccupied = true;
+      }
+    }
+    if (leftOccupied != true && rightOccupied != true) {
+      var direction = getRandomInt(2);
+      if (direction == 0) {
+        leftOccupied = true;
+      } else {
+        rightOccupied = true;
       }
     }
     if (leftOccupied != true) {

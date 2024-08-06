@@ -1,5 +1,6 @@
 const { Room } = require("../room");
-const { Enemy, Rebel } = require("../../enemy_menagerie");
+const { enemies } = require("../../../class_collections");
+const { items } = require("../../../class_collections");
 
 class TrainingRoom extends Room {
   constructor() {
@@ -10,7 +11,7 @@ class TrainingRoom extends Room {
       "15",
       "15"
     );
-    this.items = { staff: "Staff()" };
+    this.items = { staff: staff };
     this.exits = {
       north: "imperialAcademy.shortHallway_01",
       east: "imperialAcademy.practiceYard",
@@ -18,6 +19,8 @@ class TrainingRoom extends Room {
     };
   }
 }
+
+var staff = new items.Staff();
 
 var trainingRoom = new TrainingRoom();
 
@@ -30,12 +33,14 @@ class PracticeYard extends Room {
       "10",
       "10"
     );
-    this.items = { arrow: "Arrow(3)" };
+    this.items = { arrow: arrows };
     this.exits = {
       west: "imperialAcademy.trainingRoom",
     };
   }
 }
+
+var arrows = new items.Arrow(3);
 
 var practiceYard = new PracticeYard();
 
@@ -201,7 +206,7 @@ class Vault extends Room {
   }
 }
 
-var vaultDoor = new Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0);
+var vaultDoor = new enemies.Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0);
 
 var vault = new Vault();
 
@@ -310,9 +315,9 @@ class MilitaryAnnex extends Room {
   }
 }
 
-var annexRebelOne = new Rebel("Rebel 1", "southwest");
-var annexRebelTwo = new Rebel("Rebel 2", "south");
-var annexRebelThree = new Rebel("Rebel 3", "southeast");
+var annexRebelOne = new enemies.Rebel("Rebel 1", "southwest");
+var annexRebelTwo = new enemies.Rebel("Rebel 2", "south");
+var annexRebelThree = new enemies.Rebel("Rebel 3", "southeast");
 
 var militaryAnnex = new MilitaryAnnex();
 

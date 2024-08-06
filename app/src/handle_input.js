@@ -6,7 +6,6 @@ module.exports = {
   inputLoop,
   handleMovement,
 };
-
 const {
   addEntity,
   getValue,
@@ -15,25 +14,10 @@ const {
   updateUI,
   updateEquipment,
 } = require("./save_data");
-
 const { toTitleCase, quickPrint } = require("./general");
-
 const { handleCombat } = require("./combat");
-
-const { Rebel } = require("./class_collections/enemy_menagerie");
-
-const {
-  Aether,
-  Earth,
-  Fire,
-  Water,
-  Spear,
-  Shield,
-  Away,
-} = require("./class_collections/spellbook");
-
-const { Arrow, Staff } = require("./class_collections/item_catalog");
-
+const { enemies } = require("./class_collections");
+const { spells } = require("./class_collections");
 const cutscenes = require("./cutscenes");
 
 function allowInput() {
@@ -448,8 +432,8 @@ function handlePickup(item) {
     item = item.substring(0, item.length - 1);
   }
   if (items.hasOwnProperty(item)) {
-    var itemClass = eval("new " + items[item]);
-    addEntity(itemClass, "inventory");
+    var itemEntity = items[item];
+    addEntity(itemEntity, "inventory");
     delete items[item];
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
@@ -457,10 +441,10 @@ function handlePickup(item) {
     var secondaryLocation = currentLocation.id.split(".")[1];
     locations[primaryLocation][secondaryLocation]["items"] = items;
     localStorage.setItem("playerData", JSON.stringify(playerData));
-    if (itemClass.quantity == 1) {
+    if (itemEntity.quantity == 1) {
       quickPrint(`You picked up a ${item}.`);
     } else {
-      quickPrint(`You picked up ${itemClass.quantity} ${item}s.`);
+      quickPrint(`You picked up ${itemEntity.quantity} ${item}s.`);
     }
   } else {
     quickPrint("There is no " + item + " here.");
@@ -480,7 +464,7 @@ function handleDrop(item) {
       var playerData = JSON.parse(localStorage.getItem("playerData"));
       var currentLocation = getValue("location");
       var locationItems = eval(getValue(currentLocation, true).items);
-      locationItems[item] = toTitleCase(item) + "()";
+      locationItems[item] = items[i];
       var locations = playerData["locations"];
       var primaryLocation = currentLocation.split(".")[0];
       var secondaryLocation = currentLocation.split(".")[1];
@@ -643,17 +627,17 @@ function handleSpell(words) {
     phrase = "Nothing happens.";
   } else {
     try {
-      var element = eval("new " + toTitleCase(words[0]) + "()");
+      var element = eval("new spells." + toTitleCase(words[0]) + "()");
     } catch (error) {
       var invalid = true;
     }
     try {
-      var spell = eval("new " + toTitleCase(words[1]) + "()");
+      var spell = eval("new spells." + toTitleCase(words[1]) + "()");
     } catch (error) {
       invalid = true;
     }
     try {
-      var direction = eval("new " + toTitleCase(words[2]) + "()");
+      var direction = eval("new spells." + toTitleCase(words[2]) + "()");
     } catch (error) {
       invalid = true;
     }
@@ -670,7 +654,7 @@ function handleSpell(words) {
       var matchKnown = false;
       for (let i = 0; i < words.length; i++) {
         for (let j = 0; j < knownSpells.length; j++) {
-          var currentSpell = eval("new " + toTitleCase(words[i]) + "()");
+          var currentSpell = eval("new spells." + toTitleCase(words[i]) + "()");
           var spellName = knownSpells[j]["name"];
           if (spellName == currentSpell.name) {
             var matchKnown = true;
@@ -681,7 +665,7 @@ function handleSpell(words) {
         for (let j = 0; j < spokenSpells.length; j++) {
           spellName = spokenSpells[j]["name"];
           if (spellName == spell.name) {
-            currentSpell = eval("new " + toTitleCase(words[i]) + "()");
+            currentSpell = eval("new spells." + toTitleCase(words[i]) + "()");
             var matchSpoken = true;
             break;
           }
