@@ -88,9 +88,12 @@ function toTitleCase(str) {
 }
 
 function diceRoll(dice) {
-  var dice = dice.split("d");
   var rolls = [];
   var total = 0;
+  if (dice == 0) {
+    return [rolls, total];
+  }
+  var dice = dice.split("d");
   for (let i = 0; i < dice[0]; i++) {
     rolls.push(getRandomInt(dice[1]) + 1);
     total += rolls[i];

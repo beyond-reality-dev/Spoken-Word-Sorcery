@@ -44,19 +44,46 @@ class ImperialDagger extends Weapon {
 
 class ShortSword extends Weapon {
   constructor(quantity = 1) {
-    super("Short Sword", "A short sword", "eitherHand", 10, "1d8", 1, 5, quantity);
+    super(
+      "Short Sword",
+      "A short sword",
+      "eitherHand",
+      10,
+      "1d8",
+      1,
+      5,
+      quantity
+    );
   }
 }
 
 class LongSword extends Weapon {
   constructor(quantity = 1) {
-    super("Long Sword", "A long sword", "bothHands", 20, "2d8", 1, 10, quantity);
+    super(
+      "Long Sword",
+      "A long sword",
+      "bothHands",
+      20,
+      "2d8",
+      1,
+      10,
+      quantity
+    );
   }
 }
 
 class GreatSword extends Weapon {
   constructor(quantity = 1) {
-    super("Great Sword", "A great sword", "bothHands", 50, "2d10", 1, 10, quantity);
+    super(
+      "Great Sword",
+      "A great sword",
+      "bothHands",
+      50,
+      "2d10",
+      1,
+      10,
+      quantity
+    );
   }
 }
 
@@ -173,7 +200,7 @@ class HealthPotion extends Consumable {
       "A potion that restores health",
       "consumable",
       10,
-      10,
+      "1d10",
       0,
       0,
       1,
@@ -189,7 +216,7 @@ class AdvancedHealthPotion extends Consumable {
       "A potion that restores health",
       "consumable",
       20,
-      20,
+      "2d10",
       0,
       0,
       1,
@@ -205,7 +232,7 @@ class SuperHealthPotion extends Consumable {
       "A potion that restores health",
       "consumable",
       30,
-      30,
+      "3d10",
       0,
       0,
       1,
@@ -222,7 +249,7 @@ class ManaPotion extends Consumable {
       "consumable",
       10,
       0,
-      10,
+      "1d10",
       0,
       1,
       quantity
@@ -238,7 +265,7 @@ class AdvancedManaPotion extends Consumable {
       "consumable",
       20,
       0,
-      20,
+      "2d10",
       0,
       1,
       quantity
@@ -254,7 +281,7 @@ class SuperManaPotion extends Consumable {
       "consumable",
       30,
       0,
-      30,
+      "3d10",
       0,
       1,
       quantity
@@ -271,7 +298,7 @@ class SpeedPotion extends Consumable {
       10,
       0,
       0,
-      10,
+      "1d10",
       1,
       quantity
     );
@@ -287,7 +314,23 @@ class AdvancedSpeedPotion extends Consumable {
       20,
       0,
       0,
-      20,
+      "2d10",
+      1,
+      quantity
+    );
+  }
+}
+
+class SuperSpeedPotion extends Consumable {
+  constructor(quantity = 1) {
+    super(
+      "Super Speed Potion",
+      "A potion that increases speed",
+      "consumable",
+      30,
+      0,
+      0,
+      "3d10",
       1,
       quantity
     );
@@ -339,11 +382,33 @@ class Miscellaneous {
 
 module.exports = {
   Weapon,
+  Staff,
+  ImperialDagger,
+  ShortSword,
+  LongSword,
+  GreatSword,
+  ShortBow,
+  LongBow,
   Armor,
+  LeatherHelmet,
+  IronHelmet,
+  LeatherChestplate,
+  IronChestplate,
+  LeatherLeggings,
+  IronLeggings,
+  LeatherBoots,
+  IronBoots,
   Consumable,
+  HealthPotion,
+  AdvancedHealthPotion,
+  SuperHealthPotion,
+  ManaPotion,
+  AdvancedManaPotion,
+  SuperManaPotion,
+  SpeedPotion,
+  AdvancedSpeedPotion,
+  SuperSpeedPotion,
+  Arrow,
   Accessory,
   Miscellaneous,
-  ImperialDagger,
-  Arrow,
-  Staff,
 };
