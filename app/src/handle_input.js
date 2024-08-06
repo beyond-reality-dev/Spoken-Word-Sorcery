@@ -320,6 +320,19 @@ async function openInput(combatOverride = false) {
               var spellDirection = spellInput[1];
               text = ["spell", spellPower, spellDirection];
             }
+          } else if (clauses[i].substring(0, 4) == "rest ") {
+            if (getValue("isCombat") == true) {
+              quickPrint("You cannot rest during combat.");
+              continue;
+            }
+            handleRest();
+            text = ["rest"];
+          } else if (clauses[i].substring(0, 5) == "sleep") {
+            if (getValue("isCombat") == true) {
+              quickPrint("You cannot sleep during combat.");
+              continue;
+            }
+            handleRest();
           }
         }
         resolve(text);
@@ -741,3 +754,5 @@ function handleSpell(words) {
     document.getElementById("main-content").scrollHeight;
   return [spell.power, spellDirection];
 }
+
+function handleRest() {}

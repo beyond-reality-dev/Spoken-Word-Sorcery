@@ -267,8 +267,20 @@ async function handleEnemyTurn(enemy, enemies) {
       var locations = playerData["locations"];
       var primaryLocation = getValue("location").split(".")[0];
       var secondaryLocation = getValue("location").split(".")[1];
-      locations[primaryLocation][secondaryLocation]["enemies"][i]["position"] =
-        enemy.position;
+      for (
+        let i = 0;
+        i < locations[primaryLocation][secondaryLocation]["enemies"].length;
+        i++
+      ) {
+        if (
+          locations[primaryLocation][secondaryLocation]["enemies"][i]["name"] ==
+          enemy.name
+        ) {
+          locations[primaryLocation][secondaryLocation]["enemies"][i][
+            "position"
+          ] = enemy.position;
+        }
+      }
       localStorage.setItem("playerData", JSON.stringify(playerData));
       quickPrint(`${enemy.name} moved to the ${enemy.position}.`);
     }

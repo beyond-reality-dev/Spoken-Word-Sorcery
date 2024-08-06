@@ -32,11 +32,11 @@ Users can select how much of a delay they want between lines being printed on th
 
 ### Inventory System
 
-Users can pick up, drop, equip, and unequip items, and view their items in the inventory screen. Currently, however, while items are being tracked they do not yet have an impact on gameplay. In the future, they will be used to affect the player's stats and characteristics.
+Users can pick up, drop, equip, and unequip items, and view their items in the inventory screen. These items determine player stats like armor, attack, and speed. They also contribute to the weight that the player is carrying, which will affect their speed and other stats in the future. Items are persistent in rooms, and the player can move and store items.
 
 ### Combat System
 
-The combat system is turn-based, with the player and enemies taking turns to attack. The enemies occupy a certain direction in a room, and the player can change the direction that they are facing in order to target their desired enemy. They may then use a weapon or spell to attack those enemies.
+The combat system is turn-based, with the player and enemies taking turns to attack. The enemies occupy a certain direction in a room, and the player can change the direction that they are facing in order to target their desired enemy. They may then use a weapon or spell to attack those enemies. The damage that the player and enemies inflict is randomized within a specified range, and enemies move in random directions to evade the player's attacks.
 
 ### Visual Map
 
@@ -60,4 +60,4 @@ To support the goal of open world gameplay, I hope to build a procedural generat
 
 ### AI Disclosure
 
-Github Copilot was used for some boilerplate/autocomplete code, but all substantial programming and creative work was done by myself.
+GitHub Copilot was used for some boilerplate/autocomplete code, but all substantial programming and creative work was done by myself.
