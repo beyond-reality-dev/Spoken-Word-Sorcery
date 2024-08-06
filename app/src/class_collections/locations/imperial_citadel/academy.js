@@ -396,7 +396,7 @@ class AcademyEntrance extends Room {
     super(
       "Academy Entrance",
       "imperialAcademy.academyEntrance",
-      "The entrance to the Imperial Academy is a large, open area. The remains of large, iron gates lie shattered in the burnt grass. There is a path to the north, leading to the survivor camp, and a road to the south, leading to the Academy's bridge.",
+      "The entrance to the Imperial Academy is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the north, leading to the survivor camp, and a road to the south, leading to the Academy's bridge.",
       "10",
       "10"
     );
@@ -414,7 +414,7 @@ class AcademyBridge extends Room {
     super(
       "Academy Bridge",
       "imperialAcademy.academyBridge",
-      "The Academy Bridge is a long, stone bridge that spans a deep moat. There is a path to the north, leading to the Academy Entrance, and a path to the south, leading to two guard towers.",
+      "The Academy Bridge is a long stone bridge that spans a deep moat. There is a path to the north, leading to the Academy Entrance, and a path to the south, leading to two guard towers.",
       "10",
       "10"
     );
@@ -432,7 +432,7 @@ class GuardTowers extends Room {
     super(
       "Guard Towers",
       "imperialAcademy.guardTowers",
-      "The two guard towers are large, stone towers that overlook the Academy Bridge. There is a path to the north, leading to the Academy Bridge, and a path to the south, leading to the nexus of the Imperial Citadel.",
+      "The two guard towers are large stone towers that stand in front of the Academy Bridge. There is a path to the north, leading to the Academy Bridge, and a path to the south, leading to the nexus of the Imperial Citadel.",
       "10",
       "10"
     );

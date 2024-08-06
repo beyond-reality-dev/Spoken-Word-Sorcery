@@ -5,7 +5,7 @@ class PortEntrance extends Room {
     super(
       "Port Entrance",
       "imperialPort.portEntrance",
-      "The entrance to the port is a large, open area. The remains of large, iron gates lie shattered in the burnt grass. There is a path to the west, leading to the nexus of the Imperial Citadel, and a road to the south, leading to the port.",
+      "The entrance to the port is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the west, leading to the nexus of the Imperial Citadel, and a road to the south, leading to the port.",
       "10",
       "10"
     );
@@ -23,7 +23,7 @@ class Port extends Room {
     super(
       "Port",
       "imperialPort.port",
-      "The port is a large, open area, with numerous docks and ships. There is a path to the north leading to the port entrance, and a path to the south leading to the Imperial Dreadnought.",
+      "The port is a large open area with numerous docks and ships. There is a path to the north leading to the port entrance, and a path to the south leading to the Imperial Dreadnought.",
       "10",
       "10"
     );
@@ -41,7 +41,7 @@ class ImperialDreadnoughtExterior extends Room {
     super(
       "Imperial Dreadnought",
       "imperialPort.imperialDreadnought",
-      "The Imperial Dreadnought is a massive, armored ship with a large, iron door. There is a door to the north leading to the port, and a ladder to the south leading to the upper deck.",
+      "The Imperial Dreadnought is a massive armored ship with imposing ballistae, each with a heavy javelin already nocked. There is a door to the north leading to the port, and a ladder to the south leading up to the upper deck.",
       "10",
       "10"
     );
@@ -59,7 +59,7 @@ class ImperialDreadnoughtUpperDeck extends Room {
     super(
       "Imperial Dreadnought Upper Deck",
       "imperialPort.imperialDreadnoughtUpperDeck",
-      "The upper deck of the Imperial Dreadnought is a large, open area with a few crates and barrels scattered about. There is a ladder to the north, leading to the ship's exterior, and a door to the west, leading below deck.",
+      "The upper deck of the Imperial Dreadnought is a large open area with a few crates and barrels scattered about. There is a ladder to the north, leading down to the ship's exterior, and a wooden door to the west, leading below deck.",
       "10",
       "10"
     );

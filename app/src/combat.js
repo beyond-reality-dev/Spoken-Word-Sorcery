@@ -1,4 +1,10 @@
-const { getValue, changeValue, calculateValue, addEntity, updateUI } = require("./save_data");
+const {
+  getValue,
+  changeValue,
+  calculateValue,
+  addEntity,
+  updateUI,
+} = require("./save_data");
 const { quickPrint, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
 

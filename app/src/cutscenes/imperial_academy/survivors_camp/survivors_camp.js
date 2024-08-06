@@ -19,6 +19,11 @@ async function survivorsCamp() {
   } else if (response == "no" || response == "n") {
     printLines("app/src/cutscenes/imperial_academy/survivors_camp/4.txt");
   }
+  changeValue(
+    "['imperialAcademy.survivorsCamp']['cutscenePlayed']",
+    true,
+    "locations"
+  );
 }
 
 module.exports = { survivorsCamp };
