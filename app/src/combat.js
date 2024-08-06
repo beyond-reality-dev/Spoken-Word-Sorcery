@@ -5,7 +5,7 @@ const {
   addEntity,
   updateUI,
 } = require("./save_data");
-const { quickPrint, getRandomInt } = require("./general");
+const { quickPrint, diceRoll, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
 
 async function handleCombat() {
@@ -63,7 +63,13 @@ async function handlePlayerTurn(enemies, length) {
   var choice = choiceInput[0];
   if (choiceInput.length > 1) {
     var spellPower = choiceInput[1];
-    spellPower = getRandomInt(spellPower);
+    quickPrint(`You roll ${spellPower}.`);
+    var rolledDice = diceRoll(spellPower);
+    var rolls = rolledDice[0];
+    for (let i = 0; i < rolls.length; i++) {
+      quickPrint(`You rolled a ${rolls[i]}.`);
+    }
+    spellPower = rolledDice[1];
     var spellDirection = choiceInput[2];
   }
   if (choice == "weapon") {
@@ -76,10 +82,22 @@ async function handlePlayerTurn(enemies, length) {
       }
     }
     if (enemy != null) {
-      var playerAttack = getRandomInt(getValue("attack"));
+      var playerAttack = getValue("attack");
+      quickPrint(`You roll ${playerAttack}.`);
+      var rolledDice = diceRoll(playerAttack);
+      var rolls = rolledDice[0];
+      for (let i = 0; i < rolls.length; i++) {
+        quickPrint(`You rolled a ${rolls[i]}.`);
+      }
+      playerAttack = rolledDice[1];
       var enemyDefense = getRandomInt(enemy.armor);
       var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
       enemy.health = Math.max(enemy.health - enemyDamage, 0);
+      if (enemyDefense > 0) {
+        quickPrint(
+          `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
+        );
+      }
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
@@ -105,8 +123,14 @@ async function handlePlayerTurn(enemies, length) {
     }
     if (enemy != null) {
       enemyDefense = getRandomInt(enemy.armor);
+      console.log(enemyDefense);
       enemyDamage = Math.max(spellPower - enemyDefense, 0);
       enemy.health = Math.max(enemy.health - enemyDamage, 0);
+      if (enemyDefense > 0) {
+        quickPrint(
+          `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
+        );
+      }
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
@@ -127,8 +151,18 @@ async function handlePlayerTurn(enemies, length) {
 }
 
 async function handleEnemyTurn(enemy, enemies) {
-  var enemyAttack = getRandomInt(enemy.attack);
+  var rolledDice = diceRoll(enemy.attack);
+  var rolls = rolledDice[0];
+  for (let i = 0; i < rolls.length; i++) {
+    quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
+  }
+  var enemyAttack = rolledDice[1];
   var playerDefense = getRandomInt(getValue("armor"));
+  if (playerDefense > 0) {
+    quickPrint(
+      `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
+    );
+  }
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
