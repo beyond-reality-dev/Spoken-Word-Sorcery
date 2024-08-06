@@ -755,4 +755,20 @@ function handleSpell(words) {
   return [spell.power, spellDirection];
 }
 
-function handleRest() {}
+function handleRest() {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  if (currentLocation.hasOwnProperty("restArea")) {
+    if (currentLocation.restArea == true) {
+      var maxHealth = getValue("maxHealth");
+      var maxMana = getValue("maxMana");
+      changeValue("currentHealth", maxHealth);
+      changeValue("currentMana", maxMana);
+      quickPrint("You have fully rested.");
+    } else {
+      quickPrint("You cannot rest here.");
+    }
+  } else {
+    quickPrint("You cannot rest here.");
+  }
+}

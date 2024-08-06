@@ -391,6 +391,7 @@ class SurvivorCamp extends Room {
     };
     this.cutscene = "survivorCamp";
     this.cutscenePlayed = false;
+    this.restArea = true;
   }
 }
 
