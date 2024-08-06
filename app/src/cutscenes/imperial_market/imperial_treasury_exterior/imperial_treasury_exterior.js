@@ -16,6 +16,19 @@ async function imperialTreasuryExterior() {
       await printLines(
         "app/src/cutscenes/imperial_market/imperial_treasury_exterior/2.txt"
       );
+      var choice = await requireAnswer(
+        ["yes", "y", "no", "n"],
+        "Do you tell him that the Grandmaster sent you to keep the Codex safe from the rebels?"
+      );
+      if (choice == "yes" || choice == "y") {
+        await printLines(
+          "app/src/cutscenes/imperial_market/imperial_treasury_exterior/3.txt"
+        );
+      } else if (choice == "no" || choice == "n") {
+        await printLines(
+          "app/src/cutscenes/imperial_market/imperial_treasury_exterior/4.txt"
+        );
+      }
       changeValue(
         "['imperialMarket.imperialTreasuryExterior']['cutscenePlayed']",
         true,
