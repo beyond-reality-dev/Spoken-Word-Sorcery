@@ -233,6 +233,42 @@ async function openInput(combatOverride = false) {
               item = clauses[i].substring(9);
             }
             handleUnequip(item);
+          } else if (
+            clauses[i].substring(0, 3) == "use " ||
+            clauses[i].substring(0, 3) == "eat "
+          ) {
+            if (clauses[i].substring(3, 5) == "a ") {
+              item = clauses[i].substring(5);
+            } else if (clauses[i].substring(3, 6) == "an ") {
+              item = clauses[i].substring(6);
+            } else if (clauses[i].substring(3, 7) == "the ") {
+              item = clauses[i].substring(7);
+            } else {
+              item = clauses[i].substring(3);
+            }
+            handleUse(item);
+          } else if (clauses[i].substring(0, 6) == "drink ") {
+            if (clauses[i].substring(6, 8) == "a ") {
+              item = clauses[i].substring(8);
+            } else if (clauses[i].substring(6, 9) == "an ") {
+              item = clauses[i].substring(9);
+            } else if (clauses[i].substring(6, 10) == "the ") {
+              item = clauses[i].substring(10);
+            } else {
+              item = clauses[i].substring(6);
+            }
+            handleUse(item);
+          } else if (clauses[i].substring(0, 8) == "consume ") {
+            if (clauses[i].substring(8, 10) == "a ") {
+              item = clauses[i].substring(10);
+            } else if (clauses[i].substring(8, 11) == "an ") {
+              item = clauses[i].substring(11);
+            } else if (clauses[i].substring(8, 12) == "the ") {
+              item = clauses[i].substring(12);
+            } else {
+              item = clauses[i].substring(8);
+            }
+            handleUse(item);
           } else if (clauses[i].substring(0, 5) == "fight") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -629,6 +665,44 @@ function handleUnequip(item) {
   playerData["equipment"] = equipment;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateEquipment();
+}
+
+function handleUse(item) {
+  var items = getValue("inventory");
+  if (item.charAt(item.length - 1) == "s") {
+    item = item.substring(0, item.length - 1);
+  }
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].name == toTitleCase(item)) {
+      var itemEntity = items[i];
+      var healthValue = itemEntity.healthValue;
+      var manaValue = itemEntity.manaValue;
+      var speedValue = itemEntity.speedValue;
+      var weight = itemEntity.weight;
+      calculateValue("currentHealth", "add", healthValue);
+      calculateValue("currentMana", "add", manaValue);
+      calculateValue("currentSpeed", "add", speedValue);
+      calculateValue("currentWeight", "add", weight);
+      var current = items[i].quantity;
+      current = current - 1;
+      changeValue("itemQuantity", current, i);
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      playerData["inventory"] = items;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      if (item.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You used an ${item}.`);
+      } else {
+        quickPrint(`You used a ${item}.`);
+      }
+      break;
+    } else {
+      if (item.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You do not have an ${item}.`);
+      } else {
+        quickPrint(`You do not have a ${item}.`);
+      }
+    }
+  }
 }
 
 function handleSpell(words) {
