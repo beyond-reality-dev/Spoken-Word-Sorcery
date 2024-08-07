@@ -135,7 +135,7 @@ class MainHall extends Room {
     super(
       "Main Hall",
       "imperialMarket.mainHall",
-      "The main hall of the Imperial Treasury is a large open area with numerous guards and officials moving about. It appears to be being used as a staging area for the defense and management of the treasury. There is a door to the south leading to a short hallway, and a door to the north leading to a short hallway.",
+      "The main hall of the Imperial Treasury is a large open area with numerous guards and officials moving about. It appears to be being used as a staging area for the defense and management of the treasury. There is a door to the north leading to a short hallway, and a door to the south leading to a different short hallway.",
       "20",
       "20"
     );
@@ -166,6 +166,25 @@ class ShortHallway_02 extends Room {
 
 var shortHallway_02 = new ShortHallway_02();
 
+class vaultEntrance extends Room {
+  constructor() {
+    super(
+      "Vault Entrance",
+      "imperialMarket.vaultEntrance",
+      "The vault entrance is a large stone door with a heavy iron lock. There is a short hallway to the north, and vaults to the south.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.shortHallway_02",
+      south: "imperialMarket.vaults",
+    };
+    this.cutscene = "vaultEntrance";
+    this.cutscenePlayed = false;
+  }
+}
+
+var vaultEntrance = new vaultEntrance();
 
 class CitadelRoad extends Room {
   constructor() {
@@ -241,6 +260,7 @@ module.exports = {
   shortHallway_01,
   mainHall,
   shortHallway_02,
+  vaultEntrance,
   citadelRoad,
   citadelWalls,
   mainGate,
