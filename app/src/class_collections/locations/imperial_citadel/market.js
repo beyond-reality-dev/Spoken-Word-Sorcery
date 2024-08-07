@@ -166,7 +166,7 @@ class ShortHallway_02 extends Room {
 
 var shortHallway_02 = new ShortHallway_02();
 
-class vaultEntrance extends Room {
+class VaultEntrance extends Room {
   constructor() {
     super(
       "Vault Entrance",
@@ -184,7 +184,7 @@ class vaultEntrance extends Room {
   }
 }
 
-var vaultEntrance = new vaultEntrance();
+var vaultEntrance = new VaultEntrance();
 
 class CitadelRoad extends Room {
   constructor() {

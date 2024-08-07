@@ -1,19 +1,19 @@
-const { handleCombat } = require("../../../combat");
-const { printLines, requireAnswer } = require("../../../general");
-const { handleMovement } = require("../../../handle_input");
-const { getValue, changeValue } = require("../../../save_data");
+const { handleCombat } = require("../../../../combat");
+const { printLines, requireAnswer } = require("../../../../general");
+const { handleMovement } = require("../../../../handle_input");
+const { getValue, changeValue } = require("../../../../save_data");
 
 async function mainGate() {
   if (getValue("imperialMarket.mainGate", true).cutscenePlayed == false) {
-    await printLines("app/src/cutscenes/imperial_market/main_gate/1.txt");
+    await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/1.txt");
     var choice = await requireAnswer(
       ["yes", "y", "no", "n"],
       '"What was that?" the rebel asks. "Do you want to leave or not?"'
     );
     if (choice == "yes" || choice == "y") {
-      await printLines("app/src/cutscenes/imperial_market/main_gate/2.txt");
+      await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/2.txt");
       await requireAnswer(["any"], "unreachable");
-      await printLines("app/src/cutscenes/imperial_market/main_gate/3.txt");
+      await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/3.txt");
       choice = await requireAnswer(
         ["yes", "y", "no", "n"],
         '"Will you pay the toll or not?"'
@@ -21,7 +21,7 @@ async function mainGate() {
       if (choice == "yes" || choice == "y") {
         var gold = getValue("gold");
         if (gold >= 100) {
-          await printLines("app/src/cutscenes/imperial_market/main_gate/4.txt");
+          await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/4.txt");
           changeValue("gold", gold - 100);
           changeValue(
             "['imperialMarket.mainGate']['cutscenePlayed']",
@@ -35,19 +35,19 @@ async function mainGate() {
           );
           handleMovement("load");
         } else {
-          await printLines("app/src/cutscenes/imperial_market/main_gate/5.txt");
+          await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/5.txt");
           choice = await requireAnswer(["1", "2"], "What do you do?");
           if (choice == "1") {
             handleMovement("north");
           } else if (choice == "2") {
             await printLines(
-              "app/src/cutscenes/imperial_market/main_gate/6.txt"
+              "app/src/cutscenes/imperial_citadel/imperial_market/main_gate/6.txt"
             );
             await requireAnswer(["any"], "unreachable");
             await handleCombat();
             if (getValue("location") == "imperialMarket.mainGate") {
               await printLines(
-                "app/src/cutscenes/imperial_market/main_gate/7.txt"
+                "app/src/cutscenes/imperial_citadel/imperial_market/main_gate/7.txt"
               );
               changeValue(
                 "['imperialMarket.mainGate']['cutscenePlayed']",
@@ -64,17 +64,17 @@ async function mainGate() {
           }
         }
       } else if (choice == "no" || choice == "n") {
-        await printLines("app/src/cutscenes/imperial_market/main_gate/5.txt");
+        await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/5.txt");
         choice = await requireAnswer(["1", "2"], "What do you do?");
         if (choice == "1") {
           handleMovement("north");
         } else if (choice == "2") {
-          await printLines("app/src/cutscenes/imperial_market/main_gate/6.txt");
+          await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/6.txt");
           await requireAnswer(["any"], "unreachable");
           await handleCombat();
           if (getValue("location") == "imperialMarket.mainGate") {
             await printLines(
-              "app/src/cutscenes/imperial_market/main_gate/7.txt"
+              "app/src/cutscenes/imperial_citadel/imperial_market/main_gate/7.txt"
             );
             changeValue(
               "['imperialMarket.mainGate']['cutscenePlayed']",
@@ -91,7 +91,7 @@ async function mainGate() {
         }
       }
     } else if (choice == "no" || choice == "n") {
-      await printLines("app/src/cutscenes/imperial_market/main_gate/8.txt");
+      await printLines("app/src/cutscenes/imperial_citadel/imperial_market/main_gate/8.txt");
       handleMovement("north");
     }
   }

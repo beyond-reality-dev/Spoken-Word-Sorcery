@@ -15,8 +15,9 @@ const { quickPrint, getRandomInt } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
 const locationsObjects = require("./class_collections/locations");
 
-function initializeData() {
+function initializeData(saveFile) {
   var playerData = {
+    saveFile: saveFile,
     name: "",
     level: 1,
     experiencePoints: 0,
@@ -63,7 +64,7 @@ function initializeData() {
   updateUI();
 }
 
-function saveGame() {
+function saveGame(saveFile) {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   if (currentLocation.hasOwnProperty("isCombat")) {
@@ -79,12 +80,12 @@ function saveGame() {
   }
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var save = JSON.stringify(playerData);
-  localStorage.setItem("save", save);
+  localStorage.setItem(saveFile, save);
   return true;
 }
 
-async function loadGame() {
-  var save = localStorage.getItem("save");
+async function loadGame(saveFile) {
+  var save = localStorage.getItem(saveFile);
   var playerData = JSON.parse(save);
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();

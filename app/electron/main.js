@@ -20,9 +20,9 @@ function createWindow() {
   window.maximize();
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
-        const { saveGame, loadGame, changeValue } = require("./save_data.js");
+        const { saveGame, loadGame, getValue, changeValue } = require("./save_data.js");
         const { updateMap } = require("./map.js");
-        const { intro } = require("./cutscenes/imperial_academy/intro/intro.js");
+        const { intro } = require("./cutscenes/imperial_citadel/imperial_academy/intro/intro.js");
 
         // Start menu functions.
         document.getElementById("start-button").onclick = function () {
@@ -43,7 +43,7 @@ function createWindow() {
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
           document.getElementById("home-button").style.cursor = "default";
-          loadGame();
+          loadGame("save_1");
         }
 
         document.getElementById("overwrite-save").onclick = function () {
@@ -123,11 +123,13 @@ function createWindow() {
         }
 
         document.getElementById("save-button").onclick = function () {
-          saveGame();
+          var saveFile = getValue("saveFile");
+          saveGame(saveFile);
         }
 
         document.getElementById("quit-save").onclick = function () {
-          var result = saveGame();
+          var saveFile = getValue("saveFile");
+          var result = saveGame(saveFile);
           if (result) {
             window.close();
           }
