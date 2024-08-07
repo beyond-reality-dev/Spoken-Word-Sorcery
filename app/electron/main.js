@@ -20,7 +20,7 @@ function createWindow() {
   window.maximize();
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
-        const { saveGame, loadGame, getValue, changeValue } = require("./save_data.js");
+        const { saveGame, loadGame, deleteGame, updateSaveGames, getValue, changeValue } = require("./save_data.js");
         const { updateMap } = require("./map.js");
         const { intro } = require("./cutscenes/imperial_citadel/imperial_academy/intro/intro.js");
 
@@ -38,20 +38,32 @@ function createWindow() {
           document.getElementById("start-screen").style.display = "none";
         }
         
+        updateSaveGames();
+        
         document.getElementById("load-save").onclick = function () {
+          var saveFile = document.getElementById("save-games").value;
+          var regex = /save_[0-9]+/;
+          if (!regex.test(saveFile)) {
+            window.alert("No save file selected.");
+            return;
+          }
           document.getElementById("game-screen").style.display = "block";
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
           document.getElementById("home-button").style.cursor = "default";
-          loadGame("save_1");
+          loadGame(saveFile);
         }
 
-        document.getElementById("overwrite-save").onclick = function () {
-          document.getElementById("game-screen").style.display = "block";
-          document.getElementById("loading-screen").style.display = "none";
-          document.getElementById("home-button").style.backgroundColor = "#d1d1d1";
-          document.getElementById("home-button").style.cursor = "default";
-          intro();
+        document.getElementById("delete-save").onclick = function () {
+          var saveFile = document.getElementById("save-games").value;
+          var regex = /save_[0-9]+/;
+          if (!regex.test(saveFile)) {
+            console.log("HELP!");
+            window.alert("No save file selected.");
+            return;
+          }
+          deleteGame(saveFile);
+          updateSaveGames();
         }
         
         document.getElementById("loading-back").onclick = function () {

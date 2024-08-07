@@ -63,11 +63,11 @@ body {
 }
 
 .saves-box {
-  width: 80%;
+  width: 86.5%;
   height: 60%;
-  margin-left: 10%;
+  margin-left: 7%;
   background-color: #ffffff;
-  overflow-y: auto;
+  overflow-y: scroll;
   font-size: xx-large;
   border: solid black;
   outline: none;
@@ -75,8 +75,10 @@ body {
 
 .small-button {
   display: inline;
-  width: 25%;
+  width: 24%;
   height: 10vh;
+  margin-top: 4vh;
+  margin-left: 7%;
   background-color: #ffffff;
   border: solid black;
   border-radius: 25px;

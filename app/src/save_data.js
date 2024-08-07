@@ -2,6 +2,8 @@ module.exports = {
   initializeData,
   saveGame,
   loadGame,
+  deleteGame,
+  updateSaveGames,
   updateUI,
   updateEquipment,
   addEntity,
@@ -14,6 +16,7 @@ module.exports = {
 const { quickPrint, getRandomInt } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
 const locationsObjects = require("./class_collections/locations");
+const { imperialAcademy } = require("./class_collections/locations");
 
 function initializeData(saveFile) {
   var playerData = {
@@ -91,6 +94,34 @@ async function loadGame(saveFile) {
   updateUI();
   handleMovement("load");
   await inputLoop();
+}
+
+function deleteGame(saveFile) {
+  localStorage.removeItem(saveFile);
+}
+
+function updateSaveGames() {
+  var saveGames = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.includes("save_")) {
+      var save = JSON.parse(localStorage.getItem(key));
+      saveGames.push(save);
+    }
+  }
+  document.getElementById("save-games").innerHTML = "";
+  for (let i = 0; i < saveGames.length; i++) {
+    var saveFile = saveGames[i]["saveFile"];
+    var name = saveGames[i]["name"];
+    var level = saveGames[i]["level"];
+    var gold = saveGames[i]["gold"];
+    var location = saveGames[i]["location"];
+    location = eval(location);
+    location = location["name"];
+    document.getElementById(
+      "save-games"
+    ).innerHTML += `<option value="${saveFile}">Save: ${[i+1]} | ${name} | Level: ${level} | Gold: ${gold} | Location: ${location}</option>`;
+  }
 }
 
 function updateUI() {
