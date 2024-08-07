@@ -53,20 +53,34 @@ function initializeData() {
   for (let i = 0; i < keys.length; i++) {
     locations[keys[i]] = eval("locationsObjects." + keys[i]);
   }
+  playerData["inventory"] = inventory;
+  playerData["equipment"] = equipment;
   playerData["knownSpells"] = knownSpells;
   playerData["spokenSpells"] = spokenSpells;
   playerData["memories"] = memories;
-  playerData["equipment"] = equipment;
-  playerData["inventory"] = inventory;
   playerData["locations"] = locations;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }
 
 function saveGame() {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  if (currentLocation.hasOwnProperty("isCombat")) {
+    if (currentLocation["isCombat"] == true) {
+      window.alert("You cannot save the game during combat.");
+      return false;
+    }
+  } else if (currentLocation.hasOwnProperty("cutscenePlayed")) {
+    if (currentLocation["cutscenePlayed"] == false) {
+      window.alert("You must complete the cutscene before saving the game.");
+      return false;
+    }
+  }
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var save = JSON.stringify(playerData);
   localStorage.setItem("save", save);
+  return true;
 }
 
 async function loadGame() {

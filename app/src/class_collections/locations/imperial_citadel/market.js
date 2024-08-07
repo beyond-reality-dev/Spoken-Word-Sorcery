@@ -156,6 +156,15 @@ class MainGate extends Room {
       north: "imperialMarket.citadelWalls",
       south: "placeholder",
     };
+    this.enemies = [
+      new enemies.RebelCaptain("Rebel Captain", "south"),
+      new enemies.Rebel("Rebel 1", "northeast"),
+      new enemies.Rebel("Rebel 2", "east"),
+      new enemies.Rebel("Rebel 3", "southeast"),
+      new enemies.Rebel("Rebel 4", "southwest"),
+      new enemies.Rebel("Rebel 5", "west"),
+      new enemies.Rebel("Rebel 6", "northwest"),
+    ];
     this.cutscene = "mainGate";
     this.cutscenePlayed = false;
   }

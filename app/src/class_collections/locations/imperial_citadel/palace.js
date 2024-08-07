@@ -13,6 +13,8 @@ class GuardTowers extends Room {
       north: "imperialCitadel.nexus",
       south: "imperialPalace.palaceBridge"
     };
+    this.cutscene = "guardTowers";
+    this.cutscenePlayed = false;
   }
 }
 

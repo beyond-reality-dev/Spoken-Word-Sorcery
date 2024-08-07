@@ -123,7 +123,6 @@ async function handlePlayerTurn(enemies, length) {
     }
     if (enemy != null) {
       enemyDefense = getRandomInt(enemy.armor);
-      console.log(enemyDefense);
       enemyDamage = Math.max(spellPower - enemyDefense, 0);
       enemy.health = Math.max(enemy.health - enemyDamage, 0);
       if (enemyDefense > 0) {

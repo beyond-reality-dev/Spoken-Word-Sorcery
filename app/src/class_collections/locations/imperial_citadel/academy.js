@@ -308,14 +308,14 @@ class MilitaryAnnex extends Room {
       west: "imperialAcademy.firstBarracks",
       south: "imperialAcademy.longPassage",
     };
-    this.isVisited = false;
-    this.cutscene = "militaryAnnex";
-    this.cutscenePlayed = false;
     this.enemies = [
       new enemies.Rebel("Rebel 1", "southwest"),
       new enemies.Rebel("Rebel 2", "south"),
       new enemies.Rebel("Rebel 3", "southeast"),
     ];
+    this.isVisited = false;
+    this.cutscene = "militaryAnnex";
+    this.cutscenePlayed = false;
   }
 }
 

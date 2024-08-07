@@ -8,3 +8,4 @@ exports.survivorsCamp = require("./imperial_academy/survivors_camp/survivors_cam
 exports.marketStalls = require("./imperial_market/market_stalls/market_stalls");
 exports.imperialTreasuryExterior = require("./imperial_market/imperial_treasury_exterior/imperial_treasury_exterior");
 exports.mainGate = require("./imperial_market/main_gate/main_gate");
+exports.guardTowers = require("./imperial_palace/guard_towers/guard_towers");

@@ -127,8 +127,10 @@ function createWindow() {
         }
 
         document.getElementById("quit-save").onclick = function () {
-          saveGame();
-          window.close();
+          var result = saveGame();
+          if (result) {
+            window.close();
+          }
         }
 
         document.getElementById("quit-button").onclick = function () {
