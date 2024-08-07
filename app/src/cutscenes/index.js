@@ -7,3 +7,4 @@ exports.vault = require("./imperial_academy/vault/vault");
 exports.survivorsCamp = require("./imperial_academy/survivors_camp/survivors_camp");
 exports.marketStalls = require("./imperial_market/market_stalls/market_stalls");
 exports.imperialTreasuryExterior = require("./imperial_market/imperial_treasury_exterior/imperial_treasury_exterior");
+exports.mainGate = require("./imperial_market/main_gate/main_gate");
