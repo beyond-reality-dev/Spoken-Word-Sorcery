@@ -93,7 +93,7 @@ class ImperialTreasuryLounge extends Room {
     super(
       "Imperial Treasury Lounge",
       "imperialMarket.imperialTreasuryLoounge",
-      "The Imperial Treasury Lounge is a large open area with numerous guards and officials moving about. There is a door to the north leading deeper inside, and a door to the south leading outside.",
+      "The Imperial Treasury Lounge is a crowded room with several guards and officials rushing about. There is a door to the north leading deeper inside, and a door to the south leading outside.",
       "10",
       "10"
     );
@@ -112,11 +112,11 @@ class ImperialTreasuryLounge extends Room {
 
 var imperialTreasuryLounge = new ImperialTreasuryLounge();
 
-class ShortHallway extends Room {
+class ShortHallway_01 extends Room {
   constructor() {
     super(
       "Short Hallway",
-      "imperialMarket.shortHallway",
+      "imperialMarket.shortHallway_01",
       "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's main hall, and a door to the south leading back to the Imperial Treasury's lounge.",
       "10",
       "10"
@@ -128,7 +128,44 @@ class ShortHallway extends Room {
   }
 }
 
-var shortHallway = new ShortHallway();
+var shortHallway_01 = new ShortHallway_01();
+
+class MainHall extends Room {
+  constructor() {
+    super(
+      "Main Hall",
+      "imperialMarket.mainHall",
+      "The main hall of the Imperial Treasury is a large open area with numerous guards and officials moving about. It appears to be being used as a staging area for the defense and management of the treasury. There is a door to the south leading to a short hallway, and a door to the north leading to a short hallway.",
+      "20",
+      "20"
+    );
+    this.exits = {
+      north: "imperialMarket.shortHallway_02",
+      south: "imperialMarket.shortHallway_01",
+    };
+  }
+}
+
+var mainHall = new MainHall();
+
+class ShortHallway_02 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_02",
+      "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's main hall, and a door to the south leading to the Imperial Treasury's vaults.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.mainHall",
+      south: "imperialMarket.vaults",
+    };
+  }
+}
+
+var shortHallway_02 = new ShortHallway_02();
+
 
 class CitadelRoad extends Room {
   constructor() {
@@ -201,7 +238,9 @@ module.exports = {
   marketStalls,
   imperialTreasuryExterior,
   imperialTreasuryLounge,
-  shortHallway,
+  shortHallway_01,
+  mainHall,
+  shortHallway_02,
   citadelRoad,
   citadelWalls,
   mainGate,
