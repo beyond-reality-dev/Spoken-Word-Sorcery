@@ -62,6 +62,32 @@ body {
   overflow: hidden;
 }
 
+.saves-box {
+  width: 80%;
+  height: 60%;
+  margin-left: 10%;
+  background-color: #ffffff;
+  overflow-y: auto;
+  font-size: xx-large;
+  border: solid black;
+  outline: none;
+}
+
+.small-button {
+  display: inline;
+  width: 25%;
+  height: 10vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-radius: 25px;
+  font-size: 2em;
+}
+
+.small-button:hover {
+  background-color: #d1d1d1;
+  cursor: pointer;
+}
+
 .about-text {
   margin-top: 5vh;
   margin-left: auto;
