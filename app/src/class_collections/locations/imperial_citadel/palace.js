@@ -15,6 +15,7 @@ class GuardTowers extends Room {
     };
     this.cutscene = "guardTowers";
     this.cutscenePlayed = false;
+    this.isVisited = false;
   }
 }
 
@@ -33,6 +34,8 @@ class PalaceBridge extends Room {
       north: "imperialPalace.guardTowers",
       south: "imperialPalace.palaceEntrance"
     };
+    this.isLocked = true;
+    this.lockedMessage = "Guards rush forward to block your path, and remind you that they will not let you pass until you have the Emperor's belongings.";
   }
 }
 
