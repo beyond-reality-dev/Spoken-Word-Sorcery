@@ -74,6 +74,7 @@ class ImperialTreasuryExterior extends Room {
     this.exits = {
       north: "imperialMarket.imperialTreasury",
       east: "imperialMarket.marketStalls",
+      south: "imperialMarket.citadelRoad",
     };
     this.enemies = [
       new enemies.Rebel("Rebel 1", "northwest"),
@@ -87,25 +88,47 @@ class ImperialTreasuryExterior extends Room {
 
 var imperialTreasuryExterior = new ImperialTreasuryExterior();
 
-class ImperialTreasury extends Room {
+class ImperialTreasuryLounge extends Room {
   constructor() {
     super(
-      "Imperial Treasury",
-      "imperialMarket.imperialTreasury",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the south leading outside.",
+      "Imperial Treasury Lounge",
+      "imperialMarket.imperialTreasuryLoounge",
+      "The Imperial Treasury Lounge is a large open area with numerous guards and officials moving about. There is a door to the north leading deeper inside, and a door to the south leading outside.",
       "10",
       "10"
     );
     this.exits = {
+      north: "imperialMarket.shortHallway",
       south: "imperialMarket.imperialTreasuryExterior",
     };
     this.isLocked = true;
-    this.lockedDescription = "The doors to the inside of the Imperial Treasury are locked. The guards inform you that it will not open except for express, written permission from the Emperor himself.";
+    this.lockedDescription =
+      "The doors to the inside of the Imperial Treasury are locked. The guards inform you that it will not open except for express, written permission from the Emperor himself.";
     this.key = "Imperial Writ of Entry";
+    this.unlockMessage =
+      "The guards nod and step aside as you present the Imperial Writ of Entry. The doors to the Imperial Treasury swing open.";
   }
 }
 
-var imperialTreasury = new ImperialTreasury();
+var imperialTreasuryLounge = new ImperialTreasuryLounge();
+
+class ShortHallway extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway",
+      "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's main hall, and a door to the south leading back to the Imperial Treasury's lounge.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.mainHall",
+      south: "imperialMarket.imperialTreasuryLounge",
+    };
+  }
+}
+
+var shortHallway = new ShortHallway();
 
 class CitadelRoad extends Room {
   constructor() {
@@ -177,7 +200,8 @@ module.exports = {
   market,
   marketStalls,
   imperialTreasuryExterior,
-  imperialTreasury,
+  imperialTreasuryLounge,
+  shortHallway,
   citadelRoad,
   citadelWalls,
   mainGate,

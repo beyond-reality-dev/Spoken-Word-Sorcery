@@ -454,6 +454,14 @@ function handleMovement(direction) {
           for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].name == newLocation.key) {
               hasKey = true;
+              var primaryLocation = currentLocation.id.split(".")[0];
+              var secondaryLocation = currentLocation.id.split(".")[1];
+              newLocation.isLocked = false;
+              var playerData = JSON.parse(localStorage.getItem("playerData"));
+              var locations = playerData["locations"];
+              locations[primaryLocation][secondaryLocation]["isLocked"] = false;
+              localStorage.setItem("playerData", JSON.stringify(playerData));
+              quickPrint(newLocation.unlockMessage);
               break;
             }
           }
