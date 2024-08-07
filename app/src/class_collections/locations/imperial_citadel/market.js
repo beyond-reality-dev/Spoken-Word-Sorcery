@@ -87,6 +87,26 @@ class ImperialTreasuryExterior extends Room {
 
 var imperialTreasuryExterior = new ImperialTreasuryExterior();
 
+class ImperialTreasury extends Room {
+  constructor() {
+    super(
+      "Imperial Treasury",
+      "imperialMarket.imperialTreasury",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the south leading outside.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      south: "imperialMarket.imperialTreasuryExterior",
+    };
+    this.isLocked = true;
+    this.lockedDescription = "The doors to the inside of the Imperial Treasury are locked. The guards inform you that it will not open except for express, written permission from the Emperor himself.";
+    this.key = "Imperial Writ of Entry";
+  }
+}
+
+var imperialTreasury = new ImperialTreasury();
+
 class CitadelRoad extends Room {
   constructor() {
     super(
@@ -110,7 +130,7 @@ class CitadelWalls extends Room {
     super(
       "Citadel Walls",
       "imperialMarket.citadelWalls",
-      "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading outside the Imperial Citadel.",
+      "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading to the main gates of the Imperial Citadel.",
       "10",
       "10"
     );
@@ -123,29 +143,33 @@ class CitadelWalls extends Room {
 
 var citadelWalls = new CitadelWalls();
 
-class ImperialTreasury extends Room {
+class MainGate extends Room {
   constructor() {
     super(
-      "Imperial Treasury",
-      "imperialMarket.imperialTreasury",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a door to the south leading outside.",
+      "Main Gate",
+      "imperialCitadel.mainGate",
+      "The main gates of the Imperial Citadel are large iron gates that are currently closed. There is a path to the north leading to the Citadel Walls, and a path to the south leading outside of the Imperial Citadel.",
       "10",
       "10"
     );
     this.exits = {
-      south: "imperialMarket.imperialTreasuryExterior",
+      north: "imperialMarket.citadelWalls",
+      south: "placeholder",
     };
+    this.cutscene = "mainGate";
+    this.cutscenePlayed = false;
   }
 }
 
-var imperialTreasury = new ImperialTreasury();
+var mainGate = new MainGate();
 
 module.exports = {
   marketEntrance,
   market,
   marketStalls,
   imperialTreasuryExterior,
+  imperialTreasury,
   citadelRoad,
   citadelWalls,
-  imperialTreasury,
+  mainGate,
 };

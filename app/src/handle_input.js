@@ -448,8 +448,23 @@ function handleMovement(direction) {
     newLocation = eval(getValue(newLocation, true));
     if (newLocation.hasOwnProperty("isLocked")) {
       if (newLocation.isLocked == true) {
-        quickPrint(newLocation.lockedDescription);
-        return;
+        if (newLocation.hasOwnProperty("key")) {
+          var inventory = getValue("inventory");
+          var hasKey = false;
+          for (let i = 0; i < inventory.length; i++) {
+            if (inventory[i].name == newLocation.key) {
+              hasKey = true;
+              break;
+            }
+          }
+          if (hasKey == false) {
+            quickPrint(newLocation.lockedDescription);
+            return;
+          }
+        } else {
+          quickPrint(newLocation.lockedDescription);
+          return;
+        }
       }
     }
     changeValue("location", newLocation.id);
