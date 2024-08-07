@@ -67,7 +67,7 @@ class ImperialTreasuryExterior extends Room {
     super(
       "Imperial Treasury Exterior",
       "imperialMarket.imperialTreasuryExterior",
-      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, and a door to the north leading inside.",
+      "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, a door to the north leading inside, and a road to the south leading to the Imperial Citadel's walls.",
       "10",
       "10"
     );
@@ -86,6 +86,42 @@ class ImperialTreasuryExterior extends Room {
 }
 
 var imperialTreasuryExterior = new ImperialTreasuryExterior();
+
+class CitadelRoad extends Room {
+  constructor() {
+    super(
+      "Citadel Road",
+      "imperialMarket.citadelRoad",
+      "The Citadel Road is a wide stone road that leads to the Imperial Citadel's walls. There is a path to the north leading to the Imperial Treasury, and a path to the south leading to the Imperial Citadel's walls.",
+      "10",
+      "20"
+    );
+    this.exits = {
+      north: "imperialMarket.imperialTreasuryExterior",
+      south: "imperialCitadel.citadelWalls",
+    };
+  }
+}
+
+var citadelRoad = new CitadelRoad();
+
+class CitadelWalls extends Room {
+  constructor() {
+    super(
+      "Citadel Walls",
+      "imperialMarket.citadelWalls",
+      "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading outside the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.citadelRoad",
+      south: "imperialCitadel.mainGate",
+    };
+  }
+}
+
+var citadelWalls = new CitadelWalls();
 
 class ImperialTreasury extends Room {
   constructor() {
@@ -109,5 +145,7 @@ module.exports = {
   market,
   marketStalls,
   imperialTreasuryExterior,
+  citadelRoad,
+  citadelWalls,
   imperialTreasury,
 };
