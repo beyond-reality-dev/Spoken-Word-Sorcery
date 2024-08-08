@@ -60,7 +60,7 @@ function buildRooms(exits, startingDirection, level = 0) {
     westDiv.style.width = `${west["width"] * 10}px`;
     westDiv.style.height = `${west["height"] * 10}px`;
     if (startingDirection == "west") {
-      westDiv.style.order = 0 - level;
+      westDiv.style.order = -1 - level;
     } else {
       westDiv.style.order = -1 - level * 2;
     }

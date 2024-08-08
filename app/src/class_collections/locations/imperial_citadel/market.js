@@ -287,6 +287,41 @@ class SmallRoom_01 extends Room {
 
 var smallRoom_01 = new SmallRoom_01();
 
+class LongHallway_02 extends Room {
+  constructor() {
+    super(
+      "Long Hallway",
+      "imperialMarket.longHallway_02",
+      "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to a different small room.",
+      "10",
+      "30",
+    );
+    this.exits = {
+      north: "imperialMarket.smallRoom_02",
+      south: "imperialMarket.smallRoom_01"
+    }
+  }
+}
+
+var longHallway_02 = new LongHallway_02();
+
+class SmallRoom_02 extends Room {
+  constructor() {
+    super(
+      "Small Room",
+      "imperialMarket.smallRoom_02",
+      "This small room appears to contain nothing and is a dead end, with a door to the south leading to a long hallway.",
+      "10",
+      "10",
+    );
+    this.exits = {
+      south: "imperialMarket.longHallway_02"
+    }
+  }
+}
+
+var smallRoom_02 = new SmallRoom_02();
+
 var mainGate = new MainGate();
 
 module.exports = {
@@ -304,4 +339,6 @@ module.exports = {
   vaultEntrance,
   longHallway_01,
   smallRoom_01,
+  longHallway_02,
+  smallRoom_02
 };
