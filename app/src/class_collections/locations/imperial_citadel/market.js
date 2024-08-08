@@ -151,6 +151,8 @@ class MainGate extends Room {
   }
 }
 
+var mainGate = new MainGate();
+
 class ImperialTreasuryLounge extends Room {
   constructor() {
     super(
@@ -322,7 +324,46 @@ class SmallRoom_02 extends Room {
 
 var smallRoom_02 = new SmallRoom_02();
 
-var mainGate = new MainGate();
+class ShortHallway_03 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_03",
+      "The short hallway is a narrow stone hallway with a door to the west leading to a small room, and a door to the east leading to a large chamber.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      west: "imperialMarket.smallRoom_01",
+      east: "imperialMarket.largeChamber_01"
+    }
+  }
+}
+
+var shortHallway_03 = new ShortHallway_03();
+
+class LargeChamber_01 extends Room {
+  constructor() {
+    super(
+      "Large Chamber",
+      "imperialMarket.largeChamber_01",
+      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the west leading to a short hallway, and a door to the east leading to a PLACEHOLDER.",
+      "30",
+      "30"
+    );
+    this.exits = {
+      west: "imperialMarket.shortHallway_03",
+      east: "PLACEHOLDER"
+    }
+    this.enemies = [
+      new enemies.RebelCaptain("Rebel 1", "southeast"),
+      new enemies.Rebel("Rebel 2", "east"),
+      new enemies.Rebel("Rebel 3", "northeast"),
+    ];
+  }
+}
+
+var largeChamber_01 = new LargeChamber_01();
 
 module.exports = {
   marketEntrance,
@@ -340,5 +381,7 @@ module.exports = {
   longHallway_01,
   smallRoom_01,
   longHallway_02,
-  smallRoom_02
+  smallRoom_02,
+  shortHallway_03,
+  largeChamber_01,
 };
