@@ -45,6 +45,9 @@ function createWindow() {
           var regex = /save_[0-9]+/;
           if (!regex.test(saveFile)) {
             window.alert("No save file selected.");
+            setTimeout(function(){
+                document.getElementById("input-bar").focus();
+            }, 1);
             return;
           }
           document.getElementById("game-screen").style.display = "block";
@@ -60,6 +63,9 @@ function createWindow() {
           if (!regex.test(saveFile)) {
             console.log("HELP!");
             window.alert("No save file selected.");
+            setTimeout(function(){
+                document.getElementById("input-bar").focus();
+            }, 1);
             return;
           }
           deleteGame(saveFile);

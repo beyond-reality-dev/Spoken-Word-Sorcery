@@ -73,11 +73,17 @@ function saveGame(saveFile) {
   if (currentLocation.hasOwnProperty("isCombat")) {
     if (currentLocation["isCombat"] == true) {
       window.alert("You cannot save the game during combat.");
+      setTimeout(function(){
+        document.getElementById("input-bar").focus();
+    }, 1);
       return false;
     }
   } else if (currentLocation.hasOwnProperty("cutscenePlayed")) {
     if (currentLocation["cutscenePlayed"] == false) {
       window.alert("You must complete the cutscene before saving the game.");
+      setTimeout(function(){
+        document.getElementById("input-bar").focus();
+    }, 1);
       return false;
     }
   }

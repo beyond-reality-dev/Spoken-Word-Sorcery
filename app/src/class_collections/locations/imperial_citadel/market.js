@@ -365,14 +365,14 @@ class LargeChamber_01 extends Room {
     super(
       "Large Chamber",
       "imperialMarket.largeChamber_01",
-      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the west leading to a short hallway, and a door to the east leading to a PLACEHOLDER.",
+      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the west leading to a short hallway, and a door to the east leading to a long hallway.",
       "30",
       "30"
     );
     this.items = {};
     this.exits = {
       west: "imperialMarket.shortHallway_03",
-      east: "PLACEHOLDER",
+      east: "longHallway_03",
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel 1", "southeast"),
@@ -383,6 +383,45 @@ class LargeChamber_01 extends Room {
 }
 
 var largeChamber_01 = new LargeChamber_01();
+
+class LongHallway_03 extends Room {
+  constructor() {
+    super(
+      "Long Hallway",
+      "imperialMarket.longHallway_03",
+      "The long hallway is a narrow stone hallway with a door to the west leading to a large chamber, and a door to the east leading to a small room.",
+      "30",
+      "10",
+    );
+    this.items = {};
+    this.exits = {
+      west: "imperialMarket.largeChamber_01",
+      east: "imperialMarket.smallRoom_03",
+    };
+  }
+}
+
+var longHallway_03 = new LongHallway_03();
+
+class SmallRoom_03 extends Room {
+  constructor() {
+    super(
+      "Small Room",
+      "imperialMarket.smallRoom_03",
+      "This small room contains a bloody cot, with a dead rebel soldier lying on top of it clutching his sword. There is a door to the west leading to a short hallway.",
+      "10",
+      "10"
+    );
+    this.items = {
+      sword: new items.ShortSword(),
+    };
+    this.exits = {
+      west: "imperialMarket.longHallway_03",
+    };
+  }
+}
+
+var smallRoom_03 = new SmallRoom_03();
 
 class ShortHallway_04 extends Room {
   constructor() {
@@ -403,11 +442,11 @@ class ShortHallway_04 extends Room {
 
 var shortHallway_04 = new ShortHallway_04();
 
-class SmallRoom_03 extends Room {
+class SmallRoom_04 extends Room {
   constructor() {
     super(
       "Small Room",
-      "imperialMarket.smallRoom_03",
+      "imperialMarket.smallRoom_04",
       "This small room contains a bloody cot, with a dead rebel soldier lying on top of it clutching his sword. There is a door to the east leading to a short hallway.",
       "10",
       "10"
@@ -421,7 +460,7 @@ class SmallRoom_03 extends Room {
   }
 }
 
-var smallRoom_03 = new SmallRoom_03();
+var smallRoom_04 = new SmallRoom_04();
 
 module.exports = {
   marketEntrance,
@@ -442,6 +481,8 @@ module.exports = {
   smallRoom_02,
   shortHallway_03,
   largeChamber_01,
-  shortHallway_04,
+  longHallway_03,
   smallRoom_03,
+  shortHallway_04,
+  smallRoom_04,
 };
