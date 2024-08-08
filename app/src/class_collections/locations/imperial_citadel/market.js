@@ -88,6 +88,69 @@ class ImperialTreasuryExterior extends Room {
 
 var imperialTreasuryExterior = new ImperialTreasuryExterior();
 
+class CitadelRoad extends Room {
+  constructor() {
+    super(
+      "Citadel Road",
+      "imperialMarket.citadelRoad",
+      "The Citadel Road is a wide stone road that leads to the Imperial Citadel's walls. There is a path to the north leading to the Imperial Treasury, and a path to the south leading to the Imperial Citadel's walls.",
+      "10",
+      "20"
+    );
+    this.exits = {
+      north: "imperialMarket.imperialTreasuryExterior",
+      south: "imperialCitadel.citadelWalls",
+    };
+  }
+}
+
+var citadelRoad = new CitadelRoad();
+
+class CitadelWalls extends Room {
+  constructor() {
+    super(
+      "Citadel Walls",
+      "imperialMarket.citadelWalls",
+      "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading to the main gates of the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.citadelRoad",
+      south: "imperialCitadel.mainGate",
+    };
+  }
+}
+
+var citadelWalls = new CitadelWalls();
+
+class MainGate extends Room {
+  constructor() {
+    super(
+      "Main Gate",
+      "imperialCitadel.mainGate",
+      "The main gates of the Imperial Citadel are large iron gates that are currently closed. There is a path to the north leading to the Citadel Walls, and a path to the south leading outside of the Imperial Citadel.",
+      "10",
+      "10"
+    );
+    this.exits = {
+      north: "imperialMarket.citadelWalls",
+      south: "placeholder",
+    };
+    this.enemies = [
+      new enemies.RebelCaptain("Rebel Captain", "south"),
+      new enemies.Rebel("Rebel 1", "northeast"),
+      new enemies.Rebel("Rebel 2", "east"),
+      new enemies.Rebel("Rebel 3", "southeast"),
+      new enemies.Rebel("Rebel 4", "southwest"),
+      new enemies.Rebel("Rebel 5", "west"),
+      new enemies.Rebel("Rebel 6", "northwest"),
+    ];
+    this.cutscene = "mainGate";
+    this.cutscenePlayed = false;
+  }
+}
+
 class ImperialTreasuryLounge extends Room {
   constructor() {
     super(
@@ -153,13 +216,13 @@ class ShortHallway_02 extends Room {
     super(
       "Short Hallway",
       "imperialMarket.shortHallway_02",
-      "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's main hall, and a door to the south leading to the Imperial Treasury's vaults.",
+      "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's vaults, and a door to the south leading to the Imperial Treasury's main hall.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.mainHall",
-      south: "imperialMarket.vaults",
+      north: "imperialMarket.vaults",
+      south: "imperialMarket.mainHall",
     };
   }
 }
@@ -171,13 +234,13 @@ class VaultEntrance extends Room {
     super(
       "Vault Entrance",
       "imperialMarket.vaultEntrance",
-      "The vault entrance is a large stone door with a heavy iron lock. There is a short hallway to the north, and vaults to the south.",
+      "The vault entrance is a large stone door with a heavy iron lock. The vaults of the treasury are to the north, and a short hallway is to the south.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.shortHallway_02",
-      south: "imperialMarket.vaults",
+      north: "imperialMarket.longHallway_01",
+      south: "imperialMarket.shortHallway_02",
     };
     this.cutscene = "vaultEntrance";
     this.cutscenePlayed = false;
@@ -186,68 +249,43 @@ class VaultEntrance extends Room {
 
 var vaultEntrance = new VaultEntrance();
 
-class CitadelRoad extends Room {
+class LongHallway_01 extends Room {
   constructor() {
     super(
-      "Citadel Road",
-      "imperialMarket.citadelRoad",
-      "The Citadel Road is a wide stone road that leads to the Imperial Citadel's walls. There is a path to the north leading to the Imperial Treasury, and a path to the south leading to the Imperial Citadel's walls.",
+      "Long Hallway",
+      "imperialMarket.longHallway_01",
+      "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to the vault's entrance.",
       "10",
-      "20"
+      "30",
     );
     this.exits = {
-      north: "imperialMarket.imperialTreasuryExterior",
-      south: "imperialCitadel.citadelWalls",
+      north: "imperialMarket.smallRoom_01",
+      south: "imperialMarket.vaultEntrance",
     };
   }
 }
 
-var citadelRoad = new CitadelRoad();
+var longHallway_01 = new LongHallway_01();
 
-class CitadelWalls extends Room {
+class SmallRoom_01 extends Room {
   constructor() {
     super(
-      "Citadel Walls",
-      "imperialMarket.citadelWalls",
-      "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading to the main gates of the Imperial Citadel.",
-      "10",
-      "10"
-    );
-    this.exits = {
-      north: "imperialMarket.citadelRoad",
-      south: "imperialCitadel.mainGate",
-    };
-  }
-}
-
-var citadelWalls = new CitadelWalls();
-
-class MainGate extends Room {
-  constructor() {
-    super(
-      "Main Gate",
-      "imperialCitadel.mainGate",
-      "The main gates of the Imperial Citadel are large iron gates that are currently closed. There is a path to the north leading to the Citadel Walls, and a path to the south leading outside of the Imperial Citadel.",
+      "Small Room",
+      "imperialMarket.smallRoom_01",
+      "The small room is a cramped stone room with a single table and chair, the purpose of which is unclear. There is a door to the north leading to a long hallway, a door to the east leading to a short hallway, a door to the south leading to a different long hallway, and a door to the west leading to a different short hallway.",
       "10",
       "10"
     );
     this.exits = {
-      north: "imperialMarket.citadelWalls",
-      south: "placeholder",
+      north: "imperialMarket.longHallway_02",
+      east: "imperialMarket.shortHallway_03",
+      south: "imperialMarket.longHallway_01",
+      west: "imperialMarket.shortHallway_04",
     };
-    this.enemies = [
-      new enemies.RebelCaptain("Rebel Captain", "south"),
-      new enemies.Rebel("Rebel 1", "northeast"),
-      new enemies.Rebel("Rebel 2", "east"),
-      new enemies.Rebel("Rebel 3", "southeast"),
-      new enemies.Rebel("Rebel 4", "southwest"),
-      new enemies.Rebel("Rebel 5", "west"),
-      new enemies.Rebel("Rebel 6", "northwest"),
-    ];
-    this.cutscene = "mainGate";
-    this.cutscenePlayed = false;
   }
 }
+
+var smallRoom_01 = new SmallRoom_01();
 
 var mainGate = new MainGate();
 
@@ -256,12 +294,14 @@ module.exports = {
   market,
   marketStalls,
   imperialTreasuryExterior,
+  citadelRoad,
+  citadelWalls,
+  mainGate,
   imperialTreasuryLounge,
   shortHallway_01,
   mainHall,
   shortHallway_02,
   vaultEntrance,
-  citadelRoad,
-  citadelWalls,
-  mainGate,
+  longHallway_01,
+  smallRoom_01,
 };
