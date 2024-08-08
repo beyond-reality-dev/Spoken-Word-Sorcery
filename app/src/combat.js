@@ -83,6 +83,39 @@ async function handlePlayerTurn(enemies, length) {
     }
     if (enemy != null) {
       var playerAttack = getValue("attack");
+      var equipment = getValue("equipment");
+      var mainHand = equipment["mainHand"];
+      var used = false;
+      if (mainHand != null) {
+        if (mainHand.hasOwnProperty("ammunition")) {
+          var inventory = getValue("inventory");
+          for (let i = 0; i < inventory.length; i++) {
+            if (inventory[i].name == mainHand.ammunition) {
+              var current = inventory[i].quantity;
+              current = current - 1;
+              changeValue("itemQuantity", current, i);
+              var playerData = JSON.parse(localStorage.getItem("playerData"));
+              playerData["inventory"] = inventory;
+              localStorage.setItem("playerData", JSON.stringify(playerData));
+              used = true;
+              updateUI();
+              break;
+            }
+          }
+          if (used == false) {
+            if (mainHand.ammunition.charAt(0).match(/[aeiou]/i)) {
+              quickPrint(
+                `You do not have an ${mainHand.ammunition} and therefore cannot attack.`
+              );
+            } else {
+              quickPrint(
+                `You do not have a ${mainHand.ammunition} and therefore cannot attack.`
+              );
+            }
+            return enemies;
+          }
+        }
+      }
       quickPrint(`You roll ${playerAttack}.`);
       var rolledDice = diceRoll(playerAttack);
       var rolls = rolledDice[0];

@@ -90,12 +90,14 @@ class GreatSword extends Weapon {
 class ShortBow extends Weapon {
   constructor(quantity = 1) {
     super("Bow", "A simple bow", "bothHands", 10, "1d8", 5, 5, quantity);
+    this.ammunition = "Arrow";
   }
 }
 
 class LongBow extends Weapon {
   constructor(quantity = 1) {
     super("Bow", "A simple bow", "bothHands", 10, "2d6", 10, 5, quantity);
+    this.ammunition = "Arrow";
   }
 }
 
