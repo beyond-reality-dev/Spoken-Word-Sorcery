@@ -68,23 +68,62 @@ class ImperialDreadnoughtUpperDeck extends Room {
     super(
       "Imperial Dreadnought Upper Deck",
       "imperialPort.imperialDreadnoughtUpperDeck",
-      "The upper deck of the Imperial Dreadnought is a large open area with a few crates and barrels scattered about. There is a ladder to the west, leading down to the ship's exterior, and a wooden door to the east, leading below deck.",
+      "The upper deck of the Imperial Dreadnought is a large open area with a few crates and barrels scattered about. There is a ladder to the west, leading down to the ship's exterior, and a wooden door to the south, leading below deck.",
       "10",
       "10"
     );
     this.items = {};
     this.exits = {
       west: "imperialDreadnoughtExterior",
-      east: "imperialDreadnoughtLowerDeck",
+      south: "imperialDreadnoughtLowerDeck",
     };
   }
 }
 
 var imperialDreadnoughtUpperDeck = new ImperialDreadnoughtUpperDeck();
 
+class ImperialDreadnoughtLowerDeck extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought Lower Deck",
+      "imperialPort.imperialDreadnoughtLowerDeck",
+      "The lower deck of the Imperial Dreadnought is a dimly lit area with a few crates and barrels scattered about. There is a wooden ladder to the north, leading up to the upper deck, and a ladder to the south, leading further below deck into the ship's hold.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialDreadnoughtUpperDeck",
+      south: "imperialDreadnoughtHold",
+    };
+  }
+}
+
+var imperialDreadnoughtLowerDeck = new ImperialDreadnoughtLowerDeck();
+
+class ImperialDreadnoughtHold extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought Hold",
+      "imperialPort.imperialDreadnoughtHold",
+      "The hold of the Imperial Dreadnought is a dark, cramped area with rows of crates and barrels stacked to the ceiling. There is a ladder to the north, leading back up to the lower deck.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialDreadnoughtLowerDeck",
+    };
+  }
+}
+
+var imperialDreadnoughtHold = new ImperialDreadnoughtHold();
+
 module.exports = {
   portEntrance,
   port,
   imperialDreadnoughtExterior,
   imperialDreadnoughtUpperDeck,
+  imperialDreadnoughtLowerDeck,
+  imperialDreadnoughtHold,
 };

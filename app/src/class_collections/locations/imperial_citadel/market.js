@@ -434,7 +434,7 @@ class ShortHallway_04 extends Room {
     );
     this.items = {};
     this.exits = {
-      east: "imperialMarket.smallRoom_01",
+      east: "imperialMarket.smallRoom_04",
       west: "imperialMarket.smallRoom_03",
     };
   }
@@ -447,13 +447,11 @@ class SmallRoom_04 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_04",
-      "This small room contains a bloody cot, with a dead rebel soldier lying on top of it clutching his sword. There is a door to the east leading to a short hallway.",
+      "This small room contains a small chest, with the lock broken and the contents long gone. There is a door to the east leading to a short hallway.",
       "10",
       "10"
     );
-    this.items = {
-      sword: new items.ShortSword(),
-    };
+    this.items = {};
     this.exits = {
       east: "imperialMarket.shortHallway_04",
     };

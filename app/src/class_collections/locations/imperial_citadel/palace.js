@@ -12,7 +12,7 @@ class GuardTowers extends Room {
     this.items = {};
     this.exits = {
       north: "imperialCitadel.nexus",
-      south: "imperialPalace.palaceBridge"
+      south: "imperialPalace.palaceBridge",
     };
     this.cutscene = "guardTowers";
     this.cutscenePlayed = false;
@@ -34,10 +34,11 @@ class PalaceBridge extends Room {
     this.items = {};
     this.exits = {
       north: "imperialPalace.guardTowers",
-      south: "imperialPalace.palaceEntrance"
+      south: "imperialPalace.palaceEntrance",
     };
     this.isLocked = true;
-    this.lockedMessage = "Guards rush forward to block your path, and remind you that they will not let you pass until you have the Emperor's belongings.";
+    this.lockedMessage =
+      "Guards rush forward to block your path, and remind you that they will not let you pass until you have the Emperor's belongings.";
   }
 }
 
@@ -55,7 +56,7 @@ class PalaceEntrance extends Room {
     this.items = {};
     this.exits = {
       north: "imperialPalace.palaceBridge",
-      south: "imperialPalace.imperialPalace"
+      south: "imperialPalace.imperialPalace",
     };
   }
 }

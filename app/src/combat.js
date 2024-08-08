@@ -104,12 +104,13 @@ async function handlePlayerTurn(enemies, length) {
           }
           if (used == false) {
             if (mainHand.ammunition.charAt(0).match(/[aeiou]/i)) {
+              var ammo = mainHand.ammunition.toLowerCase();
               quickPrint(
-                `You do not have an ${mainHand.ammunition} and therefore cannot attack.`
+                `You do not have an ${ammo} and therefore cannot attack.`
               );
             } else {
               quickPrint(
-                `You do not have a ${mainHand.ammunition} and therefore cannot attack.`
+                `You do not have a ${ammo} and therefore cannot attack.`
               );
             }
             return enemies;
