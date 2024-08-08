@@ -1,5 +1,6 @@
 const Room = require("../room.js").Room;
 const { enemies } = require("../../../class_collections");
+const { items } = require("../../../class_collections");
 
 class MarketEntrance extends Room {
   constructor() {
@@ -10,6 +11,7 @@ class MarketEntrance extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       east: "imperialCitadel.nexus",
       west: "imperialMarket.market",
@@ -28,6 +30,7 @@ class Market extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       east: "imperialMarket.marketEntrance",
       west: "imperialMarket.marketStalls",
@@ -46,6 +49,7 @@ class MarketStalls extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       east: "imperialMarket.market",
       west: "imperialMarket.imperialTreasury",
@@ -71,6 +75,7 @@ class ImperialTreasuryExterior extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.imperialTreasury",
       east: "imperialMarket.marketStalls",
@@ -97,6 +102,7 @@ class CitadelRoad extends Room {
       "10",
       "20"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.imperialTreasuryExterior",
       south: "imperialCitadel.citadelWalls",
@@ -115,6 +121,7 @@ class CitadelWalls extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.citadelRoad",
       south: "imperialCitadel.mainGate",
@@ -133,6 +140,7 @@ class MainGate extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.citadelWalls",
       south: "placeholder",
@@ -162,6 +170,7 @@ class ImperialTreasuryLounge extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.shortHallway",
       south: "imperialMarket.imperialTreasuryExterior",
@@ -186,6 +195,7 @@ class ShortHallway_01 extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.mainHall",
       south: "imperialMarket.imperialTreasuryLounge",
@@ -204,6 +214,7 @@ class MainHall extends Room {
       "20",
       "20"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.shortHallway_02",
       south: "imperialMarket.shortHallway_01",
@@ -222,6 +233,7 @@ class ShortHallway_02 extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.vaults",
       south: "imperialMarket.mainHall",
@@ -240,6 +252,7 @@ class VaultEntrance extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.longHallway_01",
       south: "imperialMarket.shortHallway_02",
@@ -258,8 +271,9 @@ class LongHallway_01 extends Room {
       "imperialMarket.longHallway_01",
       "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to the vault's entrance.",
       "10",
-      "30",
+      "30"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.smallRoom_01",
       south: "imperialMarket.vaultEntrance",
@@ -278,6 +292,7 @@ class SmallRoom_01 extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.longHallway_02",
       east: "imperialMarket.shortHallway_03",
@@ -296,12 +311,13 @@ class LongHallway_02 extends Room {
       "imperialMarket.longHallway_02",
       "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to a different small room.",
       "10",
-      "30",
+      "30"
     );
+    this.items = {};
     this.exits = {
       north: "imperialMarket.smallRoom_02",
-      south: "imperialMarket.smallRoom_01"
-    }
+      south: "imperialMarket.smallRoom_01",
+    };
   }
 }
 
@@ -314,11 +330,12 @@ class SmallRoom_02 extends Room {
       "imperialMarket.smallRoom_02",
       "This small room appears to contain nothing and is a dead end, with a door to the south leading to a long hallway.",
       "10",
-      "10",
+      "10"
     );
+    this.items = {};
     this.exits = {
-      south: "imperialMarket.longHallway_02"
-    }
+      south: "imperialMarket.longHallway_02",
+    };
   }
 }
 
@@ -333,10 +350,11 @@ class ShortHallway_03 extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       west: "imperialMarket.smallRoom_01",
-      east: "imperialMarket.largeChamber_01"
-    }
+      east: "imperialMarket.largeChamber_01",
+    };
   }
 }
 
@@ -351,10 +369,11 @@ class LargeChamber_01 extends Room {
       "30",
       "30"
     );
+    this.items = {};
     this.exits = {
       west: "imperialMarket.shortHallway_03",
-      east: "PLACEHOLDER"
-    }
+      east: "PLACEHOLDER",
+    };
     this.enemies = [
       new enemies.RebelCaptain("Rebel 1", "southeast"),
       new enemies.Rebel("Rebel 2", "east"),
@@ -364,6 +383,45 @@ class LargeChamber_01 extends Room {
 }
 
 var largeChamber_01 = new LargeChamber_01();
+
+class ShortHallway_04 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_04",
+      "The short hallway is a narrow stone hallway with a door to the east leading to a small room, and a door to the west leading to a different small room.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      east: "imperialMarket.smallRoom_01",
+      west: "imperialMarket.smallRoom_03",
+    };
+  }
+}
+
+var shortHallway_04 = new ShortHallway_04();
+
+class SmallRoom_03 extends Room {
+  constructor() {
+    super(
+      "Small Room",
+      "imperialMarket.smallRoom_03",
+      "This small room contains a bloody cot, with a dead rebel soldier lying on top of it clutching his sword. There is a door to the east leading to a short hallway.",
+      "10",
+      "10"
+    );
+    this.items = {
+      sword: new items.ShortSword(),
+    };
+    this.exits = {
+      east: "imperialMarket.shortHallway_04",
+    };
+  }
+}
+
+var smallRoom_03 = new SmallRoom_03();
 
 module.exports = {
   marketEntrance,
@@ -384,4 +442,6 @@ module.exports = {
   smallRoom_02,
   shortHallway_03,
   largeChamber_01,
+  shortHallway_04,
+  smallRoom_03,
 };

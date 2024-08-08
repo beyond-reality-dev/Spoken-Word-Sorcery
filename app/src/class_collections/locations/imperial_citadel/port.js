@@ -10,6 +10,7 @@ class PortEntrance extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       west: "imperialCitadel.nexus",
       east: "imperialPort.port",
@@ -33,6 +34,7 @@ class Port extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       west: "imperialPort.portEntrance",
       east: "imperialPort.imperialDreadnoughtExterior",
@@ -51,6 +53,7 @@ class ImperialDreadnoughtExterior extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       west: "imperialPort.port",
       east: "imperialPort.imperialDreadnoughtUpperDeck",
@@ -69,6 +72,7 @@ class ImperialDreadnoughtUpperDeck extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       west: "imperialDreadnoughtExterior",
       east: "imperialDreadnoughtLowerDeck",

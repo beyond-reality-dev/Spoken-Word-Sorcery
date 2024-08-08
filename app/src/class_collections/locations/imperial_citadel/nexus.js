@@ -10,6 +10,7 @@ class Nexus extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialAcademy.guardTowers",
       east: "imperialPort.portEntrance",

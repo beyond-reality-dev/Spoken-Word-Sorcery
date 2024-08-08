@@ -11,7 +11,7 @@ class TrainingRoom extends Room {
       "15",
       "15"
     );
-    this.items = { staff: staff };
+    this.items = { staff: new items.Staff() };
     this.exits = {
       north: "imperialAcademy.shortHallway_01",
       east: "imperialAcademy.practiceYard",
@@ -19,8 +19,6 @@ class TrainingRoom extends Room {
     };
   }
 }
-
-var staff = new items.Staff();
 
 var trainingRoom = new TrainingRoom();
 
@@ -33,14 +31,12 @@ class PracticeYard extends Room {
       "10",
       "10"
     );
-    this.items = { arrow: arrows };
+    this.items = { arrow: new items.Arrow(3) };
     this.exits = {
       west: "imperialAcademy.trainingRoom",
     };
   }
 }
-
-var arrows = new items.Arrow(3);
 
 var practiceYard = new PracticeYard();
 

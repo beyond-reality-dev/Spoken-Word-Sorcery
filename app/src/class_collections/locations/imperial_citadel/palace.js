@@ -9,6 +9,7 @@ class GuardTowers extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialCitadel.nexus",
       south: "imperialPalace.palaceBridge"
@@ -30,6 +31,7 @@ class PalaceBridge extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialPalace.guardTowers",
       south: "imperialPalace.palaceEntrance"
@@ -50,6 +52,7 @@ class PalaceEntrance extends Room {
       "10",
       "10"
     );
+    this.items = {};
     this.exits = {
       north: "imperialPalace.palaceBridge",
       south: "imperialPalace.imperialPalace"

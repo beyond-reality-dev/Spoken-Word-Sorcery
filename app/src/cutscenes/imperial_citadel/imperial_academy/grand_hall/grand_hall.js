@@ -29,7 +29,7 @@ async function grandHallEncounter() {
     );
     printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/5.txt");
     await requireAnswer(["yes", "y"], '"Is that clear?"');
-    printLines("app/src/cutscenes/imperial_academy/grand_hall/6.txt");
+    printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/6.txt");
   } else if (getValue("militaryAnnex", true).cutscenePlayed == true) {
     printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/7.txt");
     await requireAnswer(["any"], "unreachable");
