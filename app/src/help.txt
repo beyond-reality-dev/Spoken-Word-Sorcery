@@ -1,0 +1,30 @@
+GENERAL:
+To play Spoken Word Sorcery, you can type phrases to interact with the game.
+You may optionally begin phrases with the letter "I" but it is not required.
+Similarly, you may optionally insert prepositions, articles, or other words that do not change the meaning of the phrase, like "a," "an," "to," and "the."
+For example, you can type either "I go north," "go to the north," etc. to move north.
+Punctuation and capitalization is irrelevant, and you can combine phrases with "and" in most cases.
+
+MOVEMENT:
+To move to a room connected to your current location, you can type "go," "run," "exit," "move," or "walk" followed by a cardinal (compass) direction.
+
+ITEMS:
+To pick up an item, you can type "take," "grab," "acquire," "obtain," "pick up," or "lift" followed by the item name.
+To drop an item, you can type "drop," "discard," "leave," or "lose" followed by the item name.
+To equip an item, you can type "equip" or "put on" followed by the item name.
+To unequip an item, you can type "unequip" or "take off" followed by the item name.
+For consumables, you can type "use," "consume," "drink," "eat," or "ingest" followed by the item name.
+
+COMBAT:
+To attack an enemy that is in front of you, you can type "hit," "stab," "fight," "attack," "strike," "slash," "swing," "thrust," or "shoot."
+To turn and phase a different direction, you can type "turn," "face," or "look" followed by the direction, left or right, you want to face.
+To use a spell, you can type "say," "yell," "cast," "chant," "shout," "speak," "utter," "mutter," or "whisper" followed by the spell phrase.
+
+REST:
+If you are in a safe location, you can type "rest" or "sleep" to regain health and mana.
+
+REMEMBER:
+To remember a phrase, you can type "remember" followed by the phrase you want to remember.
+
+HELP:
+To view this help text again, you can type "help," "info," or "instructions."
