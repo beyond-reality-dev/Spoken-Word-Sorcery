@@ -59,6 +59,22 @@ async function intro() {
       '" correct?"'
   );
   var confirm = await closedInput();
+  if (confirm == "debug: skip intro") {
+    changeValue("name", name);
+    addEntity(new Remember(), "knownSpells");
+    addEntity(new Remember(), "spokenSpells");
+    addEntity("I must use the Power sparingly for its cost is my mind, my sanity, my very humanity.", "memories");
+    addEntity("I am loyal to, and shall give my life to defend if necessary, the Arcane Order and the Empire.", "memories");
+    addEntity("I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.", "memories");
+    addEntity(new Fire(), "knownSpells");
+    addEntity(new Water(), "knownSpells");
+    addEntity(new Earth(), "knownSpells");
+    addEntity(new Spear(), "spokenSpells");
+    addEntity(new Shield(), "spokenSpells");
+    addEntity(new Away(), "knownSpells");
+    inputLoop();
+    return;
+  }
   while (
     confirm != "Yes" &&
     confirm != "yes" &&
@@ -235,6 +251,6 @@ async function intro() {
   await printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt"
   );
-  changeValue("currentMana", 50);
+  changeValue("currentMana", 100);
   inputLoop();
 }

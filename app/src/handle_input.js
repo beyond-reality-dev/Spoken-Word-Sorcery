@@ -74,7 +74,10 @@ async function openInput(combatOverride = false) {
         var hasUnequipped = false;
         var hasActed = false;
         for (let i = 0; i < clauses.length; i++) {
-          if (clauses[i].substring(0, 4) == "help" || clauses[i].substring(0, 4) == "info") {
+          if (
+            clauses[i].substring(0, 4) == "help" ||
+            clauses[i].substring(0, 4) == "info"
+          ) {
             printLines("app/src/help.txt");
           } else if (clauses[i].substring(0, 12) == "instructions") {
             printLines("app/src/help.txt");
@@ -180,7 +183,7 @@ async function openInput(combatOverride = false) {
               item = clauses[i].substring(5);
             }
             handleDrop(item);
-          } else if (clauses[i].substring(0, 6) == "leave ") { 
+          } else if (clauses[i].substring(0, 6) == "leave ") {
             if (clauses[i].substring(6, 8) == "a ") {
               item = clauses[i].substring(8);
             } else if (clauses[i].substring(6, 9) == "an ") {
@@ -843,27 +846,32 @@ function handleSpell(words) {
       phrase = "You don't have enough mana to cast this spell.";
     } else {
       var matchKnown = false;
+      var matchSpoken = false;
       for (let i = 0; i < words.length; i++) {
         for (let j = 0; j < knownSpells.length; j++) {
           var currentSpell = eval("new spells." + toTitleCase(words[i]) + "()");
           var spellName = knownSpells[j]["name"];
           if (spellName == currentSpell.name) {
-            var matchKnown = true;
+            matchKnown = true;
             addEntity(currentSpell, "spokenSpells");
             break;
           }
         }
         for (let j = 0; j < spokenSpells.length; j++) {
+          currentSpell = eval("new spells." + toTitleCase(words[i]) + "()");
           spellName = spokenSpells[j]["name"];
-          if (spellName == spell.name) {
-            currentSpell = eval("new spells." + toTitleCase(words[i]) + "()");
-            var matchSpoken = true;
+          if (spellName == currentSpell.name) {
+            matchSpoken = true;
             break;
           }
         }
         if (matchKnown == false && matchSpoken == false) {
           phrase = "Nothing happens.";
-          break;
+          document.getElementById("main-content").innerHTML +=
+            "<p>" + phrase + "</p>";
+          document.getElementById("main-content").scrollTop =
+            document.getElementById("main-content").scrollHeight;
+          return [0, "none"];
         }
       }
       phrase = `${element.descriptor}${spell.descriptor}${direction.descriptor}`;

@@ -62,6 +62,9 @@ async function handlePlayerTurn(enemies, length) {
   choiceInput = await openInput();
   var choice = choiceInput[0];
   if (choiceInput.length > 1) {
+    if (choiceInput[1] == "0" && choiceInput[2] == "none") {
+      return enemies;
+    }
     var spellPower = choiceInput[1];
     quickPrint(`You roll ${spellPower}.`);
     var rolledDice = diceRoll(spellPower);
