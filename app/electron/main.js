@@ -119,6 +119,19 @@ function createWindow() {
         }
 
         // Setttings functions.
+        var gameSpeed = getValue("gameSpeed");
+        if (gameSpeed == 0) {
+          document.getElementById("radio-zero").checked = true;
+        } else if (gameSpeed == 1000) {
+          document.getElementById("radio-one").checked = true;
+        } else if (gameSpeed == 2000) {
+          document.getElementById("radio-two").checked = true;
+        } else if (gameSpeed == 3000) {
+          document.getElementById("radio-three").checked = true;
+        } else if (gameSpeed == 4000) {
+          document.getElementById("radio-four").checked = true;
+        }
+
         document.getElementById("radio-zero").onclick = function () {
           changeValue("gameSpeed", 0);
         }

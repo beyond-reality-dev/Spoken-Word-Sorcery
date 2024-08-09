@@ -136,10 +136,24 @@ async function handlePlayerTurn(enemies, length) {
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         calculateValue("experiencePoints", "add", enemy.xp);
-        calculateValue("gold", "add", enemy.gold);
+        if (enemy.gold > 0) {
+          calculateValue("gold", "add", enemy.gold);
+          quickPrint(`You picked up ${enemy.gold} gold from ${enemy.name}.`);
+        }
         for (var i = 0; i < enemy.items.length; i++) {
           var item = enemy.items[i];
           addEntity(item, "inventory");
+          if (itemName.charAt(0).match(/[aeiou]/i)) {
+            quickPrint(`${enemy.name} dropped an ${item.name}.`);
+          } else {
+            quickPrint(`${enemy.name} dropped a ${item.name}.`);
+          }
+          var location = getValue("location");
+          var primaryLocation = location.split(".")[0];
+          var secondaryLocation = location.split(".")[1];
+          var playerData = JSON.parse(localStorage.getItem("playerData"));
+          var locations = playerData["locations"];
+          locations[primaryLocation][secondaryLocation]["items"].push(item);
         }
         enemies.splice(0, 1);
       }
