@@ -844,7 +844,7 @@ function handleSpell(words) {
       direction["type"] != "Direction"
     ) {
       phrase = "Nothing happens.";
-    } else if (spell.manaCost > getValue("currentMana")) {
+    } else if (spell.manaCost > (getValue("currentMana") + getValue("tempMana"))) {
       phrase = "You don't have enough mana to cast this spell.";
     } else {
       var matchKnown = false;
@@ -877,7 +877,20 @@ function handleSpell(words) {
         }
       }
       phrase = `${element.descriptor}${spell.descriptor}${direction.descriptor}`;
-      calculateValue("currentMana", "subtract", spell.manaCost);
+      var tempMana = getValue("tempMana");
+      var manaCost = spell.manaCost;
+      if (tempMana > 0) {
+        var difference = manaCost - tempMana;
+        if (difference > 0) {
+          tempMana = 0;
+          manaCost = difference;
+        } else {
+          tempMana = tempMana - manaCost;
+          manaCost = 0;
+        }
+        changeValue("tempMana", tempMana);
+      }
+      calculateValue("currentMana", "subtract", manaCost);
       if (direction.name == "Away") {
         var spellDirection = getValue("direction");
       } else if (direction.name == "Left") {

@@ -190,18 +190,32 @@ function updateSpellbook(target) {
         var spellPower = spells[i]["power"];
         var spellRange = spells[i]["range"];
         var spellManaCost = spells[i]["manaCost"];
-        var spellAttackIncrease = spells[i]["attackIncrease"];
-        var spellHealthIncrease = spells[i]["healthIncrease"];
-        var spellArmorIncrease = spells[i]["armorIncrease"];
-        var spellSpeedIncrease = spells[i]["speedIncrease"];
-        var spellRangeIncrease = spells[i]["rangeIncrease"];
+        if (spells[i]["offensive"] == true) {
+          effect = "Damage";
+        } else if (spells[i]["healthIncrease"] == true) {
+          effect = "Healing";
+        } else if (spells[i]["tempHealth"] == true) {
+          effect = "Temporary Health";
+        } else if (spells[i]["manaIncrease"] == true) {
+          effect = "Mana Increase";
+        } else if (spells[i]["tempMana"] == true) {
+          effect = "Temporary Mana";
+        } else if (spells[i]["tempArmor"] == true) {
+          effect = "Temporary Armor";
+        } else if (spells[i]["speedIncrease"] == true) {
+          effect = "Speed Increase";
+        } else if (spells[i]["rangeIncrease"] == true) {
+          effect = "Range Increase";
+        } else if (spells[i]["attackIncrease"] == true) {
+          effect = "Attack Increase";
+        }
         if (document.getElementById(spellName)) {
           document.getElementById(spellName).remove();
         }
         if (spells[i]["isSupport"] == false) {
           document.getElementById(
             targetElement
-          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
+          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} ${effect} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
         } else if (spells[i]["isSupport"] == true) {
           document.getElementById(
             targetElement
@@ -427,6 +441,7 @@ function updateEquipment() {
 
 function addEntity(entity, target) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var matchKnown = false;
   if (target == "spokenSpells") {
     for (
       let i = 0;

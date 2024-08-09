@@ -76,34 +76,14 @@ class Death extends Element {
 }
 
 class Spell {
-  constructor(
-    name,
-    description,
-    descriptor,
-    manaCost,
-    power,
-    range,
-    isOffensive,
-    isSupport,
-    attackIncrease,
-    healthIncrease,
-    armorIncrease,
-    speedIncrease,
-    rangeIncrease
-  ) {
+  constructor(name, description, descriptor, manaCost, power, range, target) {
     this.name = name;
     this.description = description;
     this.descriptor = descriptor;
     this.manaCost = manaCost;
     this.power = power;
     this.range = range;
-    this.isOffensive = isOffensive;
-    this.isSupport = isSupport;
-    this.attackIncrease = attackIncrease;
-    this.healthIncrease = healthIncrease;
-    this.armorIncrease = armorIncrease;
-    this.speedIncrease = speedIncrease;
-    this.rangeIncrease = rangeIncrease;
+    this.target = target;
     this.type = "Spell";
   }
 }
@@ -116,15 +96,9 @@ class Spear extends Spell {
       "spear flies through the air ",
       5,
       "5d10",
-      1,
-      true,
-      false,
-      0,
-      0,
-      0,
-      0,
-      0
+      1
     );
+    this.offensive = true;
   }
 }
 
@@ -137,14 +111,9 @@ class Shield extends Spell {
       5,
       "5d10",
       0,
-      false,
-      false,
-      0,
-      0,
-      0,
-      0,
-      0
+      false
     );
+    this.tempArmor = true;
   }
 }
 
