@@ -447,18 +447,38 @@ class SmallRoom_04 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_04",
-      "This small room contains a small chest, with the lock broken and the contents long gone. There is a door to the east leading to a short hallway.",
+      "This small room contains a small chest, with the lock broken and the contents long gone. There is a door to the east leading to a short hallway, and a door to the west leading to a different short hallway.",
       "10",
       "10"
     );
     this.items = {};
     this.exits = {
       east: "imperialMarket.shortHallway_04",
+      west: "imperialMarket.longHallway_04",
     };
   }
 }
 
 var smallRoom_04 = new SmallRoom_04();
+
+class LongHallway_04 extends Room {
+  constructor() {
+    super(
+      "Long Hallway",
+      "imperialMarket.longHallway_04",
+      "The long hallway is a narrow stone hallway with a door to the east leading to a small room, and a door to the west leading to a different small room.",
+      "10",
+      "30"
+    );
+    this.items = {};
+    this.exits = {
+      east: "imperialMarket.smallRoom_04",
+      west: "imperialMarket.smallRoom_05",
+    };
+  }
+}
+
+var longHallway_04 = new LongHallway_04();
 
 module.exports = {
   marketEntrance,
@@ -483,4 +503,5 @@ module.exports = {
   smallRoom_03,
   shortHallway_04,
   smallRoom_04,
+  longHallway_04,
 };

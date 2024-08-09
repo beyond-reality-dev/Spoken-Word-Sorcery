@@ -5,7 +5,7 @@ const { handleMovement } = require("../../../../handle_input");
 async function grandHallEncounter() {
   if (
     getValue("imperialAcademy.armory", true).isVisited == false ||
-    getValue("militaryAnnex", true).isVisited == false
+    getValue("imperialAcademy.militaryAnnex", true).isVisited == false
   ) {
     if (getValue("imperialAcademy.barracks", true).isVisited == false) {
       printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/1.txt");
@@ -30,46 +30,46 @@ async function grandHallEncounter() {
     printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/5.txt");
     await requireAnswer(["yes", "y"], '"Is that clear?"');
     printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/6.txt");
-  } else if (getValue("militaryAnnex", true).cutscenePlayed == true) {
-    printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/7.txt");
-    await requireAnswer(["any"], "unreachable");
-    printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/8.txt");
-    changeValue(
-      "['imperialAcademy.longPassage']['isLocked']",
-      true,
-      "locations"
-    );
-    changeValue(
-      "['imperialAcademy.commonRoom']['isLocked']",
-      true,
-      "locations"
-    );
-    changeValue(
-      "['imperialAcademy.hallGates']['isLocked']",
-      false,
-      "locations"
-    );
-    changeValue(
-      "['imperialAcademy.longPassage']['lockedDescription']",
-      "The door to the long passage has collapsed, blocking the way.",
-      "locations"
-    );
-    changeValue(
-      "['imperialAcademy.commonRoom']['lockedDescription']",
-      "The door to the common room has collapsed, blocking the way.",
-      "locations"
-    );
-    changeValue(
-      "['imperialAcademy.grandHall']['description']",
-      "The grand hall, once impressive, is now desolate. Nothing of value remains, with even the soldiers' weapons and armor having been stripped from their bodies. By whom, you cannot say.",
-      "locations"
-    );
-    handleMovement("load");
-    changeValue(
-      "['imperialAcademy.grandHall']['cutscenePlayed']",
-      true,
-      "locations"
-    );
+  } else if (getValue("imperialAcademy.militaryAnnex", true).cutscenePlayed == true) {
+      printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/7.txt");
+      await requireAnswer(["any"], "unreachable");
+      printLines("app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/8.txt");
+      changeValue(
+        "['imperialAcademy.longPassage']['isLocked']",
+        true,
+        "locations"
+      );
+      changeValue(
+        "['imperialAcademy.commonRoom']['isLocked']",
+        true,
+        "locations"
+      );
+      changeValue(
+        "['imperialAcademy.hallGates']['isLocked']",
+        false,
+        "locations"
+      );
+      changeValue(
+        "['imperialAcademy.longPassage']['lockedDescription']",
+        "The door to the long passage has collapsed, blocking the way.",
+        "locations"
+      );
+      changeValue(
+        "['imperialAcademy.commonRoom']['lockedDescription']",
+        "The door to the common room has collapsed, blocking the way.",
+        "locations"
+      );
+      changeValue(
+        "['imperialAcademy.grandHall']['description']",
+        "The grand hall, once impressive, is now desolate. Nothing of value remains, with even the soldiers' weapons and armor having been stripped from their bodies. By whom, you cannot say.",
+        "locations"
+      );
+      handleMovement("load");
+      changeValue(
+        "['imperialAcademy.grandHall']['cutscenePlayed']",
+        true,
+        "locations"
+      );
   }
 }
 

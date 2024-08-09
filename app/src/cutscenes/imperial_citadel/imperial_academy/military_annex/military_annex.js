@@ -1,5 +1,5 @@
 const { printLines, requireAnswer } = require("../../../../general");
-const { getValue } = require("../../../../save_data");
+const { getValue, changeValue } = require("../../../../save_data");
 const { handleCombat } = require("../../../../combat");
 
 async function militaryAnnex() {
@@ -20,6 +20,7 @@ async function militaryAnnex() {
         true,
         "locations"
       );
+      console.log(getValue("imperialAcademy.militaryAnnex", true));
     }
   }
 }
