@@ -784,12 +784,14 @@ function handleUse(item) {
       var itemEntity = items[i];
       var healthValue = itemEntity.healthValue;
       var manaValue = itemEntity.manaValue;
-      var speedValue = itemEntity.speedValue;
-      var weight = itemEntity.weight;
       calculateValue("currentHealth", "add", healthValue);
+      if (getValue("currentHealth") > getValue("maxHealth")) {
+        changeValue("currentHealth", getValue("maxHealth"));
+      } 
       calculateValue("currentMana", "add", manaValue);
-      calculateValue("currentSpeed", "add", speedValue);
-      calculateValue("currentWeight", "add", weight);
+      if (getValue("currentMana") > getValue("maxMana")) {
+        changeValue("currentMana", getValue("maxMana"));
+      }
       var current = items[i].quantity;
       current = current - 1;
       changeValue("itemQuantity", current, i);

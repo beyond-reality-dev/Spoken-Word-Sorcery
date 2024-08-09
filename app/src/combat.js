@@ -41,6 +41,9 @@ async function handleCombat() {
     localStorage.setItem("playerData", JSON.stringify(save));
     updateUI();
   }
+  changeValue("tempHealth", 0);
+  changeValue("tempMana", 0);
+  changeValue("tempArmor", 0);
   changeValue("isCombat", false);
 }
 
@@ -214,6 +217,18 @@ async function handleEnemyTurn(enemy, enemies) {
     );
   }
   var playerDamage = Math.max(enemyAttack - playerDefense, 0);
+  var tempHealth = getValue("tempHealth");
+  if (tempHealth > 0) {
+    var difference = playerDamage - tempHealth;
+    if (difference > 0) {
+      playerDamage = difference;
+      tempHealth = 0;
+    } else {
+      tempHealth = tempHealth - playerDamage;
+      playerDamage = 0;
+    }
+    changeValue("tempHealth", tempHealth);
+  }
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
   var enemyPosition = enemy.position;

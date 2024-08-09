@@ -16,7 +16,13 @@ module.exports = {
 const { quickPrint, getRandomInt } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
 const locationsObjects = require("./class_collections/locations");
-const { imperialAcademy } = require("./class_collections/locations");
+const {
+  imperialAcademy,
+  imperialMarket,
+  imperialNexus,
+  imperialPalace,
+  imperialPort,
+} = require("./class_collections/locations");
 
 function initializeData(saveFile) {
   var playerData = {
@@ -27,10 +33,13 @@ function initializeData(saveFile) {
     insanity: 0,
     maxHealth: 100,
     currentHealth: 100,
+    tempHealth: 0,
     maxMana: 100,
     currentMana: 100,
+    tempMana: 0,
     attack: 0,
     armor: 0,
+    tempArmor: 0,
     speed: 10,
     gold: 0,
     encumbrance: 0,
@@ -73,17 +82,17 @@ function saveGame(saveFile) {
   if (currentLocation.hasOwnProperty("isCombat")) {
     if (currentLocation["isCombat"] == true) {
       window.alert("You cannot save the game during combat.");
-      setTimeout(function(){
+      setTimeout(function () {
         document.getElementById("input-bar").focus();
-    }, 1);
+      }, 1);
       return false;
     }
   } else if (currentLocation.hasOwnProperty("cutscenePlayed")) {
     if (currentLocation["cutscenePlayed"] == false) {
       window.alert("You must complete the cutscene before saving the game.");
-      setTimeout(function(){
+      setTimeout(function () {
         document.getElementById("input-bar").focus();
-    }, 1);
+      }, 1);
       return false;
     }
   }
@@ -126,7 +135,9 @@ function updateSaveGames() {
     location = location["name"];
     document.getElementById(
       "save-games"
-    ).innerHTML += `<option value="${saveFile}">Save: ${[i+1]} | ${name} | Level: ${level} | Gold: ${gold} | Location: ${location}</option>`;
+    ).innerHTML += `<option value="${saveFile}">Save: ${[
+      i + 1,
+    ]} | ${name} | Level: ${level} | Gold: ${gold} | Location: ${location}</option>`;
   }
 }
 
@@ -537,7 +548,8 @@ function changeValue(target, newValue, i = 0) {
     var primaryLocation = target.split(".")[0];
     var secondaryLocation = target.split(".")[1];
     var primaryTarget = target.split(".")[2];
-    playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] = newValue;
+    playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] =
+      newValue;
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
     levelChecker();

@@ -1,8 +1,10 @@
-const { imperialAcademy } = require("./class_collections/locations");
-const { imperialMarket } = require("./class_collections/locations");
-const { imperialNexus } = require("./class_collections/locations");
-const { imperialPalace } = require("./class_collections/locations");
-const { imperialPort } = require("./class_collections/locations");
+const {
+  imperialAcademy,
+  imperialMarket,
+  imperialNexus,
+  imperialPalace,
+  imperialPort,
+} = require("./class_collections/locations");
 
 function updateMap() {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
