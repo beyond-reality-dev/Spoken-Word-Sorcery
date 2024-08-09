@@ -151,7 +151,9 @@ async function intro() {
     "I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.",
     "memories"
   );
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/10.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/10.txt"
+  );
   confirm = await closedInput();
   confirm = confirm.toLowerCase();
   confirm = confirm.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
@@ -206,17 +208,23 @@ async function intro() {
       break;
   }
   confirm = false;
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/11.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/11.txt"
+  );
   await requireAnswer(["spear"], '"Speak the word <i>Spear</i>."');
   var spear = new Spear();
   addEntity(spear, "spokenSpells");
   calculateValue("currentMana", "subtract", spear.manaCost);
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/12.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/12.txt"
+  );
   await requireAnswer(["shield"], '"Speak the word <i>Shield</i>."');
   var shield = new Shield();
   addEntity(shield, "spokenSpells");
   calculateValue("currentMana", "subtract", shield.manaCost);
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/13.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/13.txt"
+  );
   var away = new Away();
   addEntity(away, "knownSpells");
   await openInput(true);
@@ -224,7 +232,9 @@ async function intro() {
     printLines("app/src/cutscenes/imperial_academy/intro/14.txt");
     await openInput(true);
   }
-  await printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt");
+  await printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt"
+  );
   changeValue("currentMana", 50);
   inputLoop();
 }

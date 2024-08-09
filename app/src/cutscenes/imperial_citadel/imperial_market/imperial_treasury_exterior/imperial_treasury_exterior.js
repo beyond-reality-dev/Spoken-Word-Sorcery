@@ -30,7 +30,7 @@ async function imperialTreasuryExterior() {
         );
       }
       changeValue(
-        "['imperialMarket.imperialTreasuryExterior']['cutscenePlayed']",
+        "imperialMarket.imperialTreasuryExterior.cutscenePlayed",
         true,
         "locations"
       );

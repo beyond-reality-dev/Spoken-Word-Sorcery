@@ -4,9 +4,13 @@ const { getValue, changeValue } = require("../../../../save_data");
 
 async function vaultEntrance() {
   if (getValue("imperialMarket.vaultEntrance", true).cutscenePlayed == false) {
-    await printLines("app/src/cutscenes/imperial_citadel/imperial_market/vault_entrance/1.txt");
+    await printLines(
+      "app/src/cutscenes/imperial_citadel/imperial_market/vault_entrance/1.txt"
+    );
     await requireAnswer(["yes", "y"], `Aren't you the one who was sent?`);
-    await printLines("app/src/cutscenes/imperial_citadel/imperial_market/vault_entrance/2.txt");
+    await printLines(
+      "app/src/cutscenes/imperial_citadel/imperial_market/vault_entrance/2.txt"
+    );
     var response = await requireAnswer(
       ["yes", "y", "no", "n"],
       `Are you sure?`
@@ -16,7 +20,7 @@ async function vaultEntrance() {
         "app/src/cutscenes/imperial_citadel/imperial_market/vault_entrance/3.txt"
       );
       changeValue(
-        "['imperialMarket.vaultEntrance']['cutscenePlayed']",
+        "imperialMarket.vaultEntrance.cutscenePlayed",
         true,
         "locations"
       );

@@ -61,7 +61,6 @@ function createWindow() {
           var saveFile = document.getElementById("save-games").value;
           var regex = /save_[0-9]+/;
           if (!regex.test(saveFile)) {
-            console.log("HELP!");
             window.alert("No save file selected.");
             setTimeout(function(){
                 document.getElementById("input-bar").focus();
