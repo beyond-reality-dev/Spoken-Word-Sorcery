@@ -69,6 +69,7 @@ async function handlePlayerTurn(enemies, length) {
       return enemies;
     }
     var spellPower = choiceInput[1];
+    var spellEffect = choiceInput[2];
     quickPrint(`You roll ${spellPower}.`);
     var rolledDice = diceRoll(spellPower);
     var rolls = rolledDice[0];
@@ -176,28 +177,53 @@ async function handlePlayerTurn(enemies, length) {
       }
     }
     if (enemy != null) {
-      enemyDefense = getRandomInt(enemy.armor);
-      enemyDamage = Math.max(spellPower - enemyDefense, 0);
-      enemy.health = Math.max(enemy.health - enemyDamage, 0);
-      if (enemyDefense > 0) {
-        quickPrint(
-          `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
-        );
-      }
-      quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-      if (enemy.health <= 0) {
-        quickPrint(`You have defeated ${enemy.name}.`);
-        calculateValue("experiencePoints", "add", enemy.xp);
-        calculateValue("gold", "add", enemy.gold);
-        for (var i = 0; i < enemy.items.length; i++) {
-          var item = enemy.items[i];
-          addEntity(item, "inventory");
+      if (spellEffect == "damage") {
+        enemyDefense = getRandomInt(enemy.armor);
+        enemyDamage = Math.max(spellPower - enemyDefense, 0);
+        enemy.health = Math.max(enemy.health - enemyDamage, 0);
+        if (enemyDefense > 0) {
+          quickPrint(
+            `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
+          );
         }
-        var index = enemies.indexOf(enemy);
-        enemies.splice(index, 1);
+        quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+        if (enemy.health <= 0) {
+          quickPrint(`You have defeated ${enemy.name}.`);
+          calculateValue("experiencePoints", "add", enemy.xp);
+          calculateValue("gold", "add", enemy.gold);
+          for (var i = 0; i < enemy.items.length; i++) {
+            var item = enemy.items[i];
+            addEntity(item, "inventory");
+          }
+          var index = enemies.indexOf(enemy);
+          enemies.splice(index, 1);
+        }
+      } else {
+        quickPrint("There is no enemy in that direction.");
       }
-    } else {
-      quickPrint("There is no enemy in that direction.");
+    } else if (spellEffect == "healthIncrease") {
+      var healthIncrease = spellPower;
+      if (getValue("currentHealth") + healthIncrease > getValue("maxHealth")) {
+        healthIncrease = getValue("maxHealth") - getValue("currentHealth");
+      }
+      calculateValue("currentHealth", "add", healthIncrease);
+      quickPrint(`You healed yourself for ${healthIncrease} health.`);
+    } else if (spellEffect == "tempHealth") {
+      changeValue("tempHealth", spellPower);
+      quickPrint(`You gained ${spellPower} temporary health.`);
+    } else if (spellEffect == "manaIncrease") {
+      var manaIncrease = spellPower;
+      if (getValue("currentMana") + manaIncrease > getValue("maxMana")) {
+        manaIncrease = getValue("maxMana") - getValue("currentMana");
+      }
+      calculateValue("currentMana", "add", manaIncrease);
+      quickPrint(`You gained ${manaIncrease} mana.`);
+    } else if (spellEffect == "tempMana") {
+      changeValue("tempMana", spellPower);
+      quickPrint(`You gained ${spellPower} temporary mana.`);
+    } else if (spellEffect == "tempArmor") {
+      changeValue("tempArmor", spellPower);
+      quickPrint(`You gained ${spellPower} temporary armor.`);
     }
   }
   return enemies;

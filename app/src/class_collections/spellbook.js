@@ -76,14 +76,14 @@ class Death extends Element {
 }
 
 class Spell {
-  constructor(name, description, descriptor, manaCost, power, range, target) {
+  constructor(name, description, descriptor, manaCost, power, range, effect) {
     this.name = name;
     this.description = description;
     this.descriptor = descriptor;
     this.manaCost = manaCost;
     this.power = power;
     this.range = range;
-    this.target = target;
+    this.effect = effect;
     this.type = "Spell";
   }
 }
@@ -96,9 +96,9 @@ class Spear extends Spell {
       "spear flies through the air ",
       5,
       "5d10",
-      1
+      1,
+      "damage"
     );
-    this.offensive = true;
   }
 }
 
@@ -109,9 +109,10 @@ class Shield extends Spell {
       "An arcane shield",
       "shield forms facing ",
       5,
-      "5d10",
+      "1d4",
       0,
-      false
+      false,
+      "tempArmor"
     );
     this.tempArmor = true;
   }

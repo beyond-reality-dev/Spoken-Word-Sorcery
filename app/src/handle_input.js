@@ -378,7 +378,8 @@ async function openInput(combatOverride = false) {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              text = ["spell", spellPower, spellDirection];
+              var effect = spellInput[2];
+              text = ["spell", spellPower, spellDirection, effect];
             }
           } else if (
             clauses[i].substring(0, 5) == "yell " ||
@@ -953,7 +954,7 @@ function handleSpell(words) {
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
-  return [spell.power, spellDirection];
+  return [spell.power, spellDirection, spell.effect];
 }
 
 function handleRest() {

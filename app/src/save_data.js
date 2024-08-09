@@ -190,24 +190,35 @@ function updateSpellbook(target) {
         var spellPower = spells[i]["power"];
         var spellRange = spells[i]["range"];
         var spellManaCost = spells[i]["manaCost"];
-        if (spells[i]["offensive"] == true) {
-          effect = "Damage";
-        } else if (spells[i]["healthIncrease"] == true) {
-          effect = "Healing";
-        } else if (spells[i]["tempHealth"] == true) {
-          effect = "Temporary Health";
-        } else if (spells[i]["manaIncrease"] == true) {
-          effect = "Mana Increase";
-        } else if (spells[i]["tempMana"] == true) {
-          effect = "Temporary Mana";
-        } else if (spells[i]["tempArmor"] == true) {
-          effect = "Temporary Armor";
-        } else if (spells[i]["speedIncrease"] == true) {
-          effect = "Speed Increase";
-        } else if (spells[i]["rangeIncrease"] == true) {
-          effect = "Range Increase";
-        } else if (spells[i]["attackIncrease"] == true) {
-          effect = "Attack Increase";
+        var spellEffect = spells[i]["effect"];
+        switch (spellEffect) {
+          case "damage":
+            spellEffect = "Damage";
+            break;
+          case "healthIncrease":
+            spellEffect = "Healing";
+            break;
+          case "tempHealth":
+            spellEffect = "Temporary Health";
+            break;
+          case "manaIncrease":
+            spellEffect = "Mana Increase";
+            break;
+          case "tempMana":
+            spellEffect = "Temporary Mana";
+            break;
+          case "tempArmor":
+            spellEffect = "Temporary Armor";
+            break;
+          case "speedIncrease":
+            spellEffect = "Speed Increase";
+            break;
+          case "rangeIncrease":
+            spellEffect = "Range Increase";
+            break;
+          case "attackIncrease":
+            spellEffect = "Attack Increase";
+            break;
         }
         if (document.getElementById(spellName)) {
           document.getElementById(spellName).remove();
