@@ -87,19 +87,57 @@ class ImperialDreadnoughtLowerDeck extends Room {
     super(
       "Imperial Dreadnought Lower Deck",
       "imperialPort.imperialDreadnoughtLowerDeck",
-      "The lower deck of the Imperial Dreadnought is a dimly lit area with a few crates and barrels scattered about. There is a wooden ladder to the north, leading up to the upper deck, and a ladder to the south, leading further below deck into the ship's hold.",
+      "The lower deck of the Imperial Dreadnought is a dimly lit area with a few crates and barrels scattered about. There is a wooden ladder to the north, leading up to the upper deck, a door to the crew quarters to the west, a door to the captain's quarters to the east, and a ladder to the south, leading further below deck into the ship's hold.",
       "10",
       "10"
     );
     this.items = {};
     this.exits = {
       north: "imperialDreadnoughtUpperDeck",
+      east: "imperialDreadnoughtCaptainQuarters",
       south: "imperialDreadnoughtHold",
+      west: "imperialDreadnoughtCrewQuarters",
     };
   }
 }
 
 var imperialDreadnoughtLowerDeck = new ImperialDreadnoughtLowerDeck();
+
+class ImperialDreadnoughtCrewQuarters extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought Crew Quarters",
+      "imperialPort.imperialDreadnoughtCrewQuarters",
+      "The crew quarters of the Imperial Dreadnought is a cramped area with rows of hammocks and personal belongings. There is a door to the east, leading back to the lower deck.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      east: "imperialDreadnoughtLowerDeck",
+    };
+  }
+}
+
+var imperialDreadnoughtCrewQuarters = new ImperialDreadnoughtCrewQuarters();
+
+class ImperialDreadnoughtCaptainQuarters extends Room {
+  constructor() {
+    super(
+      "Imperial Dreadnought Captain Quarters",
+      "imperialPort.imperialDreadnoughtCaptainQuarters",
+      "The captain's quarters of the Imperial Dreadnought is a spacious area with a large bed, a desk, and a few personal belongings. There is a door to the west, leading back to the lower deck.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      west: "imperialDreadnoughtLowerDeck",
+    };
+  }
+}
+
+var imperialDreadnoughtCaptainQuarters = new ImperialDreadnoughtCaptainQuarters();
 
 class ImperialDreadnoughtHold extends Room {
   constructor() {
@@ -125,5 +163,7 @@ module.exports = {
   imperialDreadnoughtExterior,
   imperialDreadnoughtUpperDeck,
   imperialDreadnoughtLowerDeck,
+  imperialDreadnoughtCrewQuarters,
+  imperialDreadnoughtCaptainQuarters,
   imperialDreadnoughtHold,
 };
