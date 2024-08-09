@@ -518,6 +518,27 @@ class ShortHallway_05 extends Room {
 
 var shortHallway_05 = new ShortHallway_05();
 
+class SmallRoom_06 extends Room {
+  constructor() {
+    super(
+      "Small Room",
+      "imperialMarket.smallRoom_06",
+      "The small room is a dead end, with a door to the south leading to a short hallway.",
+      "10",
+      "10"
+    );
+    this.items = {};
+    this.exits = {
+      south: "imperialMarket.shortHallway_05",
+    };
+    this.enemies = [
+      new enemies.RebelCaptain("Rebel", "north"),
+    ];
+  }
+}
+
+var smallRoom_06 = new SmallRoom_06();
+
 module.exports = {
   marketEntrance,
   market,
@@ -544,4 +565,5 @@ module.exports = {
   longHallway_04,
   smallRoom_05,
   shortHallway_05,
+  smallRoom_06,
 };
