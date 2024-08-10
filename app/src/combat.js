@@ -69,17 +69,6 @@ async function handlePlayerTurn(enemies, length) {
     if (choiceInput[1] == "0" && choiceInput[2] == "none") {
       return enemies;
     }
-    var spellPower = choiceInput[1];
-    var spellEffect = choiceInput[2];
-    spellPower = levelScaling(spellPower);
-    quickPrint(`You roll ${spellPower}.`);
-    var rolledDice = diceRoll(spellPower);
-    var rolls = rolledDice[0];
-    for (let i = 0; i < rolls.length; i++) {
-      quickPrint(`You rolled a ${rolls[i]}.`);
-    }
-    spellPower = rolledDice[1];
-    var spellDirection = choiceInput[2];
   }
   if (choice == "weapon") {
     for (let i = 0; i < enemies.length; i++) {
@@ -170,6 +159,17 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint("There is no enemy in that direction.");
     }
   } else if (choice == "spell") {
+    var spellPower = choiceInput[1];
+    var spellEffect = choiceInput[2];
+    spellPower = levelScaling(spellPower);
+    quickPrint(`You roll ${spellPower}.`);
+    var rolledDice = diceRoll(spellPower);
+    var rolls = rolledDice[0];
+    for (let i = 0; i < rolls.length; i++) {
+      quickPrint(`You rolled a ${rolls[i]}.`);
+    }
+    spellPower = rolledDice[1];
+    var spellDirection = choiceInput[2];
     for (let i = 0; i < enemies.length; i++) {
       var enemy = eval(enemies[i]);
       if (enemy.position == spellDirection) {

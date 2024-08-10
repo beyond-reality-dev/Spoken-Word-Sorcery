@@ -31,9 +31,41 @@ class Rebel extends Enemy {
 }
 
 class RebelCaptain extends Enemy {
-  constructor(name, position, items = [ "longSword" ]) {
+  constructor(name, position, items = ["longSword"]) {
     super(name, position, 100, 20, "2d8", 20, 1, 10, 20, items);
   }
 }
 
-module.exports = { Enemy, Rebel, RebelCaptain };
+class ImperialGuard extends Enemy {
+  constructor(name, position, items = ["shortSword"]) {
+    super(name, position, 50, 10, "1d8", 10, 1, 5, 10, items);
+  }
+}
+
+class ImperialGuardCaptain extends Enemy {
+  constructor(name, position, items = ["longSword"]) {
+    super(name, position, 100, 20, "2d8", 20, 1, 10, 20, items);
+  }
+}
+
+class Bandit extends Enemy {
+  constructor(name, position, items = ["shortSword"]) {
+    super(name, position, 50, 10, "1d8", 10, 1, 5, 10, items);
+  }
+}
+
+class BanditLeader extends Enemy {
+  constructor(name, position, items = ["longSword"]) {
+    super(name, position, 100, 20, "2d8", 20, 1, 10, 20, items);
+  }
+}
+
+module.exports = {
+  Enemy,
+  Rebel,
+  RebelCaptain,
+  ImperialGuard,
+  ImperialGuardCaptain,
+  Bandit,
+  BanditLeader,
+};
