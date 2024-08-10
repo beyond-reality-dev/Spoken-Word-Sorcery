@@ -118,6 +118,38 @@ class Shield extends Spell {
   }
 }
 
+class Healing extends Spell {
+  constructor() {
+    super(
+      "Healing",
+      "An arcane healing spell",
+      "healing light envelops ",
+      5,
+      "1d8",
+      0,
+      false,
+      "healthIncrease"
+    );
+    this.tempHealth = true;
+  }
+}
+
+class Heart extends Spell {
+  constructor() {
+    super(
+      "Heart",
+      "An arcane heart",
+      "red mist forms enveloping ",
+      5,
+      "1d4",
+      0,
+      false,
+      "tempHealth"
+    );
+    this.tempHealth = true;
+  }
+}
+
 class Direction {
   constructor(name, description, descriptor) {
     this.name = name;
@@ -186,6 +218,8 @@ module.exports = {
   Death,
   Spear,
   Shield,
+  Healing,
+  Heart,
   Away,
   Left,
   Right,
