@@ -202,6 +202,10 @@ async function handlePlayerTurn(enemies, length) {
         quickPrint("There is no enemy in that direction.");
       }
     } else if (spellEffect == "healthIncrease") {
+      if (spellDirection != "Within") {
+        quickPrint("You cannot heal an enemy.");
+        return enemies;
+      }
       var healthIncrease = spellPower;
       if (getValue("currentHealth") + healthIncrease > getValue("maxHealth")) {
         healthIncrease = getValue("maxHealth") - getValue("currentHealth");
@@ -209,9 +213,17 @@ async function handlePlayerTurn(enemies, length) {
       calculateValue("currentHealth", "add", healthIncrease);
       quickPrint(`You healed yourself for ${healthIncrease} health.`);
     } else if (spellEffect == "tempHealth") {
+      if (spellDirection != "Within") {
+        quickPrint("You cannot grant temporary health to an enemy.");
+        return enemies;
+      }
       changeValue("tempHealth", spellPower);
       quickPrint(`You gained ${spellPower} temporary health.`);
     } else if (spellEffect == "manaIncrease") {
+      if (spellDirection != "Within") {
+        quickPrint("You cannot grant mana to an enemy.");
+        return enemies;
+      }
       var manaIncrease = spellPower;
       if (getValue("currentMana") + manaIncrease > getValue("maxMana")) {
         manaIncrease = getValue("maxMana") - getValue("currentMana");
@@ -219,9 +231,17 @@ async function handlePlayerTurn(enemies, length) {
       calculateValue("currentMana", "add", manaIncrease);
       quickPrint(`You gained ${manaIncrease} mana.`);
     } else if (spellEffect == "tempMana") {
+      if (spellDirection != "Within") {
+        quickPrint("You cannot grant temporary mana to an enemy.");
+        return enemies;
+      }
       changeValue("tempMana", spellPower);
       quickPrint(`You gained ${spellPower} temporary mana.`);
     } else if (spellEffect == "tempArmor") {
+      if (spellDirection != "Within") {
+        quickPrint("You cannot grant temporary armor to an enemy.");
+        return enemies;
+      }
       changeValue("tempArmor", spellPower);
       quickPrint(`You gained ${spellPower} temporary armor.`);
     }

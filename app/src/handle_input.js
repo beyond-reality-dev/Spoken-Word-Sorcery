@@ -948,6 +948,8 @@ function handleSpell(words) {
         } else if (getValue("direction") == "Northwest") {
           spellDirection = "Northeast";
         }
+      } else if (direction.name == "Within") {
+        spellDirection = "Within";
       }
     }
   }

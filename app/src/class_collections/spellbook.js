@@ -114,7 +114,6 @@ class Shield extends Spell {
       false,
       "tempArmor"
     );
-    this.tempArmor = true;
   }
 }
 
@@ -123,14 +122,13 @@ class Healing extends Spell {
     super(
       "Healing",
       "An arcane healing spell",
-      "healing light envelops ",
+      "warm light envelops ",
       5,
       "1d8",
       0,
       false,
       "healthIncrease"
     );
-    this.tempHealth = true;
   }
 }
 
@@ -139,14 +137,13 @@ class Heart extends Spell {
     super(
       "Heart",
       "An arcane heart",
-      "red mist forms enveloping ",
+      "red mist forms around ",
       5,
       "1d4",
       0,
       false,
       "tempHealth"
     );
-    this.tempHealth = true;
   }
 }
 
@@ -199,6 +196,16 @@ class Behind extends Direction {
   }
 }
 
+class Within extends Direction {
+  constructor() {
+    super(
+      "Within",
+      "This direction will cause spells to face or move within you",
+      "within you!"
+    );
+  }
+}
+
 class Remember extends Direction {
   constructor() {
     super(
@@ -225,4 +232,5 @@ module.exports = {
   Right,
   Behind,
   Remember,
+  Within,
 };

@@ -154,17 +154,31 @@ function updateTitleBar() {
   document.getElementById("name-text").innerHTML = `Name: ${getValue("name")}`;
   document.getElementById("health-bar").value = getValue("currentHealth");
   document.getElementById("health-bar").max = getValue("maxHealth");
-  document.getElementById("health-text").innerHTML = `Health: ${getValue(
-    "currentHealth"
-  )}/${getValue("maxHealth")}`;
+  var tempHealth = getValue("tempHealth");
+  if (tempHealth > 0) {
+    document.getElementById("health-text").innerHTML = `Health: ${getValue(
+      "currentHealth"
+    )}/${getValue("maxHealth")} + ${getValue("tempHealth")} Temp HP`;
+  } else {
+    document.getElementById("health-text").innerHTML = `Health: ${getValue(
+      "currentHealth"
+    )}/${getValue("maxHealth")}`;
+  }
   document.getElementById("level-text").innerHTML = `Level: ${getValue(
     "level"
   )}`;
   document.getElementById("mana-bar").value = getValue("currentMana");
   document.getElementById("mana-bar").max = getValue("maxMana");
-  document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
-    "currentMana"
-  )}/${getValue("maxMana")}`;
+  var tempMana = getValue("tempMana");
+  if (tempMana > 0) {
+    document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
+      "currentMana"
+    )}/${getValue("maxMana")} + ${getValue("tempMana")} Temp MP`;
+  } else {
+    document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
+      "currentMana"
+    )}/${getValue("maxMana")}`;
+  }
 }
 
 function updateSpellbook(target) {
@@ -445,9 +459,16 @@ function updateEquipment() {
   playerData["attack"] = attackValue;
   playerData["armor"] = armorValue;
   localStorage.setItem("playerData", JSON.stringify(playerData));
-  document.getElementById("stats-display").innerHTML = `Attack: ${getValue(
-    "attack"
-  )} | Defense: ${getValue("armor")} | Speed: ${getValue("speed")}`;
+  var tempArmor = getValue("tempArmor");
+  if (tempArmor > 0) {
+    document.getElementById(
+      "armor-counter"
+    ).innerHTML = `Armor: ${armorValue} + ${tempArmor} Temp Armor | Attack: ${attackValue}`;
+  } else {
+    document.getElementById(
+      "armor-counter"
+    ).innerHTML = `Armor: ${armorValue} | Attack: ${attackValue}`;
+  }
 }
 
 function addEntity(entity, target) {
