@@ -147,6 +147,21 @@ class Heart extends Spell {
   }
 }
 
+class Restore extends Spell {
+  constructor() {
+    super(
+      "Revitalize",
+      "An arcane revitalization spell",
+      "green light envelops ",
+      5,
+      "1d8",
+      0,
+      false,
+      "tempMana"
+    );
+  }
+}
+
 class Direction {
   constructor(name, description, descriptor) {
     this.name = name;
@@ -227,6 +242,7 @@ module.exports = {
   Shield,
   Healing,
   Heart,
+  Restore,
   Away,
   Left,
   Right,

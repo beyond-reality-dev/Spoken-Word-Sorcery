@@ -4,6 +4,7 @@ const {
   calculateValue,
   addEntity,
   updateUI,
+  levelScaling,
 } = require("./save_data");
 const { quickPrint, diceRoll, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
@@ -70,6 +71,7 @@ async function handlePlayerTurn(enemies, length) {
     }
     var spellPower = choiceInput[1];
     var spellEffect = choiceInput[2];
+    spellPower = levelScaling(spellPower);
     quickPrint(`You roll ${spellPower}.`);
     var rolledDice = diceRoll(spellPower);
     var rolls = rolledDice[0];

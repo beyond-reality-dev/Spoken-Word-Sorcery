@@ -11,6 +11,7 @@ module.exports = {
   getValue,
   changeValue,
   calculateValue,
+  levelScaling,
 };
 
 const { quickPrint, getRandomInt } = require("./general");
@@ -650,4 +651,12 @@ function levelUp() {
     `You have leveled up! Your maximum health has increased from ${previousHealth} to ${maxHealth}, your maximum mana has increased from ${previousMana} to ${maxMana}, and your speed has increased from ${previousSpeed} to ${speed}!`
   );
   updateUI();
+}
+
+function levelScaling(dice) {
+  var level = getValue("level");
+  var dice = dice.split("d");
+  var scale = Math.floor(level / 2);
+  var dice = [dice[0] + scale, dice[1]];
+  return dice;
 }
