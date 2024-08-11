@@ -21,6 +21,53 @@ class Weapon {
   }
 }
 
+class MeleeWeapon extends Weapon {
+  constructor(
+    name,
+    description,
+    position,
+    goldValue,
+    attackValue,
+    weight,
+    quantity
+  ) {
+    super(
+      name,
+      description,
+      position,
+      goldValue,
+      attackValue,
+      0,
+      weight,
+      quantity
+    );
+  }
+}
+
+class RangedWeapon extends Weapon {
+  constructor(
+    name,
+    description,
+    position,
+    goldValue,
+    attackValue,
+    rangeValue,
+    weight,
+    quantity
+  ) {
+    super(
+      name,
+      description,
+      position,
+      goldValue,
+      attackValue,
+      rangeValue,
+      weight,
+      quantity
+    );
+  }
+}
+
 class Stick extends Weapon {
   constructor(quantity = 1) {
     super(
@@ -504,6 +551,8 @@ class Codex extends Miscellaneous {
 
 module.exports = {
   Weapon,
+  MeleeWeapon,
+  RangedWeapon,
   Stick,
   Staff,
   Dagger,
