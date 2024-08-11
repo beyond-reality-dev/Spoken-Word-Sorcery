@@ -44,33 +44,9 @@ class MeleeWeapon extends Weapon {
   }
 }
 
-class RangedWeapon extends Weapon {
-  constructor(
-    name,
-    description,
-    position,
-    goldValue,
-    attackValue,
-    rangeValue,
-    weight,
-    quantity
-  ) {
-    super(
-      name,
-      description,
-      position,
-      goldValue,
-      attackValue,
-      rangeValue,
-      weight,
-      quantity
-    );
-  }
-}
-
 class Club extends MeleeWeapon {
   constructor(quantity = 1, name = "Club", description = "A simple club") {
-    super(name, description, "eitherHand", 5, "1d6", 5, quantity);
+    super(name, description, "eitherHand", 5, "1d4", 5, quantity);
   }
 }
 
@@ -146,6 +122,30 @@ class WarHammer extends MeleeWeapon {
   }
 }
 
+class RangedWeapon extends Weapon {
+  constructor(
+    name,
+    description,
+    position,
+    goldValue,
+    attackValue,
+    rangeValue,
+    weight,
+    quantity
+  ) {
+    super(
+      name,
+      description,
+      position,
+      goldValue,
+      attackValue,
+      rangeValue,
+      weight,
+      quantity
+    );
+  }
+}
+
 class ShortBow extends RangedWeapon {
   constructor(
     quantity = 1,
@@ -190,14 +190,61 @@ class HeavyCrossBow extends Weapon {
   }
 }
 
+class Dart extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Dart",
+      "A simple throwing dart",
+      "eitherHand",
+      5,
+      "1d4",
+      5,
+      1,
+      quantity
+    );
+    this.ammunition = "Dart";
+  }
+}
+
 class Javelin extends Weapon {
-  constructor(
-    quantity = 1,
-    name = "Javelin",
-    description = "A simple javelin"
-  ) {
-    super(name, description, "eitherHand", 5, "1d6", 5, 5, quantity);
+  constructor(quantity = 1) {
+    super(
+      "Javelin",
+      "A simple javelin",
+      "eitherHand",
+      5,
+      "1d6",
+      5,
+      5,
+      quantity
+    );
     this.ammunition = "Javelin";
+  }
+}
+
+class ComboWeapon extends Weapon {
+  constructor(
+    name,
+    description,
+    position,
+    goldValue,
+    meleeAttackValue,
+    rangedAttackValue,
+    rangeValue,
+    weight,
+    quantity
+  ) {
+    super(
+      name,
+      description,
+      position,
+      goldValue,
+      meleeAttackValue,
+      rangedAttackValue,
+      rangeValue,
+      weight,
+      quantity
+    );
   }
 }
 
@@ -520,6 +567,7 @@ module.exports = {
   LongBow,
   LightCrossBow,
   HeavyCrossBow,
+  Dart,
   Javelin,
   Armor,
   LeatherHelmet,
