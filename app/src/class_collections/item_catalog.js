@@ -27,6 +27,12 @@ class Staff extends Weapon {
   }
 }
 
+class Dagger extends Weapon {
+  constructor(quantity = 1) {
+    super("Dagger", "A simple dagger", "eitherHand", 5, "1d6", 1, 5, quantity);
+  }
+}
+
 class ImperialDagger extends Weapon {
   constructor(quantity = 1) {
     super(
@@ -80,6 +86,54 @@ class GreatSword extends Weapon {
       "bothHands",
       50,
       "2d10",
+      1,
+      10,
+      quantity
+    );
+  }
+}
+
+class Axe extends Weapon {
+  constructor(quantity = 1) {
+    super("Axe", "A simple axe", "eitherHand", 10, "1d8", 1, 5, quantity);
+  }
+}
+
+class BattleAxe extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Battle Axe",
+      "A battle axe",
+      "bothHands",
+      20,
+      "2d8",
+      1,
+      10,
+      quantity
+    );
+  }
+}
+
+class GreatAxe extends Weapon {
+  constructor(quantity = 1) {
+    super("Great Axe", "A great axe", "bothHands", 50, "2d10", 1, 10, quantity);
+  }
+}
+
+class Mace extends Weapon {
+  constructor(quantity = 1) {
+    super("Mace", "A simple mace", "eitherHand", 10, "1d8", 1, 5, quantity);
+  }
+}
+
+class WarHammer extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "War Hammer",
+      "A simple war hammer",
+      "bothHands",
+      20,
+      "2d8",
       1,
       10,
       quantity
@@ -427,6 +481,11 @@ module.exports = {
   ShortSword,
   LongSword,
   GreatSword,
+  Axe,
+  BattleAxe,
+  GreatAxe,
+  Mace,
+  WarHammer,
   ShortBow,
   LongBow,
   CrossBow,
