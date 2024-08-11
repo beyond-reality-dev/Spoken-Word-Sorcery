@@ -89,15 +89,47 @@ class GreatSword extends Weapon {
 
 class ShortBow extends Weapon {
   constructor(quantity = 1) {
-    super("Bow", "A simple bow", "bothHands", 10, "1d8", 5, 5, quantity);
+    super("Bow", "A simple short bow", "bothHands", 10, "1d8", 5, 5, quantity);
     this.ammunition = "Arrow";
   }
 }
 
 class LongBow extends Weapon {
   constructor(quantity = 1) {
-    super("Bow", "A simple bow", "bothHands", 10, "2d6", 10, 5, quantity);
+    super("Bow", "A simple long bow", "bothHands", 10, "2d6", 10, 5, quantity);
     this.ammunition = "Arrow";
+  }
+}
+
+class CrossBow extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Crossbow",
+      "A simple crossbow",
+      "eitherHand",
+      20,
+      "2d8",
+      10,
+      10,
+      quantity
+    );
+    this.ammunition = "Bolt";
+  }
+}
+
+class Javelin extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Javelin",
+      "A simple javelin",
+      "eitherHand",
+      5,
+      "1d6",
+      5,
+      5,
+      quantity
+    );
+    this.ammunition = "Javelin";
   }
 }
 
@@ -345,6 +377,12 @@ class Arrow extends Consumable {
   }
 }
 
+class Bolt extends Consumable {
+  constructor(quantity = 1) {
+    super("Bolt", "A simple bolt", "consumable", 1, 0, 0, 0, 1, quantity);
+  }
+}
+
 class Accessory {
   constructor(
     name,
@@ -391,6 +429,8 @@ module.exports = {
   GreatSword,
   ShortBow,
   LongBow,
+  CrossBow,
+  Javelin,
   Armor,
   LeatherHelmet,
   IronHelmet,
@@ -411,6 +451,7 @@ module.exports = {
   AdvancedSpeedPotion,
   SuperSpeedPotion,
   Arrow,
+  Bolt,
   Accessory,
   Miscellaneous,
 };
