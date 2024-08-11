@@ -68,183 +68,135 @@ class RangedWeapon extends Weapon {
   }
 }
 
-class Stick extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Stick",
-      "A simple stick that can be used as a weapon in a pinch",
-      "eitherHand",
-      1,
-      "1d2",
-      1,
-      1,
-      quantity
-    );
+class Club extends MeleeWeapon {
+  constructor(quantity = 1, name = "Club", description = "A simple club") {
+    super(name, description, "eitherHand", 5, "1d6", 5, quantity);
   }
 }
 
-class Staff extends Weapon {
-  constructor(quantity = 1) {
-    super("Staff", "A wooden staff", "bothHands", 5, "1d6", 1, 5, quantity);
+class Staff extends MeleeWeapon {
+  constructor(quantity = 1, name = "Staff", description = "A simple staff") {
+    super(name, description, "bothHands", 5, "1d6", 5, quantity);
   }
 }
 
-class Dagger extends Weapon {
-  constructor(quantity = 1) {
-    super("Dagger", "A simple dagger", "eitherHand", 5, "1d6", 1, 5, quantity);
+class Dagger extends MeleeWeapon {
+  constructor(quantity = 1, name = "Dagger", description = "A simple dagger") {
+    super(name, description, "eitherHand", 5, "1d6", 5, quantity);
   }
 }
 
-class ImperialDagger extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Imperial Dagger",
-      "A dagger that once belonged to an Imperial Adept, before he sacrificed his life for your benefit",
-      "eitherHand",
-      10,
-      "1d6",
-      1,
-      5,
-      quantity
-    );
+class ShortSword extends MeleeWeapon {
+  constructor(
+    quantity = 1,
+    name = "Short Sword",
+    description = "A short sword"
+  ) {
+    super(name, description, "eitherHand", 10, "1d8", 5, quantity);
   }
 }
 
-class ShortSword extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Short Sword",
-      "A short sword",
-      "eitherHand",
-      10,
-      "1d8",
-      1,
-      5,
-      quantity
-    );
+class LongSword extends MeleeWeapon {
+  constructor(quantity = 1, name = "Long Sword", description = "A long sword") {
+    super(name, description, "bothHands", 20, "2d8", 10, quantity);
   }
 }
 
-class LongSword extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Long Sword",
-      "A long sword",
-      "bothHands",
-      20,
-      "2d8",
-      1,
-      10,
-      quantity
-    );
+class GreatSword extends MeleeWeapon {
+  constructor(
+    quantity = 1,
+    name = "Great Sword",
+    description = "A great sword"
+  ) {
+    super(name, description, "bothHands", 50, "2d10", 10, quantity);
   }
 }
 
-class GreatSword extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Great Sword",
-      "A great sword",
-      "bothHands",
-      50,
-      "2d10",
-      1,
-      10,
-      quantity
-    );
+class Axe extends MeleeWeapon {
+  constructor(quantity = 1, name = "Axe", description = "A simple axe") {
+    super(name, description, "eitherHand", 10, "1d8", 5, quantity);
   }
 }
 
-class Axe extends Weapon {
-  constructor(quantity = 1) {
-    super("Axe", "A simple axe", "eitherHand", 10, "1d8", 1, 5, quantity);
+class BattleAxe extends MeleeWeapon {
+  constructor(quantity = 1, name = "Battle Axe", description = "A battle axe") {
+    super(name, description, "bothHands", 20, "2d8", 10, quantity);
   }
 }
 
-class BattleAxe extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Battle Axe",
-      "A battle axe",
-      "bothHands",
-      20,
-      "2d8",
-      1,
-      10,
-      quantity
-    );
+class GreatAxe extends MeleeWeapon {
+  constructor(quantity = 1, name = "Great Axe", description = "A great axe") {
+    super(name, description, "bothHands", 50, "2d10", 10, quantity);
   }
 }
 
-class GreatAxe extends Weapon {
-  constructor(quantity = 1) {
-    super("Great Axe", "A great axe", "bothHands", 50, "2d10", 1, 10, quantity);
+class Mace extends MeleeWeapon {
+  constructor(quantity = 1, name = "Mace", description = "A simple mace") {
+    super(name, description, "eitherHand", 10, "1d8", 5, quantity);
   }
 }
 
-class Mace extends Weapon {
-  constructor(quantity = 1) {
-    super("Mace", "A simple mace", "eitherHand", 10, "1d8", 1, 5, quantity);
+class WarHammer extends MeleeWeapon {
+  constructor(
+    quantity = 1,
+    name = "War Hammer",
+    description = "A simple war hammer"
+  ) {
+    super(name, description, "bothHands", 20, "2d8", 10, quantity);
   }
 }
 
-class WarHammer extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "War Hammer",
-      "A simple war hammer",
-      "bothHands",
-      20,
-      "2d8",
-      1,
-      10,
-      quantity
-    );
-  }
-}
-
-class ShortBow extends Weapon {
-  constructor(quantity = 1) {
-    super("Bow", "A simple short bow", "bothHands", 10, "1d8", 5, 5, quantity);
+class ShortBow extends RangedWeapon {
+  constructor(
+    quantity = 1,
+    name = "Short Bow",
+    description = "A simple short bow"
+  ) {
+    super(name, description, "bothHands", 10, "1d8", 75, 5, quantity);
     this.ammunition = "Arrow";
   }
 }
 
-class LongBow extends Weapon {
-  constructor(quantity = 1) {
-    super("Bow", "A simple long bow", "bothHands", 10, "2d6", 10, 5, quantity);
+class LongBow extends RangedWeapon {
+  constructor(
+    quantity = 1,
+    name = "Long Bow",
+    description = "A simple long bow"
+  ) {
+    super(name, description, "bothHands", 10, "2d6", 150, 5, quantity);
     this.ammunition = "Arrow";
   }
 }
 
-class CrossBow extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Crossbow",
-      "A simple crossbow",
-      "eitherHand",
-      20,
-      "2d8",
-      10,
-      10,
-      quantity
-    );
+class LightCrossBow extends Weapon {
+  constructor(
+    quantity = 1,
+    name = "Light Crossbow",
+    description = "A light crossbow"
+  ) {
+    super(name, description, "eitherHand", 10, "1d8", 75, 5, quantity);
+    this.ammunition = "Bolt";
+  }
+}
+
+class HeavyCrossBow extends Weapon {
+  constructor(
+    quantity = 1,
+    name = "Heavy Crossbow",
+    description = "A heavy crossbow"
+  ) {
+    super(name, description, "bothHands", 10, "2d6", 150, 10, quantity);
     this.ammunition = "Bolt";
   }
 }
 
 class Javelin extends Weapon {
-  constructor(quantity = 1) {
-    super(
-      "Javelin",
-      "A simple javelin",
-      "eitherHand",
-      5,
-      "1d6",
-      5,
-      5,
-      quantity
-    );
+  constructor(
+    quantity = 1,
+    name = "Javelin",
+    description = "A simple javelin"
+  ) {
+    super(name, description, "eitherHand", 5, "1d6", 5, 5, quantity);
     this.ammunition = "Javelin";
   }
 }
@@ -553,10 +505,9 @@ module.exports = {
   Weapon,
   MeleeWeapon,
   RangedWeapon,
-  Stick,
+  Club,
   Staff,
   Dagger,
-  ImperialDagger,
   ShortSword,
   LongSword,
   GreatSword,
@@ -567,7 +518,8 @@ module.exports = {
   WarHammer,
   ShortBow,
   LongBow,
-  CrossBow,
+  LightCrossBow,
+  HeavyCrossBow,
   Javelin,
   Armor,
   LeatherHelmet,

@@ -1,8 +1,6 @@
 const { printLines, requireAnswer } = require("../../../../general");
 const { addEntity, changeValue } = require("../../../../save_data");
-const {
-  ImperialDagger,
-} = require("../../../../class_collections/item_catalog");
+const { Dagger } = require("../../../../class_collections/item_catalog");
 const {
   Fire,
   Water,
@@ -20,7 +18,11 @@ async function restOfAcademy() {
   printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/rest_of_academy/2.txt"
   );
-  var dagger = new ImperialDagger();
+  var dagger = new Dagger(
+    1,
+    "Imperial Dagger",
+    "A dagger that once belonged to an Imperial Adept, before he sacrificed his life for your benefit"
+  );
   var fire = new Fire();
   var water = new Water();
   var life = new Life();
