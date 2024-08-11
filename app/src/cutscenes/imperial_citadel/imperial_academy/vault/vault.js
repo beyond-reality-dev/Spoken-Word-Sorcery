@@ -5,7 +5,7 @@ const {
 } = require("../../../../general");
 const { getValue, changeValue, addEntity } = require("../../../../save_data");
 const { handleCombat } = require("../../../../combat");
-const { Miscellaneous } = require("../../../../class_collections/item_catalog");
+const { Codex } = require("../../../../class_collections/item_catalog");
 
 async function vault() {
   if (getValue("imperialAcademy.vault", true).cutscenePlayed == false) {
@@ -37,15 +37,7 @@ async function vault() {
         true,
         "locations"
       );
-      var codex = new Miscellaneous(
-        "Codex",
-        "The book that supposedly contains all the Words discovered by the Empire",
-        "accessory",
-        0,
-        1,
-        1
-      );
-      addEntity(codex, "inventory");
+      addEntity(new Codex(), "inventory");
     }
   }
 }

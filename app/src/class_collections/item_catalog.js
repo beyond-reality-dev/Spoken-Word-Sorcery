@@ -21,6 +21,21 @@ class Weapon {
   }
 }
 
+class Stick extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Stick",
+      "A simple stick that can be used as a weapon in a pinch",
+      "eitherHand",
+      1,
+      "1d2",
+      1,
+      1,
+      quantity
+    );
+  }
+}
+
 class Staff extends Weapon {
   constructor(quantity = 1) {
     super("Staff", "A wooden staff", "bothHands", 5, "1d6", 1, 5, quantity);
@@ -474,9 +489,24 @@ class Miscellaneous {
   }
 }
 
+class Codex extends Miscellaneous {
+  constructor() {
+    super(
+      "Codex",
+      "A book that is said to contain all the Words discovered by the Arcane Order",
+      "accessory",
+      10,
+      1,
+      1
+    );
+  }
+}
+
 module.exports = {
   Weapon,
+  Stick,
   Staff,
+  Dagger,
   ImperialDagger,
   ShortSword,
   LongSword,
@@ -513,4 +543,5 @@ module.exports = {
   Bolt,
   Accessory,
   Miscellaneous,
+  Codex,
 };
