@@ -72,6 +72,7 @@ async function intro() {
     addEntity(new Spear(), "spokenSpells");
     addEntity(new Shield(), "spokenSpells");
     addEntity(new Away(), "knownSpells");
+    changeValue("experiencePoints", 100);
     inputLoop();
     return;
   }

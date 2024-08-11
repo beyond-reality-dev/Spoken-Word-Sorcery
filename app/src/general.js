@@ -6,6 +6,7 @@ module.exports = {
   requireAnswer,
   toTitleCase,
   diceRoll,
+  addDice,
   getRandomInt,
 };
 
@@ -99,6 +100,21 @@ function diceRoll(dice) {
     total += rolls[i];
   }
   return [rolls, total];
+}
+
+function addDice (dice1, dice2) {
+  if (dice1 == 0) {
+    return dice2;
+  } else if (dice2 == 0) {
+    return dice1;
+  }
+  var dice1 = dice1.split("d");
+  var dice2 = dice2.split("d");
+  if (dice1[1] == dice2[1]) {
+    return dice1[0] + dice2[0] + "d" + dice1[1];
+  } else {
+    return dice1[0] + "d" + dice1[1] + " + " + dice2[0] + "d" + dice2[1];
+  }
 }
 
 function getRandomInt(max) {

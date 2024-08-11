@@ -102,7 +102,12 @@ async function handlePlayerTurn(enemies, length) {
       if (used == true) {
         return enemies;
       }
-      playerAttack = levelScaling(playerAttack);
+      try {
+        playerAttack = levelScaling(playerAttack);
+      } catch (error) {
+        quickPrint("You do not have a weapon equipped.");
+        return enemies;
+      }
       quickPrint(`You roll ${playerAttack}.`);
       var rolledDice = diceRoll(playerAttack);
       var rolls = rolledDice[0];

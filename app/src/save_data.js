@@ -14,7 +14,7 @@ module.exports = {
   levelScaling,
 };
 
-const { quickPrint, getRandomInt } = require("./general");
+const { quickPrint, getRandomInt, addDice } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
 const locationsObjects = require("./class_collections/locations");
 const {
@@ -152,33 +152,38 @@ function updateUI() {
 }
 
 function updateTitleBar() {
-  document.getElementById("name-text").innerHTML = `Name: ${getValue("name")}`;
-  document.getElementById("health-bar").value = getValue("currentHealth");
-  document.getElementById("health-bar").max = getValue("maxHealth");
+  var name = getValue("name");
   var tempHealth = getValue("tempHealth");
+  var currentHealth = getValue("currentHealth");
+  var maxHealth = getValue("maxHealth");
+  var level = getValue("level");
+  var tempMana = getValue("tempMana");
+  var currentMana = getValue("currentMana");
+  var maxMana = getValue("maxMana");
+  document.getElementById("name-text").innerHTML = `Name: ${name}`;
+  document.getElementById("health-bar").value = currentHealth;
+  document.getElementById("health-bar").max = maxHealth;
   if (tempHealth > 0) {
-    document.getElementById("health-text").innerHTML = `Health: ${getValue(
-      "currentHealth"
-    )}/${getValue("maxHealth")} + ${getValue("tempHealth")} Temp HP`;
+    document.getElementById(
+      "health-text"
+    ).innerHTML = `Health: ${currentHealth}/${maxHealth} + ${tempHealth} Temp HP`;
   } else {
-    document.getElementById("health-text").innerHTML = `Health: ${getValue(
-      "currentHealth"
-    )}/${getValue("maxHealth")}`;
+    document.getElementById(
+      "health-text"
+    ).innerHTML = `Health: ${currentHealth}/${maxHealth}`;
   }
-  document.getElementById("level-text").innerHTML = `Level: ${getValue(
-    "level"
-  )}`;
-  document.getElementById("mana-bar").value = getValue("currentMana");
-  document.getElementById("mana-bar").max = getValue("maxMana");
+  document.getElementById("level-text").innerHTML = `Level: ${level}`;
+  document.getElementById("mana-bar").value = currentMana;
+  document.getElementById("mana-bar").max = maxMana;
   var tempMana = getValue("tempMana");
   if (tempMana > 0) {
-    document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
-      "currentMana"
-    )}/${getValue("maxMana")} + ${getValue("tempMana")} Temp MP`;
+    document.getElementById(
+      "mana-text"
+    ).innerHTML = `Mana: ${currentMana}/${maxMana} + ${tempMana} Temp Mana`;
   } else {
-    document.getElementById("mana-text").innerHTML = `Mana: ${getValue(
-      "currentMana"
-    )}/${getValue("maxMana")}`;
+    document.getElementById(
+      "mana-text"
+    ).innerHTML = `Mana: ${currentMana}/${maxMana}`;
   }
 }
 
@@ -403,7 +408,7 @@ function updateEquipment() {
       document.getElementById(
         "mainHand"
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      attackValue = attackValue + itemAttackValue;
+      var attackValue = addDice(attackValue, itemAttackValue);
     } else if (equipment["mainHand"]["armorValue"] != 0) {
       var itemArmorValue = equipment["mainHand"]["armorValue"];
       document.getElementById(
@@ -424,7 +429,7 @@ function updateEquipment() {
       document.getElementById(
         "offHand"
       ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      attackValue = attackValue + itemAttackValue;
+      attackValue = addDice(attackValue, itemAttackValue);
     } else if (equipment["offHand"]["armorValue"] != 0) {
       itemArmorValue = equipment["offHand"]["armorValue"];
       document.getElementById(
@@ -461,14 +466,17 @@ function updateEquipment() {
   playerData["armor"] = armorValue;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   var tempArmor = getValue("tempArmor");
+  var speed = getValue("speed");
   if (tempArmor > 0) {
     document.getElementById(
-      "armor-counter"
-    ).innerHTML = `Armor: ${armorValue} + ${tempArmor} Temp Armor | Attack: ${attackValue}`;
+      "stats-display"
+    ).innerHTML = `Defense: ${armorValue} + ${tempArmor} Temp Armor | Attack: ${attackValue} | Speed: ${getValue(
+      speed
+    )}`;
   } else {
     document.getElementById(
-      "armor-counter"
-    ).innerHTML = `Armor: ${armorValue} | Attack: ${attackValue}`;
+      "stats-display"
+    ).innerHTML = `Defense: ${armorValue} | Attack: ${attackValue} | Speed: ${speed}`;
   }
 }
 
@@ -600,7 +608,9 @@ function changeValue(target, newValue, i = 0) {
       newValue;
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
+    localStorage.setItem("playerData", JSON.stringify(playerData));
     levelChecker();
+    return;
   } else {
     playerData[target] = newValue;
   }
@@ -625,17 +635,18 @@ function calculateValue(target, operation, amount) {
 function levelChecker() {
   var level = getValue("level");
   var experiencePoints = getValue("experiencePoints");
-  if (level == 1 && experiencePoints >= level * 100) {
-    var difference = experiencePoints - 100;
+  if (experiencePoints >= level * 100) {
+    var difference = experiencePoints - level * 100;
     changeValue("experiencePoints", difference);
-    changeValue("level", 2);
+    var newLevel = level + 1;
+    changeValue("level", newLevel);
     levelUp();
   }
 }
 
 function levelUp() {
   var previousHealth = getValue("maxHealth");
-  var previousHealth = getValue("maxMana");
+  var previousMana = getValue("maxMana");
   var previousSpeed = getValue("speed");
   var diceRoll = getRandomInt(10) + 10;
   calculateValue("maxHealth", "add", diceRoll);
@@ -653,7 +664,7 @@ function levelUp() {
   updateUI();
 }
 
-function levelScaling(dice, type="null") {
+function levelScaling(dice, type = "null") {
   var level = getValue("level");
   var dice = dice.split("d");
   var scale = Math.floor(level / 2);

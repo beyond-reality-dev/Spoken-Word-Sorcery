@@ -619,13 +619,14 @@ function handlePickup(item) {
     var secondaryLocation = currentLocation.id.split(".")[1];
     locations[primaryLocation][secondaryLocation]["items"] = items;
     localStorage.setItem("playerData", JSON.stringify(playerData));
+    var itemName = itemEntity.name;
     if (itemEntity.quantity == 1) {
-      quickPrint(`You picked up a ${item}.`);
+      quickPrint(`You picked up a ${itemName}.`);
     } else {
-      quickPrint(`You picked up ${itemEntity.quantity} ${item}s.`);
+      quickPrint(`You picked up ${itemEntity.quantity} ${itemName}s.`);
     }
   } else {
-    quickPrint("There is no " + item + " here.");
+    quickPrint(`There is no ${itemName} here.`);
   }
 }
 

@@ -27,11 +27,11 @@ class PracticeYard extends Room {
     super(
       "Practice Yard",
       "imperialAcademy.practiceYard",
-      "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. There is a door to the west, leading back to the training room.",
+      "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. A bow lies discarded on the ground in front of one of the targets. There is a door to the west, leading back to the training room.",
       "10",
       "10"
     );
-    this.items = { arrow: new items.Arrow(3) };
+    this.items = { arrow: new items.Arrow(3), bow: new items.ShortBow() };
     this.exits = {
       west: "imperialAcademy.trainingRoom",
     };
