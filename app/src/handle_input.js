@@ -72,7 +72,9 @@ async function openInput(combatOverride = false) {
         var hasTurned = false;
         var hasEquipped = false;
         var hasUnequipped = false;
-        var hasActed = false;
+        var hasAttacked = false;
+        var hasCasted = false;
+        var hasUsed = false;
         for (let i = 0; i < clauses.length; i++) {
           if (
             clauses[i].substring(0, 4) == "help" ||
@@ -273,6 +275,11 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 3) == "use " ||
             clauses[i].substring(0, 3) == "eat "
           ) {
+            if (hasUsed == true) {
+              quickPrint("You have already used an item this turn.");
+              continue;
+            }
+            hasUsed = true;
             if (clauses[i].substring(3, 5) == "a ") {
               item = clauses[i].substring(5);
             } else if (clauses[i].substring(3, 6) == "an ") {
@@ -284,6 +291,11 @@ async function openInput(combatOverride = false) {
             }
             handleUse(item);
           } else if (clauses[i].substring(0, 6) == "drink ") {
+            if (hasUsed == true) {
+              quickPrint("You have already used an item this turn.");
+              continue;
+            }
+            hasUsed = true;
             if (clauses[i].substring(6, 8) == "a ") {
               item = clauses[i].substring(8);
             } else if (clauses[i].substring(6, 9) == "an ") {
@@ -295,6 +307,11 @@ async function openInput(combatOverride = false) {
             }
             handleUse(item);
           } else if (clauses[i].substring(0, 7) == "ingest ") {
+            if (hasUsed == true) {
+              quickPrint("You have already used an item this turn.");
+              continue;
+            }
+            hasUsed = true;
             if (clauses[i].substring(7, 9) == "a ") {
               item = clauses[i].substring(9);
             } else if (clauses[i].substring(7, 10) == "an ") {
@@ -306,6 +323,10 @@ async function openInput(combatOverride = false) {
             }
             handleUse(item);
           } else if (clauses[i].substring(0, 8) == "consume ") {
+            if (hasUsed == true) {
+              quickPrint("You have already used an item this turn.");
+              continue;
+            }
             if (clauses[i].substring(8, 10) == "a ") {
               item = clauses[i].substring(10);
             } else if (clauses[i].substring(8, 11) == "an ") {
@@ -319,28 +340,28 @@ async function openInput(combatOverride = false) {
           } else if (clauses[i].substring(0, 3) == "hit") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasAttacked == true) {
+              quickPrint("You have already attacked with a weapon this turn.");
+            } else if (hasAttacked == false) {
+              hasAttacked = true;
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 4) == "stab") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasAttacked == true) {
+              quickPrint("You have already attacked with a weapon this turn.");
+            } else if (hasAttacked == false) {
+              hasAttacked = true;
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 5) == "fight") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasAttacked == true) {
+              quickPrint("You have already attacked with a weapon this turn.");
+            } else if (hasAttacked == false) {
+              hasAttacked = true;
               text = ["weapon"];
             }
           } else if (
@@ -352,28 +373,28 @@ async function openInput(combatOverride = false) {
           ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasAttacked == true) {
+              quickPrint("You have already attacked with a weapon this turn.");
+            } else if (hasAttacked == false) {
+              hasAttacked = true;
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 10) == "use weapon") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasAttacked == true) {
+              quickPrint("You have already attacked with a weapon this turn.");
+            } else if (hasAttacked == false) {
+              hasAttacked = true;
               text = ["weapon"];
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasCasted == true) {
+              quickPrint("You have already cast a spell this turn.");
+            } else if (hasCasted == false) {
+              hasCasted = true;
               var words = clauses[i].substring(4);
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
@@ -387,10 +408,10 @@ async function openInput(combatOverride = false) {
           ) {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasCasted == true) {
+              quickPrint("You have already cast a spell this turn.");
+            } else if (hasCasted == false) {
+              hasCasted = true;
               var words = clauses[i].substring(5);
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
@@ -405,10 +426,10 @@ async function openInput(combatOverride = false) {
           ) {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasCasted == true) {
+              quickPrint("You have already cast a spell this turn.");
+            } else if (hasCasted == false) {
+              hasCasted = true;
               var words = clauses[i].substring(6);
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
@@ -418,10 +439,10 @@ async function openInput(combatOverride = false) {
           } else if (clauses[i].substring(0, 7) == "mutter ") {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasCasted == true) {
+              quickPrint("You have already cast a spell this turn.");
+            } else if (hasCasted == false) {
+              hasCasted = true;
               var words = clauses[i].substring(7);
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
@@ -431,10 +452,10 @@ async function openInput(combatOverride = false) {
           } else if (clauses[i].substring(0, 8) == "whisper ") {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
-            } else if (hasActed == true) {
-              quickPrint("You have already acted this turn.");
-            } else if (hasActed == false) {
-              hasActed = true;
+            } else if (hasCasted == true) {
+              quickPrint("You have already cast a spell this turn.");
+            } else if (hasCasted == false) {
+              hasCasted = true;
               var words = clauses[i].substring(8);
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
