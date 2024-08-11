@@ -83,38 +83,26 @@ async function handlePlayerTurn(enemies, length) {
       var playerAttack = getValue("attack");
       var equipment = getValue("equipment");
       var mainHand = equipment["mainHand"];
+      var offHand = equipment["offHand"];
       var used = false;
       if (mainHand != null) {
         if (mainHand.hasOwnProperty("ammunition")) {
-          var inventory = getValue("inventory");
-          for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i].name == mainHand.ammunition) {
-              var current = inventory[i].quantity;
-              current = current - 1;
-              changeValue("itemQuantity", current, i);
-              var playerData = JSON.parse(localStorage.getItem("playerData"));
-              playerData["inventory"] = inventory;
-              localStorage.setItem("playerData", JSON.stringify(playerData));
-              used = true;
-              updateUI();
-              break;
-            }
-          }
-          if (used == false) {
-            if (mainHand.ammunition.charAt(0).match(/[aeiou]/i)) {
-              var ammo = mainHand.ammunition.toLowerCase();
-              quickPrint(
-                `You do not have an ${ammo} and therefore cannot attack.`
-              );
-            } else {
-              quickPrint(
-                `You do not have a ${ammo} and therefore cannot attack.`
-              );
-            }
-            return enemies;
-          }
+          var result = checkAmmo(mainHand, enemies);
+          enemies = result[0];
+          used = result[1];
         }
       }
+      if (offHand != null) {
+        if (offHand.hasOwnProperty("ammunition")) {
+          var result = checkAmmo(offHand, enemies);
+          enemies = result[0];
+          used = result[1];
+        }
+      }
+      if (used == true) {
+        return enemies;
+      }
+      playerAttack = levelScaling(playerAttack);
       quickPrint(`You roll ${playerAttack}.`);
       var rolledDice = diceRoll(playerAttack);
       var rolls = rolledDice[0];
@@ -249,6 +237,38 @@ async function handlePlayerTurn(enemies, length) {
     }
   }
   return enemies;
+}
+
+function checkAmmo(position, enemies) {
+  var used = false;
+  var inventory = getValue("inventory");
+  for (let i = 0; i < inventory.length; i++) {
+    if (inventory[i].name == position.ammunition) {
+      var current = inventory[i].quantity;
+      current = current - 1;
+      changeValue("itemQuantity", current, i);
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      playerData["inventory"] = inventory;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      used = true;
+      updateUI();
+      return [enemies, used];
+    }
+  }
+  if (used == false) {
+    if (position.ammunition.charAt(0).match(/[aeiou]/i)) {
+      var ammo = position.ammunition.toLowerCase();
+      var weapon = position.name.toLowerCase();
+      quickPrint(
+        `You do not have an ${ammo} and therefore cannot attack with your ${weapon}.`
+      );
+    } else {
+      quickPrint(
+        `You do not have a ${ammo} and therefore cannot attack with your ${weapon}.`
+      );
+    }
+    return [enemies, used];
+  }
 }
 
 async function handleEnemyTurn(enemy, enemies) {

@@ -653,10 +653,16 @@ function levelUp() {
   updateUI();
 }
 
-function levelScaling(dice) {
+function levelScaling(dice, type="null") {
   var level = getValue("level");
   var dice = dice.split("d");
   var scale = Math.floor(level / 2);
-  var dice = [dice[0] + scale, dice[1]];
-  return dice;
+  if (type == "bothHands") {
+    scale = scale * 2;
+    dice = [dice[0] + scale, dice[1]];
+    return dice;
+  } else {
+    dice = [dice[0] + scale, dice[1]];
+    return dice;
+  }
 }
