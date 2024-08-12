@@ -321,49 +321,73 @@ class Armor {
 
 class LeatherHelmet extends Armor {
   constructor(quantity = 1) {
-    super("Helmet", "A simple helmet", "head", 10, 5, 5, quantity);
+    super("Leather Helmet", "A simple helmet", "head", 10, 5, 5, quantity);
+  }
+}
+
+class ChainHelmet extends Armor {
+  constructor(quantity = 1) {
+    super("Chain Helmet", "A simple helmet", "head", 10, 10, 5, quantity);
   }
 }
 
 class IronHelmet extends Armor {
   constructor(quantity = 1) {
-    super("Helmet", "A simple helmet", "head", 10, 10, 5, quantity);
+    super("Iron Helmet", "A simple helmet", "head", 10, 15, 5, quantity);
   }
 }
 
 class LeatherChestplate extends Armor {
   constructor(quantity = 1) {
-    super("Chestplate", "A simple chestplate", "chest", 10, 5, 5, quantity);
+    super("Leather Chestplate", "A simple chestplate", "torso", 10, 5, 5, quantity);
+  }
+}
+
+class ChainChestplate extends Armor {
+  constructor(quantity = 1) {
+    super("Chain Chestplate", "A simple chestplate", "torso", 10, 10, 5, quantity);
   }
 }
 
 class IronChestplate extends Armor {
   constructor(quantity = 1) {
-    super("Chestplate", "A simple chestplate", "chest", 10, 10, 5, quantity);
+    super("Iron Chestplate", "A simple chestplate", "torso", 10, 15, 5, quantity);
   }
 }
 
 class LeatherLeggings extends Armor {
   constructor(quantity = 1) {
-    super("Leggings", "Simple leggings", "legs", 10, 5, 5, quantity);
+    super("Leather Leggings", "Simple leggings", "legs", 10, 5, 5, quantity);
+  }
+}
+
+class ChainLeggings extends Armor {
+  constructor(quantity = 1) {
+    super("Chain Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
   }
 }
 
 class IronLeggings extends Armor {
   constructor(quantity = 1) {
-    super("Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
+    super("Iron Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
   }
 }
 
 class LeatherBoots extends Armor {
   constructor(quantity = 1) {
-    super("Boots", "Simple boots", "feet", 10, 5, 5, quantity);
+    super("Leather Boots", "Simple boots", "feet", 10, 5, 5, quantity);
+  }
+}
+
+class ChainBoots extends Armor {
+  constructor(quantity = 1) {
+    super("Chain Boots", "Simple boots", "feet", 10, 10, 5, quantity);
   }
 }
 
 class IronBoots extends Armor {
   constructor(quantity = 1) {
-    super("Boots", "Simple boots", "feet", 10, 10, 5, quantity);
+    super("Iron Boots", "Simple boots", "feet", 10, 15, 5, quantity);
   }
 }
 
@@ -626,12 +650,16 @@ module.exports = {
   Trident,
   Armor,
   LeatherHelmet,
+  ChainHelmet,
   IronHelmet,
   LeatherChestplate,
+  ChainChestplate,
   IronChestplate,
   LeatherLeggings,
+  ChainLeggings,
   IronLeggings,
   LeatherBoots,
+  ChainBoots,
   IronBoots,
   Consumable,
   HealthPotion,
