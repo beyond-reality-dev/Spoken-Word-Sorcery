@@ -222,6 +222,38 @@ class Javelin extends Weapon {
   }
 }
 
+class ThrowingAxe extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Throwing Axe",
+      "A simple throwing axe",
+      "eitherHand",
+      5,
+      "1d6",
+      5,
+      5,
+      quantity
+    );
+    this.ammunition = "Throwing Axe";
+  }
+}
+
+class ThrowingKnife extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Throwing Knife",
+      "A simple throwing knife",
+      "eitherHand",
+      5,
+      "1d4",
+      5,
+      1,
+      quantity
+    );
+    this.ammunition = "Throwing Knife";
+  }
+}
+
 class ComboWeapon extends Weapon {
   constructor(
     name,
@@ -587,6 +619,8 @@ module.exports = {
   HeavyCrossBow,
   Dart,
   Javelin,
+  ThrowingAxe,
+  ThrowingKnife,
   ComboWeapon,
   Spear,
   Trident,
