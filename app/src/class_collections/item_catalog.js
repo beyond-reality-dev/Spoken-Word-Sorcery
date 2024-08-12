@@ -122,6 +122,22 @@ class WarHammer extends MeleeWeapon {
   }
 }
 
+class Pike extends MeleeWeapon {
+  constructor(quantity = 1, name = "Pike", description = "A simple pike") {
+    super(name, description, "bothHands", 10, "1d10", 10, quantity);
+  }
+}
+
+class Halberd extends MeleeWeapon {
+  constructor(
+    quantity = 1,
+    name = "Halberd",
+    description = "A simple halberd"
+  ) {
+    super(name, description, "bothHands", 20, "1d12", 10, quantity);
+  }
+}
+
 class RangedWeapon extends Weapon {
   constructor(
     name,
@@ -339,19 +355,43 @@ class IronHelmet extends Armor {
 
 class LeatherChestplate extends Armor {
   constructor(quantity = 1) {
-    super("Leather Chestplate", "A simple chestplate", "torso", 10, 5, 5, quantity);
+    super(
+      "Leather Chestplate",
+      "A simple chestplate",
+      "torso",
+      10,
+      5,
+      5,
+      quantity
+    );
   }
 }
 
 class ChainChestplate extends Armor {
   constructor(quantity = 1) {
-    super("Chain Chestplate", "A simple chestplate", "torso", 10, 10, 5, quantity);
+    super(
+      "Chain Chestplate",
+      "A simple chestplate",
+      "torso",
+      10,
+      10,
+      5,
+      quantity
+    );
   }
 }
 
 class IronChestplate extends Armor {
   constructor(quantity = 1) {
-    super("Iron Chestplate", "A simple chestplate", "torso", 10, 15, 5, quantity);
+    super(
+      "Iron Chestplate",
+      "A simple chestplate",
+      "torso",
+      10,
+      15,
+      5,
+      quantity
+    );
   }
 }
 
@@ -636,6 +676,8 @@ module.exports = {
   GreatAxe,
   Mace,
   WarHammer,
+  Pike,
+  Halberd,
   RangedWeapon,
   ShortBow,
   LongBow,
