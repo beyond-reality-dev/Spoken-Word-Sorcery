@@ -128,7 +128,7 @@ class RangedWeapon extends Weapon {
     description,
     position,
     goldValue,
-    attackValue,
+    rangedAttackValue,
     rangeValue,
     weight,
     quantity
@@ -138,7 +138,7 @@ class RangedWeapon extends Weapon {
       description,
       position,
       goldValue,
-      attackValue,
+      rangedAttackValue,
       rangeValue,
       weight,
       quantity
@@ -228,7 +228,7 @@ class ComboWeapon extends Weapon {
     description,
     position,
     goldValue,
-    meleeAttackValue,
+    attackValue,
     rangedAttackValue,
     rangeValue,
     weight,
@@ -239,12 +239,30 @@ class ComboWeapon extends Weapon {
       description,
       position,
       goldValue,
-      meleeAttackValue,
+      attackValue,
       rangedAttackValue,
       rangeValue,
       weight,
       quantity
     );
+  }
+}
+
+class Spear extends ComboWeapon {
+  constructor(quantity = 1, name = "Spear", description = "A simple spear") {
+    super(name, description, "eitherHand", 10, "1d8", "1d6", 5, 5, quantity);
+    this.ammunition = "Spear";
+  }
+}
+
+class Trident extends ComboWeapon {
+  constructor(
+    quantity = 1,
+    name = "Trident",
+    description = "A simple trident"
+  ) {
+    super(name, description, "eitherHand", 10, "1d10", "1d8", 5, 5, quantity);
+    this.ammunition = "Trident";
   }
 }
 
@@ -551,7 +569,6 @@ class Codex extends Miscellaneous {
 module.exports = {
   Weapon,
   MeleeWeapon,
-  RangedWeapon,
   Club,
   Staff,
   Dagger,
@@ -563,12 +580,16 @@ module.exports = {
   GreatAxe,
   Mace,
   WarHammer,
+  RangedWeapon,
   ShortBow,
   LongBow,
   LightCrossBow,
   HeavyCrossBow,
   Dart,
   Javelin,
+  ComboWeapon,
+  Spear,
+  Trident,
   Armor,
   LeatherHelmet,
   IronHelmet,

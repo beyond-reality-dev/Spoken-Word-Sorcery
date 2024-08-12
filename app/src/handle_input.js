@@ -78,10 +78,9 @@ async function openInput(combatOverride = false) {
         for (let i = 0; i < clauses.length; i++) {
           if (
             clauses[i].substring(0, 4) == "help" ||
-            clauses[i].substring(0, 4) == "info"
+            clauses[i].substring(0, 4) == "info" ||
+            clauses[i].substring(0, 12) == "instructions"
           ) {
-            printLines("app/src/help.txt");
-          } else if (clauses[i].substring(0, 12) == "instructions") {
             printLines("app/src/help.txt");
           } else if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
@@ -337,39 +336,17 @@ async function openInput(combatOverride = false) {
               item = clauses[i].substring(8);
             }
             handleUse(item);
-          } else if (clauses[i].substring(0, 3) == "hit") {
-            if (getValue("isCombat") == false) {
-              quickPrint("You are not in combat.");
-            } else if (hasAttacked == true) {
-              quickPrint("You have already attacked with a weapon this turn.");
-            } else if (hasAttacked == false) {
-              hasAttacked = true;
-              text = ["weapon"];
-            }
-          } else if (clauses[i].substring(0, 4) == "stab") {
-            if (getValue("isCombat") == false) {
-              quickPrint("You are not in combat.");
-            } else if (hasAttacked == true) {
-              quickPrint("You have already attacked with a weapon this turn.");
-            } else if (hasAttacked == false) {
-              hasAttacked = true;
-              text = ["weapon"];
-            }
-          } else if (clauses[i].substring(0, 5) == "fight") {
-            if (getValue("isCombat") == false) {
-              quickPrint("You are not in combat.");
-            } else if (hasAttacked == true) {
-              quickPrint("You have already attacked with a weapon this turn.");
-            } else if (hasAttacked == false) {
-              hasAttacked = true;
-              text = ["weapon"];
-            }
           } else if (
-            clauses[i].substring(0, 6) == "attack" ||
-            clauses[i].substring(0, 6) == "strike" ||
-            clauses[i].substring(0, 6) == "slash " ||
-            clauses[i].substring(0, 6) == "swing " ||
-            clauses[i].substring(0, 6) == "thrust"
+            clauses[i].substring(0, 2) == "hit" ||
+            clauses[i].substring(0, 2) == "cut" ||
+            clauses[i].substring(0, 2) == "jab" ||
+            clauses[i].substring(0, 3) == "stab" ||
+            clauses[i].substring(0, 4) == "fight" ||
+            clauses[i].substring(0, 4) == "slash" ||
+            clauses[i].substring(0, 4) == "swing" ||
+            clauses[i].substring(0, 5) == "attack" ||
+            clauses[i].substring(0, 5) == "strike" ||
+            clauses[i].substring(0, 5) == "thrust"
           ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -377,16 +354,23 @@ async function openInput(combatOverride = false) {
               quickPrint("You have already attacked with a weapon this turn.");
             } else if (hasAttacked == false) {
               hasAttacked = true;
-              text = ["weapon"];
+              text = ["weapon", "melee"];
             }
-          } else if (clauses[i].substring(0, 10) == "use weapon") {
+          } else if (
+            clauses[i].substring(0, 2) == "aim" ||
+            clauses[i].substring(0, 3) == "fire" ||
+            clauses[i].substring(0, 4) == "shoot" ||
+            clauses[i].substring(0, 4) == "snipe" ||
+            clauses[i].substring(0, 4) == "throw" ||
+            clauses[i].substring(0, 5) == "launch"
+          ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             } else if (hasAttacked == true) {
               quickPrint("You have already attacked with a weapon this turn.");
             } else if (hasAttacked == false) {
               hasAttacked = true;
-              text = ["weapon"];
+              text = ["weapon", "ranged"];
             }
           } else if (clauses[i].substring(0, 4) == "say ") {
             if (getValue("isCombat") == false && combatOverride == false) {
@@ -810,7 +794,7 @@ function handleUse(item) {
       calculateValue("currentHealth", "add", healthValue);
       if (getValue("currentHealth") > getValue("maxHealth")) {
         changeValue("currentHealth", getValue("maxHealth"));
-      } 
+      }
       calculateValue("currentMana", "add", manaValue);
       if (getValue("currentMana") > getValue("maxMana")) {
         changeValue("currentMana", getValue("maxMana"));
@@ -867,7 +851,10 @@ function handleSpell(words) {
       direction["type"] != "Direction"
     ) {
       phrase = "Nothing happens.";
-    } else if (spell.manaCost > (getValue("currentMana") + getValue("tempMana"))) {
+    } else if (
+      spell.manaCost >
+      getValue("currentMana") + getValue("tempMana")
+    ) {
       phrase = "You don't have enough mana to cast this spell.";
     } else {
       var matchKnown = false;

@@ -6,7 +6,7 @@ const {
   updateUI,
   levelScaling,
 } = require("./save_data");
-const { quickPrint, diceRoll, getRandomInt } = require("./general");
+const { quickPrint, diceRoll, getRandomInt, addDice } = require("./general");
 const { openInput } = require("./handle_input");
 
 async function handleCombat() {
@@ -65,10 +65,8 @@ async function handlePlayerTurn(enemies, length) {
   );
   choiceInput = await openInput();
   var choice = choiceInput[0];
-  if (choiceInput.length > 1) {
-    if (choiceInput[1] == "0" && choiceInput[2] == "none") {
-      return enemies;
-    }
+  if (choiceInput[1] == "0" && choiceInput[2] == "none") {
+    return enemies;
   }
   if (choice == "weapon") {
     for (let i = 0; i < enemies.length; i++) {
@@ -85,22 +83,32 @@ async function handlePlayerTurn(enemies, length) {
       var mainHand = equipment["mainHand"];
       var offHand = equipment["offHand"];
       var used = false;
-      if (mainHand != null) {
-        if (mainHand.hasOwnProperty("ammunition")) {
-          var result = checkAmmo(mainHand, enemies);
-          enemies = result[0];
-          used = result[1];
+      if (choiceInput[1] == "ranged") {
+        playerAttack = 0;
+        if (mainHand != null) {
+          if (mainHand.hasOwnProperty("ammunition")) {
+            var result = checkAmmo(mainHand, enemies);
+            enemies = result[0];
+            used = result[1];
+            if (used == true) {
+              playerAttack = addDice(playerAttack, mainHand.attack);
+            }
+          }
         }
-      }
-      if (offHand != null) {
-        if (offHand.hasOwnProperty("ammunition")) {
-          var result = checkAmmo(offHand, enemies);
-          enemies = result[0];
-          used = result[1];
+        if (offHand != null) {
+          if (offHand.hasOwnProperty("ammunition")) {
+            var result = checkAmmo(offHand, enemies);
+            enemies = result[0];
+            used = result[1];
+            if (used == true) {
+              playerAttack = addDice(playerAttack, offHand.attack);
+            }
+          }
         }
-      }
-      if (used == true) {
-        return enemies;
+        if (used != true) {
+          quickPrint("You do not have a ranged weapon equipped.");
+          return enemies;
+        }
       }
       try {
         playerAttack = levelScaling(playerAttack);

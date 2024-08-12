@@ -16,7 +16,8 @@ To unequip an item, you can type "unequip" or "take off" followed by the item na
 For consumables, you can type "use," "consume," "drink," "eat," or "ingest" followed by the item name.
 
 COMBAT:
-To attack an enemy that is in front of you, you can type "hit," "stab," "fight," "attack," "strike," "slash," "swing," "thrust," or "shoot."
+To attack an enemy that is in front of you with a melee weapon, you can type "hit," "stab," "fight," "attack," "strike," "slash," "swing," or "thrust."
+To attack an enemy that is farther away or out of reach with a ranged weapon, you can type "aim," "fire," "shoot," "snipe," "throw," or "launch."
 To turn and phase a different direction, you can type "turn," "face," or "look" followed by the direction, left or right, you want to face.
 To use a spell, you can type "say," "yell," "cast," "chant," "shout," "speak," "utter," "mutter," or "whisper" followed by the spell phrase.
 
