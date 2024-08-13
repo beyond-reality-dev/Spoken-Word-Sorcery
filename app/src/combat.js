@@ -64,7 +64,9 @@ async function handlePlayerTurn(enemies, length) {
     quickPrint(
       `${i + 1}. ${enemy.name} has ${
         enemy.health
-      } health and is standing ${distanceDescription} in the ${enemy.position} of the room.`
+      } health and is standing ${distanceDescription} in the ${
+        enemy.position
+      } of the room.`
     );
   }
   quickPrint(
@@ -126,7 +128,9 @@ async function handlePlayerTurn(enemies, length) {
         quickPrint("You are too close to the enemy.");
         return enemies;
       } else if (distance == "barelyInRange") {
-        quickPrint("You are barely in range of the enemy, the attack's power will be reduced.");
+        quickPrint(
+          "You are barely in range of the enemy, the attack's power will be reduced."
+        );
         var reducedRange = true;
       } else if (distance == "inRange") {
         quickPrint("You are in range of the enemy.");
@@ -187,7 +191,9 @@ async function handlePlayerTurn(enemies, length) {
       quickPrint("You are too close to the enemy.");
       return enemies;
     } else if (distance == "barelyInRange") {
-      quickPrint("You are barely in range of the enemy, the attack's power will be reduced.");
+      quickPrint(
+        "You are barely in range of the enemy, the attack's power will be reduced."
+      );
       var reducedRange = true;
     } else if (distance == "inRange") {
       quickPrint("You are in range of the enemy.");
@@ -588,4 +594,165 @@ async function handleEnemyTurn(enemy, enemies) {
   }
 }
 
-module.exports = { handleCombat };
+export function handleCombatMovement(direction) {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  var playerDistance = getValue("distance");
+  var playerDirection = getValue("direction");
+  var enemies = currentLocation.enemies;
+  var enemyClose = false;
+  var movement = false;
+  for (let i = 0; i < enemies.length; i++) {
+    if (enemies[i].distance == "close") {
+      enemyClose = true;
+      break;
+    }
+  }
+  if (enemyClose == true) {
+    if (direction == "forward") {
+      quickPrint(
+        "You cannot move forward while enemies are within melee range."
+      );
+      return;
+    }
+  } else {
+    if (direction == "backward") {
+      if (playerDistance > 0) {
+        changeValue("distance", playerDistance - 1);
+        quickPrint("You moved backward.");
+        movement = "movedBackward";
+      } else {
+        quickPrint("You cannot move backward any further.");
+        return;
+      }
+    } else {
+      changeValue("distance", playerDistance + 1);
+      quickPrint("You moved forward.");
+      movement = "movedForward";
+    }
+    if (movement == "movedForward") {
+      if (playerDirection == "north") {
+        for (let i = 0; i < enemies.length; i++) {
+          if (
+            enemies[i].position == "west" ||
+            enemies[i].position == "northwest" ||
+            enemies[i].position == "north" ||
+            enemies[i].position == "northeast" ||
+            enemies[i].position == "east"
+          ) {
+            if (enemies[i].distance == "long") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "close";
+            }
+          } else if (
+            enemies[i].position == "southwest" ||
+            enemies[i].position == "south" ||
+            enemies[i].position == "southeast"
+          ) {
+            if (enemies[i].distance == "close") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "long";
+            }
+          }
+        }
+      } else if (playerDirection == "northeast") {
+        for (let i = 0; i < enemies.length; i++) {
+          if (
+            enemies[i].position == "northwest" ||
+            enemies[i].position == "north" ||
+            enemies[i].position == "northeast" ||
+            enemies[i].position == "east" ||
+            enemies[i].position == "southeast" ||
+          ) {
+            if (enemies[i].distance == "long") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "close";
+            }
+          } else if (
+            enemies[i].position == "southwest" ||
+            enemies[i].position == "south" ||
+            enemies[i].position == "west"
+          ) {
+            if (enemies[i].distance == "close") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "long";
+            }
+          }
+        }
+      } else if (playerDirection == "east") {
+        for (let i = 0; i < enemies.length; i++) {
+          if (
+            enemies[i].position == "north" ||
+            enemies[i].position == "northeast" ||
+            enemies[i].position == "east" ||
+            enemies[i].position == "southeast" ||
+            enemies[i].position == "south"
+          ) {
+            if (enemies[i].distance == "long") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "close";
+            }
+          } else if (
+            enemies[i].position == "southwest" ||
+            enemies[i].position == "west" ||
+            enemies[i].position == "northwest"
+          ) {
+            if (enemies[i].distance == "close") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "long";
+            }
+          }
+        }
+      } else if (playerDirection == "southeast") {
+        for (let i = 0; i < enemies.length; i++) {
+          if (
+            enemies[i].position == "northeast" ||
+            enemies[i].position == "east" ||
+            enemies[i].position == "southeast" ||
+            enemies[i].position == "south"
+          ) {
+            if (enemies[i].distance == "long") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "close";
+            }
+          } else if (
+            enemies[i].position == "southwest" ||
+            enemies[i].position == "west" ||
+            enemies[i].position == "northwest"
+          ) {
+            if (enemies[i].distance == "close") {
+              enemies[i].distance = "short";
+            } else if (enemies[i].distance == "short") {
+              enemies[i].distance = "medium";
+            } else if (enemies[i].distance == "medium") {
+              enemies[i].distance = "long";
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+module.exports = { handleCombat, handleCombatMovement };

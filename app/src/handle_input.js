@@ -20,7 +20,7 @@ const {
   printLines,
   requireAnswer,
 } = require("./general");
-const { handleCombat } = require("./combat");
+const { handleCombat, handleCombatMovement } = require("./combat");
 const { enemies } = require("./class_collections");
 const { spells } = require("./class_collections");
 const cutscenes = require("./cutscenes");
@@ -129,13 +129,13 @@ async function openInput(combatOverride = false) {
             if (getValue("isCombat") == true) {
               direction = clauses[i].substring(3);
               if (direction == "forward" || direction == "forwards") {
-                text = handleCombatMovement("forward");
+                handleCombatMovement("forward");
               } else if (
                 direction == "back" ||
                 direction == "backward" ||
                 direction == "backwards"
               ) {
-                text = handleCombatMovement("backward");
+                handleCombatMovement("backward");
               } else {
                 quickPrint(
                   "While in combat, you can only move forward or backward."
@@ -157,13 +157,13 @@ async function openInput(combatOverride = false) {
             if (getValue("isCombat") == true) {
               direction = clauses[i].substring(4);
               if (direction == "forward" || direction == "forwards") {
-                text = handleCombatMovement("forward");
+                handleCombatMovement("forward");
               } else if (
                 direction == "back" ||
                 direction == "backward" ||
                 direction == "backwards"
               ) {
-                text = handleCombatMovement("backward");
+                handleCombatMovement("backward");
               } else {
                 quickPrint(
                   "While in combat, you can only move forward or backward."
@@ -189,13 +189,13 @@ async function openInput(combatOverride = false) {
             if (getValue("isCombat") == true) {
               direction = clauses[i].substring(5);
               if (direction == "forward" || direction == "forwards") {
-                text = handleCombatMovement("forward");
+                handleCombatMovement("forward");
               } else if (
                 direction == "back" ||
                 direction == "backward" ||
                 direction == "backwards"
               ) {
-                text = handleCombatMovement("backward");
+                handleCombatMovement("backward");
               } else {
                 quickPrint(
                   "While in combat, you can only move forward or backward."
@@ -692,7 +692,6 @@ async function openInput(combatOverride = false) {
               continue;
             }
             handleRest();
-            text = ["rest"];
           } else if (clauses[i].substring(0, 5) == "sleep") {
             if (getValue("isCombat") == true) {
               quickPrint("You cannot sleep during combat.");
@@ -758,43 +757,6 @@ function handleTurn(direction, change) {
       break;
   }
   quickPrint("You are now facing " + getValue("direction") + ".");
-}
-
-function handleCombatMovement(direction) {
-  var currentLocation = getValue("location");
-  currentLocation = eval(getValue(currentLocation, true));
-  var playerDistance = getValue("distance");
-  var enemies = currentLocation.enemies;
-  var enemyClose = false;
-  for (let i = 0; i < enemies.length; i++) {
-    if (enemies[i].distance == "close") {
-      enemyClose = true;
-      break;
-    }
-  }
-  if (enemyClose == true) {
-    if (direction == "forward") {
-      quickPrint(
-        "You cannot move forward while enemies are within melee range."
-      );
-      return "noMove";
-    }
-  } else {
-    if (direction == "backward") {
-      if (playerDistance > 0) {
-        changeValue("distance", playerDistance - 1);
-        quickPrint("You moved backward.");
-        return "movedBackward";
-      } else {
-        quickPrint("You cannot move backward any further.");
-        return "noMove";
-      }
-    } else {
-      changeValue("distance", playerDistance + 1);
-      quickPrint("You moved forward.");
-      return "movedForward";
-    }
-  }
 }
 
 function handleMovement(direction) {
