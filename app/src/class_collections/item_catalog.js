@@ -168,7 +168,7 @@ class ShortBow extends RangedWeapon {
     name = "Short Bow",
     description = "A simple short bow"
   ) {
-    super(name, description, "bothHands", 10, "1d8", 75, 5, quantity);
+    super(name, description, "bothHands", 10, "1d8", "short/medium", 5, quantity);
     this.ammunition = "Arrow";
   }
 }
@@ -179,7 +179,7 @@ class LongBow extends RangedWeapon {
     name = "Long Bow",
     description = "A simple long bow"
   ) {
-    super(name, description, "bothHands", 10, "2d6", 150, 5, quantity);
+    super(name, description, "bothHands", 10, "2d6", "medium/long", 5, quantity);
     this.ammunition = "Arrow";
   }
 }
@@ -190,7 +190,7 @@ class LightCrossBow extends Weapon {
     name = "Light Crossbow",
     description = "A light crossbow"
   ) {
-    super(name, description, "eitherHand", 10, "1d8", 75, 5, quantity);
+    super(name, description, "eitherHand", 10, "1d8", "short/medium", 5, quantity);
     this.ammunition = "Bolt";
   }
 }
@@ -201,7 +201,7 @@ class HeavyCrossBow extends Weapon {
     name = "Heavy Crossbow",
     description = "A heavy crossbow"
   ) {
-    super(name, description, "bothHands", 10, "2d6", 150, 10, quantity);
+    super(name, description, "bothHands", 10, "2d6", "medium/long", 10, quantity);
     this.ammunition = "Bolt";
   }
 }
@@ -214,7 +214,7 @@ class Dart extends Weapon {
       "eitherHand",
       5,
       "1d4",
-      5,
+      "close/short",
       1,
       quantity
     );
@@ -230,7 +230,7 @@ class Javelin extends Weapon {
       "eitherHand",
       5,
       "1d6",
-      5,
+      "short/medium",
       5,
       quantity
     );
@@ -246,7 +246,7 @@ class ThrowingAxe extends Weapon {
       "eitherHand",
       5,
       "1d6",
-      5,
+      "close/short",
       5,
       quantity
     );
@@ -262,7 +262,7 @@ class ThrowingKnife extends Weapon {
       "eitherHand",
       5,
       "1d4",
-      5,
+      "close/short",
       1,
       quantity
     );
@@ -298,7 +298,7 @@ class ComboWeapon extends Weapon {
 
 class Spear extends ComboWeapon {
   constructor(quantity = 1, name = "Spear", description = "A simple spear") {
-    super(name, description, "eitherHand", 10, "1d8", "1d6", 5, 5, quantity);
+    super(name, description, "eitherHand", 10, "1d8", "1d6", "close/short", 5, quantity);
     this.ammunition = "Spear";
   }
 }
@@ -309,7 +309,7 @@ class Trident extends ComboWeapon {
     name = "Trident",
     description = "A simple trident"
   ) {
-    super(name, description, "eitherHand", 10, "1d10", "1d8", 5, 5, quantity);
+    super(name, description, "eitherHand", 10, "1d10", "1d8", "close/short", 5, quantity);
     this.ammunition = "Trident";
   }
 }

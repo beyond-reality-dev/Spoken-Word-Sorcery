@@ -16,7 +16,6 @@ class GuardTowers extends Room {
     };
     this.cutscene = "guardTowers";
     this.cutscenePlayed = false;
-    this.isVisited = false;
   }
 }
 

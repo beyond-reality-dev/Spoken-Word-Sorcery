@@ -380,7 +380,6 @@ async function openInput(combatOverride = false) {
               weapon = clauses[i].substring(2);
             }
             response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
-            console.log(response);
             mainHandUsed = response[0];
             offHandUsed = response[1];
             text = [response[2][0], response[2][1]];
@@ -414,7 +413,6 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 6) == "fight " ||
             clauses[i].substring(0, 6) == "slash " ||
             clauses[i].substring(0, 6) == "swing ") {
-            console.log("Triggered");
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             }
@@ -439,7 +437,6 @@ async function openInput(combatOverride = false) {
             mainHandUsed = response[0];
             offHandUsed = response[1];
             text = [response[2], response[3], response[4]];
-            console.log(text);
           } else if (
             clauses[i].substring(0, 7) == "attack " ||
             clauses[i].substring(0, 7) == "strike " ||
@@ -566,7 +563,8 @@ async function openInput(combatOverride = false) {
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
               var effect = spellInput[2];
-              text = ["spell", spellPower, spellDirection, effect];
+              var range = spellInput[3];
+              text = ["spell", spellPower, spellDirection, effect, range];
             }
           } else if (
             clauses[i].substring(0, 5) == "yell " ||
@@ -582,7 +580,9 @@ async function openInput(combatOverride = false) {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              text = ["spell", spellPower, spellDirection];
+              var effect = spellInput[2];
+              var range = spellInput[3];
+              text = ["spell", spellPower, spellDirection, effect, range];
             }
           } else if (
             clauses[i].substring(0, 6) == "chant " ||
@@ -600,7 +600,9 @@ async function openInput(combatOverride = false) {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              text = ["spell", spellPower, spellDirection];
+              var effect = spellInput[2];
+              var range = spellInput[3];
+              text = ["spell", spellPower, spellDirection, effect, range];
             }
           } else if (clauses[i].substring(0, 7) == "mutter ") {
             if (getValue("isCombat") == false && combatOverride == false) {
@@ -613,7 +615,9 @@ async function openInput(combatOverride = false) {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              text = ["spell", spellPower, spellDirection];
+              var effect = spellInput[2];
+              var range = spellInput[3];
+              text = ["spell", spellPower, spellDirection, effect, range];
             }
           } else if (clauses[i].substring(0, 8) == "whisper ") {
             if (getValue("isCombat") == false && combatOverride == false) {
@@ -626,7 +630,9 @@ async function openInput(combatOverride = false) {
               var spellInput = handleSpell(words);
               var spellPower = spellInput[0];
               var spellDirection = spellInput[1];
-              text = ["spell", spellPower, spellDirection];
+              var effect = spellInput[2];
+              var range = spellInput[3];
+              text = ["spell", spellPower, spellDirection, effect, range];
             }
           } else if (clauses[i].substring(0, 4) == "rest ") {
             if (getValue("isCombat") == true) {
@@ -1184,7 +1190,7 @@ function handleSpell(words) {
   document.getElementById("main-content").innerHTML += "<p>" + phrase + "</p>";
   document.getElementById("main-content").scrollTop =
     document.getElementById("main-content").scrollHeight;
-  return [spell.power, spellDirection, spell.effect];
+  return [spell.power, spellDirection, spell.effect, spell.range];
 }
 
 function handleRest() {

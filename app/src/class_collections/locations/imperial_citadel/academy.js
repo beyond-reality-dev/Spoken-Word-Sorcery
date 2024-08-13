@@ -133,7 +133,6 @@ class Barracks extends Room {
     };
     this.cutscene = "barracksMeeting";
     this.cutscenePlayed = false;
-    this.isVisited = false;
   }
 }
 
@@ -199,7 +198,7 @@ class Vault extends Room {
     this.cutscene = "vault";
     this.cutscenePlayed = false;
     this.enemies = [
-      new enemies.Enemy("Vault Door", "east", 100, 0, 0, 0, 0, 0, 0),
+      new enemies.Enemy("Vault Door", "east", "close", 100, 0, 0, 0, 0, 0, 0),
     ];
   }
 }
@@ -305,11 +304,10 @@ class MilitaryAnnex extends Room {
       south: "imperialAcademy.longPassage",
     };
     this.enemies = [
-      new enemies.Rebel("Rebel 1", "southwest"),
-      new enemies.Rebel("Rebel 2", "south"),
-      new enemies.Rebel("Rebel 3", "southeast"),
+      new enemies.Rebel("Rebel 1", "southwest", "close"),
+      new enemies.Rebel("Rebel 2", "south", "close"),
+      new enemies.Rebel("Rebel 3", "southeast", "close"),
     ];
-    this.isVisited = false;
     this.cutscene = "militaryAnnex";
     this.cutscenePlayed = false;
   }
@@ -366,7 +364,6 @@ class Armory extends Room {
     this.exits = {
       south: "imperialAcademy.militaryAnnex",
     };
-    this.isVisited = false;
   }
 }
 

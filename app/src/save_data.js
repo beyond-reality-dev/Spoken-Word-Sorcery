@@ -45,6 +45,7 @@ function initializeData(saveFile) {
     gold: 0,
     encumbrance: 0,
     direction: "north",
+    distance: 0,
     location: "imperialAcademy.trainingRoom",
     isCombat: false,
     gameSpeed: 1000,

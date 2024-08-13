@@ -52,10 +52,19 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
+    if (enemy.distance == "close") {
+      var distanceDescription = "nearby";
+    } else if (enemy.distance == "short") {
+      distanceDescription = "a short distance away";
+    } else if (enemy.distance == "medium") {
+      distanceDescription = "a medium distance away";
+    } else if (enemy.distance == "long") {
+      distanceDescription = "a long distance away";
+    }
     quickPrint(
       `${i + 1}. ${enemy.name} has ${
         enemy.health
-      } health and is standing in the ${enemy.position} of the room.`
+      } health and is standing ${distanceDescription} in the ${enemy.position} of the room.`
     );
   }
   quickPrint(
@@ -77,7 +86,6 @@ async function handlePlayerTurn(enemies, length) {
     return enemies;
   }
   if (choice == "weapon") {
-    console.log(choice);
     for (let i = 0; i < enemies.length; i++) {
       var enemy = eval(enemies[i]);
       if (enemy.position == getValue("direction")) {
@@ -93,14 +101,17 @@ async function handlePlayerTurn(enemies, length) {
       var weapon = equipment[hand];
       if (weaponType == "melee") {
         var playerAttack = weapon.attackValue;
-        console.log(playerAttack);
+        var playerRange = "close";
+        var distance = calculateDistance(enemy.distance, playerRange);
       } else if (weaponType == "ranged") {
         var ammoCheck = checkAmmo(weapon, enemies);
         enemies = ammoCheck[0];
         if (ammoCheck[1] == false) {
           return enemies;
         }
-        var playerAttack = weapon.rangedAttackValue;
+        playerAttack = weapon.rangedAttackValue;
+        playerRange = weapon.range;
+        distance = calculateDistance(enemy.distance, playerRange);
       }
       try {
         playerAttack = levelScaling(playerAttack);
@@ -108,13 +119,30 @@ async function handlePlayerTurn(enemies, length) {
         quickPrint("You do not have a weapon equipped.");
         return enemies;
       }
+      if (distance == "outOfRange") {
+        quickPrint("You are out of range of the enemy.");
+        return enemies;
+      } else if (distance == "tooClose") {
+        quickPrint("You are too close to the enemy.");
+        return enemies;
+      } else if (distance == "barelyInRange") {
+        quickPrint("You are barely in range of the enemy, the attack's power will be reduced.");
+        var reducedRange = true;
+      } else if (distance == "inRange") {
+        quickPrint("You are in range of the enemy.");
+      }
       quickPrint(`You roll ${playerAttack}.`);
       var rolledDice = diceRoll(playerAttack);
       var rolls = rolledDice[0];
       for (let i = 0; i < rolls.length; i++) {
         quickPrint(`You rolled a ${rolls[i]}.`);
       }
-      playerAttack = rolledDice[1];
+      if (reducedRange == true) {
+        playerAttack = Math.floor(rolledDice[1] / 2);
+        quickPrint(`The attack's power is reduced to ${reducedPower}.`);
+      } else {
+        playerAttack = rolledDice[1];
+      }
       var enemyDefense = getRandomInt(enemy.armor);
       var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
       enemy.health = Math.max(enemy.health - enemyDamage, 0);
@@ -150,6 +178,20 @@ async function handlePlayerTurn(enemies, length) {
   } else if (choice == "spell") {
     var spellPower = choiceInput[1];
     var spellEffect = choiceInput[2];
+    var spellRange = choiceInput[3];
+    var distance = calculateDistance(enemyDistance, playerRange);
+    if (distance == "outOfRange") {
+      quickPrint("You are out of range of the enemy.");
+      return enemies;
+    } else if (distance == "tooClose") {
+      quickPrint("You are too close to the enemy.");
+      return enemies;
+    } else if (distance == "barelyInRange") {
+      quickPrint("You are barely in range of the enemy, the attack's power will be reduced.");
+      var reducedRange = true;
+    } else if (distance == "inRange") {
+      quickPrint("You are in range of the enemy.");
+    }
     spellPower = levelScaling(spellPower);
     quickPrint(`You roll ${spellPower}.`);
     var rolledDice = diceRoll(spellPower);
@@ -157,7 +199,12 @@ async function handlePlayerTurn(enemies, length) {
     for (let i = 0; i < rolls.length; i++) {
       quickPrint(`You rolled a ${rolls[i]}.`);
     }
-    spellPower = rolledDice[1];
+    if (reducedRange == true) {
+      spellPower = Math.floor(rolledDice[1] / 2);
+      quickPrint(`The attack's power is reduced to ${reducedPower}.`);
+    } else {
+      spellPower = rolledDice[1];
+    }
     var spellDirection = choiceInput[2];
     for (let i = 0; i < enemies.length; i++) {
       var enemy = eval(enemies[i]);
@@ -169,6 +216,8 @@ async function handlePlayerTurn(enemies, length) {
     }
     if (enemy != null) {
       if (spellEffect == "damage") {
+        enemyDistance = enemy.distance;
+        playerRange = spellRange;
         enemyDefense = getRandomInt(enemy.armor);
         enemyDamage = Math.max(spellPower - enemyDefense, 0);
         enemy.health = Math.max(enemy.health - enemyDamage, 0);
@@ -269,6 +318,90 @@ function checkAmmo(position, enemies) {
       );
     }
     return [enemies, used];
+  }
+}
+
+function calculateDistance(enemyDistance, playerRange) {
+  var range = playerRange.split("/");
+  if (range.length > 1) {
+    var effectiveRange = range[0];
+    var maxRange = range[1];
+  } else {
+    var perfectRange = range[0];
+  }
+  if (enemyDistance == "close") {
+    if (effectiveRange == "close") {
+      return "inRange";
+    } else if (effectiveRange == "short") {
+      return "tooClose";
+    } else if (effectiveRange == "medium") {
+      return "tooClose";
+    } else if (effectiveRange == "long") {
+      return "tooClose";
+    } else if (
+      perfectRange == "close" ||
+      perfectRange == "short" ||
+      perfectRange == "medium" ||
+      perfectRange == "long"
+    ) {
+      return "inRange";
+    }
+  } else if (enemyDistance == "short") {
+    if (maxRange == "short") {
+      return "barelyInRange";
+    } else if (effectiveRange == "close") {
+      return "outOfRange";
+    } else if (effectiveRange == "short") {
+      return "inRange";
+    } else if (effectiveRange == "medium") {
+      return "tooClose";
+    } else if (effectiveRange == "long") {
+      return "tooClose";
+    } else if (perfectRange == "close") {
+      return "outOfRange";
+    } else if (
+      perfectRange == "short" ||
+      perfectRange == "medium" ||
+      perfectRange == "long"
+    ) {
+      return "inRange";
+    }
+  } else if (enemyDistance == "medium") {
+    if (maxRange == "medium") {
+      return "barelyInRange";
+    } else if (effectiveRange == "close") {
+      return "outOfRange";
+    } else if (effectiveRange == "short") {
+      return "outOfRange";
+    } else if (effectiveRange == "medium") {
+      return "inRange";
+    } else if (effectiveRange == "long") {
+      return "tooClose";
+    } else if (perfectRange == "close" || perfectRange == "short") {
+      return "outOfRange";
+    } else if (perfectRange == "medium" || perfectRange == "long") {
+      return "inRange";
+    }
+  } else if (enemyDistance == "long") {
+    if (maxRange == "long") {
+      return "barelyInRange";
+    } else if (effectiveRange == "close") {
+      return "outOfRange";
+    } else if (effectiveRange == "short") {
+      return "outOfRange";
+    } else if (effectiveRange == "medium") {
+      return "outOfRange";
+    } else if (effectiveRange == "long") {
+      return "inRange";
+    } else if (
+      perfectRange == "close" ||
+      perfectRange == "short" ||
+      perfectRange == "medium"
+    ) {
+      return "outOfRange";
+    } else if (perfectRange == "long") {
+      return "inRange";
+    }
   }
 }
 
