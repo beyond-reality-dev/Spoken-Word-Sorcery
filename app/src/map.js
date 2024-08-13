@@ -15,6 +15,38 @@ function updateMap() {
   var currentLocation = locations[primaryLocation][secondaryLocation];
   var locationName = currentLocation["name"];
   var exits = currentLocation["exits"];
+  const canvas = document.getElementById("map");
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "black";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var startingWidth = currentLocation["width"] * 10;
+  var startingHeight = currentLocation["height"] * 10;
+  var startingX = canvas.width / 2 - startingWidth / 2;
+  var startingY = canvas.height / 2 - startingHeight / 2;
+  ctx.strokeRect(startingX, startingY, startingWidth, startingHeight);
+  ctx.strokeRect(startingX - 1, startingY - 1, startingWidth + 1.5, startingHeight + 1.5)
+  ctx.font = "bold 20px Segoe UI";
+  ctx.textAlign = "center";
+  ctx.fillText(locationName, canvas.width / 2 + 0.5, canvas.height / 2 + 0.5);
+  buildRooms(exits, startingWidth, startingHeight, startingX, startingY, level);
+}
+
+function buildRooms(exits, startingWidth, startingHeight, startingX, startingY, level) {
+  if (exits["north"]) {
+    var north = eval(exits["north"]);
+    var 
+  }
+}
+
+function updateTextMap() {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var location = playerData["location"];
+  var primaryLocation = location.split(".")[0];
+  var secondaryLocation = location.split(".")[1];
+  var locations = playerData["locations"];
+  var currentLocation = locations[primaryLocation][secondaryLocation];
+  var locationName = currentLocation["name"];
+  var exits = currentLocation["exits"];
   const mapTitle = document.getElementById("map-title");
   const map = document.getElementById("map");
   mapTitle.innerHTML = "";
@@ -67,7 +99,7 @@ function oldUpdateMap() {
   buildRooms(exits, "start");
 }
 
-function buildRooms(exits, startingDirection, level = 0) {
+function buildOldRooms(exits, startingDirection, level = 0) {
   const map = document.getElementById("map");
   if (exits["north"]) {
     var north = eval(exits["north"]);
