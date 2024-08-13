@@ -82,6 +82,9 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 12) == "instructions"
           ) {
             printLines("app/src/help.txt");
+          } else if (clauses[i].substring(0, 19) == "debug: teleport to ") {
+            changeValue("location", clauses[i].substring(19));
+            handleMovement("load");
           } else if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
             addEntity(memory, "memories");

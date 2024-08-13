@@ -275,8 +275,8 @@ class LongPassage extends Room {
       "The long passage is a long, dark passage. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
       10.5,
       20.5,
-      false,
-      "unreachable"
+      true,
+      "Two guards stand at the entrance to the passage, and inform you that the passage is off-limits for all except those with the Grandmaster's permission."
     );
     this.items = {};
     this.exits = {

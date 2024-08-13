@@ -95,9 +95,11 @@ function buildRooms(
         northY + northHeight / 2 + 0.5
       );
     }
-    level++;
-    buildRooms(northExits, northWidth, northHeight, northX, northY, level);
-    level--;
+    if (north.isVisited) {
+      level++;
+      buildRooms(northExits, northWidth, northHeight, northX, northY, level);
+      level--;
+    }
   }
   if (exits["east"]) {
     var east = eval(exits["east"]);
@@ -130,9 +132,11 @@ function buildRooms(
         eastY + eastHeight / 2 + 0.5
       );
     }
-    level++;
-    buildRooms(eastExits, eastWidth, eastHeight, eastX, eastY, level);
-    level--;
+    if (east.isVisited) {
+      level++;
+      buildRooms(eastExits, eastWidth, eastHeight, eastX, eastY, level);
+      level--;
+    }
   }
   if (exits["south"]) {
     var south = eval(exits["south"]);
@@ -165,9 +169,11 @@ function buildRooms(
         southY + southHeight / 2 + 0.5
       );
     }
-    level++;
-    buildRooms(southExits, southWidth, southHeight, southX, southY, level);
-    level--;
+    if (south.isVisited) {
+      level++;
+      buildRooms(southExits, southWidth, southHeight, southX, southY, level);
+      level--;
+    }
   }
   if (exits["west"]) {
     var west = eval(exits["west"]);
@@ -200,9 +206,11 @@ function buildRooms(
         westY + westHeight / 2 + 0.5
       );
     }
-    level++;
-    buildRooms(westExits, westWidth, westHeight, westX, westY, level);
-    level--;
+    if (west.isVisited) {
+      level++;
+      buildRooms(westExits, westWidth, westHeight, westX, westY, level);
+      level--;
+    }
   }
 }
 
