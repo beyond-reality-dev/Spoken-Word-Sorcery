@@ -5,7 +5,7 @@ const { items } = require("../../../class_collections");
 class TrainingRoom extends Room {
   constructor() {
     super(
-      "Training Room",
+      "Training/Room",
       "imperialAcademy.trainingRoom",
       "The training room is a large room with a few training dummies and a practice staff on the wall. There is a door to the north, leading to the common room, a door to the east, leading to the practice yard, and a door to the west, leading to the storage room.",
       15.5,
@@ -25,7 +25,7 @@ var trainingRoom = new TrainingRoom();
 class PracticeYard extends Room {
   constructor() {
     super(
-      "Practice Yard",
+      "Practice/Yard",
       "imperialAcademy.practiceYard",
       "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. A bow lies discarded on the ground in front of one of the targets. There is a door to the west, leading back to the training room.",
       10.5,
@@ -43,7 +43,7 @@ var practiceYard = new PracticeYard();
 class StorageRoom extends Room {
   constructor() {
     super(
-      "Storage Room",
+      "Storage/Room",
       "imperialAcademy.storageRoom",
       "The storage room is a small room with a few empty shelves, and seems to have been cleared out recently. There is a door to the east, leading back to the training room.",
       10.5,
@@ -80,7 +80,7 @@ var shortHallway_01 = new ShortHallway_01();
 class CommonRoom extends Room {
   constructor() {
     super(
-      "Common Room",
+      "Common/Room",
       "imperialAcademy.commonRoom",
       "The common room is a large room with a few tables and chairs. There is a door to the north, leading to the grand hall, a door to the south, leading to the training room, a door to the east, leading to the kitchen, and a door to the west, leading to the barracks.",
       15.5,
@@ -142,7 +142,7 @@ var barracks = new Barracks();
 class ShortHallway_02 extends Room {
   constructor() {
     super(
-      "Short Hallway",
+      "Short/Hallway",
       "imperialAcademy.shortHallway_02",
       "The short hallway is a small, dark hallway. There is a door to the north, leading to the grand hall, and a door to the south, leading to the common room.",
       10.5,
@@ -209,11 +209,11 @@ var vault = new Vault();
 class HallGates extends Room {
   constructor() {
     super(
-      "Hall Gates",
+      "Hall/Gates",
       "imperialAcademy.hallGates",
       "The hall gates are a large, imposing set of doors. To the east of the doors is the grand hall, and to the west is a short hallway.",
-      10.5,
-      10.5,
+      7.5,
+      15.5,
       true,
       "The hall gates are barricaded and guarded by a pair of imposing soldiers, who inform you that the Grandmaster is only allowing movement between the interior and main part of the Academy with his explicit command."
     );
@@ -230,7 +230,7 @@ var hallGates = new HallGates();
 class ShortHallway_03 extends Room {
   constructor() {
     super(
-      "Short Hallway",
+      "Short/Hallway",
       "imperialAcademy.shortHallway",
       "The short hallway is a small, dark hallway. There is a door to the east, leading to the hall gates.",
       15.5,
@@ -252,8 +252,8 @@ class RestOfAcademy extends Room {
       "Rest of the Academy",
       "imperialAcademy.restOfAcademy",
       "The rest of the Academy is a large, open area. There is a door to the east, leading to the short hallway, and an opening in the wall to the south, leading to the survivor camp.",
-      10.5,
-      10.5
+      30.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -270,7 +270,7 @@ var restOfAcademy = new RestOfAcademy();
 class LongPassage extends Room {
   constructor() {
     super(
-      "Long Passage",
+      "Long/Passage",
       "imperialAcademy.longPassage",
       "The long passage is a long, dark passage. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
       10.5,
@@ -291,7 +291,7 @@ var longPassage = new LongPassage();
 class MilitaryAnnex extends Room {
   constructor() {
     super(
-      "Military Annex",
+      "Military/Annex",
       "imperialAcademy.militaryAnnex",
       "The military annex is a large, empty room. There is a door to the north, leading to the armory, a door to the east, leading to the first barracks, a door to the west, leading to the second barracks, and a door to the south, leading back to the long passage.",
       15.5,
@@ -320,7 +320,7 @@ var militaryAnnex = new MilitaryAnnex();
 class FirstBarracks extends Room {
   constructor() {
     super(
-      "First Barracks",
+      "First/Barracks",
       "imperialAcademy.firstBarracks",
       "The first barracks is a large room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
       10.5,
@@ -328,7 +328,7 @@ class FirstBarracks extends Room {
     );
     this.items = {};
     this.exits = {
-      west: "imperialAcademy.militaryAnnex",
+      east: "imperialAcademy.militaryAnnex",
     };
   }
 }
@@ -338,7 +338,7 @@ var firstBarracks = new FirstBarracks();
 class SecondBarracks extends Room {
   constructor() {
     super(
-      "Second Barracks",
+      "Second/Barracks",
       "imperialAcademy.secondBarracks",
       "The second barracks is a large room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
       10.5,
@@ -346,7 +346,7 @@ class SecondBarracks extends Room {
     );
     this.items = {};
     this.exits = {
-      east: "imperialAcademy.militaryAnnex",
+      west: "imperialAcademy.militaryAnnex",
     };
   }
 }
