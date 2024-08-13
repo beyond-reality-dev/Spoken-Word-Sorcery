@@ -124,6 +124,7 @@ function createWindow() {
         } else {
           var gameSpeed = 1000;
         }
+        
         if (gameSpeed == 0) {
           document.getElementById("radio-zero").checked = true;
         } else if (gameSpeed == 1000) {

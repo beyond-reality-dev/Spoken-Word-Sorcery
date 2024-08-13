@@ -128,18 +128,23 @@ function updateSaveGames() {
   document.getElementById("save-games").innerHTML = "";
   for (let i = 0; i < saveGames.length; i++) {
     var saveFile = saveGames[i]["saveFile"];
+    var saveFileNumber = saveFile.split("_")[1];
     var name = saveGames[i]["name"];
     var level = saveGames[i]["level"];
     var gold = saveGames[i]["gold"];
     var location = saveGames[i]["location"];
     location = eval(location);
     location = location["name"];
+    if (location.split("/").length > 1) {
+      location = location.split("/")[0] + " " + location.split("/")[1];
+    }
     document.getElementById(
       "save-games"
     ).innerHTML += `<option value="${saveFile}">Save: ${[
-      i + 1,
+      saveFileNumber,
     ]} | ${name} | Level: ${level} | Gold: ${gold} | Location: ${location}</option>`;
   }
+  sortList("save-games");
 }
 
 function updateUI() {
@@ -667,7 +672,7 @@ function levelUp() {
 function levelScaling(dice, type = "null") {
   var level = getValue("level");
   var dice = dice.split("d");
-  var scale = Math.floor(level / 2);
+  var scale = Math.floor(level / 10);
   if (type == "bothHands") {
     scale = scale * 2;
     dice = [dice[0] + scale, dice[1]];

@@ -45,7 +45,7 @@ Certain rooms in the game allow the player to rest, which will fully restore the
 
 ### Visual Map
 
-The game has a visual map that shows the player's current location and the locations of the rooms that are directly connected to it, and those that are connected to those rooms, and so on. Currently only one iteration of rooms is shown, but in the future the map will be able to show the entire world.
+The game has a visual map that shows the player's current location and the locations of the rooms that are directly connected to it, and those that are connected to those rooms, and so on. There is a fog of war system that hides rooms that are not attached to a room that the player has already visited. The player can move to any room that is directly connected to their current room, assuming it is not locked, and the map will update to show their new location.
 
 ## Future Changes
 

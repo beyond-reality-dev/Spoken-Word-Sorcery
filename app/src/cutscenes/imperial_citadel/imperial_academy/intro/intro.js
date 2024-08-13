@@ -16,6 +16,7 @@ const {
   closedInput,
   openInput,
   inputLoop,
+  handleMovement,
 } = require("../../../../handle_input");
 const {
   Earth,
@@ -73,6 +74,7 @@ async function intro() {
     addEntity(new Shield(), "spokenSpells");
     addEntity(new Away(), "knownSpells");
     changeValue("experiencePoints", 100);
+    handleMovement("load");
     inputLoop();
     return;
   }

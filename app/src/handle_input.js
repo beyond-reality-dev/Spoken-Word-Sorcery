@@ -527,6 +527,7 @@ function handleMovement(direction) {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   if (direction == "load") {
+    changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
     return;
   }
@@ -565,15 +566,7 @@ function handleMovement(direction) {
     changeValue("location", newLocation.id);
     changeValue("direction", direction);
     quickPrint(newLocation.description);
-    if (newLocation.hasOwnProperty("isVisited")) {
-      var primaryLocation = currentLocation.id.split(".")[0];
-      var secondaryLocation = currentLocation.id.split(".")[1];
-      newLocation.isVisited = true;
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
-      var locations = playerData["locations"];
-      locations[primaryLocation][secondaryLocation]["isVisited"] = true;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
-    }
+    changeValue(`${newLocation.id}.isVisited`, true, "locations");
     if (newLocation.hasOwnProperty("cutscene")) {
       if (newLocation.cutscenePlayed == false) {
         var cutsceneName = newLocation.cutscene;

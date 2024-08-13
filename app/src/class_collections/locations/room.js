@@ -13,6 +13,7 @@ class Room {
     this.description = description;
     this.width = width;
     this.height = height;
+    this.isVisited = false;
     this.isLocked = isLocked;
     this.lockedDescription = lockedDescription;
     this.items = {};
