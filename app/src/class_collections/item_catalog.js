@@ -168,7 +168,16 @@ class ShortBow extends RangedWeapon {
     name = "Short Bow",
     description = "A simple short bow"
   ) {
-    super(name, description, "bothHands", 10, "1d8", "short/medium", 5, quantity);
+    super(
+      name,
+      description,
+      "bothHands",
+      10,
+      "1d8",
+      "short/medium",
+      5,
+      quantity
+    );
     this.ammunition = "Arrow";
   }
 }
@@ -179,7 +188,16 @@ class LongBow extends RangedWeapon {
     name = "Long Bow",
     description = "A simple long bow"
   ) {
-    super(name, description, "bothHands", 10, "2d6", "medium/long", 5, quantity);
+    super(
+      name,
+      description,
+      "bothHands",
+      10,
+      "2d6",
+      "medium/long",
+      5,
+      quantity
+    );
     this.ammunition = "Arrow";
   }
 }
@@ -190,7 +208,16 @@ class LightCrossBow extends Weapon {
     name = "Light Crossbow",
     description = "A light crossbow"
   ) {
-    super(name, description, "eitherHand", 10, "1d8", "short/medium", 5, quantity);
+    super(
+      name,
+      description,
+      "eitherHand",
+      10,
+      "1d8",
+      "short/medium",
+      5,
+      quantity
+    );
     this.ammunition = "Bolt";
   }
 }
@@ -201,7 +228,16 @@ class HeavyCrossBow extends Weapon {
     name = "Heavy Crossbow",
     description = "A heavy crossbow"
   ) {
-    super(name, description, "bothHands", 10, "2d6", "medium/long", 10, quantity);
+    super(
+      name,
+      description,
+      "bothHands",
+      10,
+      "2d6",
+      "medium/long",
+      10,
+      quantity
+    );
     this.ammunition = "Bolt";
   }
 }
@@ -298,7 +334,17 @@ class ComboWeapon extends Weapon {
 
 class Spear extends ComboWeapon {
   constructor(quantity = 1, name = "Spear", description = "A simple spear") {
-    super(name, description, "eitherHand", 10, "1d8", "1d6", "close/short", 5, quantity);
+    super(
+      name,
+      description,
+      "eitherHand",
+      10,
+      "1d8",
+      "1d6",
+      "close/short",
+      5,
+      quantity
+    );
     this.ammunition = "Spear";
   }
 }
@@ -309,7 +355,17 @@ class Trident extends ComboWeapon {
     name = "Trident",
     description = "A simple trident"
   ) {
-    super(name, description, "eitherHand", 10, "1d10", "1d8", "close/short", 5, quantity);
+    super(
+      name,
+      description,
+      "eitherHand",
+      10,
+      "1d10",
+      "1d8",
+      "close/short",
+      5,
+      quantity
+    );
     this.ammunition = "Trident";
   }
 }
@@ -337,19 +393,19 @@ class Armor {
 
 class LeatherHelmet extends Armor {
   constructor(quantity = 1) {
-    super("Leather Helmet", "A simple helmet", "head", 10, 5, 5, quantity);
+    super("Leather Helmet", "A simple helmet", "head", 10, 1, 5, quantity);
   }
 }
 
 class ChainHelmet extends Armor {
   constructor(quantity = 1) {
-    super("Chain Helmet", "A simple helmet", "head", 10, 10, 5, quantity);
+    super("Chain Helmet", "A simple helmet", "head", 25, 2, 10, quantity);
   }
 }
 
 class IronHelmet extends Armor {
   constructor(quantity = 1) {
-    super("Iron Helmet", "A simple helmet", "head", 10, 15, 5, quantity);
+    super("Iron Helmet", "A simple helmet", "head", 50, 3, 15, quantity);
   }
 }
 
@@ -360,7 +416,7 @@ class LeatherChestplate extends Armor {
       "A simple chestplate",
       "torso",
       10,
-      5,
+      1,
       5,
       quantity
     );
@@ -373,9 +429,9 @@ class ChainChestplate extends Armor {
       "Chain Chestplate",
       "A simple chestplate",
       "torso",
+      25,
+      2,
       10,
-      10,
-      5,
       quantity
     );
   }
@@ -387,9 +443,9 @@ class IronChestplate extends Armor {
       "Iron Chestplate",
       "A simple chestplate",
       "torso",
-      10,
+      50,
+      3,
       15,
-      5,
       quantity
     );
   }
@@ -397,37 +453,37 @@ class IronChestplate extends Armor {
 
 class LeatherLeggings extends Armor {
   constructor(quantity = 1) {
-    super("Leather Leggings", "Simple leggings", "legs", 10, 5, 5, quantity);
+    super("Leather Leggings", "Simple leggings", "legs", 10, 1, 5, quantity);
   }
 }
 
 class ChainLeggings extends Armor {
   constructor(quantity = 1) {
-    super("Chain Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
+    super("Chain Leggings", "Simple leggings", "legs", 25, 2, 10, quantity);
   }
 }
 
 class IronLeggings extends Armor {
   constructor(quantity = 1) {
-    super("Iron Leggings", "Simple leggings", "legs", 10, 10, 5, quantity);
+    super("Iron Leggings", "Simple leggings", "legs", 50, 3, 15, quantity);
   }
 }
 
 class LeatherBoots extends Armor {
   constructor(quantity = 1) {
-    super("Leather Boots", "Simple boots", "feet", 10, 5, 5, quantity);
+    super("Leather Boots", "Simple boots", "feet", 10, 1, 5, quantity);
   }
 }
 
 class ChainBoots extends Armor {
   constructor(quantity = 1) {
-    super("Chain Boots", "Simple boots", "feet", 10, 10, 5, quantity);
+    super("Chain Boots", "Simple boots", "feet", 25, 2, 10, quantity);
   }
 }
 
 class IronBoots extends Armor {
   constructor(quantity = 1) {
-    super("Iron Boots", "Simple boots", "feet", 10, 15, 5, quantity);
+    super("Iron Boots", "Simple boots", "feet", 50, 3, 15, quantity);
   }
 }
 
