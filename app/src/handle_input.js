@@ -75,6 +75,7 @@ async function openInput(combatOverride = false) {
         }
         var clauses = text.split(" and ");
         var hasTurned = false;
+        var hasMoved = false;
         var hasEquipped = false;
         var hasUnequipped = false;
         var mainHandUsed = false;
@@ -121,42 +122,93 @@ async function openInput(combatOverride = false) {
             }
             handleTurn(direction, change);
           } else if (clauses[i].substring(0, 3) == "go ") {
-            if (getValue("isCombat") == true) {
-              quickPrint("You cannot move during combat.");
+            if (hasMoved == true) {
+              quickPrint("You have already moved this turn.");
               continue;
             }
-            if (clauses[i].substring(3, 10) == "to the ") {
-              direction = clauses[i].substring(10);
-            } else {
+            if (getValue("isCombat") == true) {
               direction = clauses[i].substring(3);
+              if (direction == "forward" || direction == "forwards") {
+                text = handleCombatMovement("forward");
+              } else if (
+                direction == "back" ||
+                direction == "backward" ||
+                direction == "backwards"
+              ) {
+                text = handleCombatMovement("backward");
+              } else {
+                quickPrint(
+                  "While in combat, you can only move forward or backward."
+                );
+              }
+            } else {
+              if (clauses[i].substring(3, 10) == "to the ") {
+                direction = clauses[i].substring(10);
+              } else {
+                direction = clauses[i].substring(3);
+              }
+              handleMovement(direction);
             }
-            handleMovement(direction);
           } else if (clauses[i].substring(0, 4) == "run ") {
-            if (getValue("isCombat") == true) {
-              quickPrint("You cannot move during combat.");
+            if (hasMoved == true) {
+              quickPrint("You have already moved this turn.");
               continue;
             }
-            if (clauses[i].substring(4, 11) == "to the ") {
-              direction = clauses[i].substring(11);
-            } else {
+            if (getValue("isCombat") == true) {
               direction = clauses[i].substring(4);
+              if (direction == "forward" || direction == "forwards") {
+                text = handleCombatMovement("forward");
+              } else if (
+                direction == "back" ||
+                direction == "backward" ||
+                direction == "backwards"
+              ) {
+                text = handleCombatMovement("backward");
+              } else {
+                quickPrint(
+                  "While in combat, you can only move forward or backward."
+                );
+              }
+            } else {
+              if (clauses[i].substring(4, 11) == "to the ") {
+                direction = clauses[i].substring(11);
+              } else {
+                direction = clauses[i].substring(4);
+              }
+              handleMovement(direction);
             }
-            handleMovement(direction);
           } else if (
             clauses[i].substring(0, 5) == "exit " ||
             clauses[i].substring(0, 5) == "move " ||
             clauses[i].substring(0, 5) == "walk "
           ) {
-            if (getValue("isCombat") == true) {
-              quickPrint("You cannot move during combat.");
+            if (hasMoved == true) {
+              quickPrint("You have already moved this turn.");
               continue;
             }
-            if (clauses[i].substring(5, 12) == "to the ") {
-              direction = clauses[i].substring(12);
-            } else {
+            if (getValue("isCombat") == true) {
               direction = clauses[i].substring(5);
+              if (direction == "forward" || direction == "forwards") {
+                text = handleCombatMovement("forward");
+              } else if (
+                direction == "back" ||
+                direction == "backward" ||
+                direction == "backwards"
+              ) {
+                text = handleCombatMovement("backward");
+              } else {
+                quickPrint(
+                  "While in combat, you can only move forward or backward."
+                );
+              }
+            } else {
+              if (clauses[i].substring(5, 12) == "to the ") {
+                direction = clauses[i].substring(12);
+              } else {
+                direction = clauses[i].substring(5);
+              }
+              handleMovement(direction);
             }
-            handleMovement(direction);
           } else if (
             clauses[i].substring(0, 5) == "grab " ||
             clauses[i].substring(0, 5) == "take " ||
@@ -383,8 +435,7 @@ async function openInput(combatOverride = false) {
             mainHandUsed = response[0];
             offHandUsed = response[1];
             text = [response[2][0], response[2][1]];
-          } else if (
-            clauses[i].substring(0, 5) == "stab ") {
+          } else if (clauses[i].substring(0, 5) == "stab ") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             }
@@ -412,7 +463,8 @@ async function openInput(combatOverride = false) {
           } else if (
             clauses[i].substring(0, 6) == "fight " ||
             clauses[i].substring(0, 6) == "slash " ||
-            clauses[i].substring(0, 6) == "swing ") {
+            clauses[i].substring(0, 6) == "swing "
+          ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
             }
@@ -444,7 +496,7 @@ async function openInput(combatOverride = false) {
           ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } 
+            }
             if (clauses[i].substring(7, 9) == "a ") {
               weapon = clauses[i].substring(9);
             } else if (clauses[i].substring(7, 10) == "an ") {
@@ -706,6 +758,43 @@ function handleTurn(direction, change) {
       break;
   }
   quickPrint("You are now facing " + getValue("direction") + ".");
+}
+
+function handleCombatMovement(direction) {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  var playerDistance = getValue("distance");
+  var enemies = currentLocation.enemies;
+  var enemyClose = false;
+  for (let i = 0; i < enemies.length; i++) {
+    if (enemies[i].distance == "close") {
+      enemyClose = true;
+      break;
+    }
+  }
+  if (enemyClose == true) {
+    if (direction == "forward") {
+      quickPrint(
+        "You cannot move forward while enemies are within melee range."
+      );
+      return "noMove";
+    }
+  } else {
+    if (direction == "backward") {
+      if (playerDistance > 0) {
+        changeValue("distance", playerDistance - 1);
+        quickPrint("You moved backward.");
+        return "movedBackward";
+      } else {
+        quickPrint("You cannot move backward any further.");
+        return "noMove";
+      }
+    } else {
+      changeValue("distance", playerDistance + 1);
+      quickPrint("You moved forward.");
+      return "movedForward";
+    }
+  }
 }
 
 function handleMovement(direction) {
@@ -1020,7 +1109,7 @@ function combatParse(weapon, type, mainHandUsed, offHandUsed) {
     if (weapon == mainHandName) {
       if (mainHandUsed == true) {
         quickPrint("You have already attacked with that weapon this turn.");
-       return [mainHandUsed, offHandUsed, "weapon", "none", "none"];
+        return [mainHandUsed, offHandUsed, "weapon", "none", "none"];
       }
       mainHandUsed = true;
       weaponUsed = true;

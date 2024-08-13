@@ -18,8 +18,9 @@ For consumables, you can type "use," "consume," "drink," "eat," or "ingest" foll
 COMBAT:
 To attack an enemy that is in front of you with a melee weapon, you can type "hit," "stab," "fight," "attack," "strike," "slash," "swing," or "thrust," followed by the weapon you wish to use. Optionally, you can add certain words like "with" before the weapon name. For example, "hit with sword," "stab with dagger," "swing sword," etc. will all work.
 To attack an enemy that is farther away or out of reach with a ranged weapon, you can type "aim," "fire," "shoot," "snipe," "throw," or "launch" followed by the weapon you wish to use. Optionally, you can add certain words like "with" before the weapon name. For example, "aim with bow," "fire crossbow," etc. will all work.
-To turn and phase a different direction, you can type "turn," "face," or "look" followed by the direction, left or right, you want to face.
 To use a spell, you can type "say," "yell," "cast," "chant," "shout," "speak," "utter," "mutter," or "whisper" followed by the spell phrase.
+To turn and phase a different direction, you can type "turn," "face," or "look" followed by the direction, left or right, you want to face.
+To move during combat you can type "go," "run," "exit," "move," or "walk" followed by "forward," or "backward." This will move you closer or farther from the enemy. Note that if an enemy is already in melee range, you cannot move closer to them.
 
 REST:
 If you are in a safe location, you can type "rest" or "sleep" to regain health and mana.
