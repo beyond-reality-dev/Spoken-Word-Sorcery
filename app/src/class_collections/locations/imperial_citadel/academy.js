@@ -28,8 +28,8 @@ class PracticeYard extends Room {
       "Practice Yard",
       "imperialAcademy.practiceYard",
       "The practice yard is a small outdoor yard with a few simple targets, some still pierced with arrows. A bow lies discarded on the ground in front of one of the targets. There is a door to the west, leading back to the training room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = { arrow: new items.Arrow(3), bow: new items.ShortBow() };
     this.exits = {
@@ -46,8 +46,8 @@ class StorageRoom extends Room {
       "Storage Room",
       "imperialAcademy.storageRoom",
       "The storage room is a small room with a few empty shelves, and seems to have been cleared out recently. There is a door to the east, leading back to the training room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -61,11 +61,11 @@ var storageRoom = new StorageRoom();
 class ShortHallway_01 extends Room {
   constructor() {
     super(
-      "Short Hallway",
+      "Short/Hallway",
       "imperialAcademy.shortHallway_01",
       "The short hallway is a small, dark hallway. There is a door to the south, leading to the training room, and a door to the north, leading to the common room.",
-      10,
-      15
+      10.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -83,8 +83,8 @@ class CommonRoom extends Room {
       "Common Room",
       "imperialAcademy.commonRoom",
       "The common room is a large room with a few tables and chairs. There is a door to the north, leading to the grand hall, a door to the south, leading to the training room, a door to the east, leading to the kitchen, and a door to the west, leading to the barracks.",
-      15,
-      15,
+      15.5,
+      15.5,
       false,
       "unreachable"
     );
@@ -106,8 +106,8 @@ class Kitchen extends Room {
       "Kitchen",
       "imperialAcademy.kitchen",
       "The kitchen is a small room with some half-eaten meals still left on the tables. Chairs are left askew, as though their occupants left in a hurry. There is a door to the west, leading to the common room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -124,8 +124,8 @@ class Barracks extends Room {
       "Barracks",
       "imperialAcademy.barracks",
       "The barracks is a small room with a few beds and footlockers. There is a door to the east, leading to the common room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -145,8 +145,8 @@ class ShortHallway_02 extends Room {
       "Short Hallway",
       "imperialAcademy.shortHallway_02",
       "The short hallway is a small, dark hallway. There is a door to the north, leading to the grand hall, and a door to the south, leading to the common room.",
-      10,
-      15
+      10.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -164,8 +164,8 @@ class GrandHall extends Room {
       "Grand Hall",
       "imperialAcademy.grandHall",
       "The grand hall is an enormous hall, and normally an impressive sight. Right now, however, it's a mess. Guards line the doorways, and the doors are barricaded. There is a door to the north, leading to a long passage, a door to the east leading to the Academy's vault, a door to the west leading to the rest of the Academy, and a door to the south leading to the common room.",
-      30,
-      20
+      30.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -187,8 +187,8 @@ class Vault extends Room {
       "Vault",
       "imperialAcademy.vault",
       "The vault is a small room with a few chests and a long scroll, kept safely behind a glowing force field. There is a door to the west, leading back to the grand hall.",
-      10,
-      10,
+      10.5,
+      10.5,
       true,
       "The entrance to the vault is securely locked."
     );
@@ -212,8 +212,8 @@ class HallGates extends Room {
       "Hall Gates",
       "imperialAcademy.hallGates",
       "The hall gates are a large, imposing set of doors. To the east of the doors is the grand hall, and to the west is a short hallway.",
-      10,
-      10,
+      10.5,
+      10.5,
       true,
       "The hall gates are barricaded and guarded by a pair of imposing soldiers, who inform you that the Grandmaster is only allowing movement between the interior and main part of the Academy with his explicit command."
     );
@@ -233,8 +233,8 @@ class ShortHallway_03 extends Room {
       "Short Hallway",
       "imperialAcademy.shortHallway",
       "The short hallway is a small, dark hallway. There is a door to the east, leading to the hall gates.",
-      15,
-      10
+      15.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -252,8 +252,8 @@ class RestOfAcademy extends Room {
       "Rest of the Academy",
       "imperialAcademy.restOfAcademy",
       "The rest of the Academy is a large, open area. There is a door to the east, leading to the short hallway, and an opening in the wall to the south, leading to the survivor camp.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -273,8 +273,8 @@ class LongPassage extends Room {
       "Long Passage",
       "imperialAcademy.longPassage",
       "The long passage is a long, dark passage. There is a door to the north, leading to the Academy's military annex, and a door to the south, leading to the grand hall.",
-      10,
-      20,
+      10.5,
+      20.5,
       false,
       "unreachable"
     );
@@ -294,8 +294,8 @@ class MilitaryAnnex extends Room {
       "Military Annex",
       "imperialAcademy.militaryAnnex",
       "The military annex is a large, empty room. There is a door to the north, leading to the armory, a door to the east, leading to the first barracks, a door to the west, leading to the second barracks, and a door to the south, leading back to the long passage.",
-      15,
-      15
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -323,8 +323,8 @@ class FirstBarracks extends Room {
       "First Barracks",
       "imperialAcademy.firstBarracks",
       "The first barracks is a large room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -341,8 +341,8 @@ class SecondBarracks extends Room {
       "Second Barracks",
       "imperialAcademy.secondBarracks",
       "The second barracks is a large room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -359,8 +359,8 @@ class Armory extends Room {
       "Armory",
       "imperialAcademy.armory",
       "The armory is a large room with a few weapons racks and a few stands for pieces of armor. Oddly, much of the furniture has been strewn about, and none of the equipment remains. There is a door to the south, leading back to the military annex.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -378,8 +378,8 @@ class SurvivorCamp extends Room {
       "Survivor Camp",
       "imperialAcademy.survivorCamp",
       "The survivor camp is a small camp with a few tents and a campfire. There is a path to the north, leading back to the Imperial Academy.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.exits = {
       north: "imperialAcademy.restOfAcademy",
@@ -399,8 +399,8 @@ class AcademyEntrance extends Room {
       "Academy Entrance",
       "imperialAcademy.academyEntrance",
       "The entrance to the Imperial Academy is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the north, leading to the survivor camp, and a road to the south, leading to the Academy's bridge.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.exits = {
       north: "imperialAcademy.survivorCamp",
@@ -417,8 +417,8 @@ class AcademyBridge extends Room {
       "Academy Bridge",
       "imperialAcademy.academyBridge",
       "The Academy Bridge is a long stone bridge that spans a deep moat. There is a path to the north, leading to the Academy Entrance, and a path to the south, leading to two guard towers.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.exits = {
       north: "imperialAcademy.academyEntrance",
@@ -435,8 +435,8 @@ class GuardTowers extends Room {
       "Guard Towers",
       "imperialAcademy.guardTowers",
       "The two guard towers are large stone towers that stand in front of the Academy Bridge. There is a path to the north, leading to the Academy Bridge, and a path to the south, leading to the nexus of the Imperial Citadel.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.exits = {
       north: "imperialAcademy.academyBridge",

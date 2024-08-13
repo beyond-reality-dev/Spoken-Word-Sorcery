@@ -6,8 +6,8 @@ class GuardTowers extends Room {
       "Guard Towers",
       "imperialPalace.guardTowers",
       "The two guard towers are large stone towers that stand in front of the Palace Bridge. There is a path to the north, leading to the nexus of the Imperial Citadel, and a path to the south, leading to the bridge of the Imperial Palace.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -28,8 +28,8 @@ class PalaceBridge extends Room {
       "Palace Bridge",
       "imperialPalace.palaceBridge",
       "The Palace Bridge is a long stone bridge that spans a deep moat. There is a path to the north, leading to the guard towers of the Imperial Palace, and a path to the south, leading to the entrance of the Imperial Palace.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -50,8 +50,8 @@ class PalaceEntrance extends Room {
       "Palace Entrance",
       "imperialPalace.palaceEntrance",
       "The entrance to the Imperial Palace is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the north, leading to the Palace Bridge, and a road to the south, leading to the Imperial Palace.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {

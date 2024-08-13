@@ -8,8 +8,8 @@ class MarketEntrance extends Room {
       "Market Entrance",
       "imperialMarket.marketEntrance",
       "The entrance to the market is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the east, leading to the nexus of the Imperial Citadel, and a road to the west, leading to the market.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -27,8 +27,8 @@ class Market extends Room {
       "Market",
       "imperialMarket.market",
       "The market is a large open area with numerous stalls and shops. There is a path to the east leading to the market entrance, and a path to the west leading to the market stalls.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -46,8 +46,8 @@ class MarketStalls extends Room {
       "Market Stalls",
       "imperialMarket.marketStalls",
       "The market stalls have a wide variety of merchants selling various wares. There is a path to the east leading to the market, and a path to the west leading to the Imperial Treasury.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -72,8 +72,8 @@ class ImperialTreasuryExterior extends Room {
       "Imperial Treasury Exterior",
       "imperialMarket.imperialTreasuryExterior",
       "The Imperial Treasury is a large stone building with a massive iron door. There is a path to the east leading to the market stalls, a door to the north leading inside, and a road to the south leading to the Imperial Citadel's walls.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -99,8 +99,8 @@ class CitadelRoad extends Room {
       "Citadel Road",
       "imperialMarket.citadelRoad",
       "The Citadel Road is a wide stone road that leads to the Imperial Citadel's walls. There is a path to the north leading to the Imperial Treasury, and a path to the south leading to the Imperial Citadel's walls.",
-      10,
-      20
+      10.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -118,8 +118,8 @@ class CitadelWalls extends Room {
       "Citadel Walls",
       "imperialMarket.citadelWalls",
       "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading to the main gates of the Imperial Citadel.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -137,8 +137,8 @@ class MainGate extends Room {
       "Main Gate",
       "imperialCitadel.mainGate",
       "The main gates of the Imperial Citadel are large iron gates that are currently closed. There is a path to the north leading to the Citadel Walls, and a path to the south leading outside of the Imperial Citadel.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -167,8 +167,8 @@ class ImperialTreasuryLounge extends Room {
       "Imperial Treasury Lounge",
       "imperialMarket.imperialTreasuryLoounge",
       "The Imperial Treasury Lounge is a crowded room with several guards and officials rushing about. There is a door to the north leading deeper inside, and a door to the south leading outside.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -192,8 +192,8 @@ class ShortHallway_01 extends Room {
       "Short Hallway",
       "imperialMarket.shortHallway_01",
       "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's main hall, and a door to the south leading back to the Imperial Treasury's lounge.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -211,8 +211,8 @@ class MainHall extends Room {
       "Main Hall",
       "imperialMarket.mainHall",
       "The main hall of the Imperial Treasury is a large open area with numerous guards and officials moving about. It appears to be being used as a staging area for the defense and management of the treasury. There is a door to the north leading to a short hallway, and a door to the south leading to a different short hallway.",
-      20,
-      20
+      20.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -230,8 +230,8 @@ class ShortHallway_02 extends Room {
       "Short Hallway",
       "imperialMarket.shortHallway_02",
       "The short hallway is a narrow stone hallway with a door to the north leading to the Imperial Treasury's vaults, and a door to the south leading to the Imperial Treasury's main hall.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -249,8 +249,8 @@ class VaultEntrance extends Room {
       "Vault Entrance",
       "imperialMarket.vaultEntrance",
       "The vault entrance is a large stone door with a heavy iron lock. The vaults of the treasury are to the north, and a short hallway is to the south.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -270,8 +270,8 @@ class LongHallway_01 extends Room {
       "Long Hallway",
       "imperialMarket.longHallway_01",
       "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to the vault's entrance.",
-      10,
-      30
+      10.5,
+      30.5
     );
     this.items = {};
     this.exits = {
@@ -289,8 +289,8 @@ class SmallRoom_01 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_01",
       "The small room is a cramped stone room with a single table and chair, the purpose of which is unclear. There is a door to the north leading to a long hallway, a door to the east leading to a short hallway, a door to the south leading to a different long hallway, and a door to the west leading to a different short hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -310,8 +310,8 @@ class LongHallway_02 extends Room {
       "Long Hallway",
       "imperialMarket.longHallway_02",
       "The long hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to a different small room.",
-      10,
-      30
+      10.5,
+      30.5
     );
     this.items = {};
     this.exits = {
@@ -329,8 +329,8 @@ class SmallRoom_02 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_02",
       "The small room appears to contain nothing and is a dead end, with a door to the south leading to a long hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -347,8 +347,8 @@ class ShortHallway_03 extends Room {
       "Short Hallway",
       "imperialMarket.shortHallway_03",
       "The short hallway is a narrow stone hallway with a door to the west leading to a small room, and a door to the east leading to a large chamber.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -366,8 +366,8 @@ class LargeChamber_01 extends Room {
       "Large Chamber",
       "imperialMarket.largeChamber_01",
       "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the west leading to a short hallway, and a door to the east leading to a long hallway.",
-      30,
-      30
+      30.5,
+      30.5
     );
     this.items = {};
     this.exits = {
@@ -390,8 +390,8 @@ class LongHallway_03 extends Room {
       "Long Hallway",
       "imperialMarket.longHallway_03",
       "The long hallway is a narrow stone hallway with a door to the west leading to a large chamber, and a door to the east leading to a small room.",
-      30,
-      10
+      30.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -409,8 +409,8 @@ class SmallRoom_03 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_03",
       "The small room contains a bloody cot, with a dead rebel soldier lying on top of it clutching his sword. There is a door to the west leading to a short hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {
       sword: new items.ShortSword(),
@@ -429,8 +429,8 @@ class ShortHallway_04 extends Room {
       "Short Hallway",
       "imperialMarket.shortHallway_04",
       "The short hallway is a narrow stone hallway with a door to the east leading to a small room, and a door to the west leading to a different small room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -448,8 +448,8 @@ class SmallRoom_04 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_04",
       "The small room contains a small chest, with the lock broken and the contents long gone. There is a door to the east leading to a short hallway, and a door to the west leading to a different short hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -467,8 +467,8 @@ class LongHallway_04 extends Room {
       "Long Hallway",
       "imperialMarket.longHallway_04",
       "The long hallway is a narrow stone hallway with a door to the east leading to a small room, and a door to the west leading to a different small room.",
-      10,
-      30
+      10.5,
+      30.5
     );
     this.items = {};
     this.exits = {
@@ -486,8 +486,8 @@ class SmallRoom_05 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_05",
       "This small room is mostly empty, with a door to the north leading to a short hallway and a door to the east leading to a long hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -505,8 +505,8 @@ class ShortHallway_05 extends Room {
       "Short Hallway",
       "imperialMarket.shortHallway_05",
       "The short hallway is a narrow stone hallway with a door to the north leading to a small room, and a door to the south leading to a different small room.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -524,8 +524,8 @@ class SmallRoom_06 extends Room {
       "Small Room",
       "imperialMarket.smallRoom_06",
       "The small room is a dead end, with a door to the south leading to a short hallway.",
-      10,
-      10
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {
