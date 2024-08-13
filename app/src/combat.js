@@ -61,10 +61,16 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(
     `You are facing ${getValue(
       "direction"
-    )}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, and attack or cast a spell one time.`
+    )}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, use each of your weapons once, and cast a spell once. If you need help, type "help" for a list of commands.`
   );
-  choiceInput = await openInput();
-  var choice = choiceInput[0];
+  var helpAsked = true;
+  while (helpAsked == true) {
+    choiceInput = await openInput();
+    var choice = choiceInput[0];
+    if (choice != "help" && choice != "info" && choice != "instructions") {
+      helpAsked = false;
+    }
+  }
   if (choiceInput[1] == "0" && choiceInput[2] == "none") {
     return enemies;
   }

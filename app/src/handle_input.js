@@ -14,7 +14,12 @@ const {
   updateUI,
   updateEquipment,
 } = require("./save_data");
-const { toTitleCase, quickPrint, printLines, requireAnswer } = require("./general");
+const {
+  toTitleCase,
+  quickPrint,
+  printLines,
+  requireAnswer,
+} = require("./general");
 const { handleCombat } = require("./combat");
 const { enemies } = require("./class_collections");
 const { spells } = require("./class_collections");
@@ -72,7 +77,8 @@ async function openInput(combatOverride = false) {
         var hasTurned = false;
         var hasEquipped = false;
         var hasUnequipped = false;
-        var hasAttacked = false;
+        var mainHandUsed = false;
+        var offHandUsed = false;
         var hasCasted = false;
         var hasUsed = false;
         for (let i = 0; i < clauses.length; i++) {
@@ -349,41 +355,202 @@ async function openInput(combatOverride = false) {
             }
             handleUse(item);
           } else if (
-            clauses[i].substring(0, 2) == "hit" ||
-            clauses[i].substring(0, 2) == "cut" ||
-            clauses[i].substring(0, 2) == "jab" ||
-            clauses[i].substring(0, 3) == "stab" ||
-            clauses[i].substring(0, 4) == "fight" ||
-            clauses[i].substring(0, 4) == "slash" ||
-            clauses[i].substring(0, 4) == "swing" ||
-            clauses[i].substring(0, 5) == "attack" ||
-            clauses[i].substring(0, 5) == "strike" ||
-            clauses[i].substring(0, 5) == "thrust"
+            clauses[i].substring(0, 4) == "hit " ||
+            clauses[i].substring(0, 4) == "cut " ||
+            clauses[i].substring(0, 4) == "jab "
           ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasAttacked == true) {
-              quickPrint("You have already attacked with a weapon this turn.");
-            } else if (hasAttacked == false) {
-              hasAttacked = true;
-              text = ["weapon", "melee"];
             }
+            if (clauses[i].substring(2, 4) == "a ") {
+              weapon = clauses[i].substring(4);
+            } else if (clauses[i].substring(2, 5) == "an ") {
+              weapon = clauses[i].substring(5);
+            } else if (clauses[i].substring(2, 6) == "the ") {
+              weapon = clauses[i].substring(6);
+            } else if (clauses[i].substring(2, 7) == "with ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(2, 8) == "with a ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(2, 9) == "with an ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(2, 10) == "with the ") {
+              weapon = clauses[i].substring(10);
+            } else {
+              weapon = clauses[i].substring(2);
+            }
+            response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
           } else if (
-            clauses[i].substring(0, 2) == "aim" ||
-            clauses[i].substring(0, 3) == "fire" ||
+            clauses[i].substring(0, 5) == "stab ") {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            }
+            if (clauses[i].substring(5, 7) == "a ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(5, 8) == "an ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(5, 9) == "the ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(5, 10) == "with ") {
+              weapon = clauses[i].substring(10);
+            } else if (clauses[i].substring(5, 12) == "with a ") {
+              weapon = clauses[i].substring(12);
+            } else if (clauses[i].substring(5, 13) == "with an ") {
+              weapon = clauses[i].substring(13);
+            } else if (clauses[i].substring(5, 14) == "with the ") {
+              weapon = clauses[i].substring(14);
+            } else {
+              weapon = clauses[i].substring(5);
+            }
+            response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (
+            clauses[i].substring(0, 6) == "fight " ||
+            clauses[i].substring(0, 6) == "slash " ||
+            clauses[i].substring(0, 6) == "swing ") {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            }
+            if (clauses[i].substring(6, 8) == "a ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(6, 9) == "an ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(6, 10) == "the ") {
+              weapon = clauses[i].substring(10);
+            } else if (clauses[i].substring(6, 11) == "with ") {
+              weapon = clauses[i].substring(11);
+            } else if (clauses[i].substring(6, 13) == "with a ") {
+              weapon = clauses[i].substring(13);
+            } else if (clauses[i].substring(6, 14) == "with an ") {
+              weapon = clauses[i].substring(14);
+            } else if (clauses[i].substring(6, 15) == "with the ") {
+              weapon = clauses[i].substring(15);
+            } else {
+              weapon = clauses[i].substring(6);
+            }
+            response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (
+            clauses[i].substring(0, 7) == "attack " ||
+            clauses[i].substring(0, 7) == "strike " ||
+            clauses[i].substring(0, 7) == "thrust "
+          ) {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            } 
+            if (clauses[i].substring(7, 9) == "a ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(7, 10) == "an ") {
+              weapon = clauses[i].substring(10);
+            } else if (clauses[i].substring(7, 11) == "the ") {
+              weapon = clauses[i].substring(11);
+            } else if (clauses[i].substring(7, 12) == "with ") {
+              weapon = clauses[i].substring(12);
+            } else if (clauses[i].substring(7, 14) == "with a ") {
+              weapon = clauses[i].substring(14);
+            } else if (clauses[i].substring(7, 15) == "with an ") {
+              weapon = clauses[i].substring(15);
+            } else if (clauses[i].substring(7, 16) == "with the ") {
+              weapon = clauses[i].substring(16);
+            } else {
+              weapon = clauses[i].substring(7);
+            }
+            response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (clauses[i].substring(0, 4) == "aim ") {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            }
+            if (clauses[i].substring(4, 6) == "a ") {
+              weapon = clauses[i].substring(6);
+            } else if (clauses[i].substring(4, 7) == "an ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(4, 8) == "the ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(4, 9) == "with ") {
+              weapon = clauses[i].substring(9);
+            } else {
+              var weapon = clauses[i].substring(4);
+            }
+            var response = combatParse(
+              weapon,
+              "ranged",
+              mainHandUsed,
+              offHandUsed
+            );
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (clauses[i].substring(0, 5) == "fire ") {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            }
+            if (clauses[i].substring(5, 7) == "a ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(5, 8) == "an ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(5, 9) == "the ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(5, 10) == "with ") {
+              weapon = clauses[i].substring(10);
+            } else {
+              weapon = clauses[i].substring(5);
+            }
+            response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (
             clauses[i].substring(0, 4) == "shoot" ||
             clauses[i].substring(0, 4) == "snipe" ||
-            clauses[i].substring(0, 4) == "throw" ||
-            clauses[i].substring(0, 5) == "launch"
+            clauses[i].substring(0, 4) == "throw"
           ) {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
-            } else if (hasAttacked == true) {
-              quickPrint("You have already attacked with a weapon this turn.");
-            } else if (hasAttacked == false) {
-              hasAttacked = true;
-              text = ["weapon", "ranged"];
             }
+            if (clauses[i].substring(4, 6) == "a ") {
+              weapon = clauses[i].substring(6);
+            } else if (clauses[i].substring(4, 7) == "an ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(4, 8) == "the ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(4, 9) == "with ") {
+              weapon = clauses[i].substring(9);
+            } else {
+              weapon = clauses[i].substring(4);
+            }
+            response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
+          } else if (clauses[i].substring(0, 5) == "launch") {
+            if (getValue("isCombat") == false) {
+              quickPrint("You are not in combat.");
+            }
+            if (clauses[i].substring(5, 7) == "a ") {
+              weapon = clauses[i].substring(7);
+            } else if (clauses[i].substring(5, 8) == "an ") {
+              weapon = clauses[i].substring(8);
+            } else if (clauses[i].substring(5, 9) == "the ") {
+              weapon = clauses[i].substring(9);
+            } else if (clauses[i].substring(5, 10) == "with ") {
+              weapon = clauses[i].substring(10);
+            } else {
+              weapon = clauses[i].substring(5);
+            }
+            response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
+            mainHandUsed = response[0];
+            offHandUsed = response[1];
+            text = response[2];
           } else if (clauses[i].substring(0, 4) == "say ") {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
@@ -824,6 +991,31 @@ function handleUse(item) {
       }
     }
   }
+}
+
+function combatParse(weapon, type, mainHandUsed, offHandUsed) {
+  var equipment = getValue("equipment");
+  var mainHand = equipment["mainHand"];
+  var offHand = equipment["offHand"];
+  if (weapon == mainHand["name"].toLowerCase()) {
+    if (mainHandUsed == true) {
+      quickPrint("You have already attacked with that weapon this turn.");
+      return;
+    }
+    mainHandUsed = true;
+    var text = ["weapon", type];
+  } else if (weapon == offHand["name"].toLowerCase()) {
+    if (offHandUsed == true) {
+      quickPrint("You have already attacked with that weapon this turn.");
+      return;
+    }
+    offHandUsed = true;
+    text = ["weapon", type];
+  } else {
+    quickPrint("You do not have that weapon equipped.");
+    text = ["none"];
+  }
+  return mainHandUsed, offHandUsed, text;
 }
 
 function handleSpell(words) {
