@@ -322,7 +322,7 @@ class FirstBarracks extends Room {
     super(
       "First/Barracks",
       "imperialAcademy.firstBarracks",
-      "The first barracks is a large room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
+      "The first barracks is a small room with a few beds and footlockers. The inside of the doorframe is oddly pierced by an arrow. There is a door to the west, leading back to the military annex.",
       10.5,
       10.5
     );
@@ -340,7 +340,7 @@ class SecondBarracks extends Room {
     super(
       "Second/Barracks",
       "imperialAcademy.secondBarracks",
-      "The second barracks is a large room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
+      "The second barracks is a small room with a few beds and footlockers. As you look closer at one of the beds, you realize that there is a deep, dark red stain, in roughly the shape of a person's profile. There is a door to the east, leading back to the military annex.",
       10.5,
       10.5
     );
@@ -358,7 +358,7 @@ class Armory extends Room {
     super(
       "Armory",
       "imperialAcademy.armory",
-      "The armory is a large room with a few weapons racks and a few stands for pieces of armor. Oddly, much of the furniture has been strewn about, and none of the equipment remains. There is a door to the south, leading back to the military annex.",
+      "The armory is a small room with a few weapons racks and a few stands for pieces of armor. Oddly, much of the furniture has been strewn about, and none of the equipment remains. There is a door to the south, leading back to the military annex.",
       10.5,
       10.5
     );
@@ -375,7 +375,7 @@ var armory = new Armory();
 class SurvivorCamp extends Room {
   constructor() {
     super(
-      "Survivor Camp",
+      "Survivor/Camp",
       "imperialAcademy.survivorCamp",
       "The survivor camp is a small camp with a few tents and a campfire. There is a path to the north, leading back to the Imperial Academy.",
       10.5,
@@ -399,7 +399,7 @@ class AcademyEntrance extends Room {
       "Academy Entrance",
       "imperialAcademy.academyEntrance",
       "The entrance to the Imperial Academy is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the north, leading to the survivor camp, and a road to the south, leading to the Academy's bridge.",
-      10.5,
+      20.5,
       10.5
     );
     this.exits = {
@@ -414,11 +414,11 @@ var academyEntrance = new AcademyEntrance();
 class AcademyBridge extends Room {
   constructor() {
     super(
-      "Academy Bridge",
+      "Academy/Bridge",
       "imperialAcademy.academyBridge",
       "The Academy Bridge is a long stone bridge that spans a deep moat. There is a path to the north, leading to the Academy Entrance, and a path to the south, leading to two guard towers.",
       10.5,
-      10.5
+      20.5
     );
     this.exits = {
       north: "imperialAcademy.academyEntrance",
@@ -435,12 +435,12 @@ class GuardTowers extends Room {
       "Guard Towers",
       "imperialAcademy.guardTowers",
       "The two guard towers are large stone towers that stand in front of the Academy Bridge. There is a path to the north, leading to the Academy Bridge, and a path to the south, leading to the nexus of the Imperial Citadel.",
-      10.5,
+      20.5,
       10.5
     );
     this.exits = {
       north: "imperialAcademy.academyBridge",
-      south: "imperialCitadel.nexus",
+      south: "imperialNexus.nexus",
     };
   }
 }

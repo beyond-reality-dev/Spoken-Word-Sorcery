@@ -13,7 +13,7 @@ class MarketEntrance extends Room {
     );
     this.items = {};
     this.exits = {
-      east: "imperialCitadel.nexus",
+      east: "imperialNexus.nexus",
       west: "imperialMarket.market",
     };
   }

@@ -12,7 +12,7 @@ class PortEntrance extends Room {
     );
     this.items = {};
     this.exits = {
-      west: "imperialCitadel.nexus",
+      west: "imperialNexus.nexus",
       east: "imperialPort.port",
     };
     this.enemies = [

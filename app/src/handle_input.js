@@ -14,7 +14,7 @@ const {
   updateUI,
   updateEquipment,
 } = require("./save_data");
-const { toTitleCase, quickPrint, printLines } = require("./general");
+const { toTitleCase, quickPrint, printLines, requireAnswer } = require("./general");
 const { handleCombat } = require("./combat");
 const { enemies } = require("./class_collections");
 const { spells } = require("./class_collections");
@@ -53,7 +53,7 @@ async function closedInput() {
 async function openInput(combatOverride = false) {
   return new Promise(function (resolve) {
     const input = document.getElementById("input-bar");
-    function handleKeyPress(event) {
+    async function handleKeyPress(event) {
       if (event.key === "Enter") {
         event.preventDefault();
         var text = input.innerText;
@@ -82,9 +82,18 @@ async function openInput(combatOverride = false) {
             clauses[i].substring(0, 12) == "instructions"
           ) {
             printLines("app/src/help.txt");
-          } else if (clauses[i].substring(0, 19) == "debug: teleport to ") {
-            changeValue("location", clauses[i].substring(19));
-            handleMovement("load");
+          } else if (clauses[i].substring(0, 5) == "debug") {
+            var choice = await closedInput();
+            if (choice == "teleport") {
+              var location = await closedInput();
+              try {
+                changeValue("location", location);
+                handleMovement("load");
+              } catch (error) {
+                console.log(error);
+                quickPrint("Invalid location.");
+              }
+            }
           } else if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
             addEntity(memory, "memories");
