@@ -15,6 +15,41 @@ function updateMap() {
   var currentLocation = locations[primaryLocation][secondaryLocation];
   var locationName = currentLocation["name"];
   var exits = currentLocation["exits"];
+  const mapTitle = document.getElementById("map-title");
+  const map = document.getElementById("map");
+  mapTitle.innerHTML = "";
+  mapTitle.innerHTML += `Current Location: ${locationName}`;
+  if (exits["north"]) {
+    const north = eval(exits["north"]);
+    mapTitle.innerHTML += "<br></br>";
+    mapTitle.innerHTML += `You can go north to the ${north["name"]}`;
+  }
+  if (exits["west"]) {
+    const west = eval(exits["west"]);
+    mapTitle.innerHTML += "<br></br>";
+    mapTitle.innerHTML += `You can go west to the ${west["name"]}`;
+  }
+  if (exits["east"]) {
+    const east = eval(exits["east"]);
+    mapTitle.innerHTML += "<br></br>";
+    mapTitle.innerHTML += `You can go east to the ${east["name"]}`;
+  }
+  if (exits["south"]) {
+    const south = eval(exits["south"]);
+    mapTitle.innerHTML += "<br></br>";
+    mapTitle.innerHTML += `You can go south to the ${south["name"]}`;
+  }
+}
+
+function oldUpdateMap() {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var location = playerData["location"];
+  var primaryLocation = location.split(".")[0];
+  var secondaryLocation = location.split(".")[1];
+  var locations = playerData["locations"];
+  var currentLocation = locations[primaryLocation][secondaryLocation];
+  var locationName = currentLocation["name"];
+  var exits = currentLocation["exits"];
   const map = document.getElementById("map");
   map.innerHTML = "";
   const mapTitle = document.getElementById("map-title");
