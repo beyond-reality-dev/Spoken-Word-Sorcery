@@ -355,6 +355,8 @@ function updateEquipment() {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   var attackValue = 0;
+  var mainHandAttackValue = 0;
+  var offHandAttackValue = 0;
   if (equipment["head"] != null) {
     var itemName = equipment["head"]["name"];
     var itemDescription = equipment["head"]["description"];
@@ -362,7 +364,7 @@ function updateEquipment() {
     var itemWeight = equipment["head"]["weight"];
     document.getElementById(
       "head"
-    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
   } else {
     document.getElementById("head").innerHTML = "";
@@ -374,7 +376,7 @@ function updateEquipment() {
     itemWeight = equipment["chest"]["weight"];
     document.getElementById(
       "chest"
-    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
   } else {
     document.getElementById("chest").innerHTML = "";
@@ -386,7 +388,7 @@ function updateEquipment() {
     itemWeight = equipment["legs"]["weight"];
     document.getElementById(
       "legs"
-    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
   } else {
     document.getElementById("legs").innerHTML = "";
@@ -398,7 +400,7 @@ function updateEquipment() {
     itemWeight = equipment["feet"]["weight"];
     document.getElementById(
       "feet"
-    ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+    ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
     armorValue = armorValue + itemArmorValue;
   } else {
     document.getElementById("feet").innerHTML = "";
@@ -412,13 +414,22 @@ function updateEquipment() {
       var itemRangeValue = equipment["mainHand"]["rangeValue"];
       document.getElementById(
         "mainHand"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      var attackValue = addDice(attackValue, itemAttackValue);
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      attackValue = addDice(attackValue, itemAttackValue);
+      mainHandAttackValue = itemAttackValue;
+    } else if (equipment["mainHand"]["rangedAttackValue"] != 0) {
+      var itemAttackValue = equipment["mainHand"]["rangedAttackValue"];
+      var itemRangeValue = equipment["mainHand"]["rangeValue"];
+      document.getElementById(
+        "mainHand"
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      attackValue = addDice(attackValue, itemAttackValue);
+      mainHandAttackValue = itemAttackValue;
     } else if (equipment["mainHand"]["armorValue"] != 0) {
       var itemArmorValue = equipment["mainHand"]["armorValue"];
       document.getElementById(
         "mainHand"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       armorValue = armorValue + itemArmorValue;
     }
   } else {
@@ -433,13 +444,22 @@ function updateEquipment() {
       itemRangeValue = equipment["offHand"]["rangeValue"];
       document.getElementById(
         "offHand"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
       attackValue = addDice(attackValue, itemAttackValue);
+      offHandAttackValue = itemAttackValue;
+    } else if (equipment["offHand"]["rangedAttackValue"] != 0) {
+      itemAttackValue = equipment["offHand"]["rangedAttackValue"];
+      itemRangeValue = equipment["offHand"]["rangeValue"];
+      document.getElementById(
+        "offHand"
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      attackValue = addDice(attackValue, itemAttackValue);
+      offHandAttackValue = itemAttackValue;
     } else if (equipment["offHand"]["armorValue"] != 0) {
       itemArmorValue = equipment["offHand"]["armorValue"];
       document.getElementById(
         "offHand"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Def: ${itemArmorValue} | Wgt: ${itemWeight}</option>`;
       armorValue = armorValue + itemArmorValue;
     }
   } else {
@@ -453,16 +473,16 @@ function updateEquipment() {
       var itemManaValue = equipment["accessory"]["manaValue"];
       document.getElementById(
         "accessory"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Mana↑: ${itemManaValue} | Wgt: ${itemWeight}</option>`;
     } else if (equipment["accessory"]["speedValue"] != 0) {
       var itemSpeedValue = equipment["accessory"]["speedValue"];
       document.getElementById(
         "accessory"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Spd↑: ${itemSpeedValue} | Wgt: ${itemWeight}</option>`;
     } else {
       document.getElementById(
         "accessory"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Wgt: ${itemWeight}</option>`;
     }
   } else {
     document.getElementById("accessory").innerHTML = "";
@@ -675,10 +695,12 @@ function levelScaling(dice, type = "null") {
   var scale = Math.floor(level / 10);
   if (type == "bothHands") {
     scale = scale * 2;
-    dice = [dice[0] + scale, dice[1]];
+    var scaledDice = Number(dice[0]) + scale;
+    dice = `${scaledDice}d${dice[1]}`;
     return dice;
   } else {
-    dice = [dice[0] + scale, dice[1]];
+    scaledDice = Number(dice[0]) + scale;
+    dice = `${scaledDice}d${dice[1]}`;
     return dice;
   }
 }

@@ -73,8 +73,11 @@ async function handlePlayerTurn(enemies, length) {
   }
   if (choiceInput[1] == "0" && choiceInput[2] == "none") {
     return enemies;
+  } else if (choiceInput[1] == "none") {
+    return enemies;
   }
   if (choice == "weapon") {
+    console.log(choice);
     for (let i = 0; i < enemies.length; i++) {
       var enemy = eval(enemies[i]);
       if (enemy.position == getValue("direction")) {
@@ -84,37 +87,20 @@ async function handlePlayerTurn(enemies, length) {
       }
     }
     if (enemy != null) {
-      var playerAttack = getValue("attack");
+      var weaponType = choiceInput[1];
+      var hand = choiceInput[2];
       var equipment = getValue("equipment");
-      var mainHand = equipment["mainHand"];
-      var offHand = equipment["offHand"];
-      var used = false;
-      if (choiceInput[1] == "ranged") {
-        playerAttack = 0;
-        if (mainHand != null) {
-          if (mainHand.hasOwnProperty("ammunition")) {
-            var result = checkAmmo(mainHand, enemies);
-            enemies = result[0];
-            used = result[1];
-            if (used == true) {
-              playerAttack = addDice(playerAttack, mainHand.attack);
-            }
-          }
-        }
-        if (offHand != null) {
-          if (offHand.hasOwnProperty("ammunition")) {
-            var result = checkAmmo(offHand, enemies);
-            enemies = result[0];
-            used = result[1];
-            if (used == true) {
-              playerAttack = addDice(playerAttack, offHand.attack);
-            }
-          }
-        }
-        if (used != true) {
-          quickPrint("You do not have a ranged weapon equipped.");
+      var weapon = equipment[hand];
+      if (weaponType == "melee") {
+        var playerAttack = weapon.attackValue;
+        console.log(playerAttack);
+      } else if (weaponType == "ranged") {
+        var ammoCheck = checkAmmo(weapon, enemies);
+        enemies = ammoCheck[0];
+        if (ammoCheck[1] == false) {
           return enemies;
         }
+        var playerAttack = weapon.rangedAttackValue;
       }
       try {
         playerAttack = levelScaling(playerAttack);
@@ -141,13 +127,8 @@ async function handlePlayerTurn(enemies, length) {
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         calculateValue("experiencePoints", "add", enemy.xp);
-        if (enemy.gold > 0) {
-          calculateValue("gold", "add", enemy.gold);
-          quickPrint(`You picked up ${enemy.gold} gold from ${enemy.name}.`);
-        }
+        calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
-          var item = enemy.items[i];
-          addEntity(item, "inventory");
           if (itemName.charAt(0).match(/[aeiou]/i)) {
             quickPrint(`${enemy.name} dropped an ${item.name}.`);
           } else {
@@ -160,7 +141,8 @@ async function handlePlayerTurn(enemies, length) {
           var locations = playerData["locations"];
           locations[primaryLocation][secondaryLocation]["items"].push(item);
         }
-        enemies.splice(0, 1);
+        var index = enemies.indexOf(enemy);
+        enemies.splice(index, 1);
       }
     } else {
       quickPrint("There is no enemy in that direction.");

@@ -42,7 +42,7 @@ async function grandHallEncounter() {
     printLines(
       "app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/6.txt"
     );
-    changeValue("imperialAcademy.militaryAnnex.isLocked", false, "locations");
+    changeValue("imperialAcademy.longPassage.isLocked", false, "locations");
   } else if (
     getValue("imperialAcademy.militaryAnnex", true).cutscenePlayed == true
   ) {
