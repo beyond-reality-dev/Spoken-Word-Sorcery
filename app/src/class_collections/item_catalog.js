@@ -207,7 +207,7 @@ class LongBow extends RangedWeapon {
   }
 }
 
-class LightCrossBow extends Weapon {
+class LightCrossbow extends Weapon {
   constructor(
     quantity = 1,
     name = "Light Crossbow",
@@ -229,7 +229,7 @@ class LightCrossBow extends Weapon {
   }
 }
 
-class HeavyCrossBow extends Weapon {
+class HeavyCrossbow extends Weapon {
   constructor(
     quantity = 1,
     name = "Heavy Crossbow",
@@ -758,8 +758,8 @@ module.exports = {
   RangedWeapon,
   ShortBow,
   LongBow,
-  LightCrossBow,
-  HeavyCrossBow,
+  LightCrossbow,
+  HeavyCrossbow,
   Dart,
   Javelin,
   ThrowingAxe,

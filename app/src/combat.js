@@ -417,7 +417,16 @@ async function handleEnemyTurn(enemy, enemies, i) {
     calculateValue("currentHealth", "subtract", playerDamage);
     quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
   } else if (playerDistance > enemyRange) {
-    tryToMoveAndAttack(playerX, playerY, enemyX, enemyY, enemy, enemyRange, i);
+    tryToMoveAndAttack(
+      playerX,
+      playerY,
+      enemyX,
+      enemyY,
+      enemy,
+      enemyRange,
+      i,
+      enemies
+    );
   }
   return enemies;
 }
@@ -429,9 +438,9 @@ function tryToMoveAndAttack(
   enemyY,
   enemy,
   enemyRange,
-  i
+  i,
+  enemies
 ) {
-  console.log(`Original enemy position: ${enemyX}, ${enemyY}`);
   var differenceX = playerX - enemyX;
   differenceX = differenceX - 1;
   if (differenceX > 0) {
@@ -450,11 +459,8 @@ function tryToMoveAndAttack(
   differenceY = Math.abs(differenceY);
   var originalDifferenceX = differenceX;
   var originalDifferenceY = differenceY;
-  var budget = 4; // Enemies can move up to 4 tiles per turn.
+  var budget = 4; // Enemies can move up to 4 tiles per turn, the equivalent of 20 ft.
   while (budget >= 1) {
-    console.log(budget);
-    console.log(differenceX);
-    console.log(differenceY);
     if (differenceX == 0 && differenceY == 0) {
       budget = 0;
     } else if (differenceX > 0 && differenceY > 0 && budget >= 1.5) {
@@ -462,25 +468,81 @@ function tryToMoveAndAttack(
       enemyY = enemyY + multiplierY;
       differenceX = differenceX - 1;
       differenceY = differenceY - 1;
-      budget = budget - 1.5;
+      var cost = 1.5;
+      var direction = "diagonal";
+      budget = budget - cost;
     } else if (differenceX > 0 && budget >= 1) {
       enemyX = enemyX + multiplierX;
       differenceX = differenceX - 1;
-      budget = budget - 1;
+      cost = 1;
+      direction = "horizontal";
+      budget = 1;
     } else if (differenceY > 0 && budget >= 1) {
       enemyY = enemyY + multiplierY;
       differenceY = differenceY - 1;
-      budget = budget - 1;
+      cost = 1;
+      direction = "vertical";
+      budget = budget - cost;
+    }
+    for (let j = 0; j < enemies.length; j++) {
+      if (j != i) {
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        var locations = playerData["locations"];
+        var primaryLocation = getValue("location").split(".")[0];
+        var secondaryLocation = getValue("location").split(".")[1];
+        var enemies = locations[primaryLocation][secondaryLocation]["enemies"];
+        var otherEnemy = enemies[j];
+        var otherEnemyPosition = otherEnemy.position;
+        var otherEnemyX = otherEnemyPosition[0];
+        var otherEnemyY = otherEnemyPosition[1];
+        console.log(
+          `Current Enemy | ${enemy.name} position: ${enemyX}, ${enemyY}`
+        );
+        console.log(
+          `Other Enemy | ${otherEnemy.name} position: ${otherEnemyX}, ${otherEnemyY}`
+        );
+        if (
+          (enemyX == otherEnemyX && enemyY == otherEnemyY) ||
+          (enemyX == playerX && enemyY == playerY)
+        ) {
+          console.log("Enemy moved into another enemy's space.");
+          if (direction == "diagonal") {
+            if (multiplierX > 0 && multiplierY > 0) {
+              enemyX = enemyX - 1;
+              enemyY = enemyY - 1;
+            } else if (multiplierX > 0 && multiplierY < 0) {
+              enemyX = enemyX - 1;
+              enemyY = enemyY + 1;
+            } else if (multiplierX < 0 && multiplierY > 0) {
+              enemyX = enemyX + 1;
+              enemyY = enemyY - 1;
+            } else if (multiplierX < 0 && multiplierY < 0) {
+              enemyX = enemyX + 1;
+              enemyY = enemyY + 1;
+            }
+          } else if (direction == "horizontal") {
+            if (multiplierX > 0) {
+              enemyX = enemyX - 1;
+            } else if (multiplierX < 0) {
+              enemyX = enemyX + 1;
+            }
+          } else if (direction == "vertical") {
+            if (multiplierY > 0) {
+              enemyY = enemyY - 1;
+            } else if (multiplierY < 0) {
+              enemyY = enemyY + 1;
+            }
+          }
+        }
+      }
     }
   }
-  console.log(enemyX, enemyY);
   enemyPosition = [enemyX, enemyY];
-  console.log(`New enemy position: ${enemyX}, ${enemyY}`);
   if (originalDifferenceX > 0 && originalDifferenceY > 0) {
     var distanceTraveled = Math.sqrt(
-    (originalDifferenceX * 5) ** 2 + (originalDifferenceX * 5) ** 2
-  );
-  distanceTraveled = Math.floor(distanceTraveled);
+      (originalDifferenceX * 5) ** 2 + (originalDifferenceX * 5) ** 2
+    );
+    distanceTraveled = Math.floor(distanceTraveled);
   } else if (originalDifferenceX > 0) {
     distanceTraveled = originalDifferenceX * 5;
   } else if (originalDifferenceY > 0) {
@@ -497,15 +559,15 @@ function tryToMoveAndAttack(
   var locations = playerData["locations"];
   var primaryLocation = getValue("location").split(".")[0];
   var secondaryLocation = getValue("location").split(".")[1];
-  console.log(locations[primaryLocation][secondaryLocation]["enemies"]);
-  console.log(enemy.name);
-  console.log(locations[primaryLocation][secondaryLocation]["enemies"][i]);
-  locations[primaryLocation][secondaryLocation]["enemies"][i]["position"] = enemyPosition;
+  locations[primaryLocation][secondaryLocation]["enemies"][i]["position"] =
+    enemyPosition;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   if (enemyDistance <= enemyRange) {
     var playerDefense = getRandomInt(getValue("armor"));
     var enemyAttack = diceRoll(enemy.attack);
     var rolls = enemyAttack[0];
+    var attackDescription = enemy.attackDescription;
+    quickPrint(attackDescription);
     for (let i = 0; i < rolls.length; i++) {
       quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
     }
