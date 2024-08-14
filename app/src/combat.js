@@ -56,6 +56,7 @@ async function handleCombat() {
 }
 
 async function handlePlayerTurn() {
+  changeValue("movementPoints", 4);
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   var enemies = currentLocation.enemies;
@@ -619,6 +620,8 @@ function tryToMoveAndAttack(
 
 function handleCombatMovement(direction, magnitude) {
   var playerPosition = getValue("position");
+  var playerDirection = getValue("direction");
+  var combinedDirection = findDirection(playerDirection, direction);
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
   var location = getValue("location");
@@ -629,7 +632,486 @@ function handleCombatMovement(direction, magnitude) {
   var locationHeight = location.height;
   locationHeight = Math.floor(locationHeight);
   verticalTiles = locationHeight / 5;
+  var newPosition = [];
+  var budget = getValue("movementPoints");
+  var magnitude = magnitude / 5;
+  switch (combinedDirection) {
+    case "north":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (playerY - magnitude < 0) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX, playerY - magnitude];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. north.`);
+        }
+      }
+      break;
+    case "northeast":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (
+        playerY - magnitude < 0 ||
+        playerX + magnitude > horizontalTiles
+      ) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX + magnitude, playerY - magnitude];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. northeast.`);
+        }
+      }
+      break;
+    case "east":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (playerX + magnitude > horizontalTiles) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX + magnitude, playerY];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. east.`);
+        }
+      }
+      break;
+    case "southeast":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (
+        playerY + magnitude > verticalTiles ||
+        playerX + magnitude > horizontalTiles
+      ) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX + magnitude, playerY + magnitude];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. southeast.`);
+        }
+      }
+      break;
+    case "south":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (playerY + magnitude > verticalTiles) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX, playerY + magnitude];
+        console.log(newPosition);
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. south.`);
+        }
+      }
+      break;
+    case "southwest":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (
+        playerY + magnitude > verticalTiles ||
+        playerX - magnitude < 0
+      ) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX - magnitude, playerY + magnitude];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. southwest.`);
+        }
+      }
+      break;
+    case "west":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (playerX - magnitude < 0) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX - magnitude, playerY];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. west.`);
+        }
+      }
+      break;
+    case "northwest":
+      budget = budget - magnitude;
+      if (budget < 0) {
+        quickPrint("You cannot move more than 20 feet in one turn.");
+        return;
+      } else if (playerY - magnitude < 0 || playerX - magnitude < 0) {
+        quickPrint("You cannot move out of bounds.");
+        return;
+      } else {
+        newPosition = [playerX - magnitude, playerY - magnitude];
+        if (findEnemiesInCell(newPosition) == true) {
+          quickPrint("You cannot move into a cell with an enemy.");
+          return;
+        } else {
+          changeValue("position", newPosition);
+          changeValue("movementPoints", budget);
+          magnitude = magnitude * 5;
+          quickPrint(`You moved ${magnitude} ft. northwest.`);
+        }
+      }
+      break;
+    default:
+      quickPrint("You cannot move in that direction.");
+      break;
+  }
+}
 
+function findDirection(playerDirection, direction) {
+  switch (playerDirection) {
+    case "north":
+      if (direction == "forward" || direction == "forwards") {
+        return "north";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "south";
+      } else if (direction == "left") {
+        return "west";
+      } else if (direction == "right") {
+        return "east";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "northwest";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "northeast";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "southwest";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "southeast";
+      }
+      break;
+    case "northeast":
+      if (direction == "forward" || direction == "forwards") {
+        return "northeast";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "southwest";
+      } else if (direction == "left") {
+        return "north";
+      } else if (direction == "right") {
+        return "east";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "north";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "northeast";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "southwest";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "south";
+      }
+      break;
+    case "east":
+      if (direction == "forward" || direction == "forwards") {
+        return "east";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "west";
+      } else if (direction == "left") {
+        return "north";
+      } else if (direction == "right") {
+        return "south";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "northeast";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "southeast";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "northwest";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "southwest";
+      }
+      break;
+    case "southeast":
+      if (direction == "forward" || direction == "forwards") {
+        return "southeast";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "northwest";
+      } else if (direction == "left") {
+        return "south";
+      } else if (direction == "right") {
+        return "east";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "south";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "southeast";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "northwest";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "north";
+      }
+      break;
+    case "south":
+      if (direction == "forward" || direction == "forwards") {
+        return "south";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "north";
+      } else if (direction == "left") {
+        return "east";
+      } else if (direction == "right") {
+        return "west";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "southeast";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "southwest";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "northeast";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "northwest";
+      }
+      break;
+    case "southwest":
+      if (direction == "forward" || direction == "forwards") {
+        return "southwest";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "northeast";
+      } else if (direction == "left") {
+        return "south";
+      } else if (direction == "right") {
+        return "west";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "south";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "southwest";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "northeast";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "north";
+      }
+      break;
+    case "west":
+      if (direction == "forward" || direction == "forwards") {
+        return "west";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "east";
+      } else if (direction == "left") {
+        return "south";
+      } else if (direction == "right") {
+        return "north";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "southwest";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "northwest";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "southeast";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "northeast";
+      }
+      break;
+    case "northwest":
+      if (direction == "forward" || direction == "forwards") {
+        return "northwest";
+      } else if (
+        direction == "back" ||
+        direction == "backward" ||
+        direction == "backwards"
+      ) {
+        return "southeast";
+      } else if (direction == "left") {
+        return "north";
+      } else if (direction == "right") {
+        return "west";
+      } else if (direction == "left forward" || direction == "left forwards") {
+        return "north";
+      } else if (
+        direction == "right forward" ||
+        direction == "right forwards"
+      ) {
+        return "northwest";
+      } else if (
+        direction == "left back" ||
+        direction == "left backward" ||
+        direction == "left backwards"
+      ) {
+        return "southeast";
+      } else if (
+        direction == "right back" ||
+        direction == "right backward" ||
+        direction == "right backwards"
+      ) {
+        return "south";
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+function findEnemiesInCell(targetCell) {
+  var location = getValue("location");
+  location = eval(location, true);
+  var enemies = location.enemies;
+  var enemiesInCell = false;
+  for (let i = 0; i < enemies.length; i++) {
+    var enemy = enemies[i];
+    var enemyPosition = enemy.position;
+    if (enemyPosition == targetCell) {
+      enemiesInCell = true;
+    }
+  }
+  return enemiesInCell;
 }
 
 module.exports = { handleCombat, handleCombatMovement };

@@ -46,6 +46,7 @@ function initializeData(saveFile) {
     encumbrance: 0,
     direction: "north",
     position: [0, 0],
+    movementPoints: 0,
     location: "imperialAcademy.trainingRoom",
     isCombat: false,
     gameSpeed: 1000,

@@ -144,31 +144,26 @@ async function openInput(combatOverride = false) {
               continue;
             }
             if (getValue("isCombat") == true) {
-              result = parseCombatMovements(clauses[i], "left ");
-              if (clauses[i].substring(3, 16) == "left forward ") {
-                var distance = clauses[i].substring(16);
-                // split distance into number and direction
-                if (distance.split(" ").length > 1) {
-                  distance = distance.split(" ")[0];
-                  distance = parseInt(distance);
+              if (clauses[i].substring(3, 10) == "to the ") {
+                var result = parseCombatMovements(clauses[i], 10);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
                 } else {
-                  distance = parseInt(distance);
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
                 }
-                handleCombatMovement("left forward", distance);
-              } else if (direction == "right forward ") {
-                handleCombatMovement("right forward");
-              if (direction == "forward" || direction == "forwards") {
-                handleCombatMovement("forward");
-              } else if (
-                direction == "back" ||
-                direction == "backward" ||
-                direction == "backwards"
-              ) {
-                handleCombatMovement("backward");
               } else {
-                quickPrint(
-                  "While in combat, you can only move forward or backward."
-                );
+                var result = parseCombatMovements(clauses[i], 3);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
+                } else {
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
+                }
               }
             } else {
               if (clauses[i].substring(3, 10) == "to the ") {
@@ -184,19 +179,26 @@ async function openInput(combatOverride = false) {
               continue;
             }
             if (getValue("isCombat") == true) {
-              direction = clauses[i].substring(4);
-              if (direction == "forward" || direction == "forwards") {
-                handleCombatMovement("forward");
-              } else if (
-                direction == "back" ||
-                direction == "backward" ||
-                direction == "backwards"
-              ) {
-                handleCombatMovement("backward");
+              if (clauses[i].substring(4, 11) == "to the ") {
+                var result = parseCombatMovements(clauses[i], 11);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
+                } else {
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
+                }
               } else {
-                quickPrint(
-                  "While in combat, you can only move forward or backward."
-                );
+                var result = parseCombatMovements(clauses[i], 4);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
+                } else {
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
+                }
               }
             } else {
               if (clauses[i].substring(4, 11) == "to the ") {
@@ -216,19 +218,26 @@ async function openInput(combatOverride = false) {
               continue;
             }
             if (getValue("isCombat") == true) {
-              direction = clauses[i].substring(5);
-              if (direction == "forward" || direction == "forwards") {
-                handleCombatMovement("forward");
-              } else if (
-                direction == "back" ||
-                direction == "backward" ||
-                direction == "backwards"
-              ) {
-                handleCombatMovement("backward");
+              if (clauses[i].substring(5, 12) == "to the ") {
+                var result = parseCombatMovements(clauses[i], 12);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
+                } else {
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
+                }
               } else {
-                quickPrint(
-                  "While in combat, you can only move forward or backward."
-                );
+                var result = parseCombatMovements(clauses[i], 5);
+                if (result == false) {
+                  quickPrint("Invalid movement.");
+                  continue;
+                } else {
+                  var direction = result[0];
+                  var distance = result[1];
+                  handleCombatMovement(direction, distance);
+                }
               }
             } else {
               if (clauses[i].substring(5, 12) == "to the ") {
@@ -834,29 +843,177 @@ function handleTurn(direction, change, halfway) {
 }
 
 function parseCombatMovements(clause, firstSubstring) {
-  var result = parseCombatMovement(clause, "forward", firstSubstring, firstSubstring + 8);
+  var result = parseCombatMovement(
+    clause,
+    "forward",
+    firstSubstring,
+    firstSubstring + 7
+  );
   if (result != false) {
     return result;
   }
-  result = parseCombatMovement(clause, "forwards", firstSubstring, firstSubstring + 9);
+  result = parseCombatMovement(
+    clause,
+    "forwards",
+    firstSubstring,
+    firstSubstring + 8
+  );
   if (result != false) {
     return result;
   }
-  result = parseCombatMovement(clause, "back", firstSubstring, firstSubstring + 5);
-  result = parseCombatMovement(clause, "backward", firstSubstring, firstSubstring + 8);
-  result = parseCombatMovement(clause, "backwards", firstSubstring, firstSubstring + 10);
-  result = parseCombatMovement(clause, "left", firstSubstring, firstSubstring + 5);
-  result = parseCombatMovement(clause, "right", firstSubstring, firstSubstring + 6);
+  result = parseCombatMovement(
+    clause,
+    "back",
+    firstSubstring,
+    firstSubstring + 4
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "backward",
+    firstSubstring,
+    firstSubstring + 7
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "backwards",
+    firstSubstring,
+    firstSubstring + 9
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left",
+    firstSubstring,
+    firstSubstring + 4
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right",
+    firstSubstring,
+    firstSubstring + 5
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left forward",
+    firstSubstring,
+    firstSubstring + 13
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left forwards",
+    firstSubstring,
+    firstSubstring + 14
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left back",
+    firstSubstring,
+    firstSubstring + 10
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left backward",
+    firstSubstring,
+    firstSubstring + 13
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "left backwards",
+    firstSubstring,
+    firstSubstring + 15
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right forward",
+    firstSubstring,
+    firstSubstring + 14
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right forwards",
+    firstSubstring,
+    firstSubstring + 15
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right back",
+    firstSubstring,
+    firstSubstring + 11
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right backward",
+    firstSubstring,
+    firstSubstring + 14
+  );
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(
+    clause,
+    "right backwards",
+    firstSubstring,
+    firstSubstring + 16
+  );
+  if (result != false) {
+    return result;
+  }
+  return false;
 }
 
 function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
+  console.log(clause.substring(firstSubstring, lastSubstring));
   if (clause.substring(firstSubstring, lastSubstring) == direction) {
-    var distance = clause[i].substring(lastSubstring);
+    var distance = clause.substring(lastSubstring);
     if (distance.split(" ").length > 1) {
-      distance = distance.split(" ")[0];
+      distance = distance.split(" ")[1];
       distance = parseInt(distance);
+      console.log("distance: " + distance);
     } else {
+      console.log("distance: " + distance);
       distance = parseInt(distance);
+    }
+    // if distance is not a number, return false
+    if (isNaN(distance)) {
+      return false;
     }
     return [direction, distance];
   } else {
