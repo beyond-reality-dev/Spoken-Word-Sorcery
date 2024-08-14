@@ -31,21 +31,7 @@ function updateMap() {
   );
   console.log(getValue("isCombat"));
   if (getValue("isCombat") == true) {
-    var enemies = currentLocation["enemies"];
-    console.log(enemies);
-    for (let i = 0; i < enemies.length; i++) {
-      var enemy = enemies[i];
-      var enemyPosition = enemy["position"];
-      console.log(startingX);
-      var roomWidth = locations[primaryLocation][secondaryLocation]["width"];
-      var roomHeight = locations[primaryLocation][secondaryLocation]["height"];
-      var enemyX = startingX + (enemyPosition[0] - 1) * 60;
-      var enemyY = startingY + (enemyPosition[1] - 1) * 60;
-      ctx.fillStyle = "red";
-      ctx.fillRect(enemyX, enemyY, 10, 10);
-      ctx.fillStyle = "black";
-      ctx.strokeRect(enemyX, enemyY, 10, 10);
-    }
+    buildCombatMap(canvas, ctx, currentLocation, startingX, startingY);
   } else {
     if (locationName.split("/").length > 1) {
       locationName = locationName.split("/");
@@ -66,8 +52,112 @@ function updateMap() {
         canvas.height / 2 + 0.5
       );
     }
+    buildRooms(exits, startingWidth, startingHeight, startingX, startingY);
   }
-  //buildRooms(exits, startingWidth, startingHeight, startingX, startingY);
+}
+
+function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
+  ctx.font = "bold 40px Segoe UI";
+  ctx.textAlign = "center";
+  title = currentLocation["name"];
+  if (title.split("/").length > 1) {
+    console.log(title);
+    title = title.split("/");
+    console.log(title);
+    title = title[0] + " " + title[1];
+  }
+  ctx.fillText(title, canvas.width / 2 + 0.5, 50);
+  var enemies = currentLocation["enemies"];
+  console.log(enemies);
+  for (let i = 0; i < enemies.length; i++) {
+    var enemy = enemies[i];
+    var enemyPosition = enemy["position"];
+    var paddingX = startingX + 15;
+    var paddingY = startingY + 15;
+    var enemyX = paddingX + (enemyPosition[0] - 1) * 50;
+    var enemyY = paddingY + (enemyPosition[1] - 1) * 50;
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(enemyX + 12.5, enemyY + 12.5, 12.5, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+    ctx.fillStyle = "black";
+    ctx.stroke();
+    ctx.font = "bold 10px Segoe UI";
+    ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
+  }
+  var playerPosition = getValue("position");
+  var paddingX = startingX + 15;
+  var paddingY = startingY + 15;
+  var playerX = paddingX + (playerPosition[0] - 1) * 50;
+  var playerY = paddingY + (playerPosition[1] - 1) * 50;
+  ctx.fillStyle = "blue";
+  ctx.beginPath();
+  ctx.arc(playerX + 12.5, playerY + 12.5, 12.5, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.closePath();
+  ctx.fillStyle = "black";
+  ctx.stroke();
+  var direction = getValue("direction");
+  var directionX = playerX + 12.5;
+  var directionY = playerY + 12.5;
+  ctx.beginPath();
+  ctx.moveTo(directionX, directionY);
+  switch (direction) {
+    case "north":
+      ctx.lineTo(directionX, directionY - 25);
+      ctx.lineTo(directionX - 5, directionY - 20);
+      ctx.moveTo(directionX, directionY - 25);
+      ctx.lineTo(directionX + 5, directionY - 20);
+      break;
+    case "northeast":
+      ctx.lineTo(directionX + 25, directionY - 25);
+      ctx.lineTo(directionX + 20, directionY - 20);
+      ctx.moveTo(directionX + 25, directionY - 25);
+      ctx.lineTo(directionX + 20, directionY - 20);
+      break;
+    case "east":
+      ctx.lineTo(directionX + 25, directionY);
+      ctx.lineTo(directionX + 20, directionY - 5);
+      ctx.moveTo(directionX + 25, directionY);
+      ctx.lineTo(directionX + 20, directionY + 5);
+      break;
+    case "southeast":
+      ctx.lineTo(directionX + 25, directionY + 25);
+      ctx.lineTo(directionX + 20, directionY + 20);
+      ctx.moveTo(directionX + 25, directionY + 25);
+      ctx.lineTo(directionX + 20, directionY + 20);
+      break;
+    case "south":
+      ctx.lineTo(directionX, directionY + 25);
+      ctx.lineTo(directionX - 5, directionY + 20);
+      ctx.moveTo(directionX, directionY + 25);
+      ctx.lineTo(directionX + 5, directionY + 20);
+      break;
+    case "southwest":
+      ctx.lineTo(directionX - 25, directionY + 25);
+      ctx.lineTo(directionX - 20, directionY + 20);
+      ctx.moveTo(directionX - 25, directionY + 25);
+      ctx.lineTo(directionX - 20, directionY + 20);
+      break;
+    case "west":
+      ctx.lineTo(directionX - 25, directionY);
+      ctx.lineTo(directionX - 20, directionY - 5);
+      ctx.moveTo(directionX - 25, directionY);
+      ctx.lineTo(directionX - 20, directionY + 5);
+      break;
+    case "northwest":
+      ctx.lineTo(directionX - 25, directionY - 25);
+      ctx.lineTo(directionX - 20, directionY - 20);
+      ctx.moveTo(directionX - 25, directionY - 25);
+      ctx.lineTo(directionX - 20, directionY - 20);
+      break;
+  }
+  ctx.stroke();
+  ctx.fillText(getValue("name"), playerX + 12.5, playerY - 5);
+  // Increase the scale of everything on the canvas, but do not change the size of the canvas
+  // This will make everything on the canvas larger
+  // without using ctx.scale() which will make the canvas larger
 }
 
 function buildRooms(
