@@ -193,6 +193,7 @@ async function handlePlayerTurn() {
       localStorage.setItem("playerData", JSON.stringify(playerData));
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
+        quickPrint(`You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`);
         calculateValue("experiencePoints", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
@@ -266,6 +267,7 @@ async function handlePlayerTurn() {
         localStorage.setItem("playerData", JSON.stringify(playerData));
         if (enemy.health <= 0) {
           quickPrint(`You have defeated ${enemy.name}.`);
+          quickPrint(`You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`);
           calculateValue("experiencePoints", "add", enemy.xp);
           calculateValue("gold", "add", enemy.gold);
           for (var i = 0; i < enemy.items.length; i++) {

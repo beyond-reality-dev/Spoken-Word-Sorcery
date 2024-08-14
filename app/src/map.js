@@ -29,22 +29,45 @@ function updateMap() {
     startingWidth + 1.5,
     startingHeight + 1.5
   );
-  if (locationName.split("/").length > 1) {
-    locationName = locationName.split("/");
-    ctx.fillText(
-      locationName[0],
-      startingX + startingWidth / 2 + 0.5,
-      startingY + startingHeight / 2 - 10.5
-    );
-    ctx.fillText(
-      locationName[1],
-      startingX + startingWidth / 2 + 0.5,
-      startingY + startingHeight / 2 + 10.5
-    );
+  console.log(getValue("isCombat"));
+  if (getValue("isCombat") == true) {
+    var enemies = currentLocation["enemies"];
+    console.log(enemies);
+    for (let i = 0; i < enemies.length; i++) {
+      var enemy = enemies[i];
+      var enemyPosition = enemy["position"];
+      console.log(startingX);
+      var roomWidth = locations[primaryLocation][secondaryLocation]["width"];
+      var roomHeight = locations[primaryLocation][secondaryLocation]["height"];
+      var enemyX = startingX + (enemyPosition[0] - 1) * 60;
+      var enemyY = startingY + (enemyPosition[1] - 1) * 60;
+      ctx.fillStyle = "red";
+      ctx.fillRect(enemyX, enemyY, 10, 10);
+      ctx.fillStyle = "black";
+      ctx.strokeRect(enemyX, enemyY, 10, 10);
+    }
   } else {
-    ctx.fillText(locationName, canvas.width / 2 + 0.5, canvas.height / 2 + 0.5);
+    if (locationName.split("/").length > 1) {
+      locationName = locationName.split("/");
+      ctx.fillText(
+        locationName[0],
+        startingX + startingWidth / 2 + 0.5,
+        startingY + startingHeight / 2 - 10.5
+      );
+      ctx.fillText(
+        locationName[1],
+        startingX + startingWidth / 2 + 0.5,
+        startingY + startingHeight / 2 + 10.5
+      );
+    } else {
+      ctx.fillText(
+        locationName,
+        canvas.width / 2 + 0.5,
+        canvas.height / 2 + 0.5
+      );
+    }
   }
-  buildRooms(exits, startingWidth, startingHeight, startingX, startingY);
+  //buildRooms(exits, startingWidth, startingHeight, startingX, startingY);
 }
 
 function buildRooms(
