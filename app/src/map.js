@@ -16,6 +16,7 @@ function updateMap() {
   var startingHeight = currentLocation["height"] * 10;
   var startingX = canvas.width / 2 - startingWidth / 2;
   var startingY = canvas.height / 2 - startingHeight / 2;
+  ctx.lineWidth = 2;
   ctx.font = "bold 20px Segoe UI";
   ctx.textAlign = "center";
   ctx.clearRect(startingX, startingY, startingWidth, startingHeight);
@@ -31,7 +32,8 @@ function updateMap() {
   );
   console.log(getValue("isCombat"));
   if (getValue("isCombat") == true) {
-    buildCombatMap(canvas, ctx, currentLocation, startingX, startingY);
+    buildCombatMap(ctx, currentLocation, startingX, startingY);
+    buildRooms(exits, startingWidth, startingHeight, startingX, startingY, 4);
   } else {
     if (locationName.split("/").length > 1) {
       locationName = locationName.split("/");
@@ -54,19 +56,10 @@ function updateMap() {
     }
     buildRooms(exits, startingWidth, startingHeight, startingX, startingY);
   }
+  drawCompass(ctx, canvas.width, canvas.height);
 }
 
-function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
-  ctx.font = "bold 40px Segoe UI";
-  ctx.textAlign = "center";
-  title = currentLocation["name"];
-  if (title.split("/").length > 1) {
-    console.log(title);
-    title = title.split("/");
-    console.log(title);
-    title = title[0] + " " + title[1];
-  }
-  ctx.fillText(title, canvas.width / 2 + 0.5, 50);
+function buildCombatMap(ctx, currentLocation, startingX, startingY) {
   var enemies = currentLocation["enemies"];
   console.log(enemies);
   for (let i = 0; i < enemies.length; i++) {
@@ -76,14 +69,14 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
     var paddingY = startingY + 15;
     var enemyX = paddingX + (enemyPosition[0] - 1) * 50;
     var enemyY = paddingY + (enemyPosition[1] - 1) * 50;
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "salmon";
     ctx.beginPath();
     ctx.arc(enemyX + 12.5, enemyY + 12.5, 12.5, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
     ctx.fillStyle = "black";
     ctx.stroke();
-    ctx.font = "bold 10px Segoe UI";
+    ctx.font = "bold 12px Segoe UI";
     ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
   }
   var playerPosition = getValue("position");
@@ -91,7 +84,7 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
   var paddingY = startingY + 15;
   var playerX = paddingX + (playerPosition[0] - 1) * 50;
   var playerY = paddingY + (playerPosition[1] - 1) * 50;
-  ctx.fillStyle = "blue";
+  ctx.fillStyle = "lightblue";
   ctx.beginPath();
   ctx.arc(playerX + 12.5, playerY + 12.5, 12.5, 0, 2 * Math.PI);
   ctx.fill();
@@ -111,10 +104,10 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
       ctx.lineTo(directionX + 5, directionY - 20);
       break;
     case "northeast":
-      ctx.lineTo(directionX + 25, directionY - 25);
       ctx.lineTo(directionX + 20, directionY - 20);
-      ctx.moveTo(directionX + 25, directionY - 25);
-      ctx.lineTo(directionX + 20, directionY - 20);
+      ctx.lineTo(directionX + 12.5, directionY - 20);
+      ctx.moveTo(directionX + 20, directionY - 20);
+      ctx.lineTo(directionX + 20, directionY - 12.5);
       break;
     case "east":
       ctx.lineTo(directionX + 25, directionY);
@@ -123,10 +116,10 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
       ctx.lineTo(directionX + 20, directionY + 5);
       break;
     case "southeast":
-      ctx.lineTo(directionX + 25, directionY + 25);
       ctx.lineTo(directionX + 20, directionY + 20);
-      ctx.moveTo(directionX + 25, directionY + 25);
-      ctx.lineTo(directionX + 20, directionY + 20);
+      ctx.lineTo(directionX + 20, directionY + 12.5);
+      ctx.moveTo(directionX + 20, directionY + 20);
+      ctx.lineTo(directionX + 12.5, directionY + 20);
       break;
     case "south":
       ctx.lineTo(directionX, directionY + 25);
@@ -135,10 +128,10 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
       ctx.lineTo(directionX + 5, directionY + 20);
       break;
     case "southwest":
-      ctx.lineTo(directionX - 25, directionY + 25);
       ctx.lineTo(directionX - 20, directionY + 20);
-      ctx.moveTo(directionX - 25, directionY + 25);
-      ctx.lineTo(directionX - 20, directionY + 20);
+      ctx.lineTo(directionX - 20, directionY + 12.5);
+      ctx.moveTo(directionX - 20, directionY + 20);
+      ctx.lineTo(directionX - 12.5, directionY + 20);
       break;
     case "west":
       ctx.lineTo(directionX - 25, directionY);
@@ -147,17 +140,14 @@ function buildCombatMap(canvas, ctx, currentLocation, startingX, startingY) {
       ctx.lineTo(directionX - 20, directionY + 5);
       break;
     case "northwest":
-      ctx.lineTo(directionX - 25, directionY - 25);
       ctx.lineTo(directionX - 20, directionY - 20);
-      ctx.moveTo(directionX - 25, directionY - 25);
-      ctx.lineTo(directionX - 20, directionY - 20);
+      ctx.lineTo(directionX - 20, directionY - 12.5);
+      ctx.moveTo(directionX - 20, directionY - 20);
+      ctx.lineTo(directionX - 12.5, directionY - 20);
       break;
   }
   ctx.stroke();
   ctx.fillText(getValue("name"), playerX + 12.5, playerY - 5);
-  // Increase the scale of everything on the canvas, but do not change the size of the canvas
-  // This will make everything on the canvas larger
-  // without using ctx.scale() which will make the canvas larger
 }
 
 function buildRooms(
@@ -173,6 +163,7 @@ function buildRooms(
   }
   const canvas = document.getElementById("map");
   const ctx = canvas.getContext("2d");
+  ctx.font = "bold 20px Segoe UI";
   if (exits["north"]) {
     var north = eval(getValue(exits["north"], true));
     var northExits = north["exits"];
@@ -333,6 +324,20 @@ function buildRooms(
       level--;
     }
   }
+}
+
+function drawCompass(ctx, width, height) {
+  ctx.font = "bold 20px Segoe UI";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "black";
+  ctx.fillText("N", width / 2, 20);
+  ctx.fillText("NE", width - 20, 20);
+  ctx.fillText("E", width - 20, height / 2);
+  ctx.fillText("SE", width - 20, height - 5);
+  ctx.fillText("S", width / 2, height - 5);
+  ctx.fillText("SW", 20, height - 5);
+  ctx.fillText("W", 20, height / 2);
+  ctx.fillText("NW", 20, 20);
 }
 
 module.exports = { updateMap };

@@ -1011,7 +1011,6 @@ function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
       console.log("distance: " + distance);
       distance = parseInt(distance);
     }
-    // if distance is not a number, return false
     if (isNaN(distance)) {
       return false;
     }
