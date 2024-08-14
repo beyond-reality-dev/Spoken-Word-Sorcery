@@ -96,7 +96,7 @@ class Spear extends Spell {
       "spear flies through the air ",
       5,
       "5d10",
-      1,
+      100,
       "damage"
     );
   }

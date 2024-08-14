@@ -339,13 +339,26 @@ function updateInventory() {
       continue;
     }
     if (items[i]["type"] == "Weapon") {
-      var itemAttackValue = items[i]["attackValue"];
-      var itemMinRange = items[i]["minRange"];
-      var itemEffectiveRange = items[i]["effectiveRange"];
-      var itemMaxRange = items[i]["maxRange"];
-      document.getElementById(
-        "weapons"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      if (items[i].hasOwnProperty("minRange")) {
+        var itemMinRange = items[i]["minRange"];
+        var itemEffectiveRange = items[i]["effectiveRange"];
+        var itemMaxRange = items[i]["maxRange"];
+        var itemRangedAttackValue = items[i]["rangedAttackValue"];
+        if (items[i].hasOwnProperty("attackValue")) {
+          document.getElementById(
+            "weapons"
+          ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+        } else {
+          document.getElementById(
+            "weapons"
+          ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+        }
+      } else {
+        var itemAttackValue = items[i]["attackValue"];
+        document.getElementById(
+          "weapons"
+        ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      }
     } else if (items[i]["type"] == "Armor") {
       var itemArmorValue = items[i]["armorValue"];
       document.getElementById(
@@ -434,22 +447,29 @@ function updateEquipment() {
     itemName = equipment["mainHand"]["name"];
     itemDescription = equipment["mainHand"]["description"];
     itemWeight = equipment["mainHand"]["weight"];
-    if (equipment["mainHand"]["attackValue"] != 0) {
+    if (equipment["mainHand"].hasOwnProperty("minRange")) {
+      var itemMinRange = equipment["mainHand"]["minRange"];
+      var itemEffectiveRange = equipment["mainHand"]["effectiveRange"];
+      var itemMaxRange = equipment["mainHand"]["maxRange"];
+      var itemRangedAttackValue = equipment["mainHand"]["rangedAttackValue"];
+      if (equipment["mainHand"].hasOwnProperty("attackValue")) {
+        var itemAttackValue = equipment["mainHand"]["attackValue"];
+        document.getElementById(
+          "mainHand"
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight}</option>`;
+        attackValue = addDice(attackValue, itemAttackValue);
+      } else {
+        document.getElementById(
+          "mainHand"
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight}</option>`;
+        attackValue = addDice(attackValue, itemRangedAttackValue);
+      }
+    } else if (equipment["mainHand"]["attackValue"] != 0) {
       var itemAttackValue = equipment["mainHand"]["attackValue"];
-      var itemRangeValue = equipment["mainHand"]["rangeValue"];
       document.getElementById(
         "mainHand"
-      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
+      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Wgt: ${itemWeight}</option>`;
       attackValue = addDice(attackValue, itemAttackValue);
-      mainHandAttackValue = itemAttackValue;
-    } else if (equipment["mainHand"]["rangedAttackValue"] != 0) {
-      var itemAttackValue = equipment["mainHand"]["rangedAttackValue"];
-      var itemRangeValue = equipment["mainHand"]["rangeValue"];
-      document.getElementById(
-        "mainHand"
-      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      attackValue = addDice(attackValue, itemAttackValue);
-      mainHandAttackValue = itemAttackValue;
     } else if (equipment["mainHand"]["armorValue"] != 0) {
       var itemArmorValue = equipment["mainHand"]["armorValue"];
       document.getElementById(
@@ -464,14 +484,25 @@ function updateEquipment() {
     itemName = equipment["offHand"]["name"];
     itemDescription = equipment["offHand"]["description"];
     itemWeight = equipment["offHand"]["weight"];
-    if (equipment["offHand"]["attackValue"] != 0) {
-      itemAttackValue = equipment["offHand"]["attackValue"];
-      itemRangeValue = equipment["offHand"]["rangeValue"];
-      document.getElementById(
-        "offHand"
-      ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight}</option>`;
-      attackValue = addDice(attackValue, itemAttackValue);
-      offHandAttackValue = itemAttackValue;
+    if (equipment["offHand"].hasOwnProperty("minRange")) {
+      var itemMinRange = equipment["offHand"]["minRange"];
+      var itemEffectiveRange = equipment["offHand"]["effectiveRange"];
+      var itemMaxRange = equipment["offHand"]["maxRange"];
+      var itemRangedAttackValue = equipment["offHand"]["rangedAttackValue"];
+      if (equipment["offHand"].hasOwnProperty("attackValue")) {
+        var itemAttackValue = equipment["offHand"]["attackValue"];
+        document.getElementById(
+          "offHand"
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight}</option>`;
+        attackValue = addDice(attackValue, itemAttackValue);
+        offHandAttackValue = itemAttackValue;
+      } else {
+        document.getElementById(
+          "offHand"
+        ).innerHTML = `<option id="${itemName}">${itemName} | ${itemDescription} | Rng Atk: ${itemRangedAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight}</option>`;
+        attackValue = addDice(attackValue, itemRangedAttackValue);
+        offHandAttackValue = itemRangedAttackValue;
+      }
     } else if (equipment["offHand"]["rangedAttackValue"] != 0) {
       itemAttackValue = equipment["offHand"]["rangedAttackValue"];
       itemRangeValue = equipment["offHand"]["rangeValue"];

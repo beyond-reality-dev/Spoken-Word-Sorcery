@@ -81,7 +81,7 @@ async function handlePlayerTurn() {
   );
   var helpAsked = true;
   while (helpAsked == true) {
-    choiceInput = await openInput();
+    var choiceInput = await openInput();
     var choice = choiceInput[0];
     if (choice != "help" && choice != "info" && choice != "instructions") {
       helpAsked = false;
@@ -94,6 +94,10 @@ async function handlePlayerTurn() {
   }
   if (choice == "weapon") {
     for (let i = 0; i < enemies.length; i++) {
+      enemy = enemies[i];
+      var enemyPosition = enemy.position;
+      enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
+      enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
       if (enemyDirection == getValue("direction")) {
         break;
       } else {
@@ -114,7 +118,12 @@ async function handlePlayerTurn() {
           distance = "outOfRange";
         }
       } else if (weaponType == "ranged") {
-        var ammoCheck = checkAmmo(weapon, enemies);
+        try {
+          var ammoCheck = checkAmmo(weapon, enemies);
+        } catch (error) {
+          quickPrint("You do not have any ammunition for that weapon.");
+          return enemies;
+        }
         enemies = ammoCheck[0];
         if (ammoCheck[1] == false) {
           return enemies;
@@ -143,7 +152,7 @@ async function handlePlayerTurn() {
         quickPrint("The enemy is out of range.");
         return enemies;
       } else if (distance == "tooClose") {
-        quickPrint("You are too close to the enemy.");
+        quickPrint("You are too close to the enemy, move back to attack.");
         return enemies;
       } else if (distance == "barelyInRange") {
         quickPrint(
@@ -195,22 +204,18 @@ async function handlePlayerTurn() {
         }
         var index = enemies.indexOf(enemy);
         enemies.splice(index, 1);
+        locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+        playerData["gold"] = getValue("gold");
+        playerData["experiencePoints"] = getValue("experiencePoints");
+        localStorage.setItem("playerData", JSON.stringify(playerData));
       }
     } else {
       quickPrint("There is no enemy in that direction.");
     }
   } else if (choice == "spell") {
     var spellPower = choiceInput[1];
-    var spellEffect = choiceInput[2];
-    var spellRange = choiceInput[3];
-    if (enemyDistance <= spellRange) {
-      distance = "inRange";
-      quickPrint("The enemy is in range.");
-    } else if (enemyDistance > spellRange) {
-      distance = "outOfRange";
-      quickPrint("The enemy is out of range.");
-      return enemies;
-    }
+    var spellEffect = choiceInput[3];
+    var spellRange = choiceInput[4];
     spellPower = levelScaling(spellPower);
     quickPrint(`You roll ${spellPower}.`);
     var rolledDice = diceRoll(spellPower);
@@ -221,6 +226,10 @@ async function handlePlayerTurn() {
     spellPower = rolledDice[1];
     var spellDirection = choiceInput[2];
     for (let i = 0; i < enemies.length; i++) {
+      enemy = enemies[i];
+      var enemyPosition = enemy.position;
+      enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
+      enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
       if (enemyDirection == spellDirection) {
         break;
       } else {
@@ -228,6 +237,14 @@ async function handlePlayerTurn() {
       }
     }
     if (enemy != null) {
+      if (enemyDistance <= spellRange) {
+        distance = "inRange";
+        quickPrint("The enemy is in range.");
+      } else if (enemyDistance > spellRange) {
+        distance = "outOfRange";
+        quickPrint("The enemy is out of range.");
+        return enemies;
+      }
       if (spellEffect == "damage") {
         playerRange = spellRange;
         enemyDefense = getRandomInt(enemy.armor);
@@ -247,15 +264,26 @@ async function handlePlayerTurn() {
         locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
         localStorage.setItem("playerData", JSON.stringify(playerData));
         if (enemy.health <= 0) {
-          if (itemName.charAt(0).match(/[aeiou]/i)) {
-            quickPrint(`${enemy.name} dropped an ${item.name}.`);
-          } else {
-            quickPrint(`${enemy.name} dropped a ${item.name}.`);
+          quickPrint(`You have defeated ${enemy.name}.`);
+          calculateValue("experiencePoints", "add", enemy.xp);
+          calculateValue("gold", "add", enemy.gold);
+          for (var i = 0; i < enemy.items.length; i++) {
+            var item = enemy.items[i];
+            var itemName = item.name;
+            if (itemName.charAt(0).match(/[aeiou]/i)) {
+              quickPrint(`${enemy.name} dropped an ${item.name}.`);
+            } else {
+              quickPrint(`${enemy.name} dropped a ${item.name}.`);
+            }
+            locations[primaryLocation][secondaryLocation]["items"].push(item);
           }
-          locations[primaryLocation][secondaryLocation]["items"].push(item);
+          var index = enemies.indexOf(enemy);
+          enemies.splice(index, 1);
+          playerData["gold"] = getValue("gold");
+          playerData["experiencePoints"] = getValue("experiencePoints");
+          locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+          localStorage.setItem("playerData", JSON.stringify(playerData));
         }
-        var index = enemies.indexOf(enemy);
-        enemies.splice(index, 1);
       }
     } else if (spellEffect == "healthIncrease") {
       if (spellDirection != "Within") {
@@ -495,17 +523,10 @@ function tryToMoveAndAttack(
         var otherEnemyPosition = otherEnemy.position;
         var otherEnemyX = otherEnemyPosition[0];
         var otherEnemyY = otherEnemyPosition[1];
-        console.log(
-          `Current Enemy | ${enemy.name} position: ${enemyX}, ${enemyY}`
-        );
-        console.log(
-          `Other Enemy | ${otherEnemy.name} position: ${otherEnemyX}, ${otherEnemyY}`
-        );
         if (
           (enemyX == otherEnemyX && enemyY == otherEnemyY) ||
           (enemyX == playerX && enemyY == playerY)
         ) {
-          console.log("Enemy moved into another enemy's space.");
           if (direction == "diagonal") {
             if (multiplierX > 0 && multiplierY > 0) {
               enemyX = enemyX - 1;
@@ -596,6 +617,19 @@ function tryToMoveAndAttack(
   }
 }
 
-function handleCombatMovement(direction) {}
+function handleCombatMovement(direction, magnitude) {
+  var playerPosition = getValue("position");
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  var location = getValue("location");
+  location = eval(location, true);
+  var locationWidth = location.width;
+  locationWidth = Math.floor(locationWidth);
+  horizontalTiles = locationWidth / 5;
+  var locationHeight = location.height;
+  locationHeight = Math.floor(locationHeight);
+  verticalTiles = locationHeight / 5;
+
+}
 
 module.exports = { handleCombat, handleCombatMovement };

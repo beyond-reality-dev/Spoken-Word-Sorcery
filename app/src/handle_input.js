@@ -144,7 +144,19 @@ async function openInput(combatOverride = false) {
               continue;
             }
             if (getValue("isCombat") == true) {
-              direction = clauses[i].substring(3);
+              result = parseCombatMovements(clauses[i], "left ");
+              if (clauses[i].substring(3, 16) == "left forward ") {
+                var distance = clauses[i].substring(16);
+                // split distance into number and direction
+                if (distance.split(" ").length > 1) {
+                  distance = distance.split(" ")[0];
+                  distance = parseInt(distance);
+                } else {
+                  distance = parseInt(distance);
+                }
+                handleCombatMovement("left forward", distance);
+              } else if (direction == "right forward ") {
+                handleCombatMovement("right forward");
               if (direction == "forward" || direction == "forwards") {
                 handleCombatMovement("forward");
               } else if (
@@ -451,7 +463,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1]];
+            text = [response[2], response[3], response[4]];
           } else if (clauses[i].substring(0, 5) == "stab ") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -476,7 +488,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (
             clauses[i].substring(0, 6) == "fight " ||
             clauses[i].substring(0, 6) == "slash " ||
@@ -534,7 +546,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "melee", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (clauses[i].substring(0, 4) == "aim ") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -558,7 +570,7 @@ async function openInput(combatOverride = false) {
             );
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (clauses[i].substring(0, 5) == "fire ") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -577,7 +589,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (
             clauses[i].substring(0, 4) == "shoot" ||
             clauses[i].substring(0, 4) == "snipe" ||
@@ -600,7 +612,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (clauses[i].substring(0, 5) == "launch") {
             if (getValue("isCombat") == false) {
               quickPrint("You are not in combat.");
@@ -619,7 +631,7 @@ async function openInput(combatOverride = false) {
             response = combatParse(weapon, "ranged", mainHandUsed, offHandUsed);
             mainHandUsed = response[0];
             offHandUsed = response[1];
-            text = [response[2][0], response[2][1], response[2][2]];
+            text = [response[2], response[3], response[4]];
           } else if (clauses[i].substring(0, 4) == "say ") {
             if (getValue("isCombat") == false && combatOverride == false) {
               quickPrint("You are not in combat.");
@@ -819,6 +831,37 @@ function handleTurn(direction, change, halfway) {
     }
   }
   quickPrint("You are now facing " + getValue("direction") + ".");
+}
+
+function parseCombatMovements(clause, firstSubstring) {
+  var result = parseCombatMovement(clause, "forward", firstSubstring, firstSubstring + 8);
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(clause, "forwards", firstSubstring, firstSubstring + 9);
+  if (result != false) {
+    return result;
+  }
+  result = parseCombatMovement(clause, "back", firstSubstring, firstSubstring + 5);
+  result = parseCombatMovement(clause, "backward", firstSubstring, firstSubstring + 8);
+  result = parseCombatMovement(clause, "backwards", firstSubstring, firstSubstring + 10);
+  result = parseCombatMovement(clause, "left", firstSubstring, firstSubstring + 5);
+  result = parseCombatMovement(clause, "right", firstSubstring, firstSubstring + 6);
+}
+
+function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
+  if (clause.substring(firstSubstring, lastSubstring) == direction) {
+    var distance = clause[i].substring(lastSubstring);
+    if (distance.split(" ").length > 1) {
+      distance = distance.split(" ")[0];
+      distance = parseInt(distance);
+    } else {
+      distance = parseInt(distance);
+    }
+    return [direction, distance];
+  } else {
+    return false;
+  }
 }
 
 function handleMovement(direction) {

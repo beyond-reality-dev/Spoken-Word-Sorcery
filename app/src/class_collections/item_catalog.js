@@ -158,7 +158,7 @@ class RangedWeapon {
     this.maxRange = maxRange;
     this.weight = weight;
     this.quantity = quantity;
-    this.type = "weapon";
+    this.type = "Weapon";
   }
 }
 
