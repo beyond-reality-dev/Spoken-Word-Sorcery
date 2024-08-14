@@ -8,6 +8,13 @@ const {
 } = require("./save_data");
 const { quickPrint, diceRoll, getRandomInt, addDice } = require("./general");
 const { openInput } = require("./handle_input");
+const {
+  imperialAcademy,
+  imperialMarket,
+  imperialNexus,
+  imperialPalace,
+  imperialPort,
+} = require("./class_collections/locations/index");
 
 async function handleCombat() {
   changeValue("isCombat", true);
@@ -96,7 +103,7 @@ async function handlePlayerTurn(enemies, length) {
       var weapon = equipment[hand];
       if (weaponType == "melee") {
         var playerAttack = weapon.attackValue;
-        var playerRange = 5;
+        var playerRange = 7.5;
         if (enemyDistance <= playerRange) {
           distance = "inRange";
         } else if (enemyDistance < playerRange) {
@@ -369,71 +376,147 @@ async function handleEnemyTurn(enemy, enemies) {
   var locationHeight = location.height;
   locationHeight = Math.floor(locationHeight);
   verticalTiles = locationHeight / 5;
-  if (enemy.hasOwnProperty("range")) {
-    var enemyRange = enemy.range;
-    if (playerDistance <= enemyRange) {
-      var playerDefense = getRandomInt(getValue("armor"));
-      if (playerDefense > 0) {
-        quickPrint(
-          `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
-        );
-      }
-      var playerDamage = Math.max(enemy.attack - playerDefense, 0);
-      var tempHealth = getValue("tempHealth");
-      if (tempHealth > 0) {
-        var difference = playerDamage - tempHealth;
-        if (difference > 0) {
-          playerDamage = difference;
-          tempHealth = 0;
-        } else {
-          tempHealth = tempHealth - playerDamage;
-          playerDamage = 0;
-        }
-        changeValue("tempHealth", tempHealth);
-      }
-      calculateValue("currentHealth", "subtract", playerDamage);
-      quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-    } else if (playerDistance > enemyRange) {
-      // Try to move closer to the player 
-      enemy.position = [enemyX, enemyY];
+  var enemyRange = enemy.range;
+  if (playerDistance <= enemyRange) {
+    var playerDefense = getRandomInt(getValue("armor"));
+    var enemyAttack = diceRoll(enemy.attack);
+    var rolls = enemyAttack[0];
+    for (let i = 0; i < rolls.length; i++) {
+      quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
     }
-  } else {
-    var minRange = enemy.minRange;
-    var effectiveRange = enemy.effectiveRange;
-    var maxRange = enemy.maxRange;
+    if (playerDefense > 0) {
+      quickPrint(
+        `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
+      );
+    }
+    var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
+    var tempHealth = getValue("tempHealth");
+    if (tempHealth > 0) {
+      var difference = playerDamage - tempHealth;
+      if (difference > 0) {
+        playerDamage = difference;
+        tempHealth = 0;
+      } else {
+        tempHealth = tempHealth - playerDamage;
+        playerDamage = 0;
+      }
+      changeValue("tempHealth", tempHealth);
+    }
+    calculateValue("currentHealth", "subtract", playerDamage);
+    quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+  } else if (playerDistance > enemyRange) {
+    tryToMoveAndAttack(playerX, playerY, enemyX, enemyY, enemy, enemyRange);
   }
   return enemies;
 }
 
-/*
-var rolledDice = diceRoll(enemy.attack);
-  var rolls = rolledDice[0];
-  for (let i = 0; i < rolls.length; i++) {
-    quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
+function tryToMoveAndAttack(
+  playerX,
+  playerY,
+  enemyX,
+  enemyY,
+  enemy,
+  enemyRange
+) {
+  var differenceX = playerX - enemyX;
+  if (differenceX > 0) {
+    var multiplierX = 1;
+  } else {
+    var multiplierX = -1;
   }
-  var enemyAttack = rolledDice[1];
-  var playerDefense = getRandomInt(getValue("armor"));
-  if (playerDefense > 0) {
-    quickPrint(
-      `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
-    );
+  differenceX = Math.abs(differenceX);
+  var originalDifferenceX = differenceX;
+  if (differenceX > 0) {
+    differenceX = differenceX - 1;
+  } else {
+    differenceX = 0;
   }
-  var playerDamage = Math.max(enemyAttack - playerDefense, 0);
-  var tempHealth = getValue("tempHealth");
-  if (tempHealth > 0) {
-    var difference = playerDamage - tempHealth;
-    if (difference > 0) {
-      playerDamage = difference;
-      tempHealth = 0;
-    } else {
-      tempHealth = tempHealth - playerDamage;
-      playerDamage = 0;
+  var differenceY = playerY - enemyY;
+  if (differenceY > 0) {
+    var multiplierY = 1;
+  } else {
+    var multiplierY = -1;
+  }
+  differenceY = Math.abs(differenceY);
+  var originalDifferenceY = differenceY;
+  if (differenceY > 0) {
+    differenceY = differenceY - 1;
+  } else {
+    differenceY = 0;
+  }
+  var budget = 4; // Enemies can move up to 4 tiles per turn.
+  while (budget >= 1) {
+    console.log(budget);
+    console.log(differenceX);
+    console.log(differenceY);
+    if (differenceX == 0 && differenceY == 0) {
+      budget = 0;
+    } else if (differenceX > 0 && differenceY > 0 && budget >= 1.5) {
+      enemyX = enemyX + multiplierX;
+      enemyY = enemyY + multiplierY;
+      differenceX = differenceX - 1;
+      differenceY = differenceY - 1;
+      budget = budget - 1.5;
+    } else if (differenceX > 0 && budget >= 1) {
+      enemyX = enemyX + multiplierX;
+      differenceX = differenceX - 1;
+      budget = budget - 1;
+    } else if (differenceY > 0 && budget >= 1) {
+      enemyY = enemyY + multiplierY;
+      differenceY = differenceY - 1;
+      budget = budget - 1;
     }
-    changeValue("tempHealth", tempHealth);
   }
-  calculateValue("currentHealth", "subtract", playerDamage);
-  quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-  */
+  changeValue("position", [enemyX, enemyY]);
+  if (originalDifferenceX > 0 && originalDifferenceY > 0) {
+    var distanceTraveled = Math.sqrt(
+    (originalDifferenceX * 5) ** 2 + (originalDifferenceX * 5) ** 2
+  );
+  distanceTraveled = Math.floor(distanceTraveled);
+  } else if (originalDifferenceX > 0) {
+    distanceTraveled = originalDifferenceX * 5;
+  } else if (originalDifferenceY > 0) {
+    distanceTraveled = originalDifferenceY * 5;
+  }
+  var enemyPosition = enemy.position;
+  var playerPosition = getValue("position");
+  var relationship = calculateRelationship(enemyPosition, playerPosition);
+  var enemyDirection = relationship[0];
+  var enemyDistance = relationship[1];
+  quickPrint(
+    `${enemy.name} moved ${distanceTraveled} ft. to be ${enemyDistance} ft. from you, to your ${enemyDirection}.`
+  );
+  if (enemyDistance <= enemyRange) {
+    var playerDefense = getRandomInt(getValue("armor"));
+    var enemyAttack = diceRoll(enemy.attack);
+    var rolls = enemyAttack[0];
+    for (let i = 0; i < rolls.length; i++) {
+      quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
+    }
+    if (playerDefense > 0) {
+      quickPrint(
+        `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
+      );
+    }
+    var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
+    var tempHealth = getValue("tempHealth");
+    if (tempHealth > 0) {
+      var difference = playerDamage - tempHealth;
+      if (difference > 0) {
+        playerDamage = difference;
+        tempHealth = 0;
+      } else {
+        tempHealth = tempHealth - playerDamage;
+        playerDamage = 0;
+      }
+      changeValue("tempHealth", tempHealth);
+    }
+    calculateValue("currentHealth", "subtract", playerDamage);
+    quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+  } else {
+    quickPrint("You are still out of range of the enemy's attack.");
+  }
+}
 
 function handleCombatMovement(direction) {}
 

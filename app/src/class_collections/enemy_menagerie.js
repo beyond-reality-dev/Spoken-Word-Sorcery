@@ -41,9 +41,7 @@ class RangedEnemy extends Enemy {
     health,
     armor,
     attack,
-    minRange,
-    effectiveRange,
-    maxRange,
+    range,
     speed,
     gold,
     xp,
@@ -55,9 +53,7 @@ class RangedEnemy extends Enemy {
       health,
       armor,
       attack,
-      minRange,
-      effectiveRange,
-      maxRange,
+      range,
       speed,
       gold,
       xp,
@@ -68,13 +64,13 @@ class RangedEnemy extends Enemy {
 
 class RebelArcher extends RangedEnemy {
   constructor(name, position, items = [new catalog.ShortBow()]) {
-    super(name, position, 50, 0, "1d6", 10, 60, 300, 10, 5, 10, items);
+    super(name, position, 50, 0, "1d6", 60, 10, 5, 10, items);
   }
 }
 
 class RebelCrossbowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.LightCrossBow()]) {
-    super(name, position, 50, 0, "1d8", 10, 30, 150, 10, 5, 10, items);
+    super(name, position, 50, 0, "1d8", 30, 10, 5, 10, items);
   }
 }
 
