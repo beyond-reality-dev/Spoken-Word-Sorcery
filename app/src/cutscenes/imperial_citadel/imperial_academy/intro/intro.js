@@ -65,7 +65,7 @@ async function intro() {
     addEntity(new Remember(), "knownSpells");
     addEntity(new Remember(), "spokenSpells");
     addEntity("I must use the Power sparingly for its cost is my mind, my sanity, my very humanity.", "memories");
-    addEntity("I am loyal to, and shall give my life to defend if necessary, the Arcane Order and the Empire.", "memories");
+    addEntity("For as long as I remain on this earth, I shall be loyal to the Arcane Order and the Empire.", "memories");
     addEntity("I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.", "memories");
     addEntity(new Fire(), "knownSpells");
     addEntity(new Water(), "knownSpells");
@@ -146,12 +146,12 @@ async function intro() {
   printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/7.txt");
   await requireAnswer(
     [
-      "i am loyal to and shall give my life to defend if necessary the arcane order and the empire",
+      "for as long as i remain on this earth i shall be loyal to the arcane order and the empire",
     ],
     '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"'
   );
   addEntity(
-    "I am loyal to, and shall give my life to defend if necessary, the Arcane Order and the Empire.",
+    "For as long as I remain on this earth, I shall be loyal to the Arcane Order and the Empire.",
     "memories"
   );
   printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/8.txt");
@@ -247,8 +247,8 @@ async function intro() {
   var away = new Away();
   addEntity(away, "knownSpells");
   await openInput(true);
-  while (getValue("direction") == "north" || getValue("currentMana") >= 40) {
-    printLines("app/src/cutscenes/imperial_academy/intro/14.txt");
+  while (getValue("direction") == "north" || getValue("currentMana") >= 90) {
+    printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/14.txt");
     await openInput(true);
   }
   await printLines(

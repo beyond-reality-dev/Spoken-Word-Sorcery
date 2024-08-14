@@ -115,12 +115,29 @@ async function openInput(combatOverride = false) {
             }
             hasTurned = true;
             var direction = getValue("direction");
-            if (clauses[i].substring(5, 12) == "to the ") {
-              var change = clauses[i].substring(12);
+            if (clauses[i].substring(5, 13) == "halfway ") {
+              if (clauses[i].substring(13, 20) == "to the ") {
+                var change = clauses[i].substring(20);
+              } else {
+                change = clauses[i].substring(13);
+              }
+              var halfTurn = true;
+            } else if (clauses[i].substring(5, 14) == "slightly ") {
+              if (clauses[i].substring(14, 21) == "to the ") {
+                change = clauses[i].substring(21);
+              } else {
+                change = clauses[i].substring(14);
+              }
+              halfTurn = true;
             } else {
-              change = clauses[i].substring(5);
+              if (clauses[i].substring(5, 12) == "to the ") {
+                change = clauses[i].substring(12);
+              } else {
+                change = clauses[i].substring(5);
+              }
+              halfTurn = false;
             }
-            handleTurn(direction, change);
+            handleTurn(direction, change, halfTurn);
           } else if (clauses[i].substring(0, 3) == "go ") {
             if (hasMoved == true) {
               quickPrint("You have already moved this turn.");
@@ -713,48 +730,93 @@ async function inputLoop() {
   }
 }
 
-function handleTurn(direction, change) {
-  switch (change) {
-    case "left":
-      if (direction == "north") {
-        changeValue("direction", "northwest");
-      } else if (direction == "northeast") {
-        changeValue("direction", "north");
-      } else if (direction == "east") {
-        changeValue("direction", "northeast");
-      } else if (direction == "southeast") {
-        changeValue("direction", "east");
-      } else if (direction == "south") {
-        changeValue("direction", "southeast");
-      } else if (direction == "southwest") {
-        changeValue("direction", "south");
-      } else if (direction == "west") {
-        changeValue("direction", "southwest");
-      } else if (direction == "northwest") {
-        changeValue("direction", "west");
-      }
-      break;
-    case "right":
-      if (direction == "north") {
-        changeValue("direction", "northeast");
-      } else if (direction == "northeast") {
-        changeValue("direction", "east");
-      } else if (direction == "east") {
-        changeValue("direction", "southeast");
-      } else if (direction == "southeast") {
-        changeValue("direction", "south");
-      } else if (direction == "south") {
-        changeValue("direction", "southwest");
-      } else if (direction == "southwest") {
-        changeValue("direction", "west");
-      } else if (direction == "west") {
-        changeValue("direction", "northwest");
-      } else if (direction == "northwest") {
-        changeValue("direction", "north");
-      }
-      break;
-    default:
-      break;
+function handleTurn(direction, change, halfway) {
+  if (halfway == true) {
+    switch (change) {
+      case "left":
+        if (direction == "north") {
+          changeValue("direction", "northwest");
+        } else if (direction == "northeast") {
+          changeValue("direction", "north");
+        } else if (direction == "east") {
+          changeValue("direction", "northeast");
+        } else if (direction == "southeast") {
+          changeValue("direction", "east");
+        } else if (direction == "south") {
+          changeValue("direction", "southeast");
+        } else if (direction == "southwest") {
+          changeValue("direction", "south");
+        } else if (direction == "west") {
+          changeValue("direction", "southwest");
+        } else if (direction == "northwest") {
+          changeValue("direction", "west");
+        }
+        break;
+      case "right":
+        if (direction == "north") {
+          changeValue("direction", "northeast");
+        } else if (direction == "northeast") {
+          changeValue("direction", "east");
+        } else if (direction == "east") {
+          changeValue("direction", "southeast");
+        } else if (direction == "southeast") {
+          changeValue("direction", "south");
+        } else if (direction == "south") {
+          changeValue("direction", "southwest");
+        } else if (direction == "southwest") {
+          changeValue("direction", "west");
+        } else if (direction == "west") {
+          changeValue("direction", "northwest");
+        } else if (direction == "northwest") {
+          changeValue("direction", "north");
+        }
+        break;
+      default:
+        break;
+    }
+  } else {
+    switch (change) {
+      case "left":
+        if (direction == "north") {
+          changeValue("direction", "west");
+        } else if (direction == "northeast") {
+          changeValue("direction", "northwest");
+        } else if (direction == "east") {
+          changeValue("direction", "north");
+        } else if (direction == "southeast") {
+          changeValue("direction", "northeast");
+        } else if (direction == "south") {
+          changeValue("direction", "east");
+        } else if (direction == "southwest") {
+          changeValue("direction", "southeast");
+        } else if (direction == "west") {
+          changeValue("direction", "south");
+        } else if (direction == "northwest") {
+          changeValue("direction", "southwest");
+        }
+        break;
+      case "right":
+        if (direction == "north") {
+          changeValue("direction", "east");
+        } else if (direction == "northeast") {
+          changeValue("direction", "southeast");
+        } else if (direction == "east") {
+          changeValue("direction", "south");
+        } else if (direction == "southeast") {
+          changeValue("direction", "southwest");
+        } else if (direction == "south") {
+          changeValue("direction", "west");
+        } else if (direction == "southwest") {
+          changeValue("direction", "northwest");
+        } else if (direction == "west") {
+          changeValue("direction", "north");
+        } else if (direction == "northwest") {
+          changeValue("direction", "northeast");
+        }
+        break;
+      default:
+        break;
+    }
   }
   quickPrint("You are now facing " + getValue("direction") + ".");
 }
@@ -1216,61 +1278,61 @@ function handleSpell(words) {
       if (direction.name == "Away") {
         var spellDirection = getValue("direction");
       } else if (direction.name == "Left") {
-        if (getValue("direction") == "North") {
-          spellDirection = "West";
-        } else if (getValue("direction") == "Northeast") {
-          spellDirection = "Northwest";
-        } else if (getValue("direction") == "East") {
-          spellDirection = "North";
-        } else if (getValue("direction") == "Southeast") {
-          spellDirection = "Northeast";
-        } else if (getValue("direction") == "South") {
-          spellDirection = "East";
-        } else if (getValue("direction") == "Southwest") {
-          spellDirection = "Southeast";
-        } else if (getValue("direction") == "West") {
-          spellDirection = "South";
-        } else if (getValue("direction") == "Northwest") {
-          spellDirection = "Southwest";
+        if (getValue("direction") == "north") {
+          spellDirection = "west";
+        } else if (getValue("direction") == "northeast") {
+          spellDirection = "northwest";
+        } else if (getValue("direction") == "east") {
+          spellDirection = "north";
+        } else if (getValue("direction") == "southeast") {
+          spellDirection = "northeast";
+        } else if (getValue("direction") == "south") {
+          spellDirection = "east";
+        } else if (getValue("direction") == "southwest") {
+          spellDirection = "southeast";
+        } else if (getValue("direction") == "west") {
+          spellDirection = "south";
+        } else if (getValue("direction") == "northwest") {
+          spellDirection = "southwest";
         }
       } else if (direction.name == "Right") {
-        if (getValue("direction") == "North") {
-          spellDirection = "East";
-        } else if (getValue("direction") == "Northeast") {
-          spellDirection = "Southeast";
-        } else if (getValue("direction") == "East") {
-          spellDirection = "South";
-        } else if (getValue("direction") == "Southeast") {
-          spellDirection = "Southwest";
-        } else if (getValue("direction") == "South") {
-          spellDirection = "West";
-        } else if (getValue("direction") == "Southwest") {
-          spellDirection = "Northwest";
-        } else if (getValue("direction") == "West") {
-          spellDirection = "North";
-        } else if (getValue("direction") == "Northwest") {
-          spellDirection = "Northeast";
+        if (getValue("direction") == "north") {
+          spellDirection = "east";
+        } else if (getValue("direction") == "northeast") {
+          spellDirection = "southeast";
+        } else if (getValue("direction") == "east") {
+          spellDirection = "south";
+        } else if (getValue("direction") == "southeast") {
+          spellDirection = "southwest";
+        } else if (getValue("direction") == "south") {
+          spellDirection = "west";
+        } else if (getValue("direction") == "southwest") {
+          spellDirection = "northwest";
+        } else if (getValue("direction") == "west") {
+          spellDirection = "north";
+        } else if (getValue("direction") == "northwest") {
+          spellDirection = "northeast";
         }
       } else if (direction.name == "Behind") {
-        if (getValue("direction") == "North") {
-          spellDirection = "South";
-        } else if (getValue("direction") == "Northeast") {
-          spellDirection = "Southwest";
-        } else if (getValue("direction") == "East") {
-          spellDirection = "West";
-        } else if (getValue("direction") == "Southeast") {
-          spellDirection = "Northwest";
-        } else if (getValue("direction") == "South") {
-          spellDirection = "North";
-        } else if (getValue("direction") == "Southwest") {
-          spellDirection = "Northeast";
-        } else if (getValue("direction") == "West") {
-          spellDirection = "East";
-        } else if (getValue("direction") == "Northwest") {
-          spellDirection = "Northeast";
+        if (getValue("direction") == "north") {
+          spellDirection = "south";
+        } else if (getValue("direction") == "northeast") {
+          spellDirection = "southwest";
+        } else if (getValue("direction") == "east") {
+          spellDirection = "west";
+        } else if (getValue("direction") == "southeast") {
+          spellDirection = "northwest";
+        } else if (getValue("direction") == "south") {
+          spellDirection = "north";
+        } else if (getValue("direction") == "southwest") {
+          spellDirection = "northeast";
+        } else if (getValue("direction") == "west") {
+          spellDirection = "east";
+        } else if (getValue("direction") == "northwest") {
+          spellDirection = "northeast";
         }
       } else if (direction.name == "Within") {
-        spellDirection = "Within";
+        spellDirection = "within";
       }
     }
   }

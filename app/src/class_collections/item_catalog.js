@@ -135,7 +135,7 @@ class Halberd extends MeleeWeapon {
   }
 }
 
-class RangedWeapon extends Weapon {
+class RangedWeapon {
   constructor(
     name,
     description,
@@ -148,18 +148,17 @@ class RangedWeapon extends Weapon {
     weight,
     quantity
   ) {
-    super(
-      name,
-      description,
-      position,
-      goldValue,
-      rangedAttackValue,
-      minRange,
-      effectiveRange,
-      maxRange,
-      weight,
-      quantity
-    );
+     this.name = name;
+    this.description = description;
+    this.position = position;
+    this.goldValue = goldValue;
+    this.rangedAttackValue = rangedAttackValue;
+    this.minRange = minRange;
+    this.effectiveRange = effectiveRange;
+    this.maxRange = maxRange;
+    this.weight = weight;
+    this.quantity = quantity;
+    this.type = "weapon";
   }
 }
 
