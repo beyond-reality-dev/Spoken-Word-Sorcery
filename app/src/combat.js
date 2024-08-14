@@ -55,10 +55,14 @@ async function handleCombat() {
   changeValue("isCombat", false);
 }
 
-async function handlePlayerTurn(enemies, length) {
+async function handlePlayerTurn() {
+  var currentLocation = getValue("location");
+  currentLocation = eval(getValue(currentLocation, true));
+  var enemies = currentLocation.enemies;
+  var length = enemies.length;
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
-    var enemy = eval(enemies[i]);
+    var enemy = enemies[i];
     var enemyPosition = enemy.position;
     var playerPosition = getValue("position");
     var relationship = calculateRelationship(enemyPosition, playerPosition);
@@ -170,6 +174,13 @@ async function handlePlayerTurn(enemies, length) {
         );
       }
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+      var location = getValue("location");
+      var primaryLocation = location.split(".")[0];
+      var secondaryLocation = location.split(".")[1];
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      var locations = playerData["locations"];
+      locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         calculateValue("experiencePoints", "add", enemy.xp);
@@ -180,11 +191,6 @@ async function handlePlayerTurn(enemies, length) {
           } else {
             quickPrint(`${enemy.name} dropped a ${item.name}.`);
           }
-          var location = getValue("location");
-          var primaryLocation = location.split(".")[0];
-          var secondaryLocation = location.split(".")[1];
-          var playerData = JSON.parse(localStorage.getItem("playerData"));
-          var locations = playerData["locations"];
           locations[primaryLocation][secondaryLocation]["items"].push(item);
         }
         var index = enemies.indexOf(enemy);
@@ -233,17 +239,23 @@ async function handlePlayerTurn(enemies, length) {
           );
         }
         quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+        var location = getValue("location");
+        var primaryLocation = location.split(".")[0];
+        var secondaryLocation = location.split(".")[1];
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        var locations = playerData["locations"];
+        locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
         if (enemy.health <= 0) {
-          quickPrint(`You have defeated ${enemy.name}.`);
-          calculateValue("experiencePoints", "add", enemy.xp);
-          calculateValue("gold", "add", enemy.gold);
-          for (var i = 0; i < enemy.items.length; i++) {
-            var item = enemy.items[i];
-            addEntity(item, "inventory");
+          if (itemName.charAt(0).match(/[aeiou]/i)) {
+            quickPrint(`${enemy.name} dropped an ${item.name}.`);
+          } else {
+            quickPrint(`${enemy.name} dropped a ${item.name}.`);
           }
-          var index = enemies.indexOf(enemy);
-          enemies.splice(index, 1);
+          locations[primaryLocation][secondaryLocation]["items"].push(item);
         }
+        var index = enemies.indexOf(enemy);
+        enemies.splice(index, 1);
       }
     } else if (spellEffect == "healthIncrease") {
       if (spellDirection != "Within") {
@@ -421,6 +433,7 @@ function tryToMoveAndAttack(
 ) {
   console.log(`Original enemy position: ${enemyX}, ${enemyY}`);
   var differenceX = playerX - enemyX;
+  differenceX = differenceX - 1;
   if (differenceX > 0) {
     var multiplierX = 1;
   } else {
@@ -428,6 +441,7 @@ function tryToMoveAndAttack(
   }
   differenceX = Math.abs(differenceX);
   var differenceY = playerY - enemyY;
+  differenceY = differenceY - 1;
   if (differenceY > 0) {
     var multiplierY = 1;
   } else {
