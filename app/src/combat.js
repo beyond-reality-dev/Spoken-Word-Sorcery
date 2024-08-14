@@ -1,5 +1,3 @@
-import { create } from "@mui/material/styles/createTransitions";
-
 const {
   getValue,
   changeValue,
@@ -55,7 +53,7 @@ async function handlePlayerTurn(enemies, length) {
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
     var enemyPosition = enemy.position;
-    var playerPosition = getValue("direction");
+    var playerPosition = getValue("position");
     var relationship = calculateRelationship(enemyPosition, playerPosition);
     var enemyDirection = relationship[0];
     var enemyDistance = relationship[1];
@@ -296,7 +294,9 @@ function calculateRelationship(enemyPosition, playerPosition) {
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
   var xDistance = Math.abs(enemyX - playerX);
+  xDistance = xDistance * 5;
   var yDistance = Math.abs(enemyY - playerY);
+  yDistance = yDistance * 5;
   var totalDistance = Math.sqrt(xDistance ** 2 + yDistance ** 2);
   totalDistance = Math.floor(totalDistance);
   if (enemyX == playerX && enemyY == playerY) {
@@ -353,7 +353,60 @@ function checkAmmo(position, enemies) {
 }
 
 async function handleEnemyTurn(enemy, enemies) {
-  var rolledDice = diceRoll(enemy.attack);
+  var playerPosition = getValue("position");
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  var enemyPosition = enemy.position;
+  var enemyX = enemyPosition[0];
+  var enemyY = enemyPosition[1];
+  var relationship = calculateRelationship(playerPosition, enemyPosition);
+  var playerDistance = relationship[1];
+  var location = getValue("location");
+  location = eval(location, true);
+  var locationWidth = location.width;
+  locationWidth = Math.floor(locationWidth);
+  horizontalTiles = locationWidth / 5;
+  var locationHeight = location.height;
+  locationHeight = Math.floor(locationHeight);
+  verticalTiles = locationHeight / 5;
+  if (enemy.hasOwnProperty("range")) {
+    var enemyRange = enemy.range;
+    if (playerDistance <= enemyRange) {
+      var playerDefense = getRandomInt(getValue("armor"));
+      if (playerDefense > 0) {
+        quickPrint(
+          `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
+        );
+      }
+      var playerDamage = Math.max(enemy.attack - playerDefense, 0);
+      var tempHealth = getValue("tempHealth");
+      if (tempHealth > 0) {
+        var difference = playerDamage - tempHealth;
+        if (difference > 0) {
+          playerDamage = difference;
+          tempHealth = 0;
+        } else {
+          tempHealth = tempHealth - playerDamage;
+          playerDamage = 0;
+        }
+        changeValue("tempHealth", tempHealth);
+      }
+      calculateValue("currentHealth", "subtract", playerDamage);
+      quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+    } else if (playerDistance > enemyRange) {
+      // Try to move closer to the player 
+      enemy.position = [enemyX, enemyY];
+    }
+  } else {
+    var minRange = enemy.minRange;
+    var effectiveRange = enemy.effectiveRange;
+    var maxRange = enemy.maxRange;
+  }
+  return enemies;
+}
+
+/*
+var rolledDice = diceRoll(enemy.attack);
   var rolls = rolledDice[0];
   for (let i = 0; i < rolls.length; i++) {
     quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
@@ -380,161 +433,8 @@ async function handleEnemyTurn(enemy, enemies) {
   }
   calculateValue("currentHealth", "subtract", playerDamage);
   quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-  var enemyPosition = enemy.position;
-  var playerPosition = getValue("direction");
-  var leftOccupied = false;
-  var rightOccupied = false;
-  if (enemyPosition == playerPosition) {
-    for (let i = 0; i < enemies.length; i++) {
-      var currentEnemy = eval(enemies[i]);
-      if (enemyPosition == "north" && currentEnemy.position == "northeast") {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "north" &&
-        currentEnemy.position == "northwest"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "northeast" &&
-        currentEnemy.position == "east"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "northeast" &&
-        currentEnemy.position == "north"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "east" &&
-        currentEnemy.position == "southeast"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "east" &&
-        currentEnemy.position == "northeast"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "southeast" &&
-        currentEnemy.position == "south"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "southeast" &&
-        currentEnemy.position == "east"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "south" &&
-        currentEnemy.position == "southwest"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "south" &&
-        currentEnemy.position == "southeast"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "southwest" &&
-        currentEnemy.position == "west"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "southwest" &&
-        currentEnemy.position == "south"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "west" &&
-        currentEnemy.position == "northwest"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "west" &&
-        currentEnemy.position == "southwest"
-      ) {
-        leftOccupied = true;
-      } else if (
-        enemyPosition == "northwest" &&
-        currentEnemy.position == "north"
-      ) {
-        rightOccupied = true;
-      } else if (
-        enemyPosition == "northwest" &&
-        currentEnemy.position == "west"
-      ) {
-        leftOccupied = true;
-      }
-    }
-    if (leftOccupied != true && rightOccupied != true) {
-      var direction = getRandomInt(2);
-      if (direction == 0) {
-        leftOccupied = true;
-      } else {
-        rightOccupied = true;
-      }
-    }
-    if (leftOccupied != true) {
-      if (enemyPosition == "north") {
-        enemy.position = "northwest";
-      } else if (enemyPosition == "northeast") {
-        enemy.position = "north";
-      } else if (enemyPosition == "east") {
-        enemy.position = "northeast";
-      } else if (enemyPosition == "southeast") {
-        enemy.position = "east";
-      } else if (enemyPosition == "south") {
-        enemy.position = "southeast";
-      } else if (enemyPosition == "southwest") {
-        enemy.position = "south";
-      } else if (enemyPosition == "west") {
-        enemy.position = "southwest";
-      } else if (enemyPosition == "northwest") {
-        enemy.position = "west";
-      }
-      quickPrint(`${enemy.name} moved to the ${enemy.position}.`);
-    } else if (rightOccupied != true) {
-      if (enemyPosition == "north") {
-        enemy.position = "northeast";
-      } else if (enemyPosition == "northeast") {
-        enemy.position = "east";
-      } else if (enemyPosition == "east") {
-        enemy.position = "southeast";
-      } else if (enemyPosition == "southeast") {
-        enemy.position = "south";
-      } else if (enemyPosition == "south") {
-        enemy.position = "southwest";
-      } else if (enemyPosition == "southwest") {
-        enemy.position = "west";
-      } else if (enemyPosition == "west") {
-        enemy.position = "northwest";
-      } else if (enemyPosition == "northwest") {
-        enemy.position = "north";
-      }
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
-      var locations = playerData["locations"];
-      var primaryLocation = getValue("location").split(".")[0];
-      var secondaryLocation = getValue("location").split(".")[1];
-      for (
-        let i = 0;
-        i < locations[primaryLocation][secondaryLocation]["enemies"].length;
-        i++
-      ) {
-        if (
-          locations[primaryLocation][secondaryLocation]["enemies"][i]["name"] ==
-          enemy.name
-        ) {
-          locations[primaryLocation][secondaryLocation]["enemies"][i][
-            "position"
-          ] = enemy.position;
-        }
-      }
-      localStorage.setItem("playerData", JSON.stringify(playerData));
-      quickPrint(`${enemy.name} moved to the ${enemy.position}.`);
-    }
-  }
-}
+  */
 
-export function handleCombatMovement(direction) {}
+function handleCombatMovement(direction) {}
 
 module.exports = { handleCombat, handleCombatMovement };

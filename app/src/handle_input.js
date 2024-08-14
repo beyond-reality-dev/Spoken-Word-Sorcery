@@ -801,6 +801,42 @@ function handleMovement(direction) {
     }
     changeValue("location", newLocation.id);
     changeValue("direction", direction);
+    var locationWidth = newLocation.width;
+    locationWidth = Math.floor(locationWidth);
+    var horizontalTiles = locationWidth / 5;
+    var horizontalMiddle = Math.floor(horizontalTiles / 2) + 1;
+    var locationHeight = newLocation.height;
+    locationHeight = Math.floor(locationHeight);
+    var verticalTiles = locationHeight / 5;
+    var verticalMiddle = Math.floor(verticalTiles / 2) + 1;
+    switch (direction) {
+      case "north":
+        changeValue("position", [horizontalMiddle, verticalTiles]);
+        break;
+      case "northeast":
+        changeValue("position", [horizontalTiles, verticalTiles]);
+        break;
+      case "east":
+        changeValue("position", [horizontalTiles, verticalMiddle]);
+        break;
+      case "southeast":
+        changeValue("position", [1, 1]);
+        break;
+      case "south":
+        changeValue("position", [horizontalMiddle, 1]);
+        break;
+      case "southwest":
+        changeValue("position", [1, 1]);
+        break;
+      case "west":
+        changeValue("position", [1, verticalMiddle]);
+        break;
+      case "northwest":
+        changeValue("position", [1, verticalTiles]);
+        break;
+      default:
+        break;
+    }
     quickPrint(newLocation.description);
     changeValue(`${newLocation.id}.isVisited`, true, "locations");
     if (newLocation.hasOwnProperty("cutscene")) {

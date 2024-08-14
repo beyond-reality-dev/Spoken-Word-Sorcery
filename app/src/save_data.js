@@ -145,7 +145,31 @@ function updateSaveGames() {
       saveFileNumber,
     ]} | ${name} | Level: ${level} | Gold: ${gold} | Location: ${location}</option>`;
   }
-  sortList("save-games");
+  sortNumericalList("save-games");
+}
+
+function sortNumericalList(list) {
+  var list, i, switching, b, shouldSwitch;
+  list = document.getElementById(list);
+  switching = true;
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("OPTION");
+    for (i = 0; i < b.length - 1; i++) {
+      shouldSwitch = false;
+      if (
+        Number(b[i].innerHTML.split(" ")[1]) >
+        Number(b[i + 1].innerHTML.split(" ")[1])
+      ) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+    }
+  }
 }
 
 function updateUI() {
