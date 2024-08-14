@@ -186,8 +186,8 @@ class Vault extends Room {
       "Vault",
       "imperialAcademy.vault",
       "The vault is a small room with a few chests and a long scroll, kept safely behind a glowing force field. There is a door to the west, leading back to the grand hall.",
-      10.5,
-      10.5,
+      15.5,
+      15.5,
       true,
       "The entrance to the vault is securely locked."
     );
@@ -198,7 +198,7 @@ class Vault extends Room {
     this.cutscene = "vault";
     this.cutscenePlayed = false;
     this.enemies = [
-      new enemies.Enemy("Vault Door", "east", "close", 100, 0, 0, 0, 0, 0, 0),
+      new enemies.Enemy("Vault Door", [3, 2], 100, 0, 0, 0, 0, 0, 0),
     ];
   }
 }
@@ -304,9 +304,9 @@ class MilitaryAnnex extends Room {
       south: "imperialAcademy.longPassage",
     };
     this.enemies = [
-      new enemies.Rebel("Rebel 1", "southwest", "close"),
-      new enemies.Rebel("Rebel 2", "south", "close"),
-      new enemies.Rebel("Rebel 3", "southeast", "close"),
+      new enemies.Rebel("Rebel 1", "southwest", [1, 3]),
+      new enemies.Rebel("Rebel 2", "south", [2, 3]),
+      new enemies.Rebel("Rebel 3", "southeast", [3, 3]),
     ];
     this.cutscene = "militaryAnnex";
     this.cutscenePlayed = false;

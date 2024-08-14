@@ -45,7 +45,7 @@ function initializeData(saveFile) {
     gold: 0,
     encumbrance: 0,
     direction: "north",
-    distance: 0,
+    position: [0, 0],
     location: "imperialAcademy.trainingRoom",
     isCombat: false,
     gameSpeed: 1000,
@@ -316,10 +316,12 @@ function updateInventory() {
     }
     if (items[i]["type"] == "Weapon") {
       var itemAttackValue = items[i]["attackValue"];
-      var itemRangeValue = items[i]["rangeValue"];
+      var itemMinRange = items[i]["minRange"];
+      var itemEffectiveRange = items[i]["effectiveRange"];
+      var itemMaxRange = items[i]["maxRange"];
       document.getElementById(
         "weapons"
-      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemRangeValue} | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
+      ).innerHTML += `<option id="${itemName}">${itemName} | ${itemDescription} | Atk: ${itemAttackValue} | Rng: ${itemMinRange}/${itemEffectiveRange}/${itemMaxRange} ft. | Wgt: ${itemWeight} | ${itemGoldValue} Gold | x${itemQuantity}</option>`;
     } else if (items[i]["type"] == "Armor") {
       var itemArmorValue = items[i]["armorValue"];
       document.getElementById(
@@ -356,8 +358,6 @@ function updateEquipment() {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   var attackValue = 0;
-  var mainHandAttackValue = 0;
-  var offHandAttackValue = 0;
   if (equipment["head"] != null) {
     var itemName = equipment["head"]["name"];
     var itemDescription = equipment["head"]["description"];

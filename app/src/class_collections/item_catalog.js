@@ -5,7 +5,6 @@ class Weapon {
     position,
     goldValue,
     attackValue,
-    rangeValue,
     weight,
     quantity
   ) {
@@ -15,7 +14,6 @@ class Weapon {
     this.type = "Weapon";
     this.goldValue = goldValue;
     this.attackValue = attackValue;
-    this.rangeValue = rangeValue;
     this.weight = weight;
     this.quantity = quantity;
   }
@@ -37,7 +35,6 @@ class MeleeWeapon extends Weapon {
       position,
       goldValue,
       attackValue,
-      0,
       weight,
       quantity
     );
@@ -145,7 +142,9 @@ class RangedWeapon extends Weapon {
     position,
     goldValue,
     rangedAttackValue,
-    rangeValue,
+    minRange,
+    effectiveRange,
+    maxRange,
     weight,
     quantity
   ) {
@@ -155,7 +154,9 @@ class RangedWeapon extends Weapon {
       position,
       goldValue,
       rangedAttackValue,
-      rangeValue,
+      minRange,
+      effectiveRange,
+      maxRange,
       weight,
       quantity
     );
@@ -173,8 +174,10 @@ class ShortBow extends RangedWeapon {
       description,
       "bothHands",
       10,
-      "1d8",
-      "short/medium",
+      "1d6",
+      10,
+      60,
+      300,
       5,
       quantity
     );
@@ -193,8 +196,10 @@ class LongBow extends RangedWeapon {
       description,
       "bothHands",
       10,
-      "2d6",
-      "medium/long",
+      "1d8",
+      10,
+      120,
+      600,
       5,
       quantity
     );
@@ -211,10 +216,12 @@ class LightCrossBow extends Weapon {
     super(
       name,
       description,
-      "eitherHand",
+      "bothHands",
       10,
       "1d8",
-      "short/medium",
+      10,
+      30,
+      150,
       5,
       quantity
     );
@@ -233,8 +240,10 @@ class HeavyCrossBow extends Weapon {
       description,
       "bothHands",
       10,
-      "2d6",
-      "medium/long",
+      "1d10",
+      10,
+      60,
+      300,
       10,
       quantity
     );
@@ -250,7 +259,9 @@ class Dart extends Weapon {
       "eitherHand",
       5,
       "1d4",
-      "close/short",
+      10,
+      15,
+      75,
       1,
       quantity
     );
@@ -266,7 +277,9 @@ class Javelin extends Weapon {
       "eitherHand",
       5,
       "1d6",
-      "short/medium",
+      10,
+      25,
+      125,
       5,
       quantity
     );
@@ -282,7 +295,9 @@ class ThrowingAxe extends Weapon {
       "eitherHand",
       5,
       "1d6",
-      "close/short",
+      10,
+      10,
+      50,
       5,
       quantity
     );
@@ -298,7 +313,9 @@ class ThrowingKnife extends Weapon {
       "eitherHand",
       5,
       "1d4",
-      "close/short",
+      10,
+      10,
+      50,
       1,
       quantity
     );
@@ -341,7 +358,9 @@ class Spear extends ComboWeapon {
       10,
       "1d8",
       "1d6",
-      "close/short",
+      10,
+      10,
+      50,
       5,
       quantity
     );
@@ -362,7 +381,9 @@ class Trident extends ComboWeapon {
       10,
       "1d10",
       "1d8",
-      "close/short",
+      10,
+      10,
+      50,
       5,
       quantity
     );

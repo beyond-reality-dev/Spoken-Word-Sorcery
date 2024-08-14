@@ -1,3 +1,5 @@
+import { create } from "@mui/material/styles/createTransitions";
+
 const {
   getValue,
   changeValue,
@@ -52,21 +54,15 @@ async function handlePlayerTurn(enemies, length) {
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = eval(enemies[i]);
-    if (enemy.distance == "close") {
-      var distanceDescription = "nearby";
-    } else if (enemy.distance == "short") {
-      distanceDescription = "a short distance away";
-    } else if (enemy.distance == "medium") {
-      distanceDescription = "a medium distance away";
-    } else if (enemy.distance == "long") {
-      distanceDescription = "a long distance away";
-    }
+    var enemyPosition = enemy.position;
+    var playerPosition = getValue("direction");
+    var relationship = calculateRelationship(enemyPosition, playerPosition);
+    var enemyDirection = relationship[0];
+    var enemyDistance = relationship[1];
     quickPrint(
       `${i + 1}. ${enemy.name} has ${
         enemy.health
-      } health and is standing ${distanceDescription} in the ${
-        enemy.position
-      } of the room.`
+      } health and is standing ${enemyDistance} feet away to the ${enemyDirection}.`
     );
   }
   quickPrint(
@@ -89,8 +85,7 @@ async function handlePlayerTurn(enemies, length) {
   }
   if (choice == "weapon") {
     for (let i = 0; i < enemies.length; i++) {
-      var enemy = eval(enemies[i]);
-      if (enemy.position == getValue("direction")) {
+      if (enemyDirection == getValue("direction")) {
         break;
       } else {
         enemy = null;
@@ -103,8 +98,12 @@ async function handlePlayerTurn(enemies, length) {
       var weapon = equipment[hand];
       if (weaponType == "melee") {
         var playerAttack = weapon.attackValue;
-        var playerRange = "close";
-        var distance = calculateDistance(enemy.distance, playerRange);
+        var playerRange = 5;
+        if (enemyDistance <= playerRange) {
+          distance = "inRange";
+        } else if (enemyDistance < playerRange) {
+          distance = "outOfRange";
+        }
       } else if (weaponType == "ranged") {
         var ammoCheck = checkAmmo(weapon, enemies);
         enemies = ammoCheck[0];
@@ -112,8 +111,18 @@ async function handlePlayerTurn(enemies, length) {
           return enemies;
         }
         playerAttack = weapon.rangedAttackValue;
-        playerRange = weapon.range;
-        distance = calculateDistance(enemy.distance, playerRange);
+        var minRange = weapon.minRange;
+        var effectiveRange = weapon.effectiveRange;
+        var maxRange = weapon.maxRange;
+        if (enemyDistance < minRange) {
+          distance = "tooClose";
+        } else if (enemyDistance > maxRange) {
+          distance = "outOfRange";
+        } else if (enemyDistance <= effectiveRange) {
+          distance = "inRange";
+        } else if (enemyDistance > effectiveRange) {
+          distance = "barelyInRange";
+        }
       }
       try {
         playerAttack = levelScaling(playerAttack);
@@ -122,18 +131,18 @@ async function handlePlayerTurn(enemies, length) {
         return enemies;
       }
       if (distance == "outOfRange") {
-        quickPrint("You are out of range of the enemy.");
+        quickPrint("The enemy is out of range.");
         return enemies;
       } else if (distance == "tooClose") {
         quickPrint("You are too close to the enemy.");
         return enemies;
       } else if (distance == "barelyInRange") {
         quickPrint(
-          "You are barely in range of the enemy, the attack's power will be reduced."
+          "The enemy is barely in range, the attack's power will be reduced."
         );
         var reducedRange = true;
       } else if (distance == "inRange") {
-        quickPrint("You are in range of the enemy.");
+        quickPrint("The enemy is range.");
       }
       quickPrint(`You roll ${playerAttack}.`);
       var rolledDice = diceRoll(playerAttack);
@@ -183,20 +192,13 @@ async function handlePlayerTurn(enemies, length) {
     var spellPower = choiceInput[1];
     var spellEffect = choiceInput[2];
     var spellRange = choiceInput[3];
-    var distance = calculateDistance(enemyDistance, playerRange);
-    if (distance == "outOfRange") {
-      quickPrint("You are out of range of the enemy.");
+    if (enemyDistance <= spellRange) {
+      distance = "inRange";
+      quickPrint("The enemy is in range.");
+    } else if (enemyDistance > spellRange) {
+      distance = "outOfRange";
+      quickPrint("The enemy is out of range.");
       return enemies;
-    } else if (distance == "tooClose") {
-      quickPrint("You are too close to the enemy.");
-      return enemies;
-    } else if (distance == "barelyInRange") {
-      quickPrint(
-        "You are barely in range of the enemy, the attack's power will be reduced."
-      );
-      var reducedRange = true;
-    } else if (distance == "inRange") {
-      quickPrint("You are in range of the enemy.");
     }
     spellPower = levelScaling(spellPower);
     quickPrint(`You roll ${spellPower}.`);
@@ -205,16 +207,10 @@ async function handlePlayerTurn(enemies, length) {
     for (let i = 0; i < rolls.length; i++) {
       quickPrint(`You rolled a ${rolls[i]}.`);
     }
-    if (reducedRange == true) {
-      spellPower = Math.floor(rolledDice[1] / 2);
-      quickPrint(`The attack's power is reduced to ${reducedPower}.`);
-    } else {
-      spellPower = rolledDice[1];
-    }
+    spellPower = rolledDice[1];
     var spellDirection = choiceInput[2];
     for (let i = 0; i < enemies.length; i++) {
-      var enemy = eval(enemies[i]);
-      if (enemy.position == spellDirection) {
+      if (enemyDirection == spellDirection) {
         break;
       } else {
         enemy = null;
@@ -222,7 +218,6 @@ async function handlePlayerTurn(enemies, length) {
     }
     if (enemy != null) {
       if (spellEffect == "damage") {
-        enemyDistance = enemy.distance;
         playerRange = spellRange;
         enemyDefense = getRandomInt(enemy.armor);
         enemyDamage = Math.max(spellPower - enemyDefense, 0);
@@ -244,8 +239,6 @@ async function handlePlayerTurn(enemies, length) {
           var index = enemies.indexOf(enemy);
           enemies.splice(index, 1);
         }
-      } else {
-        quickPrint("There is no enemy in that direction.");
       }
     } else if (spellEffect == "healthIncrease") {
       if (spellDirection != "Within") {
@@ -290,9 +283,41 @@ async function handlePlayerTurn(enemies, length) {
       }
       changeValue("tempArmor", spellPower);
       quickPrint(`You gained ${spellPower} temporary armor.`);
+    } else {
+      quickPrint("There is no enemy in that direction.");
     }
   }
   return enemies;
+}
+
+function calculateRelationship(enemyPosition, playerPosition) {
+  var enemyX = enemyPosition[0];
+  var enemyY = enemyPosition[1];
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  var xDistance = Math.abs(enemyX - playerX);
+  var yDistance = Math.abs(enemyY - playerY);
+  var totalDistance = Math.sqrt(xDistance ** 2 + yDistance ** 2);
+  totalDistance = Math.floor(totalDistance);
+  if (enemyX == playerX && enemyY == playerY) {
+    return ["within", totalDistance];
+  } else if (enemyX == playerX && enemyY < playerY) {
+    return ["north", totalDistance];
+  } else if (enemyX > playerX && enemyY < playerY) {
+    return ["northeast", totalDistance];
+  } else if (enemyX > playerX && enemyY == playerY) {
+    return ["east", totalDistance];
+  } else if (enemyX > playerX && enemyY > playerY) {
+    return ["southeast", totalDistance];
+  } else if (enemyX == playerX && enemyY > playerY) {
+    return ["south", totalDistance];
+  } else if (enemyX < playerX && enemyY > playerY) {
+    return ["southwest", totalDistance];
+  } else if (enemyX < playerX && enemyY == playerY) {
+    return ["west", totalDistance];
+  } else if (enemyX < playerX && enemyY < playerY) {
+    return ["northwest", totalDistance];
+  }
 }
 
 function checkAmmo(position, enemies) {
@@ -324,90 +349,6 @@ function checkAmmo(position, enemies) {
       );
     }
     return [enemies, used];
-  }
-}
-
-function calculateDistance(enemyDistance, playerRange) {
-  var range = playerRange.split("/");
-  if (range.length > 1) {
-    var effectiveRange = range[0];
-    var maxRange = range[1];
-  } else {
-    var perfectRange = range[0];
-  }
-  if (enemyDistance == "close") {
-    if (effectiveRange == "close") {
-      return "inRange";
-    } else if (effectiveRange == "short") {
-      return "tooClose";
-    } else if (effectiveRange == "medium") {
-      return "tooClose";
-    } else if (effectiveRange == "long") {
-      return "tooClose";
-    } else if (
-      perfectRange == "close" ||
-      perfectRange == "short" ||
-      perfectRange == "medium" ||
-      perfectRange == "long"
-    ) {
-      return "inRange";
-    }
-  } else if (enemyDistance == "short") {
-    if (maxRange == "short") {
-      return "barelyInRange";
-    } else if (effectiveRange == "close") {
-      return "outOfRange";
-    } else if (effectiveRange == "short") {
-      return "inRange";
-    } else if (effectiveRange == "medium") {
-      return "tooClose";
-    } else if (effectiveRange == "long") {
-      return "tooClose";
-    } else if (perfectRange == "close") {
-      return "outOfRange";
-    } else if (
-      perfectRange == "short" ||
-      perfectRange == "medium" ||
-      perfectRange == "long"
-    ) {
-      return "inRange";
-    }
-  } else if (enemyDistance == "medium") {
-    if (maxRange == "medium") {
-      return "barelyInRange";
-    } else if (effectiveRange == "close") {
-      return "outOfRange";
-    } else if (effectiveRange == "short") {
-      return "outOfRange";
-    } else if (effectiveRange == "medium") {
-      return "inRange";
-    } else if (effectiveRange == "long") {
-      return "tooClose";
-    } else if (perfectRange == "close" || perfectRange == "short") {
-      return "outOfRange";
-    } else if (perfectRange == "medium" || perfectRange == "long") {
-      return "inRange";
-    }
-  } else if (enemyDistance == "long") {
-    if (maxRange == "long") {
-      return "barelyInRange";
-    } else if (effectiveRange == "close") {
-      return "outOfRange";
-    } else if (effectiveRange == "short") {
-      return "outOfRange";
-    } else if (effectiveRange == "medium") {
-      return "outOfRange";
-    } else if (effectiveRange == "long") {
-      return "inRange";
-    } else if (
-      perfectRange == "close" ||
-      perfectRange == "short" ||
-      perfectRange == "medium"
-    ) {
-      return "outOfRange";
-    } else if (perfectRange == "long") {
-      return "inRange";
-    }
   }
 }
 
@@ -594,165 +535,6 @@ async function handleEnemyTurn(enemy, enemies) {
   }
 }
 
-export function handleCombatMovement(direction) {
-  var currentLocation = getValue("location");
-  currentLocation = eval(getValue(currentLocation, true));
-  var playerDistance = getValue("distance");
-  var playerDirection = getValue("direction");
-  var enemies = currentLocation.enemies;
-  var enemyClose = false;
-  var movement = false;
-  for (let i = 0; i < enemies.length; i++) {
-    if (enemies[i].distance == "close") {
-      enemyClose = true;
-      break;
-    }
-  }
-  if (enemyClose == true) {
-    if (direction == "forward") {
-      quickPrint(
-        "You cannot move forward while enemies are within melee range."
-      );
-      return;
-    }
-  } else {
-    if (direction == "backward") {
-      if (playerDistance > 0) {
-        changeValue("distance", playerDistance - 1);
-        quickPrint("You moved backward.");
-        movement = "movedBackward";
-      } else {
-        quickPrint("You cannot move backward any further.");
-        return;
-      }
-    } else {
-      changeValue("distance", playerDistance + 1);
-      quickPrint("You moved forward.");
-      movement = "movedForward";
-    }
-    if (movement == "movedForward") {
-      if (playerDirection == "north") {
-        for (let i = 0; i < enemies.length; i++) {
-          if (
-            enemies[i].position == "west" ||
-            enemies[i].position == "northwest" ||
-            enemies[i].position == "north" ||
-            enemies[i].position == "northeast" ||
-            enemies[i].position == "east"
-          ) {
-            if (enemies[i].distance == "long") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "close";
-            }
-          } else if (
-            enemies[i].position == "southwest" ||
-            enemies[i].position == "south" ||
-            enemies[i].position == "southeast"
-          ) {
-            if (enemies[i].distance == "close") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "long";
-            }
-          }
-        }
-      } else if (playerDirection == "northeast") {
-        for (let i = 0; i < enemies.length; i++) {
-          if (
-            enemies[i].position == "northwest" ||
-            enemies[i].position == "north" ||
-            enemies[i].position == "northeast" ||
-            enemies[i].position == "east" ||
-            enemies[i].position == "southeast" ||
-          ) {
-            if (enemies[i].distance == "long") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "close";
-            }
-          } else if (
-            enemies[i].position == "southwest" ||
-            enemies[i].position == "south" ||
-            enemies[i].position == "west"
-          ) {
-            if (enemies[i].distance == "close") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "long";
-            }
-          }
-        }
-      } else if (playerDirection == "east") {
-        for (let i = 0; i < enemies.length; i++) {
-          if (
-            enemies[i].position == "north" ||
-            enemies[i].position == "northeast" ||
-            enemies[i].position == "east" ||
-            enemies[i].position == "southeast" ||
-            enemies[i].position == "south"
-          ) {
-            if (enemies[i].distance == "long") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "close";
-            }
-          } else if (
-            enemies[i].position == "southwest" ||
-            enemies[i].position == "west" ||
-            enemies[i].position == "northwest"
-          ) {
-            if (enemies[i].distance == "close") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "long";
-            }
-          }
-        }
-      } else if (playerDirection == "southeast") {
-        for (let i = 0; i < enemies.length; i++) {
-          if (
-            enemies[i].position == "northeast" ||
-            enemies[i].position == "east" ||
-            enemies[i].position == "southeast" ||
-            enemies[i].position == "south"
-          ) {
-            if (enemies[i].distance == "long") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "close";
-            }
-          } else if (
-            enemies[i].position == "southwest" ||
-            enemies[i].position == "west" ||
-            enemies[i].position == "northwest"
-          ) {
-            if (enemies[i].distance == "close") {
-              enemies[i].distance = "short";
-            } else if (enemies[i].distance == "short") {
-              enemies[i].distance = "medium";
-            } else if (enemies[i].distance == "medium") {
-              enemies[i].distance = "long";
-            }
-          }
-        }
-      }
-    }
-  }
-}
+export function handleCombatMovement(direction) {}
 
 module.exports = { handleCombat, handleCombatMovement };
