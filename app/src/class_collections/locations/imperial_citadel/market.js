@@ -523,12 +523,13 @@ class SmallRoom_06 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_06",
-      "The small room is a dead end, with a door to the south leading to a short hallway.",
+      "The small room is mostly empty, with a door to the north leading to a short hallway and a door to the south leading to a long hallway.",
       10.5,
       10.5
     );
     this.items = {};
     this.exits = {
+      north: "longHallway_05",
       south: "imperialMarket.shortHallway_05",
     };
     this.enemies = [
@@ -538,6 +539,43 @@ class SmallRoom_06 extends Room {
 }
 
 var smallRoom_06 = new SmallRoom_06();
+
+class LongHallway_05 extends Room {
+  constructor() {
+    super(
+      "Long Hallway",
+      "imperialMarket.longHallway_05",
+      "The long hallway is a narrow stone hallway with a door to the north leading to a large chamber and a door to the south leading to a small room.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "imperialMarket.smallRoom_06",
+      north: "imperialMarket.largeChamber_02",
+    };
+  }
+}
+
+var longHallway_05 = new LongHallway_05();
+
+class LargeChamber_02 extends Room {
+  constructor() {
+    super(
+      "Large Chamber",
+      "imperialMarket.largeChamber_02",
+      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the south leading to a long hallway.",
+      30.5,
+      30.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "imperialMarket.longHallway_05",
+    };
+  }
+}
+
+var largeChamber_02 = new LargeChamber_02();
 
 module.exports = {
   marketEntrance,
@@ -566,4 +604,6 @@ module.exports = {
   smallRoom_05,
   shortHallway_05,
   smallRoom_06,
+  longHallway_05,
+  largeChamber_02,
 };
