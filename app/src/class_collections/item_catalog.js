@@ -148,7 +148,7 @@ class RangedWeapon {
     weight,
     quantity
   ) {
-     this.name = name;
+    this.name = name;
     this.description = description;
     this.position = position;
     this.goldValue = goldValue;
@@ -168,18 +168,7 @@ class ShortBow extends RangedWeapon {
     name = "Short Bow",
     description = "A simple short bow"
   ) {
-    super(
-      name,
-      description,
-      "bothHands",
-      10,
-      "1d6",
-      10,
-      60,
-      300,
-      5,
-      quantity
-    );
+    super(name, description, "bothHands", 10, "1d6", 10, 60, 300, 5, quantity);
     this.ammunition = "Arrow";
   }
 }
@@ -190,18 +179,7 @@ class LongBow extends RangedWeapon {
     name = "Long Bow",
     description = "A simple long bow"
   ) {
-    super(
-      name,
-      description,
-      "bothHands",
-      10,
-      "1d8",
-      10,
-      120,
-      600,
-      5,
-      quantity
-    );
+    super(name, description, "bothHands", 10, "1d8", 10, 120, 600, 5, quantity);
     this.ammunition = "Arrow";
   }
 }
@@ -212,18 +190,7 @@ class LightCrossbow extends Weapon {
     name = "Light Crossbow",
     description = "A light crossbow"
   ) {
-    super(
-      name,
-      description,
-      "bothHands",
-      10,
-      "1d8",
-      10,
-      30,
-      150,
-      5,
-      quantity
-    );
+    super(name, description, "bothHands", 10, "1d8", 10, 30, 150, 5, quantity);
     this.ammunition = "Bolt";
   }
 }
@@ -247,6 +214,24 @@ class HeavyCrossbow extends Weapon {
       quantity
     );
     this.ammunition = "Bolt";
+  }
+}
+
+class Sling extends Weapon {
+  constructor(quantity = 1) {
+    super(
+      "Sling",
+      "A simple sling",
+      "eitherHand",
+      5,
+      "1d4",
+      10,
+      30,
+      150,
+      1,
+      quantity
+    );
+    this.ammunition = "Stone";
   }
 }
 
@@ -688,6 +673,12 @@ class Bolt extends Consumable {
   }
 }
 
+class Stone extends Consumable {
+  constructor(quantity = 1) {
+    super("Stone", "A simple stone", "consumable", 0, 0, 0, 0, 1, quantity);
+  }
+}
+
 class Accessory {
   constructor(
     name,
@@ -759,6 +750,7 @@ module.exports = {
   LongBow,
   LightCrossbow,
   HeavyCrossbow,
+  Sling,
   Dart,
   Javelin,
   ThrowingAxe,
@@ -791,6 +783,7 @@ module.exports = {
   SuperSpeedPotion,
   Arrow,
   Bolt,
+  Stone,
   Accessory,
   Miscellaneous,
   Codex,

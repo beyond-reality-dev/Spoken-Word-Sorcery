@@ -194,6 +194,24 @@ class RebelHeavyCrossbowman extends RangedEnemy {
   }
 }
 
+class Slinger extends RangedEnemy {
+  constructor(name, position, items = [new catalog.Sling()]) {
+    super(
+      name,
+      position,
+      "The rebel fires his sling!",
+      50,
+      0,
+      "1d4",
+      30,
+      10,
+      5,
+      10,
+      items
+    );
+  }
+}
+
 module.exports = {
   Enemy,
   MeleeEnemy,
@@ -204,4 +222,5 @@ module.exports = {
   RebelLongBowman,
   RebelLightCrossbowman,
   RebelHeavyCrossbowman,
+  Slinger,
 };

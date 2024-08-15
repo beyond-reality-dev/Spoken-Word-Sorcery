@@ -332,11 +332,11 @@ function drawCompass(ctx, width, height) {
   ctx.fillStyle = "black";
   ctx.fillText("N", width / 2, 20);
   ctx.fillText("NE", width - 20, 20);
-  ctx.fillText("E", width - 20, height / 2);
+  ctx.fillText("E", width - 15, height / 2);
   ctx.fillText("SE", width - 20, height - 5);
   ctx.fillText("S", width / 2, height - 5);
   ctx.fillText("SW", 20, height - 5);
-  ctx.fillText("W", 20, height / 2);
+  ctx.fillText("W", 15, height / 2);
   ctx.fillText("NW", 20, 20);
 }
 
