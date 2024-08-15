@@ -212,6 +212,43 @@ class Slinger extends RangedEnemy {
   }
 }
 
+class RebelSpearman extends RangedEnemy {
+  constructor(name, position, items = [new catalog.Spear()]) {
+    super(
+      name,
+      position,
+      "The rebel throws his spear!",
+      50,
+      0,
+      "1d8",
+      10,
+      5,
+      5,
+      10,
+      items
+    );
+  }
+}
+
+class RebelMage extends RangedEnemy {
+  constructor(name, position, items = [new catalog.Staff()], spells) {
+    super(
+      name,
+      position,
+      `The rebel mage yells <i>${spells}</i> and casts a spell!`,
+      50,
+      0,
+      "5d10",
+      100,
+      10,
+      5,
+      10,
+      items
+    );
+    this.spells = spells;
+  }
+}
+
 module.exports = {
   Enemy,
   MeleeEnemy,
@@ -223,4 +260,6 @@ module.exports = {
   RebelLightCrossbowman,
   RebelHeavyCrossbowman,
   Slinger,
+  RebelSpearman,
+  RebelMage,
 };
