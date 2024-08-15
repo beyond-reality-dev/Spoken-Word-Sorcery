@@ -564,18 +564,75 @@ class LargeChamber_02 extends Room {
     super(
       "Large Chamber",
       "imperialMarket.largeChamber_02",
-      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the south leading to a long hallway.",
+      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the south leading to a long hallway, and a door to the north, east, and west, each leading to different hallways.",
       30.5,
       30.5
     );
     this.items = {};
     this.exits = {
+      north: "imperialMarket.shortHallway_05",
+      east: "imperialMarket.shortHallway_06",
       south: "imperialMarket.longHallway_05",
+      west: "imperialMarket.shortHallway_07",
     };
   }
 }
 
 var largeChamber_02 = new LargeChamber_02();
+
+class ShortHallway_06 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_06",
+      "The short hallway is a narrow stone hallway with a door to the a door to the east leading to a large chamber.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "imperialMarket.largeChamber_02"
+    };
+  }
+}
+
+var shortHallway_06 = new ShortHallway_06();
+
+class ShortHallway_07 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_07",
+      "The short hallway is a narrow stone hallway with a door to the a door to the west leading to a large chamber.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "imperialMarket.largeChamber_02"
+    };
+  }
+}
+
+var shortHallway_07 = new ShortHallway_07();
+
+class ShortHallway_08 extends Room {
+  constructor() {
+    super(
+      "Short Hallway",
+      "imperialMarket.shortHallway_08",
+      "The short hallway is a narrow stone hallway with a door to the a door to the east leading to a large chamber.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "imperialMarket.largeChamber_02"
+    };
+  }
+}
+
+var shortHallway_08 = new ShortHallway_08();
 
 module.exports = {
   marketEntrance,
@@ -606,4 +663,7 @@ module.exports = {
   smallRoom_06,
   longHallway_05,
   largeChamber_02,
+  shortHallway_06,
+  shortHallway_07,
+  shortHallway_08,
 };
