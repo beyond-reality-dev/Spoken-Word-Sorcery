@@ -63,7 +63,7 @@ Please note that Spoken Word Sorcery has only been tested on a Windows 11 machin
 1. Download the latest release from the [releases page](https://github.com/beyond-reality-dev/Spoken-Word-Sorcery/releases).
 2. Extract the contents of the zip file.
 3. Run the executable file.
-4. If you are on Windows, and you get a warning from Windows Defender SmartScreen, click "More info" and then "Run anyway".
+4. If you get a warning from Windows Defender SmartScreen, click "More info" and then "Run anyway".
 5. If you have any issues, please open an issue on the [issues page](https://github.com/beyond-reality-dev/Spoken-Word-Sorcery/issues), or message me directly.
 
 ### Manual Installation
