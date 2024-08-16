@@ -95,13 +95,25 @@ async function handlePlayerTurn() {
   }
   if (choice == "weapon") {
     for (let i = 0; i < enemies.length; i++) {
+      var matched = false;
+      var matchingEnemies = [];
       enemy = enemies[i];
       var enemyPosition = enemy.position;
       enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
       enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
       if (enemyDirection == getValue("direction")) {
+        matched = true;
+        matchingEnemies.push((enemy, enemyDistance));
+      }
+      if (matched == true && i == enemies.length - 1) {
+        var enemy = matchingEnemies[0];
+        for (let i = 0; i < matchingEnemies.length; i++) {
+          if (matchingEnemies[i][1] < enemy[1]) {
+            enemy = matchingEnemies[i];
+          }
+        }
         break;
-      } else {
+      } else if (matched == false && i == enemies.length - 1) {
         enemy = null;
       }
     }
@@ -230,13 +242,26 @@ async function handlePlayerTurn() {
     spellPower = rolledDice[1];
     var spellDirection = choiceInput[2];
     for (let i = 0; i < enemies.length; i++) {
+      console.log(i);
+      var matched = false;
+      var matchingEnemies = [];
       enemy = enemies[i];
       var enemyPosition = enemy.position;
       enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
       enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
       if (enemyDirection == spellDirection) {
+        matched = true;
+        matchingEnemies.push((enemy, enemyDistance));
+      }
+      if (matched == true && i == enemies.length) {
+        var enemy = matchingEnemies[0];
+        for (let i = 0; i < matchingEnemies.length; i++) {
+          if (matchingEnemies[i][1] < enemy[1]) {
+            enemy = matchingEnemies[i];
+          }
+        }
         break;
-      } else {
+      } else if (matched == false && i == enemies.length) {
         enemy = null;
       }
     }
@@ -567,7 +592,13 @@ function tryToMoveAndAttack(
       }
     }
   }
-  var checkedPosition = checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY);
+  var checkedPosition = checkBounds(
+    enemies,
+    originalEnemyX,
+    originalEnemyY,
+    enemyX,
+    enemyY
+  );
   enemyX = checkedPosition[0];
   enemyY = checkedPosition[1];
   enemyPosition = [enemyX, enemyY];

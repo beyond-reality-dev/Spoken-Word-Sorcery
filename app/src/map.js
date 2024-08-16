@@ -331,9 +331,9 @@ function drawCompass(ctx, width, height) {
   ctx.textAlign = "center";
   ctx.fillStyle = "black";
   ctx.fillText("N", width / 2, 20);
-  ctx.fillText("NE", width - 20, 20);
-  ctx.fillText("E", width - 15, height / 2);
-  ctx.fillText("SE", width - 20, height - 5);
+  ctx.fillText("NE", width - 17.5, 20);
+  ctx.fillText("E", width - 10, height / 2);
+  ctx.fillText("SE", width - 17.5, height - 5);
   ctx.fillText("S", width / 2, height - 5);
   ctx.fillText("SW", 20, height - 5);
   ctx.fillText("W", 15, height / 2);
