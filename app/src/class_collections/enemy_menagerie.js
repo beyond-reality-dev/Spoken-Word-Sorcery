@@ -12,8 +12,7 @@ class Enemy {
     speed,
     gold,
     xp,
-    items,
-    icon
+    items
   ) {
     this.name = name;
     this.position = position;
@@ -25,7 +24,6 @@ class Enemy {
     this.gold = gold;
     this.xp = xp;
     this.items = items;
-    this.icon = icon;
     this.hitLastTurn = false;
   }
 }
@@ -41,8 +39,7 @@ class MeleeEnemy extends Enemy {
     speed,
     gold,
     xp,
-    items,
-    icon
+    items
   ) {
     super(
       name,
@@ -54,8 +51,7 @@ class MeleeEnemy extends Enemy {
       speed,
       gold,
       xp,
-      items,
-      icon
+      items
     );
     this.range = 7.5;
   }
@@ -73,9 +69,7 @@ class Rebel extends MeleeEnemy {
       10,
       5,
       5,
-      10,
-      items,
-      "sword"
+      items
     );
   }
 }
@@ -92,10 +86,9 @@ class RebelCaptain extends Enemy {
       20,
       5,
       10,
-      20,
-      items,
-      "crown"
+      items
     );
+    this.icon = "crown";
   }
 }
 
@@ -111,8 +104,7 @@ class RangedEnemy extends Enemy {
     speed,
     gold,
     xp,
-    items,
-    icon
+    items
   ) {
     super(
       name,
@@ -125,9 +117,9 @@ class RangedEnemy extends Enemy {
       speed,
       gold,
       xp,
-      items,
-      icon
+      items
     );
+    this.icon = "ranged";
   }
 }
 
@@ -144,8 +136,7 @@ class RebelShortBowman extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -163,8 +154,7 @@ class RebelLongBowman extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -182,8 +172,7 @@ class RebelLightCrossbowman extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -201,8 +190,7 @@ class RebelHeavyCrossbowman extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -220,8 +208,7 @@ class Slinger extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -239,8 +226,7 @@ class RebelSpearman extends RangedEnemy {
       5,
       5,
       10,
-      items,
-      "bow"
+      items
     );
   }
 }
@@ -258,8 +244,7 @@ class RebelMage extends RangedEnemy {
       10,
       5,
       10,
-      items,
-      "bow"
+      items
     );
     this.spells = spells;
   }

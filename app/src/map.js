@@ -84,27 +84,28 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
     ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
     console.log(enemy.icon);
     console.log(enemy.items);
-    if (enemy.icon == "sword") {
+    if (enemy.icon == "ranged") {
       ctx.fillStyle = "black";
-      // Draw a sword
       ctx.beginPath();
-      ctx.moveTo(enemyX + 10.9375, enemyY + 17.1875);
-      ctx.lineTo(enemyX + 10.9375, enemyY + 15.625);
-      ctx.lineTo(enemyX + 10.15625, enemyY + 15.625);
-      ctx.lineTo(enemyX + 10.15625, enemyY + 14.84375);
-      ctx.lineTo(enemyX + 10.9375, enemyY + 14.84375);
-      ctx.lineTo(enemyX + 12.5, enemyY + 10.9375);
-      ctx.lineTo(enemyX + 14.0625, enemyY + 14.84375);
-      ctx.lineTo(enemyX + 14.84375, enemyY + 14.84375);
-      ctx.lineTo(enemyX + 14.84375, enemyY + 15.625);
-      ctx.lineTo(enemyX + 14.0625, enemyY + 15.625);
-      ctx.lineTo(enemyX + 14.0625, enemyY + 17.1875);
-      ctx.lineTo(enemyX + 10.9375, enemyY + 17.1875);
+      ctx.moveTo(enemyX + 6.25, enemyY + 12.5);
+      ctx.lineTo(enemyX + 9.375, enemyY + 12.5);
       ctx.stroke();
-      ctx.fill();
       ctx.closePath();
-    } else if (enemy.icon == "bow") {
-      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(enemyX + 12.5, enemyY + 6.25);
+      ctx.lineTo(enemyX + 12.5, enemyY + 9.375);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(enemyX + 18.75, enemyY + 12.5);
+      ctx.lineTo(enemyX + 15.625, enemyY + 12.5);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(enemyX + 12.5, enemyY + 18.75);
+      ctx.lineTo(enemyX + 12.5, enemyY + 15.625);
+      ctx.stroke();
+      ctx.closePath();
     } else if (enemy.icon == "crown") {
       ctx.fillStyle = "gold";
       ctx.beginPath();
