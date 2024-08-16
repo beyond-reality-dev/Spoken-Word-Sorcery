@@ -69,18 +69,82 @@ class ImperialPalace extends Room {
     super(
       "Imperial Palace",
       "imperialPalace.imperialPalace",
-      "The Imperial Palace is a grand structure with towering spires and walls of polished marble. There is a path to the north, leading to the entrance of the Imperial Palace, and a walkway to the south, leading to the Emperor's chambers.",
+      "The Imperial Palace is a grand structure with towering spires and walls of polished marble. There is a path to the north, leading to the entrance of the Imperial Palace, and a walkway to the south, leading to the throne room.",
       40.5,
       40.5
     );
     this.items = {};
     this.exits = {
       north: "imperialPalace.palaceEntrance",
-      south: "imperialPalace.emperorsChambers",
+      south: "imperialPalace.throneRoom",
     };
   }
 }
 
 var imperialPalace = new ImperialPalace();
 
-module.exports = { guardTowers, palaceBridge, palaceEntrance, imperialPalace };
+class ThroneRoom extends Room {
+  constructor() {
+    super(
+      "Throne Room",
+      "imperialPalace.throneRoom",
+      "The throne room is a vast chamber with a high ceiling and walls adorned with tapestries and banners. At the far end of the room, a golden throne sits atop a raised dais. There is a walkway to the north, leading to the Imperial Palace, and a walkway to the south, leading to the Emperor's chambers behind the throne room.",
+      40.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialPalace.imperialPalace",
+      south: "imperialPalace.emperorsChambers",
+    };
+  }
+}
+
+var throneRoom = new ThroneRoom();
+
+class EmperorsChambers extends Room {
+  constructor() {
+    super(
+      "Emperor's Chambers",
+      "imperialPalace.emperorsChambers",
+      "The Emperor's chambers are a private suite of rooms with luxurious furnishings and decorations. There is a walkway to the north, leading to the throne room, and a door to the south, leading to the Emperor's private study.",
+      20.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialPalace.throneRoom",
+      south: "imperialPalace.emperorsStudy",
+    };
+  }
+}
+
+var emperorsChambers = new EmperorsChambers();
+
+class EmperorsStudy extends Room {
+  constructor() {
+    super(
+      "Emperor's Study",
+      "imperialPalace.emperorsStudy",
+      "The Emperor's private study is a small, cluttered room with shelves of books and scrolls. There is a door to the north, leading to the Emperor's chambers.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialPalace.emperorsChambers",
+    };
+  }
+}
+
+var emperorsStudy = new EmperorsStudy();
+
+module.exports = {
+  guardTowers,
+  palaceBridge,
+  palaceEntrance,
+  imperialPalace,
+  throneRoom,
+  emperorsChambers,
+  emperorsStudy,
+};
