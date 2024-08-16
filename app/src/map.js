@@ -69,7 +69,11 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
     var paddingY = startingY + 15;
     var enemyX = paddingX + (enemyPosition[0] - 1) * 50;
     var enemyY = paddingY + (enemyPosition[1] - 1) * 50;
-    ctx.fillStyle = "salmon";
+    if (enemy.hitLastTurn) {
+      ctx.fillStyle = "red";
+    } else {
+      ctx.fillStyle = "salmon";
+    }
     ctx.beginPath();
     ctx.arc(enemyX + 12.5, enemyY + 12.5, 12.5, 0, 2 * Math.PI);
     ctx.fill();
@@ -78,6 +82,18 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
     ctx.stroke();
     ctx.font = "bold 12px Segoe UI";
     ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
+    if (enemy.isBoss) {
+      ctx.beginPath();
+      ctx.moveTo(enemyX + 12.5, enemyY - 5);
+      ctx.lineTo(enemyX + 5, enemyY - 10);
+      ctx.lineTo(enemyX + 10, enemyY - 10);
+      ctx.lineTo(enemyX + 12.5, enemyY - 15);
+      ctx.lineTo(enemyX + 15, enemyY - 10);
+      ctx.lineTo(enemyX + 20, enemyY - 10);
+      ctx.lineTo(enemyX + 12.5, enemyY - 5);
+      ctx.fill();
+      ctx.closePath();
+    }
   }
   var playerPosition = getValue("position");
   var paddingX = startingX + 15;

@@ -12,7 +12,8 @@ class Enemy {
     speed,
     gold,
     xp,
-    items
+    items,
+    isBoss,
   ) {
     this.name = name;
     this.position = position;
@@ -24,6 +25,8 @@ class Enemy {
     this.gold = gold;
     this.xp = xp;
     this.items = items;
+    this.isBoss = isBoss;
+    this.hitLastTurn = false;
   }
 }
 
@@ -38,7 +41,8 @@ class MeleeEnemy extends Enemy {
     speed,
     gold,
     xp,
-    items
+    items,
+    isBoss,
   ) {
     super(
       name,
@@ -50,7 +54,8 @@ class MeleeEnemy extends Enemy {
       speed,
       gold,
       xp,
-      items
+      items,
+      isBoss = false,
     );
     this.range = 7.5;
   }
@@ -87,7 +92,8 @@ class RebelCaptain extends Enemy {
       5,
       10,
       20,
-      items
+      items,
+      true
     );
   }
 }
@@ -104,7 +110,8 @@ class RangedEnemy extends Enemy {
     speed,
     gold,
     xp,
-    items
+    items,
+    isBoss,
   ) {
     super(
       name,
@@ -117,7 +124,8 @@ class RangedEnemy extends Enemy {
       speed,
       gold,
       xp,
-      items
+      items,
+      isBoss = false,
     );
   }
 }

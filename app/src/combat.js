@@ -98,6 +98,7 @@ async function handlePlayerTurn() {
       var matched = false;
       var matchingEnemies = [];
       enemy = enemies[i];
+      enemy.hitLastTurn = false;
       var enemyPosition = enemy.position;
       enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
       enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
@@ -196,6 +197,7 @@ async function handlePlayerTurn() {
         );
       }
       quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+      enemy.hitLastTurn = true;
       var location = getValue("location");
       var primaryLocation = location.split(".")[0];
       var secondaryLocation = location.split(".")[1];
@@ -246,6 +248,7 @@ async function handlePlayerTurn() {
       var matched = false;
       var matchingEnemies = [];
       enemy = enemies[i];
+      enemy.hitLastTurn = false;
       var enemyPosition = enemy.position;
       enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
       enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
@@ -285,6 +288,7 @@ async function handlePlayerTurn() {
           );
         }
         quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+        enemy.hitLastTurn = true;
         var location = getValue("location");
         var primaryLocation = location.split(".")[0];
         var secondaryLocation = location.split(".")[1];
