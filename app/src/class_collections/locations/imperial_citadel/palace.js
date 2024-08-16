@@ -57,9 +57,30 @@ class PalaceEntrance extends Room {
       north: "imperialPalace.palaceBridge",
       south: "imperialPalace.imperialPalace",
     };
+    this.cutscene = "palaceEntrance";
+    this.cutscenePlayed = false;
   }
 }
 
 var palaceEntrance = new PalaceEntrance();
 
-module.exports = { guardTowers, palaceBridge, palaceEntrance };
+class ImperialPalace extends Room {
+  constructor() {
+    super(
+      "Imperial Palace",
+      "imperialPalace.imperialPalace",
+      "The Imperial Palace is a grand structure with towering spires and walls of polished marble. There is a path to the north, leading to the entrance of the Imperial Palace, and a walkway to the south, leading to the Emperor's chambers.",
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialPalace.palaceEntrance",
+      south: "imperialPalace.emperorsChambers",
+    };
+  }
+}
+
+var imperialPalace = new ImperialPalace();
+
+module.exports = { guardTowers, palaceBridge, palaceEntrance, imperialPalace };

@@ -32,13 +32,18 @@ class Port extends Room {
       "imperialPort.port",
       "The port is a large open area with numerous docks and ships. There is a path to the west leading to the port entrance, and a path to the east leading to the Imperial Dreadnought.",
       10.5,
-      10.5
+      10.5,
+      true,
+      "A legion of Imperial soldiers stand guard at the entrance to the port, their weapons at the ready. This must be where much of the Empire's forces retreated to after the attack on the Imperial Academy. The soldiers appear to recognize your acolyte robes, but they nonetheless inform you that the port is under a strict lockdown."
     );
     this.items = {};
     this.exits = {
       west: "imperialPort.portEntrance",
       east: "imperialPort.imperialDreadnoughtExterior",
     };
+    this.key = "Imperial Emblem";
+    this.unlockMessage =
+      "The soldiers recognize the Imperial Emblem that has been hastily sewn on your cloak and allow you to pass with the rest of the Emperor's entourage.";
   }
 }
 
@@ -137,7 +142,8 @@ class ImperialDreadnoughtCaptainQuarters extends Room {
   }
 }
 
-var imperialDreadnoughtCaptainQuarters = new ImperialDreadnoughtCaptainQuarters();
+var imperialDreadnoughtCaptainQuarters =
+  new ImperialDreadnoughtCaptainQuarters();
 
 class ImperialDreadnoughtHold extends Room {
   constructor() {
