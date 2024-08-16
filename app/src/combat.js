@@ -21,7 +21,8 @@ async function handleCombat() {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
   var enemies = currentLocation.enemies;
-  while (getValue("currentHealth") > 0 && enemies.length > 0) {
+  var enemiesDefeated = false;
+  while (getValue("currentHealth") > 0 && enemiesDefeated == false) {
     var playerSpeed = getValue("speed");
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
@@ -40,6 +41,14 @@ async function handleCombat() {
     if (turnPlayed == false) {
       enemies = await handlePlayerTurn(enemies, enemies.length);
       turnPlayed = true;
+    }
+    for (let i = 0; i < enemies.length; i++) {
+      if (enemies[i].isObstacle == false) {
+        enemiesDefeated = false;
+        break;
+      } else {
+        enemiesDefeated = true;
+      }
     }
   }
   playerHealth = getValue("currentHealth");
@@ -69,11 +78,13 @@ async function handlePlayerTurn() {
     var relationship = calculateRelationship(enemyPosition, playerPosition);
     var enemyDirection = relationship[0];
     var enemyDistance = relationship[1];
-    quickPrint(
-      `${i + 1}. ${enemy.name} has ${
-        enemy.health
-      } health and is standing ${enemyDistance} feet away to the ${enemyDirection}.`
-    );
+    if (enemyDistance.isObstacle == false) {
+      quickPrint(
+        `${i + 1}. ${enemy.name} has ${
+          enemy.health
+        } health and is standing ${enemyDistance} feet away to the ${enemyDirection}.`
+      );
+    }
   }
   quickPrint(
     `You are facing ${getValue(

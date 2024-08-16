@@ -25,6 +25,7 @@ class Enemy {
     this.xp = xp;
     this.items = items;
     this.hitLastTurn = false;
+    this.isObstacle = false;
   }
 }
 
@@ -250,6 +251,36 @@ class RebelMage extends RangedEnemy {
   }
 }
 
+class Obstacle {
+  constructor(name, position, health, shape, color) {
+    this.name = name;
+    this.position = position;
+    this.health = health;
+    this.shape = shape;
+    this.color = color;
+    this.armor = 0;
+    this.isObstacle = true;
+  }
+}
+
+class Wall extends Obstacle {
+  constructor(position) {
+    super("Wall", position, 100, "square", "grey");
+  }
+}
+
+class Crate extends Obstacle {
+  constructor(position) {
+    super("Crate", position, 50, "square", "brown");
+  }
+}
+
+class Barrel extends Obstacle {
+  constructor(position) {
+    super("Barrel", position, 50, "circle", "brown");
+  }
+}
+
 module.exports = {
   Enemy,
   MeleeEnemy,
@@ -263,4 +294,8 @@ module.exports = {
   Slinger,
   RebelSpearman,
   RebelMage,
+  Obstacle,
+  Wall,
+  Crate,
+  Barrel,
 };

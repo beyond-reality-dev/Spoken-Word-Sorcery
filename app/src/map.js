@@ -72,55 +72,68 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
     if (enemy.hitLastTurn) {
       ctx.fillStyle = "red";
     } else {
-      ctx.fillStyle = "salmon";
+      if (enemy.hasOwnProperty("color")) {
+        ctx.fillStyle = enemy["color"];
+      } else {
+        ctx.fillStyle = "salmon";
+      }
     }
-    ctx.beginPath();
-    ctx.arc(enemyX + 12.5, enemyY + 12.5, 12.5, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.closePath();
-    ctx.fillStyle = "black";
-    ctx.stroke();
-    ctx.font = "bold 12px Segoe UI";
-    ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
-    console.log(enemy.icon);
-    console.log(enemy.items);
-    if (enemy.icon == "ranged") {
-      ctx.fillStyle = "black";
+    if (enemy.hasOwnProperty("shape")) {
+      if (enemy.shape == "square") {
+        ctx.fillRect(enemyX, enemyY, 25, 25);
+        ctx.strokeRect(enemyX, enemyY, 25, 25);
+      }
+    } else {
       ctx.beginPath();
-      ctx.moveTo(enemyX + 6.25, enemyY + 12.5);
-      ctx.lineTo(enemyX + 9.375, enemyY + 12.5);
-      ctx.stroke();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.moveTo(enemyX + 12.5, enemyY + 6.25);
-      ctx.lineTo(enemyX + 12.5, enemyY + 9.375);
-      ctx.stroke();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.moveTo(enemyX + 18.75, enemyY + 12.5);
-      ctx.lineTo(enemyX + 15.625, enemyY + 12.5);
-      ctx.stroke();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.moveTo(enemyX + 12.5, enemyY + 18.75);
-      ctx.lineTo(enemyX + 12.5, enemyY + 15.625);
-      ctx.stroke();
-      ctx.closePath();
-    } else if (enemy.icon == "crown") {
-      ctx.fillStyle = "gold";
-      ctx.beginPath();
-      ctx.moveTo(enemyX + 6.25, enemyY + 17.1875);
-      ctx.lineTo(enemyX + 6.25, enemyY + 10.9375);
-      ctx.lineTo(enemyX + 9.375, enemyY + 14.0625);
-      ctx.lineTo(enemyX + 12.5, enemyY + 10.9375);
-      ctx.lineTo(enemyX + 15.625, enemyY + 14.0625);
-      ctx.lineTo(enemyX + 18.75, enemyY + 10.9375);
-      ctx.lineTo(enemyX + 18.75, enemyY + 17.1875);
-      ctx.lineTo(enemyX + 6.25, enemyY + 17.1875);
-      ctx.stroke();
+      ctx.arc(enemyX + 12.5, enemyY + 12.5, 12.5, 0, 2 * Math.PI);
       ctx.fill();
       ctx.closePath();
       ctx.fillStyle = "black";
+      ctx.stroke();
+    }
+    ctx.font = "bold 12px Segoe UI";
+    if (enemy.isObstacle == false) {
+      ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
+    }
+    if (enemy.hasOwnProperty("icon")) {
+      if (enemy.icon == "ranged") {
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(enemyX + 6.25, enemyY + 12.5);
+        ctx.lineTo(enemyX + 9.375, enemyY + 12.5);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.moveTo(enemyX + 12.5, enemyY + 6.25);
+        ctx.lineTo(enemyX + 12.5, enemyY + 9.375);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.moveTo(enemyX + 18.75, enemyY + 12.5);
+        ctx.lineTo(enemyX + 15.625, enemyY + 12.5);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.moveTo(enemyX + 12.5, enemyY + 18.75);
+        ctx.lineTo(enemyX + 12.5, enemyY + 15.625);
+        ctx.stroke();
+        ctx.closePath();
+      } else if (enemy.icon == "crown") {
+        ctx.fillStyle = "gold";
+        ctx.beginPath();
+        ctx.moveTo(enemyX + 6.25, enemyY + 17.1875);
+        ctx.lineTo(enemyX + 6.25, enemyY + 10.9375);
+        ctx.lineTo(enemyX + 9.375, enemyY + 14.0625);
+        ctx.lineTo(enemyX + 12.5, enemyY + 10.9375);
+        ctx.lineTo(enemyX + 15.625, enemyY + 14.0625);
+        ctx.lineTo(enemyX + 18.75, enemyY + 10.9375);
+        ctx.lineTo(enemyX + 18.75, enemyY + 17.1875);
+        ctx.lineTo(enemyX + 6.25, enemyY + 17.1875);
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+        ctx.fillStyle = "black";
+      }
     }
   }
   var playerPosition = getValue("position");
