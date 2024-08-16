@@ -193,7 +193,9 @@ async function handlePlayerTurn() {
       localStorage.setItem("playerData", JSON.stringify(playerData));
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
-        quickPrint(`You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`);
+        quickPrint(
+          `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`
+        );
         calculateValue("experiencePoints", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
@@ -267,7 +269,9 @@ async function handlePlayerTurn() {
         localStorage.setItem("playerData", JSON.stringify(playerData));
         if (enemy.health <= 0) {
           quickPrint(`You have defeated ${enemy.name}.`);
-          quickPrint(`You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`);
+          quickPrint(
+            `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`
+          );
           calculateValue("experiencePoints", "add", enemy.xp);
           calculateValue("gold", "add", enemy.gold);
           for (var i = 0; i < enemy.items.length; i++) {
@@ -472,6 +476,8 @@ function tryToMoveAndAttack(
   i,
   enemies
 ) {
+  var originalEnemyX = enemyX;
+  var originalEnemyY = enemyY;
   var differenceX = playerX - enemyX;
   differenceX = differenceX - 1;
   if (differenceX > 0) {
@@ -561,6 +567,9 @@ function tryToMoveAndAttack(
       }
     }
   }
+  var checkedPosition = checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY);
+  enemyX = checkedPosition[0];
+  enemyY = checkedPosition[1];
   enemyPosition = [enemyX, enemyY];
   if (originalDifferenceX > 0 && originalDifferenceY > 0) {
     var distanceTraveled = Math.sqrt(
@@ -618,6 +627,45 @@ function tryToMoveAndAttack(
   } else {
     quickPrint("You are still out of range of the enemy's attack.");
   }
+}
+
+function checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY) {
+  var location = getValue("location");
+  location = eval(location, true);
+  var locationWidth = location.width;
+  locationWidth = Math.floor(locationWidth);
+  horizontalTiles = locationWidth / 5;
+  var locationHeight = location.height;
+  locationHeight = Math.floor(locationHeight);
+  verticalTiles = locationHeight / 5;
+  if (enemyX == 0) {
+    enemyX = 1;
+  } else if (enemyX > horizontalTiles) {
+    enemyX = horizontalTiles;
+  }
+  if (enemyY == 0) {
+    enemyY = 1;
+  } else if (enemyY > verticalTiles) {
+    enemyY = verticalTiles;
+  }
+  for (let i = 0; i < enemies.length; i++) {
+    var enemy = enemies[i];
+    var enemyPosition = enemy.position;
+    var otherEnemyX = enemyPosition[0];
+    var otherEnemyY = enemyPosition[1];
+    if (enemyX == otherEnemyX && enemyY == otherEnemyY) {
+      enemyX = originalEnemyX;
+      enemyY = originalEnemyY;
+    }
+  }
+  var playerPosition = getValue("position");
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  if (enemyX == playerX && enemyY == playerY) {
+    enemyX = originalEnemyX;
+    enemyY = originalEnemyY;
+  }
+  return [enemyX, enemyY];
 }
 
 function handleCombatMovement(direction, magnitude) {
@@ -738,7 +786,6 @@ function handleCombatMovement(direction, magnitude) {
         return;
       } else {
         newPosition = [playerX, playerY + magnitude];
-        console.log(newPosition);
         if (findEnemiesInCell(newPosition) == true) {
           quickPrint("You cannot move into a cell with an enemy.");
           return;

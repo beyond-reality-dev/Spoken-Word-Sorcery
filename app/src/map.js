@@ -147,7 +147,7 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
       break;
   }
   ctx.stroke();
-  ctx.fillText(getValue("name"), playerX + 12.5, playerY - 5);
+  ctx.fillText(getValue("name"), playerX + 12.5, playerY - 2.5);
 }
 
 function buildRooms(
