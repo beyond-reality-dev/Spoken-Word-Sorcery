@@ -82,17 +82,44 @@ function buildCombatMap(ctx, currentLocation, startingX, startingY) {
     ctx.stroke();
     ctx.font = "bold 12px Segoe UI";
     ctx.fillText(enemy["name"], enemyX + 12.5, enemyY + 35);
-    if (enemy.isBoss) {
+    console.log(enemy.icon);
+    console.log(enemy.items);
+    if (enemy.icon == "sword") {
+      ctx.fillStyle = "black";
+      // Draw a sword
       ctx.beginPath();
-      ctx.moveTo(enemyX + 12.5, enemyY - 5);
-      ctx.lineTo(enemyX + 5, enemyY - 10);
-      ctx.lineTo(enemyX + 10, enemyY - 10);
-      ctx.lineTo(enemyX + 12.5, enemyY - 15);
-      ctx.lineTo(enemyX + 15, enemyY - 10);
-      ctx.lineTo(enemyX + 20, enemyY - 10);
-      ctx.lineTo(enemyX + 12.5, enemyY - 5);
+      ctx.moveTo(enemyX + 10.9375, enemyY + 17.1875);
+      ctx.lineTo(enemyX + 10.9375, enemyY + 15.625);
+      ctx.lineTo(enemyX + 10.15625, enemyY + 15.625);
+      ctx.lineTo(enemyX + 10.15625, enemyY + 14.84375);
+      ctx.lineTo(enemyX + 10.9375, enemyY + 14.84375);
+      ctx.lineTo(enemyX + 12.5, enemyY + 10.9375);
+      ctx.lineTo(enemyX + 14.0625, enemyY + 14.84375);
+      ctx.lineTo(enemyX + 14.84375, enemyY + 14.84375);
+      ctx.lineTo(enemyX + 14.84375, enemyY + 15.625);
+      ctx.lineTo(enemyX + 14.0625, enemyY + 15.625);
+      ctx.lineTo(enemyX + 14.0625, enemyY + 17.1875);
+      ctx.lineTo(enemyX + 10.9375, enemyY + 17.1875);
+      ctx.stroke();
       ctx.fill();
       ctx.closePath();
+    } else if (enemy.icon == "bow") {
+      ctx.fillStyle = "black";
+    } else if (enemy.icon == "crown") {
+      ctx.fillStyle = "gold";
+      ctx.beginPath();
+      ctx.moveTo(enemyX + 6.25, enemyY + 17.1875);
+      ctx.lineTo(enemyX + 6.25, enemyY + 10.9375);
+      ctx.lineTo(enemyX + 9.375, enemyY + 14.0625);
+      ctx.lineTo(enemyX + 12.5, enemyY + 10.9375);
+      ctx.lineTo(enemyX + 15.625, enemyY + 14.0625);
+      ctx.lineTo(enemyX + 18.75, enemyY + 10.9375);
+      ctx.lineTo(enemyX + 18.75, enemyY + 17.1875);
+      ctx.lineTo(enemyX + 6.25, enemyY + 17.1875);
+      ctx.stroke();
+      ctx.fill();
+      ctx.closePath();
+      ctx.fillStyle = "black";
     }
   }
   var playerPosition = getValue("position");
