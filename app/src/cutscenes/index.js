@@ -10,3 +10,4 @@ exports.mainGate = require("./imperial_citadel/imperial_market/main_gate/main_ga
 exports.marketStalls = require("./imperial_citadel/imperial_market/market_stalls/market_stalls");
 exports.vaultEntrance = require("./imperial_citadel/imperial_market/vault_entrance/vault_entrance");
 exports.guardTowers = require("./imperial_citadel/imperial_palace/guard_towers/guard_towers");
+exports.palaceEntrance = require("./imperial_citadel/imperial_palace/palace_entrance/palace_entrance");
