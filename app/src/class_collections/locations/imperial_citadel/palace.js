@@ -69,19 +69,57 @@ class ImperialPalace extends Room {
     super(
       "Imperial Palace",
       "imperialPalace.imperialPalace",
-      "The Imperial Palace is a grand structure with towering spires and walls of polished marble. There is a path to the north, leading to the entrance of the Imperial Palace, and a walkway to the south, leading to the throne room.",
+      "The Imperial Palace is a grand structure with towering spires and walls of polished marble. There is a walkway to the north, leading to the entrance of the Imperial Palace, a walkway to the east, leading to the Imperial Library, a walkway to the south, leading to the throne room, and a walkway to the west, leading to the Imperial Gardens.",
       40.5,
       40.5
     );
     this.items = {};
     this.exits = {
       north: "imperialPalace.palaceEntrance",
+      east: "imperialPalace.imperialLibrary",
       south: "imperialPalace.throneRoom",
+      west: "imperialPalace.imperialGardens",
     };
   }
 }
 
 var imperialPalace = new ImperialPalace();
+
+class ImperialLibrary extends Room {
+  constructor() {
+    super(
+      "Imperial Library",
+      "imperialPalace.imperialLibrary",
+      "The Imperial Library is a vast chamber with shelves of books and scrolls lining the walls. There is a walkway to the west, leading to the Imperial Palace.",
+      20.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "imperialPalace.imperialPalace",
+    };
+  }
+}
+
+var imperialLibrary = new ImperialLibrary();
+
+class ImperialGardens extends Room {
+  constructor() {
+    super(
+      "Imperial Gardens",
+      "imperialPalace.imperialGardens",
+      "The Imperial Gardens are a lush oasis of greenery and flowers. There is a walkway to the east, leading to the Imperial Palace.",
+      20.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "imperialPalace.imperialPalace",
+    };
+  }
+}
+
+var imperialGardens = new ImperialGardens();
 
 class ThroneRoom extends Room {
   constructor() {
@@ -101,6 +139,8 @@ class ThroneRoom extends Room {
 }
 
 var throneRoom = new ThroneRoom();
+
+
 
 class EmperorsChambers extends Room {
   constructor() {
@@ -144,6 +184,8 @@ module.exports = {
   palaceBridge,
   palaceEntrance,
   imperialPalace,
+  imperialLibrary,
+  imperialGardens,
   throneRoom,
   emperorsChambers,
   emperorsStudy,
