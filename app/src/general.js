@@ -12,7 +12,7 @@ module.exports = {
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
 const { getValue } = require("./save_data");
-import { NameGenerator } from "@kari/markov-namegen";
+const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 
 function switchScreen(screen) {
   document.getElementById("main").style.display = "none";
@@ -130,12 +130,52 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function generateCharacterName(type) {
-  if (type == "character") {
-    var data = require("./data.json");
-  } else if (type == "location") {
-    data = require("./data.json");
+function generateName(type, gender, quantity = 1) {
+  const fs = require("fs");
+  var data;
+  if (type == "fullName") {
+    if (quantity == 1) {
+      var forename = generateName("forename", gender);
+      var surname = generateName("surname", gender);
+      var name = forename + " " + surname;
+      return name;
+    } else {
+      data = [];
+      for (let i = 0; i < quantity; i++) {
+        var forename = generateName("forename", gender);
+        var surname = generateName("surname", gender);
+        var name = forename + " " + surname;
+        data.push(name);
+      }
+      return data;
+    }
+  } else if (type == "forename") {
+    if (gender == "male") {
+      data = fs.readFileSync(
+        "./app/lib/markov_namegen/word_lists/male_forenames.txt",
+        "utf8"
+      );
+    } else if (gender == "female") {
+      data = fs.readFileSync(
+        "./app/lib/markov_namegen/word_lists/female_forenames.txt",
+        "utf8"
+      );
+    }
+  } else if (type == "surname") {
+    data = fs.readFileSync(
+      "./app/lib/markov_namegen/word_lists/surnames.txt",
+      "utf8"
+    );
+  } else if (type == "town") {
+    data = fs.readFileSync(
+      "./app/lib/markov_namegen/word_lists/towns.txt",
+      "utf8"
+    );
   }
-  var generator = new NameGenerator(data, );
-  return generator.generateName;
+  var data = data.split("\n");
+  var generator = new NameGenerator(data, 10, 0, false);
+  if (quantity == 1) {
+    return generator.generateName(5, 11, "", "", "", "");
+  }
+  return generator.generateNames(quantity, 5, 11, "", "", "", "");
 }
