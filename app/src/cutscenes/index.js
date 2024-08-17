@@ -14,3 +14,5 @@ exports.vaultEntrance = require("./imperial_citadel/imperial_market/vault_entran
 exports.guardTowers = require("./imperial_citadel/imperial_palace/guard_towers/guard_towers");
 exports.palaceEntrance = require("./imperial_citadel/imperial_palace/palace_entrance/palace_entrance");
 exports.throneRoom = require("./imperial_citadel/imperial_palace/throne_room/throne_room");
+exports.imperialDreadnoughtExterior = require("./imperial_citadel/imperial_shipyard/imperial_dreadnought_exterior/imperial_dreadnought_exterior");
+exports.imperialDreadnoughtUpperDeck = require("./imperial_citadel/imperial_shipyard/imperial_dreadnought_upper_deck/imperial_dreadnought_upper_deck");

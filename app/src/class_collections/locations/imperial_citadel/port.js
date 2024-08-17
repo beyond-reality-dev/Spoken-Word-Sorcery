@@ -63,6 +63,8 @@ class ImperialDreadnoughtExterior extends Room {
       west: "imperialPort.port",
       east: "imperialPort.imperialDreadnoughtUpperDeck",
     };
+    this.cutscenePlayed = false;
+    this.cutscene = "imperialDreadnoughtExterior";
   }
 }
 
@@ -82,6 +84,8 @@ class ImperialDreadnoughtUpperDeck extends Room {
       west: "imperialDreadnoughtExterior",
       south: "imperialDreadnoughtLowerDeck",
     };
+    this.cutscenePlayed = false;
+    this.cutscene = "imperialDreadnoughtUpperDeck";
   }
 }
 
@@ -93,7 +97,7 @@ class ImperialDreadnoughtLowerDeck extends Room {
       "Imperial Dreadnought Lower Deck",
       "imperialPort.imperialDreadnoughtLowerDeck",
       "The lower deck of the Imperial Dreadnought is a dimly lit area with a few crates and barrels scattered about. There is a wooden ladder to the north, leading up to the upper deck, a door to the crew quarters to the west, a door to the captain's quarters to the east, and a ladder to the south, leading further below deck into the ship's hold.",
-      20.5,
+      30.5,
       30.5
     );
     this.items = {};
@@ -133,7 +137,9 @@ class ImperialDreadnoughtCaptainQuarters extends Room {
       "imperialPort.imperialDreadnoughtCaptainQuarters",
       "The captain's quarters of the Imperial Dreadnought is a spacious area with a large bed, a desk, and a few personal belongings. There is a door to the west, leading back to the lower deck.",
       15.5,
-      15.5
+      15.5,
+      true,
+      "The door to the captain's quarters, which is now serving the Emperor if the hastily crossed out sign is any indication, is locked."
     );
     this.items = {};
     this.exits = {
