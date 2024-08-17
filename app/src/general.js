@@ -12,6 +12,7 @@ module.exports = {
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
 const { getValue } = require("./save_data");
+import { NameGenerator } from "@kari/markov-namegen";
 
 function switchScreen(screen) {
   document.getElementById("main").style.display = "none";
@@ -40,7 +41,7 @@ function switchButton(button) {
   document.getElementById(button).style.cursor = "default";
 }
 
-async function printLines(file) {
+async function printLines(file, injectedVariables = {}) {
   blockInput();
   var fs = require("fs");
   fs.readFile(file, "utf8", function (err, data) {
@@ -48,6 +49,14 @@ async function printLines(file) {
       return console.log(err);
     }
     var lines = data.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      for (const key in injectedVariables) {
+        lines[i] = lines[i].replace(
+          new RegExp(`{"${key}"}`, "g"),
+          injectedVariables[key]
+        );
+      }
+    }
     for (let i = 0; i < lines.length; i++) {
       setTimeout(() => {
         document.getElementById("main-content").innerHTML +=
@@ -102,7 +111,7 @@ function diceRoll(dice) {
   return [rolls, total];
 }
 
-function addDice (dice1, dice2) {
+function addDice(dice1, dice2) {
   if (dice1 == 0) {
     return dice2;
   } else if (dice2 == 0) {
@@ -119,4 +128,14 @@ function addDice (dice1, dice2) {
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+function generateCharacterName(type) {
+  if (type == "character") {
+    var data = require("./data.json");
+  } else if (type == "location") {
+    data = require("./data.json");
+  }
+  var generator = new NameGenerator(data, );
+  return generator.generateName;
 }

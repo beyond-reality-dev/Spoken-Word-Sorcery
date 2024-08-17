@@ -23,6 +23,7 @@ const {
   imperialNexus,
   imperialPalace,
   imperialPort,
+  unknownShore,
 } = require("./class_collections/locations");
 
 function initializeData(saveFile) {

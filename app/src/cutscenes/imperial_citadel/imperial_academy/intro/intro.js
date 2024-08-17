@@ -62,9 +62,18 @@ async function intro() {
     changeValue("name", name);
     addEntity(new Remember(), "knownSpells");
     addEntity(new Remember(), "spokenSpells");
-    addEntity("I must use the Power sparingly for its cost is my mind, my sanity, my very humanity.", "memories");
-    addEntity("For as long as I remain on this earth, I shall be loyal to the Arcane Order and the Empire.", "memories");
-    addEntity("I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.", "memories");
+    addEntity(
+      "I must use the Power sparingly for its cost is my mind, my sanity, my very humanity.",
+      "memories"
+    );
+    addEntity(
+      "For as long as I remain on this earth, I shall be loyal to the Arcane Order and the Empire.",
+      "memories"
+    );
+    addEntity(
+      "I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.",
+      "memories"
+    );
     addEntity(new Fire(), "knownSpells");
     addEntity(new Water(), "knownSpells");
     addEntity(new Earth(), "knownSpells");
@@ -106,7 +115,10 @@ async function intro() {
   }
   confirm = false;
   changeValue("name", name);
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/2.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/2.txt",
+    { name: name }
+  );
   await requireAnswer(
     ["yes", "y"],
     '"I am afraid you have no choice in this matter," he said sternly. "So I will ask again, are you ready to begin your training?"'
@@ -246,7 +258,9 @@ async function intro() {
   addEntity(away, "knownSpells");
   await openInput(true);
   while (getValue("direction") == "north" || getValue("currentMana") >= 90) {
-    printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/14.txt");
+    printLines(
+      "app/src/cutscenes/imperial_citadel/imperial_academy/intro/14.txt"
+    );
     await openInput(true);
   }
   await printLines(

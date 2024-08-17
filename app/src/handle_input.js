@@ -21,8 +21,8 @@ const {
   requireAnswer,
 } = require("./general");
 const { handleCombat, handleCombatMovement } = require("./combat");
-const { enemies } = require("./class_collections");
-const { spells } = require("./class_collections");
+const enemies = require("./class_collections");
+const spells = require("./class_collections");
 const cutscenes = require("./cutscenes");
 
 function allowInput() {

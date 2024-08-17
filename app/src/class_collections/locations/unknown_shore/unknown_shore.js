@@ -24,4 +24,40 @@ class RockyBeach extends Room {
 
 var rockyBeach = new RockyBeach();
 
-module.exports = { rockyBeach };
+class NorthBeach extends Room {
+  constructor() {
+    super(
+      "North Beach",
+      "unknownShore.northBeach",
+      "The northern beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the south.",
+      20.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "unknownShore.rockyBeach",
+    };
+  }
+}
+
+var northBeach = new NorthBeach();
+
+class SouthBeach extends Room {
+  constructor() {
+    super(
+      "South Beach",
+      "unknownShore.southBeach",
+      "The southern beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the north.",
+      20.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "unknownShore.rockyBeach",
+    };
+  }
+}
+
+var southBeach = new SouthBeach();
+
+module.exports = { rockyBeach, northBeach, southBeach };
