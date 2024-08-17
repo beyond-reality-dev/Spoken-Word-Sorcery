@@ -1227,14 +1227,24 @@ function handleEquip(item) {
   var hasItem = false;
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
-      addEntity(items[i], "equipment");
-      if (item.charAt(0).match(/[aeiou]/i)) {
-        quickPrint(`You equipped an ${item}.`);
+      if (items[i].position != "none") {
+        addEntity(items[i], "equipment");
+        if (item.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You equipped an ${item}.`);
+        } else {
+          quickPrint(`You equipped a ${item}.`);
+        }
+        hasItem = true;
+        break;
       } else {
-        quickPrint(`You equipped a ${item}.`);
+        if (item.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You cannot equip an ${item}.`);
+        } else {
+          quickPrint(`You cannot equip a ${item}.`);
+        }
+        hasItem = true;
+        break;
       }
-      hasItem = true;
-      break;
     }
   }
   if (hasItem == false) {

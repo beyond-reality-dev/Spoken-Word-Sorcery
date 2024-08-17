@@ -219,17 +219,20 @@ async function handlePlayerTurn() {
       if (enemy.health <= 0) {
         quickPrint(`You have defeated ${enemy.name}.`);
         quickPrint(
-          `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`
+          `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold} gold pieces.`
         );
         calculateValue("experiencePoints", "add", enemy.xp);
         calculateValue("gold", "add", enemy.gold);
         for (var i = 0; i < enemy.items.length; i++) {
+          var item = enemy.items[i];
+          var itemName = item.name;
+          itemName = itemName.toLowerCase();
           if (itemName.charAt(0).match(/[aeiou]/i)) {
-            quickPrint(`${enemy.name} dropped an ${item.name}.`);
+            quickPrint(`${enemy.name} dropped an ${itemName}.`);
           } else {
-            quickPrint(`${enemy.name} dropped a ${item.name}.`);
+            quickPrint(`${enemy.name} dropped a ${itemName}.`);
           }
-          locations[primaryLocation][secondaryLocation]["items"].push(item);
+          locations[primaryLocation][secondaryLocation]["items"][itemName] = item;
         }
         var index = enemies.indexOf(enemy);
         enemies.splice(index, 1);
@@ -310,19 +313,20 @@ async function handlePlayerTurn() {
         if (enemy.health <= 0) {
           quickPrint(`You have defeated ${enemy.name}.`);
           quickPrint(
-            `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold}.`
+            `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold} gold pieces.`
           );
           calculateValue("experiencePoints", "add", enemy.xp);
           calculateValue("gold", "add", enemy.gold);
           for (var i = 0; i < enemy.items.length; i++) {
             var item = enemy.items[i];
             var itemName = item.name;
+            var itemName = itemName.toLowerCase();
             if (itemName.charAt(0).match(/[aeiou]/i)) {
-              quickPrint(`${enemy.name} dropped an ${item.name}.`);
+              quickPrint(`${enemy.name} dropped an ${itemName}.`);
             } else {
-              quickPrint(`${enemy.name} dropped a ${item.name}.`);
+              quickPrint(`${enemy.name} dropped a ${itemName}.`);
             }
-            locations[primaryLocation][secondaryLocation]["items"].push(item);
+            locations[primaryLocation][secondaryLocation]["items"][itemName] = item;
           }
           var index = enemies.indexOf(enemy);
           enemies.splice(index, 1);

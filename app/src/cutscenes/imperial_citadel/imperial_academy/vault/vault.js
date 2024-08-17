@@ -5,7 +5,7 @@ const {
 } = require("../../../../general");
 const { getValue, changeValue, addEntity } = require("../../../../save_data");
 const { handleCombat } = require("../../../../combat");
-const { Codex } = require("../../../../class_collections/item_catalog");
+const items = require("../../../../class_collections/item_catalog");
 
 async function vault() {
   if (getValue("imperialAcademy.vault", true).cutscenePlayed == false) {
@@ -32,12 +32,15 @@ async function vault() {
       await printLines(
         "app/src/cutscenes/imperial_citadel/imperial_academy/vault/3.txt"
       );
-      changeValue(
-        "imperialAcademy.vault.cutscenePlayed",
-        true,
-        "locations"
+      changeValue("imperialAcademy.vault.cutscenePlayed", true, "locations");
+      var codex = new items.Miscellaneous(
+        "Codex",
+        "A book that is said to contain all the Words discovered by the Arcane Order",
+        0,
+        1,
+        1
       );
-      addEntity(new Codex(), "inventory");
+      addEntity(codex, "inventory");
     }
   }
 }

@@ -704,6 +704,26 @@ class SmallRoom_09 extends Room {
 
 var smallRoom_09 = new SmallRoom_09();
 
+class HiddenTunnel extends Room {
+  constructor() {
+    super(
+      "Hidden Tunnel",
+      "imperialMarket.hiddenTunnel",
+      "The hidden tunnel is a dark, damp passage that leads deep underground. There is a door to the south leading back to the Imperial Treasury's vault.",
+      10.5,
+      30.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "imperialMarket.smallRoom_09",
+    };
+    this.cutscene = "hiddenTunnel";
+    this.cutscenePlayed = false;
+  }
+}
+
+var hiddenTunnel = new HiddenTunnel();
+
 module.exports = {
   marketEntrance,
   market,
@@ -738,4 +758,5 @@ module.exports = {
   smallRoom_08,
   shortHallway_08,
   smallRoom_09,
+  hiddenTunnel,
 };

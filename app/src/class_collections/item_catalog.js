@@ -718,19 +718,13 @@ class Miscellaneous {
 
 class Coin extends Miscellaneous {
   constructor(quantity = 1) {
-    super("Coin", "An older coin that is still accepted by most merchants", "inventory", 1, 0, quantity);
-  }
-}
-
-class Codex extends Miscellaneous {
-  constructor() {
     super(
-      "Codex",
-      "A book that is said to contain all the Words discovered by the Arcane Order",
-      "accessory",
-      10,
+      "Coin",
+      "An older coin that is still accepted by most merchants",
+      "none",
       1,
-      1
+      0,
+      quantity
     );
   }
 }
@@ -793,5 +787,4 @@ module.exports = {
   Accessory,
   Miscellaneous,
   Coin,
-  Codex,
 };
