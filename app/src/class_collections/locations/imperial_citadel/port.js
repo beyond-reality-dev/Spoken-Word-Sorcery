@@ -156,7 +156,7 @@ class ImperialDreadnoughtHold extends Room {
     super(
       "Imperial Dreadnought Hold",
       "imperialPort.imperialDreadnoughtHold",
-      "The hold of the Imperial Dreadnought is a dark, cramped area with rows of crates and barrels stacked to the ceiling. There is a ladder to the north, leading back up to the lower deck.",
+      "The hold of the Imperial Dreadnought is a dark, cramped area with rows of crates and barrels stacked to the ceiling. A hammock seems to have been hastily strung up in the center of the room. There is a ladder to the north, leading back up to the lower deck.",
       15.5,
       15.5
     );
@@ -164,6 +164,8 @@ class ImperialDreadnoughtHold extends Room {
     this.exits = {
       north: "imperialDreadnoughtLowerDeck",
     };
+    this.cutscenePlayed = false;
+    this.cutscene = "imperialDreadnoughtHold";
   }
 }
 

@@ -16,3 +16,4 @@ exports.palaceEntrance = require("./imperial_citadel/imperial_palace/palace_entr
 exports.throneRoom = require("./imperial_citadel/imperial_palace/throne_room/throne_room");
 exports.imperialDreadnoughtExterior = require("./imperial_citadel/imperial_shipyard/imperial_dreadnought_exterior/imperial_dreadnought_exterior");
 exports.imperialDreadnoughtUpperDeck = require("./imperial_citadel/imperial_shipyard/imperial_dreadnought_upper_deck/imperial_dreadnought_upper_deck");
+exports.imperialDreadnoughtHold = require("./imperial_citadel/imperial_shipyard/imperial_dreadnought_hold/imperial_dreadnought_hold");
