@@ -8,6 +8,7 @@ module.exports = {
   diceRoll,
   addDice,
   getRandomInt,
+  generateName,
 };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
@@ -130,20 +131,25 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function generateName(type, gender, quantity = 1) {
+function generateName(type, quantity = 1) {
+  if (type.split(" ").length > 1) {
+    var type = type.split(" ");
+    var gender = type[0];
+    var type = type[1];
+  }
   const fs = require("fs");
   var data;
   if (type == "fullName") {
     if (quantity == 1) {
-      var forename = generateName("forename", gender);
-      var surname = generateName("surname", gender);
+      var forename = generateName(`${gender} forename`);
+      var surname = generateName("surname");
       var name = forename + " " + surname;
       return name;
     } else {
       data = [];
       for (let i = 0; i < quantity; i++) {
-        var forename = generateName("forename", gender);
-        var surname = generateName("surname", gender);
+        var forename = generateName(`${gender} forename`);
+        var surname = generateName("surname");
         var name = forename + " " + surname;
         data.push(name);
       }
@@ -174,8 +180,26 @@ function generateName(type, gender, quantity = 1) {
   }
   var data = data.split("\n");
   var generator = new NameGenerator(data, 10, 0, false);
+  var isNull = true;
   if (quantity == 1) {
-    return generator.generateName(5, 11, "", "", "", "");
+    while (isNull) {
+      var generatedName = generator.generateName(5, 11, "", "", "", "");
+      if (generatedName != null) {
+        isNull = false;
+      }
+    }
+    return generatedName;
   }
-  return generator.generateNames(quantity, 5, 11, "", "", "", "");
+  var names = [];
+  for (let i = 0; i < quantity; i++) {
+    isNull = true;
+    while (isNull) {
+      var generatedName = generator.generateName(5, 11, "", "", "", "");
+      if (generatedName != null) {
+        isNull = false;
+      }
+    }
+    names.push(generatedName);
+  }
+  return names;
 }

@@ -21,8 +21,8 @@ const {
   requireAnswer,
 } = require("./general");
 const { handleCombat, handleCombatMovement } = require("./combat");
-const enemies = require("./class_collections");
-const spells = require("./class_collections");
+const enemies = require("./class_collections/enemy_menagerie");
+const spells = require("./class_collections/spellbook");
 const cutscenes = require("./cutscenes");
 
 function allowInput() {
@@ -1000,15 +1000,12 @@ function parseCombatMovements(clause, firstSubstring) {
 }
 
 function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
-  console.log(clause.substring(firstSubstring, lastSubstring));
   if (clause.substring(firstSubstring, lastSubstring) == direction) {
     var distance = clause.substring(lastSubstring);
     if (distance.split(" ").length > 1) {
       distance = distance.split(" ")[1];
       distance = parseInt(distance);
-      console.log("distance: " + distance);
     } else {
-      console.log("distance: " + distance);
       distance = parseInt(distance);
     }
     if (isNaN(distance)) {

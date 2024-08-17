@@ -80,7 +80,6 @@ async function intro() {
     addEntity(new Spear(), "spokenSpells");
     addEntity(new Shield(), "spokenSpells");
     addEntity(new Away(), "knownSpells");
-    changeValue("experiencePoints", 100);
     handleMovement("load");
     inputLoop();
     return;
@@ -267,7 +266,6 @@ async function intro() {
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt"
   );
   changeValue("currentMana", 100);
-  changeValue("experiencePoints", 100);
   inputLoop();
 }
 
