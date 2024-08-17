@@ -6,6 +6,7 @@ exports.restOfAcademy = require("./imperial_citadel/imperial_academy/rest_of_aca
 exports.vault = require("./imperial_citadel/imperial_academy/vault/vault");
 exports.survivorsCamp = require("./imperial_citadel/imperial_academy/survivors_camp/survivors_camp");
 exports.imperialTreasuryExterior = require("./imperial_citadel/imperial_market/imperial_treasury_exterior/imperial_treasury_exterior");
+exports.imperialTreasuryVault = require("./imperial_citadel/imperial_market/imperial_treasury_vault/imperial_treasury_vault");
 exports.mainGate = require("./imperial_citadel/imperial_market/main_gate/main_gate");
 exports.marketStalls = require("./imperial_citadel/imperial_market/market_stalls/market_stalls");
 exports.vaultEntrance = require("./imperial_citadel/imperial_market/vault_entrance/vault_entrance");
