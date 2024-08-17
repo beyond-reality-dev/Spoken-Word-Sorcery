@@ -92,7 +92,9 @@ class ImperialLibrary extends Room {
       "imperialPalace.imperialLibrary",
       "The Imperial Library is a vast chamber with shelves of books and scrolls lining the walls. There is a walkway to the west, leading to the Imperial Palace.",
       20.5,
-      20.5
+      20.5,
+      true,
+      "The doors to the Imperial Library are locked, by order of the Emperor."
     );
     this.items = {};
     this.exits = {
@@ -110,7 +112,9 @@ class ImperialGardens extends Room {
       "imperialPalace.imperialGardens",
       "The Imperial Gardens are a lush oasis of greenery and flowers. There is a walkway to the east, leading to the Imperial Palace.",
       20.5,
-      20.5
+      20.5,
+      true,
+      "The doors to the Imperial Gardens are locked, by order of the Emperor."
     );
     this.items = {};
     this.exits = {
@@ -135,6 +139,8 @@ class ThroneRoom extends Room {
       north: "imperialPalace.imperialPalace",
       south: "imperialPalace.emperorsChambers",
     };
+    this.cutscene = "throneRoom";
+    this.cutscenePlayed = false;
   }
 }
 
