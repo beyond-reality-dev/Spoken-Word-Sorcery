@@ -42,12 +42,16 @@ async function handleCombat() {
       enemies = await handlePlayerTurn(enemies, enemies.length);
       turnPlayed = true;
     }
-    for (let i = 0; i < enemies.length; i++) {
-      if (enemies[i].isObstacle == false) {
-        enemiesDefeated = false;
-        break;
-      } else {
-        enemiesDefeated = true;
+    if (enemies.length == 0) {
+      enemiesDefeated = true;
+    } else {
+      for (let i = 0; i < enemies.length; i++) {
+        if (enemies[i].isObstacle == false) {
+          enemiesDefeated = false;
+          break;
+        } else {
+          enemiesDefeated = true;
+        }
       }
     }
   }
@@ -78,7 +82,7 @@ async function handlePlayerTurn() {
     var relationship = calculateRelationship(enemyPosition, playerPosition);
     var enemyDirection = relationship[0];
     var enemyDistance = relationship[1];
-    if (enemyDistance.isObstacle == false) {
+    if (enemy.isObstacle == false) {
       quickPrint(
         `${i + 1}. ${enemy.name} has ${
           enemy.health
@@ -232,7 +236,8 @@ async function handlePlayerTurn() {
           } else {
             quickPrint(`${enemy.name} dropped a ${itemName}.`);
           }
-          locations[primaryLocation][secondaryLocation]["items"][itemName] = item;
+          locations[primaryLocation][secondaryLocation]["items"][itemName] =
+            item;
         }
         var index = enemies.indexOf(enemy);
         enemies.splice(index, 1);
@@ -326,7 +331,8 @@ async function handlePlayerTurn() {
             } else {
               quickPrint(`${enemy.name} dropped a ${itemName}.`);
             }
-            locations[primaryLocation][secondaryLocation]["items"][itemName] = item;
+            locations[primaryLocation][secondaryLocation]["items"][itemName] =
+              item;
           }
           var index = enemies.indexOf(enemy);
           enemies.splice(index, 1);

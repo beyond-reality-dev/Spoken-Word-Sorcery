@@ -1107,11 +1107,131 @@ function handleMovement(direction) {
       }
     } else if (newLocation.hasOwnProperty("enemies")) {
       handleCombat();
+    } else if (newLocation.hasOwnProperty("vendor")) {
+      handleShop(newLocation);
     }
   } catch (error) {
     console.log(error);
     var newLocation = currentLocation.exits[direction];
     quickPrint("You cannot go that way.");
+  }
+}
+
+async function handleShop(location) {
+  var vendor = location.vendor;
+  var inventory = location.shopItems;
+  var currency = location.currency;
+  quickPrint(`
+    ${vendor}, the owner of the shop, greets you warmly.
+    "Welcome to my shop! Please take a look at my wares."
+    Would you like to:
+    1. Buy something
+    2. Sell something
+    3. Leave
+  `);
+  var response = await requireAnswer(
+    ["1", "buy something", "buy", "2", "sell something", "sell", "leave"],
+    '"Would you like to buy or sell something?"'
+  );
+  if (response == "1" || response == "buy something" || response == "buy") {
+    quickPrint('"Here is what I have for sale:"');
+    for (let i = 0; i < inventory.length; i++) {
+      var item = inventory[i];
+      quickPrint(`
+        ${i + 1}. ${item.name} | ${item.description} | ${
+        item.goldValue
+      } gold | ${item.quantity} in stock
+      `);
+    }
+    quickPrint("10. Nothing");
+    response = await requireAnswer(
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "nothing"],
+      '"What would you like to buy?"'
+    );
+    if (response == "10" || response == "nothing") {
+      quickPrint("Thank you for your business.");
+      handleShop(location);
+      return;
+    }
+    response = parseInt(response);
+    var item = inventory[response - 1];
+    var price = item.goldValue;
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var gold = playerData["gold"];
+    if (gold < price) {
+      if (item.name.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You do not have enough money to buy an ${item.name}.`);
+      } else {
+        quickPrint(`You do not have enough money to buy a ${item.name}.`);
+      }
+    } else {
+      calculateValue("gold", "subtract", price);
+      addEntity(item, "inventory");
+      if (item.quantity == 1) {
+        location.shopItems.splice(response - 1, 1);
+      } else {
+        item.quantity = item.quantity - 1;
+      }
+      currency = currency + price;
+      var locations = playerData["locations"];
+      var primaryLocation = location.id.split(".")[0];
+      var secondaryLocation = location.id.split(".")[1];
+      locations[primaryLocation][secondaryLocation]["shopItems"] =
+        location.shopItems;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      if (item.name.charAt(0).match(/[aeiou]/i)) {
+        quickPrint(`You bought an ${item.name}.`);
+      } else {
+        quickPrint(`You bought a ${item.name}.`);
+      }
+    }
+    handleShop(location);
+  } else if (
+    response == "2" ||
+    response == "sell something" ||
+    response == "sell"
+  ) {
+    quickPrint("What would you like to sell?");
+    var items = getValue("inventory");
+    var response = await closedInput();
+    if (response == "cancel" || response == "exit" || response == "leave" || response == "nothing") {
+      handleShop(location);
+      return;
+    }
+    var item = response;
+    if (item.charAt(item.length - 1) == "s") {
+      item = item.substring(0, item.length - 1);
+    }
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].name == toTitleCase(item)) {
+        var itemEntity = items[i];
+        var price = itemEntity.goldValue;
+        if (currency < price) {
+          quickPrint(
+            "I'm afraid I'm a little short on funds, but if you purchase something, I may be able to keep doing business with you."
+          );
+          break;
+        }
+        calculateValue("gold", "add", price);
+        delete items[i];
+        currency = currency - price;
+        var locations = playerData["locations"];
+        var primaryLocation = location.id.split(".")[0];
+        var secondaryLocation = location.id.split(".")[1];
+        locations[primaryLocation][secondaryLocation]["shopItems"] =
+          location.shopItems;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+        if (itemEntity.name.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You sold an ${itemEntity.name}.`);
+        } else {
+          quickPrint(`You sold a ${itemEntity.name}.`);
+        }
+        break;
+      }
+    }
+    handleShop(location);
+  } else if (response == "3" || response == "leave") {
+    quickPrint("Thank you for your business.");
   }
 }
 
