@@ -716,6 +716,12 @@ class Miscellaneous {
   }
 }
 
+class Coin extends Miscellaneous {
+  constructor(quantity = 1) {
+    super("Coin", "An older coin that is still accepted by most merchants", "inventory", 1, 0, quantity);
+  }
+}
+
 class Codex extends Miscellaneous {
   constructor() {
     super(
@@ -786,5 +792,6 @@ module.exports = {
   Stone,
   Accessory,
   Miscellaneous,
+  Coin,
   Codex,
 };

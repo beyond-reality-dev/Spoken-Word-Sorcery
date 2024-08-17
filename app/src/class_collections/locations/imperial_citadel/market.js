@@ -85,8 +85,8 @@ class CitadelRoad extends Room {
       "Citadel Road",
       "imperialMarket.citadelRoad",
       "The Citadel Road is a wide stone road that leads to the Imperial Citadel's walls. There is a path to the north leading to the Imperial Treasury, and a path to the south leading to the Imperial Citadel's walls.",
-      10.5,
-      20.5
+      20.5,
+      60.5
     );
     this.items = {};
     this.exits = {
@@ -104,8 +104,8 @@ class CitadelWalls extends Room {
       "Citadel Walls",
       "imperialMarket.citadelWalls",
       "The Citadel Walls are tall stone walls that surround the Imperial Citadel. There is a path to the north leading to the Citadel Road, and a path to the south leading to the main gates of the Imperial Citadel.",
-      10.5,
-      10.5
+      80.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -123,22 +123,22 @@ class MainGate extends Room {
       "Main Gate",
       "imperialCitadel.mainGate",
       "The main gates of the Imperial Citadel are large iron gates that are currently closed. There is a path to the north leading to the Citadel Walls, and a path to the south leading outside of the Imperial Citadel.",
-      10.5,
-      10.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
       north: "imperialMarket.citadelWalls",
-      south: "placeholder",
+      south: "imperialMarket.fields",
     };
     this.enemies = [
-      new enemies.RebelCaptain("Rebel Captain", "south"),
-      new enemies.Rebel("Rebel 1", "northeast"),
-      new enemies.Rebel("Rebel 2", "east"),
-      new enemies.Rebel("Rebel 3", "southeast"),
-      new enemies.Rebel("Rebel 4", "southwest"),
-      new enemies.Rebel("Rebel 5", "west"),
-      new enemies.Rebel("Rebel 6", "northwest"),
+      new enemies.RebelCaptain("Rebel Captain", [2, 3]),
+      new enemies.Rebel("Rebel 1", [1, 1]),
+      new enemies.Rebel("Rebel 2", [3, 1]),
+      new enemies.Rebel("Rebel 3", [1, 2]),
+      new enemies.Rebel("Rebel 4", [3, 2]),
+      new enemies.Rebel("Rebel 5", [1, 3]),
+      new enemies.Rebel("Rebel 6", [3, 3]),
     ];
     this.cutscene = "mainGate";
     this.cutscenePlayed = false;
@@ -147,14 +147,32 @@ class MainGate extends Room {
 
 var mainGate = new MainGate();
 
+class Fields extends Room {
+  constructor() {
+    super(
+      "Fields",
+      "imperialMarket.fields",
+      "The fields outside the Imperial Citadel are a large open area with burnt crops and the remains of a small battle. There is a path to the north leading to the main gates of the Imperial Citadel.",
+      200.5,
+      200.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "imperialCitadel.mainGate",
+    };
+  }
+}
+
+var fields = new Fields();
+
 class ImperialTreasuryLounge extends Room {
   constructor() {
     super(
       "Imperial Treasury Lounge",
-      "imperialMarket.imperialTreasuryLoounge",
+      "imperialMarket.imperialTreasuryLounge",
       "The Imperial Treasury Lounge is a crowded room with several guards and officials rushing about. There is a door to the north leading deeper inside, and a door to the south leading outside.",
-      10.5,
-      10.5
+      40.5,
+      40.5
     );
     this.items = {};
     this.exits = {
@@ -197,8 +215,8 @@ class MainHall extends Room {
       "Main Hall",
       "imperialMarket.mainHall",
       "The main hall of the Imperial Treasury is a large open area with numerous guards and officials moving about. It appears to be being used as a staging area for the defense and management of the treasury. There is a door to the north leading to a short hallway, and a door to the south leading to a different short hallway.",
-      20.5,
-      20.5
+      40.5,
+      80.5
     );
     this.items = {};
     this.exits = {
@@ -235,8 +253,8 @@ class VaultEntrance extends Room {
       "Vault Entrance",
       "imperialMarket.vaultEntrance",
       "The vault entrance is a large stone door with a heavy iron lock. The vaults of the treasury are to the north, and a short hallway is to the south.",
-      10.5,
-      10.5
+      20.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -314,7 +332,7 @@ class SmallRoom_02 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_02",
-      "The small room appears to contain nothing and is a dead end, with a door to the south leading to a long passage.",
+      "The small room appears to both contain nothing and lead nowhere, with a door to the south leading to a long passage.",
       15.5,
       15.5
     );
@@ -351,7 +369,7 @@ class LargeChamber_01 extends Room {
     super(
       "Large Chamber",
       "imperialMarket.largeChamber_01",
-      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the west leading to a short hallway, and a door to the east leading to a long passage.",
+      "The large chamber is a large stone room with a high ceiling and numerous pillars. The numerous crates and barrels scattered throughout the room seem to indicate that it is being used as a store room for the rebels holed-up inside. There is a door to the west leading to a short hallway, and a door to the east leading to a long passage.",
       30.5,
       30.5
     );
@@ -361,9 +379,15 @@ class LargeChamber_01 extends Room {
       east: "longPassage_03",
     };
     this.enemies = [
-      new enemies.RebelCaptain("Rebel 1", "southeast"),
-      new enemies.Rebel("Rebel 2", "east"),
-      new enemies.Rebel("Rebel 3", "northeast"),
+      new enemies.RebelCaptain("Rebel 1", [5, 4]),
+      new enemies.Rebel("Rebel 2", [3, 2]),
+      new enemies.Rebel("Rebel 3", [4, 6]),
+      new enemies.Crate([1, 2]),
+      new enemies.Crate([3, 4]),
+      new enemies.Crate([5, 6]),
+      new enemies.Barrel([2, 3]),
+      new enemies.Barrel([4, 5]),
+      new enemies.Barrel([5, 3]),
     ];
   }
 }
@@ -471,7 +495,7 @@ class SmallRoom_05 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_05",
-      "This small room is mostly empty, with a door to the north leading to a short hallway and a door to the east leading to a long passage.",
+      "This small room is mostly empty, except for some mouse droppings on the floor, with a door to the north leading to a short hallway and a door to the east leading to a long passage.",
       15.5,
       15.5
     );
@@ -509,7 +533,7 @@ class SmallRoom_06 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_06",
-      "The small room is mostly empty, with a door to the north leading to a short hallway and a door to the south leading to a long passage.",
+      "The small room is totally empty, with a door to the north leading to a short hallway and a door to the south leading to a long passage.",
       15.5,
       15.5
     );
@@ -518,9 +542,7 @@ class SmallRoom_06 extends Room {
       north: "longPassage_05",
       south: "imperialMarket.shortHallway_05",
     };
-    this.enemies = [
-      new enemies.RebelCaptain("Rebel", "north"),
-    ];
+    this.enemies = [new enemies.RebelCaptain("Rebel", "north")];
   }
 }
 
@@ -550,7 +572,7 @@ class LargeChamber_02 extends Room {
     super(
       "Large Chamber",
       "imperialMarket.largeChamber_02",
-      "The large chamber is a massive stone room with a high ceiling and numerous pillars. There is a door to the south leading to a long passage, and a door to the north, east, and west, each leading to different hallways.",
+      "The large chamber is a large stone room with a high ceiling and numerous pillars. The broken barrels and crates, all empty, that lie scattered on the floor may be a sign of the rebels' growing desperation. There is a door to the south leading to a long passage, and a door to the north, east, and west, each leading to different hallways.",
       30.5,
       30.5
     );
@@ -578,7 +600,7 @@ class ShortHallway_06 extends Room {
     this.items = {};
     this.exits = {
       west: "imperialMarket.largeChamber_02",
-      east: "imperialMarket.smallRoom_07"
+      east: "imperialMarket.smallRoom_07",
     };
   }
 }
@@ -590,13 +612,15 @@ class SmallRoom_07 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_07",
-      "The small room is mostly empty, with a door to the west leading to a short hallway.",
+      "The small room is a dead end, although you notice a coin lying on the floor, with a door to the west leading to a short hallway.",
       15.5,
       15.5
     );
-    this.items = {};
+    this.items = {
+      coin: new items.Coin(),
+    };
     this.exits = {
-      west: "imperialMarket.shortHallway_06"
+      west: "imperialMarket.shortHallway_06",
     };
   }
 }
@@ -615,7 +639,7 @@ class ShortHallway_07 extends Room {
     this.items = {};
     this.exits = {
       east: "imperialMarket.largeChamber_02",
-      west: "imperialMarket.smallRoom_07"
+      west: "imperialMarket.smallRoom_07",
     };
   }
 }
@@ -627,13 +651,15 @@ class SmallRoom_08 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_08",
-      "The small room is mostly empty, with a door to the east leading to a short hallway.",
+      "The small room is empty except for a pouch that someone seems to have tried to hide under a pile of rusty weapons. There is a door to the east leading to a short hallway.",
       15.5,
       15.5
     );
-    this.items = {};
+    this.items = {
+      pouch: new items.Coin(5),
+    };
     this.exits = {
-      east: "imperialMarket.shortHallway_07"
+      east: "imperialMarket.shortHallway_07",
     };
   }
 }
@@ -651,7 +677,7 @@ class ShortHallway_08 extends Room {
     );
     this.items = {};
     this.exits = {
-      north: "imperialMarket.largeChamber_02"
+      north: "imperialMarket.largeChamber_02",
     };
   }
 }
@@ -663,14 +689,16 @@ class SmallRoom_09 extends Room {
     super(
       "Small Room",
       "imperialMarket.smallRoom_09",
-      "The small room is mostly empty, with a door to the south leading to a short hallway.",
+      "The small room seems to be completely empty, with a door to the south leading to a short hallway.",
       15.5,
       15.5
     );
     this.items = {};
     this.exits = {
-      south: "imperialMarket.shortHallway_08"
+      south: "imperialMarket.shortHallway_08",
     };
+    this.cutscene = "imperialTreasuryVault";
+    this.cutscenePlayed = false;
   }
 }
 
