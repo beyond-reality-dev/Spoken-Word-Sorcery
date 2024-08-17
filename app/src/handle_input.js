@@ -1026,6 +1026,16 @@ function handleMovement(direction) {
   if (direction == "load") {
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
+    if (currentLocation.hasOwnProperty("cutscene")) {
+      if (currentLocation.cutscenePlayed == false) {
+        var cutsceneName = currentLocation.cutscene;
+        cutscenes[cutsceneName][cutsceneName]();
+      }
+    } else if (currentLocation.hasOwnProperty("enemies")) {
+      handleCombat();
+    } else if (currentLocation.hasOwnProperty("vendor")) {
+      handleShop(currentLocation);
+    }
     return;
   }
   try {

@@ -5,7 +5,11 @@ async function imperialDreadnoughtHold() {
   await printLines(
     "app/src/cutscenes/imperial_citadel/imperial_port/imperial_dreadnought_hold/1.txt"
   );
-  await requireAnswer(["any"], "unreachable");
+  await requireAnswer(["i rest", "rest", "i sleep", "sleep"], "You must rest to continue...");
+  var maxHealth = getValue("maxHealth");
+  var maxMana = getValue("maxMana");
+  changeValue("currentHealth", maxHealth);
+  changeValue("currentMana", maxMana);
   await printLines(
     "app/src/cutscenes/imperial_citadel/imperial_port/imperial_dreadnought_hold/2.txt"
   );
