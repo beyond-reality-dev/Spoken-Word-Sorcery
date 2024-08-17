@@ -1,5 +1,3 @@
-module.exports = { intro };
-
 const {
   printLines,
   quickPrint,
@@ -255,5 +253,8 @@ async function intro() {
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt"
   );
   changeValue("currentMana", 100);
+  changeValue("experiencePoints", 100);
   inputLoop();
 }
+
+module.exports = { intro };

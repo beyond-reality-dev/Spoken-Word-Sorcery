@@ -1194,13 +1194,34 @@ async function handleShop(location) {
     quickPrint("What would you like to sell?");
     var items = getValue("inventory");
     var response = await closedInput();
-    if (response == "cancel" || response == "exit" || response == "leave" || response == "nothing") {
+    if (
+      response == "cancel" ||
+      response == "exit" ||
+      response == "leave" ||
+      response == "nothing"
+    ) {
       handleShop(location);
       return;
     }
     var item = response;
     if (item.charAt(item.length - 1) == "s") {
       item = item.substring(0, item.length - 1);
+    }
+    if (toTitleCase(item) == "Coin") {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].name == "Coin") {
+          calculateValue("gold", "add", items[i].quantity);
+          if (items[i].quantity == 1) {
+            quickPrint("You exchanged an older coin for a newly minted gold piece.");
+          } else {
+            quickPrint(`You exchanged ${items[i].quantity} older coins for newly minted gold pieces.`);
+          }
+          items.splice(i, 1);
+          break;
+        }
+      }
+      handleShop(location);
+      return;
     }
     for (let i = 0; i < items.length; i++) {
       if (items[i].name == toTitleCase(item)) {
@@ -1213,13 +1234,18 @@ async function handleShop(location) {
           break;
         }
         calculateValue("gold", "add", price);
-        delete items[i];
+        if (itemEntity.quantity == 1) {
+          items.splice(i, 1);
+        } else {
+          itemEntity.quantity = itemEntity.quantity - 1;
+        }
         currency = currency - price;
         var locations = playerData["locations"];
         var primaryLocation = location.id.split(".")[0];
         var secondaryLocation = location.id.split(".")[1];
         locations[primaryLocation][secondaryLocation]["shopItems"] =
           location.shopItems;
+        playerData["inventory"] = items;
         localStorage.setItem("playerData", JSON.stringify(playerData));
         if (itemEntity.name.charAt(0).match(/[aeiou]/i)) {
           quickPrint(`You sold an ${itemEntity.name}.`);

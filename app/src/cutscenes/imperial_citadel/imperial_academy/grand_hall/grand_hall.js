@@ -54,7 +54,7 @@ async function grandHallEncounter() {
       "app/src/cutscenes/imperial_citadel/imperial_academy/grand_hall/8.txt"
     );
     changeValue("imperialAcademy.longPassage.isLocked", true, "locations");
-    changeValue("imperialAcademy.commonRoom.isLocked", true, "locations");
+    changeValue("imperialAcademy.shortHallway_02.isLocked", true, "locations");
     changeValue("imperialAcademy.hallGates.isLocked", false, "locations");
     changeValue(
       "imperialAcademy.longPassage.lockedDescription",
@@ -62,8 +62,8 @@ async function grandHallEncounter() {
       "locations"
     );
     changeValue(
-      "imperialAcademy.commonRoom.lockedDescription",
-      "The door to the common room has collapsed, blocking the way.",
+      "imperialAcademy.shortHallway_02.lockedDescription",
+      "The door to the short hallway has collapsed, blocking the way.",
       "locations"
     );
     changeValue(

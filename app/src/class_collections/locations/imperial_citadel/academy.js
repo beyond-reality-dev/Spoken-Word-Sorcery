@@ -230,8 +230,8 @@ class ShortHallway_03 extends Room {
   constructor() {
     super(
       "Short/Hallway",
-      "imperialAcademy.shortHallway",
-      "The short hallway is a small, dark hallway. There is a door to the east, leading to the hall gates.",
+      "imperialAcademy.shortHallway_03",
+      "The short hallway is a small, dark hallway. There is a door to the east, leading to the hall gates, and a door to the west, leading to the rest of the Academy.",
       15.5,
       10.5
     );

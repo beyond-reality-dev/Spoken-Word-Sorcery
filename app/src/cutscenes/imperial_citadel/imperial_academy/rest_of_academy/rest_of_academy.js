@@ -13,7 +13,7 @@ async function restOfAcademy() {
   );
   await requireAnswer(
     ["yes", "y"],
-    '"Really?" he asks incredulously. "Come on. Don\'t you want to know?"'
+    '"Really?" he asked incredulously. "Come on. Surely you want to know?"'
   );
   printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/rest_of_academy/2.txt"

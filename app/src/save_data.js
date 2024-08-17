@@ -188,6 +188,17 @@ function updateTitleBar() {
   var currentHealth = getValue("currentHealth");
   var maxHealth = getValue("maxHealth");
   var level = getValue("level");
+  var xp = getValue("experiencePoints");
+  var targetXp = level * 100;
+  var xpPercentage = (xp / targetXp) * 100;
+  xpPercentage = Math.floor(xpPercentage);
+  if (xp >= 1000) {
+    xp = xp / 1000;
+    xp = xp.toFixed(1);
+    targetXp = targetXp / 1000;
+    targetXp = targetXp.toFixed(1);
+    targetXp = targetXp + "k";
+  }
   var tempMana = getValue("tempMana");
   var currentMana = getValue("currentMana");
   var maxMana = getValue("maxMana");
@@ -203,7 +214,7 @@ function updateTitleBar() {
       "health-text"
     ).innerHTML = `Health: ${currentHealth}/${maxHealth}`;
   }
-  document.getElementById("level-text").innerHTML = `Level: ${level}`;
+  document.getElementById("level-text").innerHTML = `Level: ${level} (${xp}/${targetXp} XP | ${xpPercentage}%)`;
   document.getElementById("mana-bar").value = currentMana;
   document.getElementById("mana-bar").max = maxMana;
   var tempMana = getValue("tempMana");
