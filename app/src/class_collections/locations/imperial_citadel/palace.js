@@ -155,13 +155,17 @@ class EmperorsChambers extends Room {
       "imperialPalace.emperorsChambers",
       "The Emperor's chambers are a private suite of rooms with luxurious furnishings and decorations. There is a walkway to the north, leading to the throne room, and a door to the south, leading to the Emperor's private study.",
       20.5,
-      20.5
+      20.5,
+      true,
+      "The doors to the Emperor's chambers are securely locked, and he possesses the only key."
     );
     this.items = {};
     this.exits = {
       north: "imperialPalace.throneRoom",
       south: "imperialPalace.emperorsStudy",
     };
+    this.cutscenePlayed = false;
+    this.cutscene = "emperorsChambers";
   }
 }
 

@@ -8,7 +8,7 @@ class PortEntrance extends Room {
       "imperialPort.portEntrance",
       "The entrance to the port is a large open area. The remains of large iron gates lie shattered in the burnt grass. There is a path to the west, leading to the nexus of the Imperial Citadel, and a road to the east, leading to the port.",
       10.5,
-      10.5
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -16,9 +16,9 @@ class PortEntrance extends Room {
       east: "imperialPort.port",
     };
     this.enemies = [
-      new enemies.RebelCaptain("Rebel Captain", "south"),
-      new enemies.Rebel("Rebel 1", "southwest"),
-      new enemies.Rebel("Rebel 2", "southwest"),
+      new enemies.RebelCaptain("Rebel Captain", [2, 3]),
+      new enemies.Rebel("Rebel 1", [2, 2]),
+      new enemies.Rebel("Rebel 2", [2, 4]),
     ];
   }
 }
@@ -31,8 +31,8 @@ class Port extends Room {
       "Port",
       "imperialPort.port",
       "The port is a large open area with numerous docks and ships. There is a path to the west leading to the port entrance, and a path to the east leading to the Imperial Dreadnought.",
-      10.5,
-      10.5,
+      100.5,
+      100.5,
       true,
       "A legion of Imperial soldiers stand guard at the entrance to the port, their weapons at the ready. This must be where much of the Empire's forces retreated to after the attack on the Imperial Academy. The soldiers appear to recognize your acolyte robes, but they nonetheless inform you that the port is under a strict lockdown."
     );
@@ -41,9 +41,9 @@ class Port extends Room {
       west: "imperialPort.portEntrance",
       east: "imperialPort.imperialDreadnoughtExterior",
     };
-    this.key = "Imperial Emblem";
+    this.key = "Imperial Signet Ring";
     this.unlockMessage =
-      "The soldiers recognize the Imperial Emblem that has been hastily sewn on your cloak and allow you to pass with the rest of the Emperor's entourage.";
+      "The soldiers recognize the Imperial Signet Ring that you hold as a sign of the Emperor's absolute authority, and they hastily step aside to grant you access.";
   }
 }
 
@@ -55,8 +55,8 @@ class ImperialDreadnoughtExterior extends Room {
       "Imperial Dreadnought",
       "imperialPort.imperialDreadnought",
       "The Imperial Dreadnought is a massive armored ship with imposing ballistae, each with a heavy javelin already nocked. There is a door to the west leading to the port, and a ladder to the east leading up to the upper deck.",
-      10.5,
-      10.5
+      20.5,
+      80.5
     );
     this.items = {};
     this.exits = {
@@ -74,8 +74,8 @@ class ImperialDreadnoughtUpperDeck extends Room {
       "Imperial Dreadnought Upper Deck",
       "imperialPort.imperialDreadnoughtUpperDeck",
       "The upper deck of the Imperial Dreadnought is a large open area with a few crates and barrels scattered about. There is a ladder to the west, leading down to the ship's exterior, and a wooden door to the south, leading below deck.",
-      10.5,
-      10.5
+      30.5,
+      60.5
     );
     this.items = {};
     this.exits = {
@@ -93,8 +93,8 @@ class ImperialDreadnoughtLowerDeck extends Room {
       "Imperial Dreadnought Lower Deck",
       "imperialPort.imperialDreadnoughtLowerDeck",
       "The lower deck of the Imperial Dreadnought is a dimly lit area with a few crates and barrels scattered about. There is a wooden ladder to the north, leading up to the upper deck, a door to the crew quarters to the west, a door to the captain's quarters to the east, and a ladder to the south, leading further below deck into the ship's hold.",
-      10.5,
-      10.5
+      20.5,
+      30.5
     );
     this.items = {};
     this.exits = {
@@ -114,8 +114,8 @@ class ImperialDreadnoughtCrewQuarters extends Room {
       "Imperial Dreadnought Crew Quarters",
       "imperialPort.imperialDreadnoughtCrewQuarters",
       "The crew quarters of the Imperial Dreadnought is a cramped area with rows of hammocks and personal belongings. There is a door to the east, leading back to the lower deck.",
-      10.5,
-      10.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -132,8 +132,8 @@ class ImperialDreadnoughtCaptainQuarters extends Room {
       "Imperial Dreadnought Captain Quarters",
       "imperialPort.imperialDreadnoughtCaptainQuarters",
       "The captain's quarters of the Imperial Dreadnought is a spacious area with a large bed, a desk, and a few personal belongings. There is a door to the west, leading back to the lower deck.",
-      10.5,
-      10.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -151,8 +151,8 @@ class ImperialDreadnoughtHold extends Room {
       "Imperial Dreadnought Hold",
       "imperialPort.imperialDreadnoughtHold",
       "The hold of the Imperial Dreadnought is a dark, cramped area with rows of crates and barrels stacked to the ceiling. There is a ladder to the north, leading back up to the lower deck.",
-      10.5,
-      10.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {

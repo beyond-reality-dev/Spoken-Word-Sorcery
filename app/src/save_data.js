@@ -214,7 +214,9 @@ function updateTitleBar() {
       "health-text"
     ).innerHTML = `Health: ${currentHealth}/${maxHealth}`;
   }
-  document.getElementById("level-text").innerHTML = `Level: ${level} (${xp}/${targetXp} XP | ${xpPercentage}%)`;
+  document.getElementById(
+    "level-text"
+  ).innerHTML = `Level: ${level} (${xp}/${targetXp} XP | ${xpPercentage}%)`;
   document.getElementById("mana-bar").value = currentMana;
   document.getElementById("mana-bar").max = maxMana;
   var tempMana = getValue("tempMana");
