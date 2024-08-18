@@ -61,11 +61,11 @@ class SouthBeach extends Room {
 
 var southBeach = new SouthBeach();
 
-class ForestPath extends Room {
+class ForestPath_01 extends Room {
   constructor() {
     super(
       "Forest Path",
-      "unknownShore.forestPath",
+      "unknownShore.forestPath_01",
       "The forest path winds through the trees for a long way, leading to a rocky beach in the east and a clearing in the west.",
       80.5,
       20.5
@@ -78,21 +78,23 @@ class ForestPath extends Room {
   }
 }
 
-var forestPath = new ForestPath();
+var forestPath_01 = new ForestPath_01();
 
 class Clearing extends Room {
   constructor() {
     super(
       "Clearing",
       "unknownShore.clearing",
-      "The clearing is a small, open area surrounded by trees. There is a traveling merchant to the north, and a forest path to the east.",
+      "The clearing is a small, open area surrounded by trees. There is a traveling merchant to the north, a forest path to the east and west, and an old tree stump to the south.",
       40.5,
       40.5
     );
     this.items = {};
     this.exits = {
       north: "unknownShore.travelingMerchant",
-      east: "unknownShore.forestPath",
+      east: "unknownShore.forestPath_01",
+      south: "unknownShore.oldTreeStump",
+      west: "unknownShore.forestPath_02",
     };
   }
 }
@@ -122,4 +124,49 @@ class TravelingMerchant extends Shop {
 var generatedMerchant = generateShop(1);
 var travelingMerchant = new TravelingMerchant();
 
-module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travelingMerchant };
+class OldTreeStump extends Room {
+  constructor() {
+    super(
+      "Old Tree Stump",
+      "unknownShore.oldTreeStump",
+      "The old tree stump is a small, moss-covered stump with a hole in the center. There is a clearing to the north.",
+      10.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "unknownShore.clearing",
+    };
+  }
+}
+
+var oldTreeStump = new OldTreeStump();
+
+class ForestPath_02 extends Room {
+  constructor() {
+    super(
+      "Forest Path",
+      "unknownShore.forestPath_02",
+      "The forest path winds through the trees for a long way, leading to a clearing in the east.",
+      80.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.clearing",
+    };
+  }
+}
+
+var forestPath_02 = new ForestPath_02();
+
+module.exports = {
+  rockyBeach,
+  northBeach,
+  southBeach,
+  forestPath_01,
+  clearing,
+  travelingMerchant,
+  oldTreeStump,
+  forestPath_02,
+};
