@@ -1,4 +1,4 @@
-const { printLines } = require("../../../../general");
+const { printLines } = require("../../../general");
 const { changeValue } = require("../../../save_data");
 
 async function rockyBeach() {

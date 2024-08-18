@@ -17,4 +17,4 @@ exports.throneRoom = require("./imperial_citadel/imperial_palace/throne_room/thr
 exports.imperialDreadnoughtExterior = require("./imperial_citadel/imperial_port/imperial_dreadnought_exterior/imperial_dreadnought_exterior");
 exports.imperialDreadnoughtUpperDeck = require("./imperial_citadel/imperial_port/imperial_dreadnought_upper_deck/imperial_dreadnought_upper_deck");
 exports.imperialDreadnoughtHold = require("./imperial_citadel/imperial_port/imperial_dreadnought_hold/imperial_dreadnought_hold");
-exports.rockyBeach = require("./unknown_shore/rocky_beach");
+exports.rockyBeach = require("./unknown_shore/rocky_beach/rocky_beach");

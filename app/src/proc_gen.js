@@ -3,10 +3,9 @@ const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt } = require("./general");
-const { type } = require("os");
 const { getValue } = require("./save_data");
-const { get } = require("http");
 const { handleCombat } = require("./combat");
+const { handleMovement } = require("./handle_input");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -161,9 +160,15 @@ function generateWeapon(tier, firstName = "", lastName = "") {
     if (coinFlip > 0.5) {
       var weaponTypes = items[`tier3Weapons`];
       var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
-      var generatedFirstName = generateName("either forename");
-      var generatedLastName = generateName("surname");
-      var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      if (firstName == "" && lastName == "") {
+        var generatedFirstName = generateName("either forename");
+        var generatedLastName = generateName("surname");
+        var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      } else {
+        var generatedFirstName = firstName;
+        var generatedLastName = lastName;
+        var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      }
       var baseWeapon = new items[weaponType]();
       var basePrice = baseWeapon.value;
       var newPrice = boost * 1.5 * basePrice;
@@ -191,6 +196,7 @@ function generateWeapon(tier, firstName = "", lastName = "") {
           weight: baseWeapon.weight,
           value: newPrice,
           type: baseWeapon.type,
+          quantity: 1,
         };
       } else if (baseWeapon.hasOwnProperty("rangedAttackValue")) {
         var rangedAttack = baseWeapon.rangedAttackValue;
@@ -208,6 +214,7 @@ function generateWeapon(tier, firstName = "", lastName = "") {
           weight: baseWeapon.weight,
           value: newPrice,
           type: baseWeapon.type,
+          quantity: 1,
         };
       } else {
         var attack = baseWeapon.attackValue;
@@ -222,6 +229,7 @@ function generateWeapon(tier, firstName = "", lastName = "") {
           weight: baseWeapon.weight,
           value: newPrice,
           type: baseWeapon.type,
+          quantity: 1,
         };
       }
     } else {
@@ -233,7 +241,7 @@ function generateWeapon(tier, firstName = "", lastName = "") {
   return weapon;
 }
 
-function generateArmor(tier) {
+function generateArmor(tier, firstName = "", lastName = "") {
   if (tier < 4) {
     var armorTypes = items[`tier${tier}Armor`];
     var armorType = armorTypes[getRandomInt(armorTypes.length)];
@@ -243,9 +251,15 @@ function generateArmor(tier) {
     if (coinFlip > 0.5) {
       var armorTypes = items[`tier3Armor`];
       var armorType = armorTypes[getRandomInt(armorTypes.length)];
-      var generatedFirstName = generateName("either forename");
-      var generatedLastName = generateName("surname");
-      var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      if (firstName == "" && lastName == "") {
+        var generatedFirstName = generateName("either forename");
+        var generatedLastName = generateName("surname");
+        var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      } else {
+        var generatedFirstName = firstName;
+        var generatedLastName = lastName;
+        var generatedName = `${generatedFirstName} ${generatedLastName}`;
+      }
       var baseArmor = new items[armorType]();
       var basePrice = baseArmor.value;
       var newPrice = boost * 1.5 * basePrice;
@@ -256,6 +270,7 @@ function generateArmor(tier) {
         weight: baseArmor.weight,
         value: newPrice,
         type: baseArmor.type,
+        quantity: 1,
       };
     } else {
       var armorTypes = items[`tier3Armor`];
@@ -284,7 +299,7 @@ function generateScroll() {
     saleName: "Scroll",
     saleDescription: `A scroll that grants the ability to cast a spell. Of course, you cannot know what spell it contains until you read it.`,
     spell: scrollType,
-    value: 100,
+    goldValue: 100,
     type: "scroll",
   };
   return scroll;
@@ -315,32 +330,54 @@ function generateRandomEncounter(tier, hostile = true) {
   if (hostile) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData.locations;
-    var locationName = getValue("currentLocation");
+    var locationName = getValue("location");
     var primaryLocation = locationName.split(".")[0];
     var secondaryLocation = locationName.split(".")[1];
     var location = locations[primaryLocation][secondaryLocation];
     var enemies = location.enemies;
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
-    enemies = enemies.concat(generatedEnemies);
+    enemyList = enemyList.concat(generatedEnemies);
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     handleCombat();
+  } else {
+    var encounterTypes = ["shop"];
+    var encounterType = encounterTypes[getRandomInt(encounterTypes.length)];
+    if (encounterType == "shop") {
+      var shop = generateShop(tier);
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      var locations = playerData.locations;
+      var locationName = getValue("location");
+      var primaryLocation = locationName.split(".")[0];
+      var secondaryLocation = locationName.split(".")[1];
+      var location = locations[primaryLocation][secondaryLocation];
+      location.vendor = shop[0];
+      location.shopItems = shop[1];
+      location.currency = shop[2];
+      location.markup = shop[3];
+      location.description = `You have encountered a traveling cart run by ${shop[0]}.`;
+      playerData.locations[primaryLocation][secondaryLocation] = location;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      handleMovement("load");
+    }
   }
 }
 
 function generateEnemy(tier, quantity = 1) {
-  var enemies = [];
+  var enemyList = [];
   for (let i = 0; i < quantity; i++) {
-    var enemyFactions = enemies.factions;
+    var enemyFactions = enemies["factions"];
+    console.log(enemyFactions);
     var faction = enemyFactions[getRandomInt(enemyFactions.length)];
     if (tier < 4) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
       var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+      enemyType = eval(`enemies.${enemyType}`);
       var enemyPosition = generateEnemyPosition(enemies);
-      var enemy = new enemies[enemyType](enemyName, enemyPosition);
-      enemies.push(enemy);
+      var enemy = new enemyType(enemyName, enemyPosition);
+      enemyList.push(enemy);
     } else {
       var coinFlip = Math.random();
       if (coinFlip > 0.5) {
@@ -349,18 +386,75 @@ function generateEnemy(tier, quantity = 1) {
         var generatedFirstName = generateName("either forename");
         var generatedLastName = generateName("surname");
         var generatedName = `${generatedFirstName} ${generatedLastName}`;
-        var baseEnemy = new enemies[enemyType]();
-        var specialWeapon = generateWeapon(tier, generatedFirstName, generatedLastName);
-        var enemy = {
-          name: `${generatedFirstName}'s ${baseEnemy.name}`,
-          description: `A ${baseEnemy.name} that once belonged to ${generatedName}.`,
-          attackValue: baseEnemy.attackValue,
-          defenseValue: baseEnemy.defenseValue,
-          health: baseEnemy.health,
-          items: baseEnemy.items,
-          value: newPrice,
-          type: baseEnemy.type,
-        };
+        var baseEnemy = new enemies[enemyType]("tempName", [0, 0]);
+        coinFlip = Math.random();
+        if (coinFlip > 0.5) {
+          var weapon = generateWeapon(
+            tier,
+            generatedFirstName,
+            generatedLastName
+          );
+        } else {
+          var weapon = baseEnemy.items[0];
+        }
+        if (coinFlip > 0.5) {
+          var armor = generateArmor(
+            tier,
+            generatedFirstName,
+            generatedLastName
+          );
+          var armorValue = armor.armorValue;
+        } else {
+          if (baseEnemy.items.length > 1) {
+            var armor = baseEnemy.items[1];
+            var armorValue = armor.armorValue;
+          } else {
+            var armor = null;
+            var armorValue = 0;
+          }
+        }
+        if (baseEnemy.hasOwnProperty("range")) {
+          var items = [weapon];
+          if (armor != null) {
+            items.push(armor);
+          }
+          var baseWeaponName = baseEnemy.items[0].name;
+          var attackDescription = `${generatedName} fires their ${baseWeaponName} at you!`;
+          var health = baseEnemy.health + 25 * tier;
+          var enemy = {
+            name: generatedName,
+            position: generateEnemyPosition(enemyList),
+            attackDescription: attackDescription,
+            health: health,
+            armor: armorValue,
+            attack: weapon.attackValue,
+            range: baseEnemy.range,
+            speed: baseEnemy.speed + tier,
+            gold: baseEnemy.gold + 10 * tier,
+            xp: baseEnemy.xp + 10 * tier,
+            items: items,
+          };
+        } else {
+          var items = [weapon];
+          if (armor != null) {
+            items.push(armor);
+          }
+          var baseWeaponName = baseEnemy.items[0].name;
+          var attackDescription = `${generatedName} charges at you with their ${baseWeaponName}!`;
+          var health = baseEnemy.health + 25 * tier;
+          var enemy = {
+            name: generatedName,
+            position: generateEnemyPosition(enemyList),
+            attackDescription: attackDescription,
+            health: health,
+            armor: armorValue,
+            attack: weapon.attackValue,
+            speed: baseEnemy.speed + tier,
+            gold: baseEnemy.gold + 10 * tier,
+            xp: baseEnemy.xp + 10 * tier,
+            items: items,
+          };
+        }
       } else {
         var enemyTypes = enemies[`tier3${faction}Enemies`];
         var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
@@ -368,16 +462,16 @@ function generateEnemy(tier, quantity = 1) {
         var enemyPosition = generateEnemyPosition(enemies);
         var enemy = new enemies[enemyType](enemyName, enemyPosition);
       }
-      enemies.push(enemy);
+      enemyList.push(enemy);
     }
   }
-  return enemies;
+  return enemyList;
 }
 
 function generateEnemyPosition(enemies) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var locations = playerData.locations;
-  var locationName = getValue("currentLocation");
+  var locationName = getValue("location");
   var primaryLocation = locationName.split(".")[0];
   var secondaryLocation = locationName.split(".")[1];
   var location = locations[primaryLocation][secondaryLocation];
@@ -387,7 +481,7 @@ function generateEnemyPosition(enemies) {
   var height = location.height;
   height = Math.floor(height);
   var verticalTiles = height / 5;
-  var playerPosition = location.playerPosition;
+  var playerPosition = getValue("position");
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
   var x = getRandomInt(horizontalTiles);
@@ -396,7 +490,7 @@ function generateEnemyPosition(enemies) {
     var enemyPosition = enemies[i].position;
     var enemyX = enemyPosition[0];
     var enemyY = enemyPosition[1];
-    if (x == enemyX && y == enemyY || x == playerX && y == playerY) {
+    if ((x == enemyX && y == enemyY) || (x == playerX && y == playerY)) {
       x = getRandomInt(horizontalTiles);
       y = getRandomInt(verticalTiles);
       i = 0;

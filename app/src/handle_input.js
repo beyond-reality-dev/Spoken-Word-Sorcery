@@ -18,12 +18,12 @@ const {
   toTitleCase,
   quickPrint,
   printLines,
-  requireAnswer,
 } = require("./general");
 const { handleCombat, handleCombatMovement } = require("./combat");
 const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const cutscenes = require("./cutscenes");
+const { generateRandomEncounter } = require("./proc_gen");
 
 function allowInput() {
   document.getElementById("input-bar").style.backgroundColor = "#ffffff";
@@ -1039,7 +1039,9 @@ function handleMovement(direction) {
   if (direction == "load") {
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
-    if (currentLocation.hasOwnProperty("cutscene")) {
+    if (currentLocation.hasOwnProperty("encounter")) {
+      eval(currentLocation.encounter);
+    } else if (currentLocation.hasOwnProperty("cutscene")) {
       if (currentLocation.cutscenePlayed == false) {
         var cutsceneName = currentLocation.cutscene;
         cutscenes[cutsceneName][cutsceneName]();
@@ -1053,7 +1055,9 @@ function handleMovement(direction) {
   }
   try {
     var newLocation = currentLocation.exits[direction];
+    console.log(newLocation);
     newLocation = eval(getValue(newLocation, true));
+    console.log(newLocation);
     if (newLocation.hasOwnProperty("isLocked")) {
       if (newLocation.isLocked == true) {
         if (newLocation.hasOwnProperty("key")) {
@@ -1123,7 +1127,9 @@ function handleMovement(direction) {
     }
     quickPrint(newLocation.description);
     changeValue(`${newLocation.id}.isVisited`, true, "locations");
-    if (newLocation.hasOwnProperty("cutscene")) {
+    if (newLocation.hasOwnProperty("encounter")) {
+      eval(newLocation.encounter);
+    } else if (newLocation.hasOwnProperty("cutscene")) {
       if (newLocation.cutscenePlayed == false) {
         var cutsceneName = newLocation.cutscene;
         cutscenes[cutsceneName][cutsceneName]();
@@ -1145,18 +1151,17 @@ async function handleShop(location) {
   var inventory = location.shopItems;
   var currency = location.currency;
   var markup = location.markup;
-  quickPrint(`
-    ${vendor}, the owner of the shop, greets you warmly.
-    "Welcome to my shop! Please take a look at my wares."
-    Would you like to:
-    1. Buy something
-    2. Sell something
-    3. Leave
-  `);
-  var response = await requireAnswer(
+  quickPrint(`${vendor}, the owner of the shop, greets you warmly.`);
+  quickPrint('"Welcome to my shop! Please take a look around."');
+  quickPrint("Would you like to:");
+  quickPrint("1. Buy something");
+  quickPrint("2. Sell something");
+  quickPrint("3. Leave");
+  var response = await closedInput(
     ["1", "buy something", "buy", "2", "sell something", "sell", "leave"],
     '"Would you like to buy or sell something?"'
   );
+  console.log(response);
   if (response == "1" || response == "buy something" || response == "buy") {
     quickPrint('"Here is what I have for sale:"');
     for (let i = 0; i < inventory.length; i++) {
@@ -1183,9 +1188,9 @@ async function handleShop(location) {
     }
     responses.push(`${inventory.length + 1}`);
     responses.push("nothing");
-    response = await requireAnswer(responses, '"What would you like to buy?"');
+    response = await closedInput(responses, '"What would you like to buy?"');
     if (response == `${inventory.length + 1}` || response == "nothing") {
-      quickPrint("Thank you for your business.");
+      quickPrint(`"Thank you for your business," ${vendor} says cheerfully.`);
       handleShop(location);
       return;
     }
