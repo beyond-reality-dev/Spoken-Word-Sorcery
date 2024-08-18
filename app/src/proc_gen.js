@@ -334,10 +334,18 @@ function generateRandomEncounter(tier, hostile = true) {
     var primaryLocation = locationName.split(".")[0];
     var secondaryLocation = locationName.split(".")[1];
     var location = locations[primaryLocation][secondaryLocation];
-    var enemies = location.enemies;
+    console.log(location);
+    if (location.hasOwnProperty("enemies")) {
+      var enemies = location.enemies;
+    } else {
+      location.enemies = [];
+      var enemies = location.enemies;
+    }
+    console.log(enemies);
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
-    enemyList = enemyList.concat(generatedEnemies);
+    console.log(generatedEnemies);
+    enemies = enemies.concat(generatedEnemies);
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     handleCombat();
@@ -374,9 +382,10 @@ function generateEnemy(tier, quantity = 1) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
       var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
-      enemyType = eval(`enemies.${enemyType}`);
+      console.log(enemyType);
       var enemyPosition = generateEnemyPosition(enemies);
-      var enemy = new enemyType(enemyName, enemyPosition);
+      console.log(eval(`new enemies.${enemyType}`));
+      var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
       enemyList.push(enemy);
     } else {
       var coinFlip = Math.random();

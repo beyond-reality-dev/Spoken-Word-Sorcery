@@ -406,19 +406,19 @@ const tier3RebelEnemies = [
 
 const tier1BanditEnemies = [
   "Bandit",
-  "BanditSligner",
+  "BanditSlinger",
 ];
 
 const tier2BanditEnemies = [
   "Bandit",
-  "BanditSligner",
+  "BanditSlinger",
   "BanditCaptain",
   "BanditShortBowman",
 ];
 
 const tier3BanditEnemies = [
   "Bandit",
-  "BanditSligner",
+  "BanditSlinger",
   "BanditCaptain",
   "BanditShortBowman",
   "BanditLightCrossbowman",
