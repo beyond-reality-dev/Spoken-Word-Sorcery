@@ -134,8 +134,17 @@ function getRandomInt(max) {
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
     var type = type.split(" ");
-    var gender = type[0];
-    var type = type[1];
+    if (type[0] == "either") {
+      var coinFlip = Math.random();
+      if (coinFlip > 0.5) {
+        var gender = "male";
+      } else {
+        gender = "female";
+      }
+    } else {
+      var gender = type[0];
+      var type = type[1];
+    }
   }
   const fs = require("fs");
   var data;

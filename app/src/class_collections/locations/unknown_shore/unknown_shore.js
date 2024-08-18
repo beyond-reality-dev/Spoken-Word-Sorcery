@@ -1,4 +1,4 @@
-const { Room } = require("../room");
+const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections");
 const items = require("../../../class_collections");
 
@@ -8,7 +8,7 @@ class RockyBeach extends Room {
       "Rocky Beach",
       "unknownShore.rockyBeach",
       "The rocky beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the north and south, and there is a path leading to the west leading into the woods.",
-      20.5,
+      40.5,
       80.5
     );
     this.items = {};
@@ -60,4 +60,64 @@ class SouthBeach extends Room {
 
 var southBeach = new SouthBeach();
 
-module.exports = { rockyBeach, northBeach, southBeach };
+class ForestPath extends Room {
+  constructor() {
+    super(
+      "Forest Path",
+      "unknownShore.forestPath",
+      "The forest path winds through the trees for a long way, leading to a rocky beach in the east and a clearing in the west.",
+      80.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.rockyBeach",
+      west: "unknownShore.clearing",
+    };
+  }
+}
+
+var forestPath = new ForestPath();
+
+class Clearing extends Room {
+  constructor() {
+    super(
+      "Clearing",
+      "unknownShore.clearing",
+      "The clearing is a small, open area surrounded by trees. The forest path leads back to the east.",
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.forestPath",
+    };
+  }
+}
+
+var clearing = new Clearing();
+
+class TravellingMerchant extends Shop {
+  constructor() {
+    super(
+      "Travelling Merchant",
+      "unknownShore.travellingMerchant",
+      `The travelling merchant, by the name of ${merchantName} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "unknownShore.clearing",
+    };
+    this.vendor = merchantName;
+    this.shopItems = {};
+    this.currency = 500;
+  }
+}
+
+var merchantName = generateName("either fullName");
+
+var travellingMerchant = new TravellingMerchant();
+
+module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travellingMerchant };

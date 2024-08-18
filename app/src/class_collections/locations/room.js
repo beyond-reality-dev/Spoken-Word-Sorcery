@@ -28,10 +28,10 @@ class Shop extends Room {
     description,
     width,
     height,
-    exits,
     vendor,
     shopItems,
-    currency
+    currency,
+    exits,
   ) {
     super(name, id, description, width, height, exits);
     this.vendor = vendor;
