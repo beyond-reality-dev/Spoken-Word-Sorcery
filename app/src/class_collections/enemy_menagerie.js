@@ -58,6 +58,37 @@ class MeleeEnemy extends Enemy {
   }
 }
 
+class RangedEnemy extends Enemy {
+  constructor(
+    name,
+    position,
+    attackDescription,
+    health,
+    armor,
+    attack,
+    range,
+    speed,
+    gold,
+    xp,
+    items
+  ) {
+    super(
+      name,
+      position,
+      attackDescription,
+      health,
+      armor,
+      attack,
+      range,
+      speed,
+      gold,
+      xp,
+      items
+    );
+    this.icon = "ranged";
+  }
+}
+
 class Rebel extends MeleeEnemy {
   constructor(name, position, items = [new catalog.ShortSword()]) {
     super(
@@ -90,37 +121,6 @@ class RebelCaptain extends Enemy {
       items
     );
     this.icon = "crown";
-  }
-}
-
-class RangedEnemy extends Enemy {
-  constructor(
-    name,
-    position,
-    attackDescription,
-    health,
-    armor,
-    attack,
-    range,
-    speed,
-    gold,
-    xp,
-    items
-  ) {
-    super(
-      name,
-      position,
-      attackDescription,
-      health,
-      armor,
-      attack,
-      range,
-      speed,
-      gold,
-      xp,
-      items
-    );
-    this.icon = "ranged";
   }
 }
 
@@ -196,7 +196,7 @@ class RebelHeavyCrossbowman extends RangedEnemy {
   }
 }
 
-class Slinger extends RangedEnemy {
+class RebelSlinger extends RangedEnemy {
   constructor(name, position, items = [new catalog.Sling()]) {
     super(
       name,
@@ -251,6 +251,95 @@ class RebelMage extends RangedEnemy {
   }
 }
 
+class Bandit extends MeleeEnemy {
+  constructor(name, position, items = [new catalog.ShortSword()]) {
+    super(
+      name,
+      position,
+      "The bandit strikes with his short sword!",
+      50,
+      0,
+      "1d8",
+      10,
+      5,
+      5,
+      items
+    );
+  }
+}
+
+class BanditCaptain extends Enemy {
+  constructor(name, position, items = [new catalog.LongSword()]) {
+    super(
+      name,
+      position,
+      "The bandit captain strikes with his long sword!",
+      100,
+      5,
+      "2d8",
+      20,
+      5,
+      10,
+      items
+    );
+    this.icon = "crown";
+  }
+}
+
+class BanditShortBowman extends RangedEnemy {
+  constructor(name, position, items = [new catalog.ShortBow()]) {
+    super(
+      name,
+      position,
+      "The bandit archer fires his short bow!",
+      50,
+      0,
+      "1d6",
+      60,
+      10,
+      5,
+      10,
+      items
+    );
+  }
+}
+
+class BanditLightCrossbowman extends RangedEnemy {
+  constructor(name, position, items = [new catalog.LightCrossbow()]) {
+    super(
+      name,
+      position,
+      "The bandit fires his light crossbow!",
+      50,
+      0,
+      "1d8",
+      30,
+      10,
+      5,
+      10,
+      items
+    );
+  }
+}
+
+class BanditSlinger extends RangedEnemy {
+  constructor(name, position, items = [new catalog.Sling()]) {
+    super(
+      name,
+      position,
+      "The bandit fires his sling!",
+      50,
+      0,
+      "1d4",
+      30,
+      10,
+      5,
+      10,
+      items
+    );
+  }
+}
+
 class Obstacle {
   constructor(name, position, health, shape, color) {
     this.name = name;
@@ -281,21 +370,82 @@ class Barrel extends Obstacle {
   }
 }
 
+const factions = [
+  "Rebel",
+  "Bandit",
+];
+
+const tier1RebelEnemies = [
+  "Rebel",
+  "RebelSpearman",
+  "RebelSlinger",
+  "RebelShortBowman",
+];
+
+const tier2RebelEnemies = [
+  "Rebel",
+  "RebelSpearman",
+  "RebelSlinger",
+  "RebelShortBowman",
+  "RebelCaptain",
+  "RebelLongBowman",
+  "RebelLightCrossbowman",
+];
+
+const tier3RebelEnemies = [
+  "Rebel",
+  "RebelSpearman",
+  "RebelSlinger",
+  "RebelShortBowman",
+  "RebelCaptain",
+  "RebelLongBowman",
+  "RebelLightCrossbowman",
+  "RebelMage",
+  "RebelHeavyCrossbowman",
+];
+
+const tier1BanditEnemies = [
+  "Bandit",
+  "BanditSligner",
+];
+
+const tier2BanditEnemies = [
+  "Bandit",
+  "BanditSligner",
+  "BanditCaptain",
+  "BanditShortBowman",
+];
+
+const tier3BanditEnemies = [
+  "Bandit",
+  "BanditSligner",
+  "BanditCaptain",
+  "BanditShortBowman",
+  "BanditLightCrossbowman",
+];
+
 module.exports = {
   Enemy,
   MeleeEnemy,
+  RangedEnemy,
   Rebel,
   RebelCaptain,
-  RangedEnemy,
   RebelShortBowman,
   RebelLongBowman,
   RebelLightCrossbowman,
   RebelHeavyCrossbowman,
-  Slinger,
+  RebelSlinger,
   RebelSpearman,
   RebelMage,
   Obstacle,
   Wall,
   Crate,
   Barrel,
+  factions,
+  tier1RebelEnemies,
+  tier2RebelEnemies,
+  tier3RebelEnemies,
+  tier1BanditEnemies,
+  tier2BanditEnemies,
+  tier3BanditEnemies,
 };

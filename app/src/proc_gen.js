@@ -1,8 +1,12 @@
 const items = require("./class_collections/item_catalog");
+const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt } = require("./general");
 const { type } = require("os");
+const { getValue } = require("./save_data");
+const { get } = require("http");
+const { handleCombat } = require("./combat");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -147,7 +151,7 @@ function generateItem(type, tier) {
   return item;
 }
 
-function generateWeapon(tier) {
+function generateWeapon(tier, firstName = "", lastName = "") {
   if (tier < 4) {
     var weaponTypes = items[`tier${tier}Weapons`];
     var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
@@ -282,7 +286,7 @@ function generateScroll() {
     spell: scrollType,
     value: 100,
     type: "scroll",
-  }
+  };
   return scroll;
 }
 
@@ -307,4 +311,98 @@ function generateAmmo(tier) {
   return ammo;
 }
 
-module.exports = { generateName, generateShop };
+function generateRandomEncounter(tier, hostile = true) {
+  if (hostile) {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var locations = playerData.locations;
+    var locationName = getValue("currentLocation");
+    var primaryLocation = locationName.split(".")[0];
+    var secondaryLocation = locationName.split(".")[1];
+    var location = locations[primaryLocation][secondaryLocation];
+    var enemies = location.enemies;
+    var numEnemies = tier * getRandomInt(5) + 1;
+    var generatedEnemies = generateEnemy(tier, numEnemies);
+    enemies = enemies.concat(generatedEnemies);
+    playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
+    localStorage.setItem("playerData", JSON.stringify(playerData));
+    handleCombat();
+  }
+}
+
+function generateEnemy(tier, quantity = 1) {
+  var enemies = [];
+  for (let i = 0; i < quantity; i++) {
+    var enemyFactions = enemies.factions;
+    var faction = enemyFactions[getRandomInt(enemyFactions.length)];
+    if (tier < 4) {
+      var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
+      var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
+      var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+      var enemyPosition = generateEnemyPosition(enemies);
+      var enemy = new enemies[enemyType](enemyName, enemyPosition);
+      enemies.push(enemy);
+    } else {
+      var coinFlip = Math.random();
+      if (coinFlip > 0.5) {
+        var enemyTypes = enemies[`tier3${faction}Enemies`];
+        var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
+        var generatedFirstName = generateName("either forename");
+        var generatedLastName = generateName("surname");
+        var generatedName = `${generatedFirstName} ${generatedLastName}`;
+        var baseEnemy = new enemies[enemyType]();
+        var specialWeapon = generateWeapon(tier, generatedFirstName, generatedLastName);
+        var enemy = {
+          name: `${generatedFirstName}'s ${baseEnemy.name}`,
+          description: `A ${baseEnemy.name} that once belonged to ${generatedName}.`,
+          attackValue: baseEnemy.attackValue,
+          defenseValue: baseEnemy.defenseValue,
+          health: baseEnemy.health,
+          items: baseEnemy.items,
+          value: newPrice,
+          type: baseEnemy.type,
+        };
+      } else {
+        var enemyTypes = enemies[`tier3${faction}Enemies`];
+        var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
+        var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+        var enemyPosition = generateEnemyPosition(enemies);
+        var enemy = new enemies[enemyType](enemyName, enemyPosition);
+      }
+      enemies.push(enemy);
+    }
+  }
+  return enemies;
+}
+
+function generateEnemyPosition(enemies) {
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var locations = playerData.locations;
+  var locationName = getValue("currentLocation");
+  var primaryLocation = locationName.split(".")[0];
+  var secondaryLocation = locationName.split(".")[1];
+  var location = locations[primaryLocation][secondaryLocation];
+  var width = location.width;
+  width = Math.floor(width);
+  var horizontalTiles = width / 5;
+  var height = location.height;
+  height = Math.floor(height);
+  var verticalTiles = height / 5;
+  var playerPosition = location.playerPosition;
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  var x = getRandomInt(horizontalTiles);
+  var y = getRandomInt(verticalTiles);
+  for (let i = 0; i < enemies.length; i++) {
+    var enemyPosition = enemies[i].position;
+    var enemyX = enemyPosition[0];
+    var enemyY = enemyPosition[1];
+    if (x == enemyX && y == enemyY || x == playerX && y == playerY) {
+      x = getRandomInt(horizontalTiles);
+      y = getRandomInt(verticalTiles);
+      i = 0;
+    }
+  }
+  return [x, y];
+}
+
+module.exports = { generateName, generateShop, generateRandomEncounter };
