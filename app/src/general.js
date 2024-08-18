@@ -13,6 +13,7 @@ module.exports = {
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
 const { getValue } = require("./save_data");
+const items = require("./class_collections/item_catalog");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 
 function switchScreen(screen) {
@@ -211,4 +212,80 @@ function generateName(type, quantity = 1) {
     names.push(generatedName);
   }
   return names;
+}
+
+function generateMerchant(tier) {
+  var name = generateName("either fullName");
+  var items = [];
+  var numItems = tier * (getRandomInt(10) + 1);
+  var currency = tier * (getRandomInt(1000) + 1);
+  var itemTier = tier;
+  var itemTypes = [
+    "weapon",
+    "weapon",
+    "weapon",
+    "weapon",
+    "armor",
+    "armor",
+    "armor",
+    "potion",
+    "potion",
+    "scroll",
+  ];
+  for (let i = 0; i < numItems; i++) {
+    var itemType = itemTypes[getRandomInt(itemTypes.length)];
+    var item = generateItem(itemType, itemTier);
+    items.push(item);
+  }
+  var coinFlip = Math.random();
+  if (coinFlip > 0.5) {
+    var itemType = itemTypes[getRandomInt(itemTypes.length)];
+    var item = generateItem(itemType, itemTier + 1);
+    items.push(item);
+  }
+  return [name, items, currency];
+}
+
+function generateItem(type, tier) {
+  var item;
+  if (type == "weapon") {
+    item = generateWeapon(tier);
+  } else if (type == "armor") {
+    item = generateArmor(tier);
+  } else if (type == "potion") {
+    item = generatePotion(tier);
+  } else if (type == "scroll") {
+    item = generateScroll(tier);
+  }
+  return item;
+}
+
+function generateWeapon(tier) {
+  if (tier == 1) {
+    var weaponTypes = items[`tier${tier}Weapons`];
+    var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
+    var weapon = new items[weaponType]();
+  } else if (tier < 4) {
+    var coinFlip = Math.random();
+    if (coinFlip > 0.5) {
+      var weaponTypes = items[`tier${tier}Weapons`];
+      var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
+      var weapon = new items[weaponType]();
+    } else {
+      var weaponTypes = items[`tier${tier - 1}Weapons`];
+      var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
+      var weapon = new items[weaponType]();
+    }
+  } else {
+    coinFlip = Math.random();
+    if (coinFlip > 0.5) {
+      var weaponTypes = items[`tier3Weapons`];
+      var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
+    } else {
+      var weaponTypes = items[`tier3Weapons`];
+      var weaponType = weaponTypes[getRandomInt(weaponTypes.length)];
+      var weapon = new items[weaponType]();
+    }
+  }
+  return weapon;
 }

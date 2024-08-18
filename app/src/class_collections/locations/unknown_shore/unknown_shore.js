@@ -1,6 +1,7 @@
 const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections");
 const items = require("../../../class_collections");
+const { generateMerchant } = require("../../../generate");
 
 class RockyBeach extends Room {
   constructor() {
@@ -84,12 +85,13 @@ class Clearing extends Room {
     super(
       "Clearing",
       "unknownShore.clearing",
-      "The clearing is a small, open area surrounded by trees. The forest path leads back to the east.",
+      "The clearing is a small, open area surrounded by trees. There is a traveling merchant to the north, and a forest path to the east.",
       40.5,
       40.5
     );
     this.items = {};
     this.exits = {
+      north: "unknownShore.travelingMerchant",
       east: "unknownShore.forestPath",
     };
   }
@@ -97,12 +99,12 @@ class Clearing extends Room {
 
 var clearing = new Clearing();
 
-class TravellingMerchant extends Shop {
+class TravelingMerchant extends Shop {
   constructor() {
     super(
-      "Travelling Merchant",
-      "unknownShore.travellingMerchant",
-      `The travelling merchant, by the name of ${merchantName} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
+      "Traveling Merchant",
+      "unknownShore.travelingMerchant",
+      `The traveling merchant, by the name of ${merchantName} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
       40.5,
       40.5
     );
@@ -111,13 +113,15 @@ class TravellingMerchant extends Shop {
       south: "unknownShore.clearing",
     };
     this.vendor = merchantName;
-    this.shopItems = {};
-    this.currency = 500;
+    this.shopItems = merchantItems;
+    this.currency = merchantCurrency;
   }
 }
+var generatedMerchant = generateMerchant(1);
+var merchantName = generatedMerchant[0];
+var merchantItems = generatedMerchant[1];
+var merchantCurrency = generatedMerchant[2];
 
-var merchantName = generateName("either fullName");
+var travelingMerchant = new TravelingMerchant();
 
-var travellingMerchant = new TravellingMerchant();
-
-module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travellingMerchant };
+module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travelingMerchant };
