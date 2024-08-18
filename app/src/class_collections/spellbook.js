@@ -231,6 +231,24 @@ class Remember extends Direction {
   }
 }
 
+var scrolls = [
+  "Earth",
+  "Fire",
+  "Water",
+  "Life",
+  "Death",
+  "Spear",
+  "Shield",
+  "Healing",
+  "Heart",
+  "Restore",
+  "Away",
+  "Left",
+  "Right",
+  "Behind",
+  "Within",
+];
+
 module.exports = {
   Aether,
   Earth,
@@ -249,4 +267,5 @@ module.exports = {
   Behind,
   Remember,
   Within,
+  scrolls,
 };

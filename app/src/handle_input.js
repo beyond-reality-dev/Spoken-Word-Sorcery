@@ -397,6 +397,22 @@ async function openInput(combatOverride = false) {
               item = clauses[i].substring(3);
             }
             handleUse(item);
+          } else if (clauses[i].substring(0, 5) == "read ") {
+            if (hasUsed == true) {
+              quickPrint("You have already used an item this turn.");
+              continue;
+            }
+            hasUsed = true;
+            if (clauses[i].substring(5, 7) == "a ") {
+              item = clauses[i].substring(7);
+            } else if (clauses[i].substring(5, 8) == "an ") {
+              item = clauses[i].substring(8);
+            } else if (clauses[i].substring(5, 9) == "the ") {
+              item = clauses[i].substring(9);
+            } else {
+              item = clauses[i].substring(5);
+            }
+            handleUse(item);
           } else if (clauses[i].substring(0, 6) == "drink ") {
             if (hasUsed == true) {
               quickPrint("You have already used an item this turn.");
@@ -1146,11 +1162,19 @@ async function handleShop(location) {
     for (let i = 0; i < inventory.length; i++) {
       var item = inventory[i];
       var itemPrice = Math.floor(item.goldValue * markup);
-      quickPrint(`
+      if (item.hasOwnProperty("saleName")) {
+        quickPrint(`
+          ${i + 1}. ${item.saleName} | ${
+          item.saleDescription
+        } | ${itemPrice} gold | ${item.quantity} in stock
+        `);
+      } else {
+        quickPrint(`
         ${i + 1}. ${item.name} | ${item.description} | ${itemPrice} gold | ${
-        item.quantity
-      } in stock
+          item.quantity
+        } in stock
       `);
+      }
     }
     quickPrint(`${inventory.length + 1}. Nothing`);
     var responses = [];
@@ -1493,29 +1517,47 @@ function handleUse(item) {
   }
   for (let i = 0; i < items.length; i++) {
     if (items[i].name == toTitleCase(item)) {
-      var itemEntity = items[i];
-      var healthValue = itemEntity.healthValue;
-      var manaValue = itemEntity.manaValue;
-      calculateValue("currentHealth", "add", healthValue);
-      if (getValue("currentHealth") > getValue("maxHealth")) {
-        changeValue("currentHealth", getValue("maxHealth"));
-      }
-      calculateValue("currentMana", "add", manaValue);
-      if (getValue("currentMana") > getValue("maxMana")) {
-        changeValue("currentMana", getValue("maxMana"));
-      }
-      var current = items[i].quantity;
-      current = current - 1;
-      changeValue("itemQuantity", current, i);
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
-      playerData["inventory"] = items;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
-      if (item.charAt(0).match(/[aeiou]/i)) {
-        quickPrint(`You used an ${item}.`);
+      if (items[i].type == "Scroll") {
+        quickPrint("You read the scroll carefully, and it vanishes.");
+        quickPrint(`You learned the spell ${items[i].spell}.`);
+        var spell = eval("new spells." + items[i].spell + "()");
+        addEntity(spell, "knownSpells");
+        items.splice(i, 1);
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        playerData["inventory"] = items;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+        break;
+      } else if (items[i].type == "Consumable") {
+        var itemEntity = items[i];
+        var healthValue = itemEntity.healthValue;
+        var manaValue = itemEntity.manaValue;
+        calculateValue("currentHealth", "add", healthValue);
+        if (getValue("currentHealth") > getValue("maxHealth")) {
+          changeValue("currentHealth", getValue("maxHealth"));
+        }
+        calculateValue("currentMana", "add", manaValue);
+        if (getValue("currentMana") > getValue("maxMana")) {
+          changeValue("currentMana", getValue("maxMana"));
+        }
+        var current = items[i].quantity;
+        current = current - 1;
+        changeValue("itemQuantity", current, i);
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        playerData["inventory"] = items;
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+        if (item.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You used an ${item}.`);
+        } else {
+          quickPrint(`You used a ${item}.`);
+        }
+        break;
       } else {
-        quickPrint(`You used a ${item}.`);
+        if (item.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You cannot use an ${item}.`);
+        } else {
+          quickPrint(`You cannot use a ${item}.`);
+        }
       }
-      break;
     } else {
       if (item.charAt(0).match(/[aeiou]/i)) {
         quickPrint(`You do not have an ${item}.`);

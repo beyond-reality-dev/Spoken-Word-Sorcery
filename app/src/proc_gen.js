@@ -1,6 +1,8 @@
 const items = require("./class_collections/item_catalog");
+const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt } = require("./general");
+const { type } = require("os");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -87,11 +89,11 @@ function generateName(type, quantity = 1) {
   return names;
 }
 
-function generateMerchant(tier) {
+function generateShop(tier) {
   var name = generateName("either fullName");
   var items = [];
-  var numItems = tier * (getRandomInt(10) + 1);
-  var currency = tier * (getRandomInt(400) + 101);
+  var numItems = tier * getRandomInt(5) + 5;
+  var currency = tier * getRandomInt(500) + 100;
   var itemTier = tier;
   var itemTypes = [
     "weapon",
@@ -124,8 +126,10 @@ function generateMerchant(tier) {
   }
   items = uniqueItems;
   var ammo = generateAmmo(tier);
-  items.push(ammo);
-  var markup = 1 + (Math.random() * 5) / 10;
+  for (let i = 0; i < ammo.length; i++) {
+    items.push(ammo[i]);
+  }
+  var markup = 1.1 + (Math.random() * 4) / 10;
   return [name, items, currency, markup];
 }
 
@@ -138,8 +142,7 @@ function generateItem(type, tier) {
   } else if (type == "potion") {
     item = generatePotion(tier);
   } else if (type == "scroll") {
-    //item = generateScroll(tier);
-    item = generatePotion(tier);
+    item = generateScroll();
   }
   return item;
 }
@@ -266,20 +269,42 @@ function generatePotion(tier) {
   return potion;
 }
 
-function generateScroll(tier) {
-  var scrollTypes = items[`tier${tier}Scrolls`];
+function generateScroll() {
+  var scrollTypes = spells.scrolls;
   var scrollType = scrollTypes[getRandomInt(scrollTypes.length)];
-  var scroll = new items[scrollType]();
+  var scrollName = `${scrollType} Scroll`;
+  var scrollDescription = `A scroll that, when read, grants the reader the ability to cast the ${scrollType} spell.`;
+  var scroll = {
+    name: scrollName,
+    description: scrollDescription,
+    saleName: "Scroll",
+    saleDescription: `A scroll that grants the ability to cast a spell. Of course, you cannot know what spell it contains until you read it.`,
+    spell: scrollType,
+    value: 100,
+    type: "scroll",
+  }
   return scroll;
 }
 
 function generateAmmo(tier) {
+  var ammo = [];
   var standardAmmo = items[`tier1Ammo`];
-  var ammoTypes = items[`tier${tier}Ammo`];
-  var ammoType = ammoTypes[getRandomInt(ammoTypes.length)];
-  var quantity = getRandomInt(10) + 1;
-  var ammo = new items[ammoType](quantity);
+  for (let i = 0; i < standardAmmo.length; i++) {
+    var quantity = tier * (getRandomInt(25) + 1);
+    var ammoComponent = new items[standardAmmo[i]](quantity);
+    ammo.push(ammoComponent);
+  }
+  if (tier > 1 && tier < 4) {
+    for (let i = 2; i <= tier; i++) {
+      var ammoTypes = items[`tier${i}Ammo`];
+      for (let j = 0; j < ammoTypes.length; j++) {
+        quantity = tier * (getRandomInt(25) + 1);
+        ammoComponent = new items[ammoTypes[j]](quantity);
+        ammo.push(ammoComponent);
+      }
+    }
+  }
   return ammo;
 }
 
-module.exports = { generateName, generateMerchant };
+module.exports = { generateName, generateShop };

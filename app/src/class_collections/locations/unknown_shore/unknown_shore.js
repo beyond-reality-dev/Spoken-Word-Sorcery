@@ -1,7 +1,7 @@
 const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections");
 const items = require("../../../class_collections");
-const { generateMerchant } = require("../../../proc_gen");
+const { generateShop } = require("../../../proc_gen");
 
 class RockyBeach extends Room {
   constructor() {
@@ -119,9 +119,7 @@ class TravelingMerchant extends Shop {
   }
 }
 
-var generatedMerchant = generateMerchant(1);
+var generatedMerchant = generateShop(1);
 var travelingMerchant = new TravelingMerchant();
-
-console.log(travelingMerchant);
 
 module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travelingMerchant };

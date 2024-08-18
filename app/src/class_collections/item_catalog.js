@@ -732,48 +732,38 @@ class Coin extends Miscellaneous {
 const tier1Weapons = [
   "Club",
   "Dagger",
-  "Dart",
   "ShortSword",
   "Sling",
   "Staff",
-  "ThrowingKnife",
 ];
 
 const tier2Weapons = [
   "Club",
   "Dagger",
-  "Dart",
   "ShortSword",
   "Sling",
   "Staff",
-  "ThrowingKnife",
   "Axe",
-  "Javelin",
   "LightCrossbow",
   "LongSword",
   "Mace",
   "ShortBow",
   "Spear",
-  "ThrowingAxe",
   "Trident",
 ];
 
 const tier3Weapons = [
   "Club",
   "Dagger",
-  "Dart",
   "ShortSword",
   "Sling",
   "Staff",
-  "ThrowingKnife",
   "Axe",
-  "Javelin",
   "LightCrossbow",
   "LongSword",
   "Mace",
   "ShortBow",
   "Spear",
-  "ThrowingAxe",
   "Trident",
   "BattleAxe",
   "GreatAxe",
@@ -845,6 +835,12 @@ const tier3Potions = [
   "SuperSpeedPotion",
 ];
 
+const tier1Ammo = ["Arrow", "Bolt", "Stone"];
+
+const tier2Ammo = ["Dart", "Javelin"];
+
+const tier3Ammo = ["ThrowingAxe", "ThrowingKnife"];
+
 module.exports = {
   Weapon,
   MeleeWeapon,
@@ -912,4 +908,7 @@ module.exports = {
   tier1Potions,
   tier2Potions,
   tier3Potions,
+  tier1Ammo,
+  tier2Ammo,
+  tier3Ammo,
 };

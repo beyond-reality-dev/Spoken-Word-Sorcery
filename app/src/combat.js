@@ -2,11 +2,10 @@ const {
   getValue,
   changeValue,
   calculateValue,
-  addEntity,
   updateUI,
   levelScaling,
 } = require("./save_data");
-const { quickPrint, diceRoll, getRandomInt, addDice } = require("./general");
+const { quickPrint, diceRoll, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
 const {
   imperialAcademy,
@@ -14,6 +13,7 @@ const {
   imperialNexus,
   imperialPalace,
   imperialPort,
+  unknownShore,
 } = require("./class_collections/locations/index");
 
 async function handleCombat() {
