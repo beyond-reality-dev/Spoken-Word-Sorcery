@@ -31,12 +31,14 @@ class Shop extends Room {
     vendor,
     shopItems,
     currency,
+    markup,
     exits,
   ) {
     super(name, id, description, width, height, exits);
     this.vendor = vendor;
     this.shopItems = shopItems;
     this.currency = currency;
+    this.markup = markup;
   }
 }
 

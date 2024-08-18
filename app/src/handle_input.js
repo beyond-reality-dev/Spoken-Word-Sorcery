@@ -1128,6 +1128,7 @@ async function handleShop(location) {
   var vendor = location.vendor;
   var inventory = location.shopItems;
   var currency = location.currency;
+  var markup = location.markup;
   quickPrint(`
     ${vendor}, the owner of the shop, greets you warmly.
     "Welcome to my shop! Please take a look at my wares."
@@ -1144,25 +1145,29 @@ async function handleShop(location) {
     quickPrint('"Here is what I have for sale:"');
     for (let i = 0; i < inventory.length; i++) {
       var item = inventory[i];
+      var itemPrice = Math.floor(item.goldValue * markup);
       quickPrint(`
-        ${i + 1}. ${item.name} | ${item.description} | ${
-        item.goldValue
-      } gold | ${item.quantity} in stock
+        ${i + 1}. ${item.name} | ${item.description} | ${itemPrice} gold | ${
+        item.quantity
+      } in stock
       `);
     }
-    quickPrint("10. Nothing");
-    response = await requireAnswer(
-      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "nothing"],
-      '"What would you like to buy?"'
-    );
-    if (response == "10" || response == "nothing") {
+    quickPrint(`${inventory.length + 1}. Nothing`);
+    var responses = [];
+    for (let i = 0; i < inventory.length; i++) {
+      responses.push((i + 1).toString());
+    }
+    responses.push(`${inventory.length + 1}`);
+    responses.push("nothing");
+    response = await requireAnswer(responses, '"What would you like to buy?"');
+    if (response == `${inventory.length + 1}` || response == "nothing") {
       quickPrint("Thank you for your business.");
       handleShop(location);
       return;
     }
     response = parseInt(response);
     var item = inventory[response - 1];
-    var price = item.goldValue;
+    var price = Math.floor(item.goldValue * markup);
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var gold = playerData["gold"];
     if (gold < price) {
@@ -1219,9 +1224,13 @@ async function handleShop(location) {
         if (items[i].name == "Coin") {
           calculateValue("gold", "add", items[i].quantity);
           if (items[i].quantity == 1) {
-            quickPrint("You exchanged an older coin for a newly minted gold piece.");
+            quickPrint(
+              "You exchanged an older coin for a newly minted gold piece."
+            );
           } else {
-            quickPrint(`You exchanged ${items[i].quantity} older coins for newly minted gold pieces.`);
+            quickPrint(
+              `You exchanged ${items[i].quantity} older coins for newly minted gold pieces.`
+            );
           }
           items.splice(i, 1);
           break;

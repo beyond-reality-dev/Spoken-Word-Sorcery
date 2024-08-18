@@ -1,7 +1,7 @@
 const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections");
 const items = require("../../../class_collections");
-const { generateMerchant } = require("../../../generate");
+const { generateMerchant } = require("../../../proc_gen");
 
 class RockyBeach extends Room {
   constructor() {
@@ -104,7 +104,7 @@ class TravelingMerchant extends Shop {
     super(
       "Traveling Merchant",
       "unknownShore.travelingMerchant",
-      `The traveling merchant, by the name of ${merchantName} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
+      `The traveling merchant, by the name of ${generatedMerchant[0]} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
       40.5,
       40.5
     );
@@ -112,16 +112,16 @@ class TravelingMerchant extends Shop {
     this.exits = {
       south: "unknownShore.clearing",
     };
-    this.vendor = merchantName;
-    this.shopItems = merchantItems;
-    this.currency = merchantCurrency;
+    this.vendor = generatedMerchant[0];
+    this.shopItems = generatedMerchant[1];
+    this.currency = generatedMerchant[2];
+    this.markup = generatedMerchant[3];
   }
 }
-var generatedMerchant = generateMerchant(1);
-var merchantName = generatedMerchant[0];
-var merchantItems = generatedMerchant[1];
-var merchantCurrency = generatedMerchant[2];
 
+var generatedMerchant = generateMerchant(1);
 var travelingMerchant = new TravelingMerchant();
+
+console.log(travelingMerchant);
 
 module.exports = { rockyBeach, northBeach, southBeach, forestPath, clearing, travelingMerchant };

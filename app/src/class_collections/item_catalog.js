@@ -785,6 +785,66 @@ const tier3Weapons = [
   "WarHammer",
 ];
 
+const tier1Armor = [
+  "LeatherHelmet",
+  "LeatherChestplate",
+  "LeatherLeggings",
+  "LeatherBoots",
+];
+
+const tier2Armor = [
+  "LeatherHelmet",
+  "LeatherChestplate",
+  "LeatherLeggings",
+  "LeatherBoots",
+  "ChainHelmet",
+  "ChainChestplate",
+  "ChainLeggings",
+  "ChainBoots",
+];
+
+const tier3Armor = [
+  "LeatherHelmet",
+  "LeatherChestplate",
+  "LeatherLeggings",
+  "LeatherBoots",
+  "ChainHelmet",
+  "ChainChestplate",
+  "ChainLeggings",
+  "ChainBoots",
+  "IronHelmet",
+  "IronChestplate",
+  "IronLeggings",
+  "IronBoots",
+];
+
+const tier1Potions = [
+  "HealthPotion",
+  "ManaPotion",
+  "SpeedPotion",
+];
+
+const tier2Potions = [
+  "HealthPotion",
+  "ManaPotion",
+  "SpeedPotion",
+  "AdvancedHealthPotion",
+  "AdvancedManaPotion",
+  "AdvancedSpeedPotion",
+];
+
+const tier3Potions = [
+  "HealthPotion",
+  "ManaPotion",
+  "SpeedPotion",
+  "AdvancedHealthPotion",
+  "AdvancedManaPotion",
+  "AdvancedSpeedPotion",
+  "SuperHealthPotion",
+  "SuperManaPotion",
+  "SuperSpeedPotion",
+];
+
 module.exports = {
   Weapon,
   MeleeWeapon,
@@ -846,4 +906,10 @@ module.exports = {
   tier1Weapons,
   tier2Weapons,
   tier3Weapons,
+  tier1Armor,
+  tier2Armor,
+  tier3Armor,
+  tier1Potions,
+  tier2Potions,
+  tier3Potions,
 };
