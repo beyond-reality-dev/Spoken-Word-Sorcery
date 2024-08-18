@@ -466,7 +466,7 @@ async function handleEnemyTurn(enemy, enemies, i) {
   var relationship = calculateRelationship(playerPosition, enemyPosition);
   var playerDistance = relationship[1];
   var location = getValue("location");
-  location = eval(location, true);
+  location = getValue(location, true);
   var locationWidth = location.width;
   locationWidth = Math.floor(locationWidth);
   horizontalTiles = locationWidth / 5;
@@ -687,7 +687,7 @@ function tryToMoveAndAttack(
 
 function checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY) {
   var location = getValue("location");
-  location = eval(location, true);
+  location = getValue(location, true);
   var locationWidth = location.width;
   locationWidth = Math.floor(locationWidth);
   horizontalTiles = locationWidth / 5;
@@ -731,7 +731,7 @@ function handleCombatMovement(direction, magnitude) {
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
   var location = getValue("location");
-  location = eval(location, true);
+  location = getValue(location, true);
   var locationWidth = location.width;
   locationWidth = Math.floor(locationWidth);
   horizontalTiles = locationWidth / 5;
@@ -1206,7 +1206,7 @@ function findDirection(playerDirection, direction) {
 
 function findEnemiesInCell(targetCell) {
   var location = getValue("location");
-  location = eval(location, true);
+  location = getValue(location, true);
   var enemies = location.enemies;
   var enemiesInCell = false;
   for (let i = 0; i < enemies.length; i++) {

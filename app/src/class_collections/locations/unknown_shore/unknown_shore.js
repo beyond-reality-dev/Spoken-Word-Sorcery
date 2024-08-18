@@ -9,8 +9,8 @@ class RockyBeach extends Room {
       "Rocky Beach",
       "unknownShore.rockyBeach",
       "The rocky beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the north and south, and there is a path leading to the west leading into the woods.",
-      40.5,
-      80.5
+      20.5,
+      40.5
     );
     this.items = {};
     this.exits = {
@@ -31,8 +31,8 @@ class NorthBeach extends Room {
       "North Beach",
       "unknownShore.northBeach",
       "The northern beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the south.",
-      20.5,
-      40.5
+      10.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -49,8 +49,8 @@ class SouthBeach extends Room {
       "South Beach",
       "unknownShore.southBeach",
       "The southern beach is a desolate place, with the sound of waves crashing against the shore. The beach stretches to the north.",
-      20.5,
-      40.5
+      10.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -67,8 +67,8 @@ class ForestPath_01 extends Room {
       "Forest Path",
       "unknownShore.forestPath_01",
       "The forest path winds through the trees for a long way, leading to a rocky beach in the east and a clearing in the west.",
-      80.5,
-      20.5
+      40.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -86,8 +86,8 @@ class Clearing_01 extends Room {
       "Clearing",
       "unknownShore.clearing_01",
       "The clearing is a small, open area surrounded by trees. There is a traveling merchant to the north, a forest path to the east and west, and an old tree stump to the south.",
-      40.5,
-      40.5
+      20.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -104,11 +104,11 @@ var clearing_01 = new Clearing_01();
 class TravelingMerchant extends Shop {
   constructor() {
     super(
-      "Traveling Merchant",
+      "Traveling/Merchant",
       "unknownShore.travelingMerchant",
       `The traveling merchant, by the name of ${generatedMerchant[0]} has a small cart pulled by a donkey that contains a variety of wares. To the south is a small clearing.`,
-      40.5,
-      40.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -127,11 +127,11 @@ var travelingMerchant = new TravelingMerchant();
 class OldTreeStump extends Room {
   constructor() {
     super(
-      "Old Tree Stump",
+      "Old Tree/Stump",
       "unknownShore.oldTreeStump",
       "The old tree stump is a small, moss-covered stump with a hole in the center. There is a clearing to the north.",
-      20.5,
-      20.5
+      15.5,
+      15.5
     );
     this.items = {};
     this.exits = {
@@ -148,8 +148,8 @@ class ForestPath_02 extends Room {
       "Forest Path",
       "unknownShore.forestPath_02",
       "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
-      80.5,
-      20.5
+      40.5,
+      10.5
     );
     this.items = {};
     this.exits = {
@@ -168,8 +168,8 @@ class Clearing_02 extends Room {
       "Clearing",
       "unknownShore.clearing_02",
       "The clearing is a small, open area surrounded by trees. There is a forest path to the east and west.",
-      40.5,
-      40.5
+      20.5,
+      20.5
     );
     this.items = {};
     this.exits = {
@@ -187,8 +187,8 @@ class ForestPath_03 extends Room {
       "Forest Path",
       "unknownShore.forestPath_03",
       "The forest path winds through the trees for a long way, leading to a clearing in the east.",
-      80.5,
-      20.5
+      40.5,
+      10.5
     );
     this.items = {};
     this.exits = {

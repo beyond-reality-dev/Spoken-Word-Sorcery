@@ -1105,7 +1105,7 @@ function handleMovement(direction) {
         changeValue("position", [horizontalTiles, verticalTiles]);
         break;
       case "east":
-        changeValue("position", [horizontalTiles, verticalMiddle]);
+        changeValue("position", [1, verticalMiddle]);
         break;
       case "southeast":
         changeValue("position", [1, 1]);
@@ -1114,13 +1114,13 @@ function handleMovement(direction) {
         changeValue("position", [horizontalMiddle, 1]);
         break;
       case "southwest":
-        changeValue("position", [1, 1]);
+        changeValue("position", [horizontalTiles, 1]);
         break;
       case "west":
-        changeValue("position", [1, verticalMiddle]);
+        changeValue("position", [horizontalTiles, verticalMiddle]);
         break;
       case "northwest":
-        changeValue("position", [1, verticalTiles]);
+        changeValue("position", [horizontalTiles, verticalTiles]);
         break;
       default:
         break;

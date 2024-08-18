@@ -386,6 +386,7 @@ function generateEnemy(tier, quantity = 1) {
       var enemyPosition = generateEnemyPosition(enemies);
       console.log(eval(`new enemies.${enemyType}`));
       var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
+      console.log(enemy);
       enemyList.push(enemy);
     } else {
       var coinFlip = Math.random();
@@ -494,14 +495,14 @@ function generateEnemyPosition(enemies) {
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
   var x = getRandomInt(horizontalTiles);
-  var y = getRandomInt(verticalTiles);
+  var y = getRandomInt(verticalTiles + 1);
   for (let i = 0; i < enemies.length; i++) {
     var enemyPosition = enemies[i].position;
     var enemyX = enemyPosition[0];
     var enemyY = enemyPosition[1];
     if ((x == enemyX && y == enemyY) || (x == playerX && y == playerY)) {
       x = getRandomInt(horizontalTiles);
-      y = getRandomInt(verticalTiles);
+      y = getRandomInt(verticalTiles + 1);
       i = 0;
     }
   }
