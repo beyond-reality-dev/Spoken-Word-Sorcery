@@ -23,30 +23,36 @@ async function handleCombat() {
   var enemies = currentLocation.enemies;
   var enemiesDefeated = false;
   while (getValue("currentHealth") > 0 && enemiesDefeated == false) {
+    console.log("Enemies at the start of the turn:");
+    console.log(enemies);
     var playerSpeed = getValue("speed");
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
       var enemy = eval(enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
-        enemies = await handlePlayerTurn(enemies, enemies.length);
+        var newEnemies = await handlePlayerTurn(enemies, enemies.length);
         turnPlayed = true;
         if (enemies.length > 0) {
-          await handleEnemyTurn(enemy, enemies, i);
+          newEnemies = await handleEnemyTurn(enemy, newEnemies, i);
+          console.log("Interim enemies:");
+          console.log(newEnemies);
         }
       } else {
-        await handleEnemyTurn(enemy, enemies, i);
+        newEnemies = await handleEnemyTurn(enemy, enemies, i);
+        console.log("Interim enemies:");
+        console.log(newEnemies);
       }
     }
     if (turnPlayed == false) {
-      enemies = await handlePlayerTurn(enemies, enemies.length);
+      newEnemies = await handlePlayerTurn(enemy, newEnemies.length);
       turnPlayed = true;
     }
-    if (enemies.length == 0) {
+    if (newEnemies.length == 0) {
       enemiesDefeated = true;
     } else {
-      for (let i = 0; i < enemies.length; i++) {
-        if (enemies[i].isObstacle == false) {
+      for (let i = 0; i < newEnemies.length; i++) {
+        if (newEnemies[i].isObstacle == false) {
           enemiesDefeated = false;
           break;
         } else {
@@ -54,6 +60,9 @@ async function handleCombat() {
         }
       }
     }
+    console.log("Enemies at the end of the turn:");
+    console.log(newEnemies);
+    enemies = newEnemies;
   }
   playerHealth = getValue("currentHealth");
   if (playerHealth <= 0) {
@@ -68,12 +77,8 @@ async function handleCombat() {
   changeValue("isCombat", false);
 }
 
-async function handlePlayerTurn() {
+async function handlePlayerTurn(enemies, length) {
   changeValue("movementPoints", 4);
-  var currentLocation = getValue("location");
-  currentLocation = eval(getValue(currentLocation, true));
-  var enemies = currentLocation.enemies;
-  var length = enemies.length;
   quickPrint(`There are ${length} enemies remaining:`);
   for (let i = 0; i < length; i++) {
     var enemy = enemies[i];
@@ -474,112 +479,92 @@ function checkAmmo(position, enemies) {
 async function handleEnemyTurn(enemy, enemies, i) {
   console.log(enemy);
   var playerPosition = getValue("position");
-  var playerX = playerPosition[0];
-  var playerY = playerPosition[1];
   var enemyPosition = enemy.position;
   var enemyX = enemyPosition[0];
   var enemyY = enemyPosition[1];
   var relationship = calculateRelationship(playerPosition, enemyPosition);
   var playerDistance = relationship[1];
-  var location = getValue("location");
-  location = getValue(location, true);
-  var locationWidth = location.width;
-  locationWidth = Math.floor(locationWidth);
-  horizontalTiles = locationWidth / 5;
-  var locationHeight = location.height;
-  locationHeight = Math.floor(locationHeight);
-  verticalTiles = locationHeight / 5;
   var enemyRange = enemy.range;
-  console.log(playerDistance);
-  console.log(enemyRange);
   if (playerDistance <= enemyRange) {
     quickPrint(enemy.attackDescription);
     var playerDefense = getRandomInt(getValue("armor"));
     var enemyAttack = diceRoll(enemy.attack);
     var rolls = enemyAttack[0];
-    for (let i = 0; i < rolls.length; i++) {
-      quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
+    for (let roll of rolls) {
+      quickPrint(`${enemy.name} rolled a ${roll}.`);
     }
     if (playerDefense > 0) {
       quickPrint(
         `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
       );
     }
-    var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
-    var tempHealth = getValue("tempHealth");
+    let playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
+    let tempHealth = getValue("tempHealth");
     if (tempHealth > 0) {
       var difference = playerDamage - tempHealth;
       if (difference > 0) {
         playerDamage = difference;
         tempHealth = 0;
       } else {
-        tempHealth = tempHealth - playerDamage;
+        tempHealth -= playerDamage;
         playerDamage = 0;
       }
       changeValue("tempHealth", tempHealth);
     }
     calculateValue("currentHealth", "subtract", playerDamage);
     quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-  } else if (playerDistance > enemyRange) {
-    enemies = moveEnemyTowardsPlayer();
-    if (enemies[i].range >= playerDistance) {
-      quickPrint(enemies[i].attackDescription);
-      var playerDefense = getRandomInt(getValue("armor"));
-      var enemyAttack = diceRoll(enemy.attack);
-      var rolls = enemyAttack[0];
-      for (let i = 0; i < rolls.length; i++) {
-        quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
-      }
-      if (playerDefense > 0) {
-        quickPrint(
-          `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
-        );
-      }
-      var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
-      var tempHealth = getValue("tempHealth");
-      if (tempHealth > 0) {
-        var difference = playerDamage - tempHealth;
-        if (difference > 0) {
-          playerDamage = difference;
-          tempHealth = 0;
-        } else {
-          tempHealth = tempHealth - playerDamage;
-          playerDamage = 0;
-        }
-        changeValue("tempHealth", tempHealth);
-      }
-      calculateValue("currentHealth", "subtract", playerDamage);
-      quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+    return enemies;
+  } else {
+    enemies = moveEnemyTowardsPlayer(
+      enemies,
+      enemyX,
+      enemyY,
+      playerDistance,
+      enemyRange,
+      i
+    );
+    return enemies;
+  }
+}
+
+function moveEnemyTowardsPlayer(
+  enemies,
+  enemyX,
+  enemyY,
+  playerDistance,
+  enemyRange,
+  index
+) {
+  var playerPosition = getValue("position");
+  var playerX = playerPosition[0];
+  var playerY = playerPosition[1];
+  var budget = 4;
+  var hasMoved = true;
+  while (playerDistance > enemyRange && budget > 0 && hasMoved == true) {
+    var originalX = enemyX;
+    var originalY = enemyY;
+    if (enemyX < playerX) {
+      enemyX += 1;
+    } else if (enemyX > playerX) {
+      enemyX -= 1;
     }
+    if (enemyY < playerY) {
+      enemyY += 1;
+    } else if (enemyY > playerY) {
+      enemyY -= 1;
+    }
+    if (findEnemiesInCell([enemyX, enemyY], enemies)) {
+      enemyX = originalX;
+      enemyY = originalY;
+      break;
+    } else if (findPlayerInCell([enemyX, enemyY])) {
+      enemyX = originalX;
+      enemyY = originalY;
+      break;
+    }
+    enemies[index].position = [enemyX, enemyY];
   }
   return enemies;
-}
-
-function moveEnemyTowardsPlayer(enemies) {
-  return enemies;
-}
-
-function checkBounds(enemies, enemyX, enemyY) {
-  var location = getValue("location");
-  location = getValue(location, true);
-  var locationWidth = location.width;
-  locationWidth = Math.floor(locationWidth);
-  horizontalTiles = locationWidth / 5;
-  var locationHeight = location.height;
-  locationHeight = Math.floor(locationHeight);
-  verticalTiles = locationHeight / 5;
-  var outOfBounds = false;
-  if (enemyX < 0 || enemyX > horizontalTiles) {
-    outOfBounds = true;
-  } else if (enemyY < 0 || enemyY > verticalTiles) {
-    outOfBounds = true;
-  } else if (
-    findEnemiesInCell([enemyX, enemyY], enemies) == true ||
-    findPlayerInCell([enemyX, enemyY]) == true
-  ) {
-    outOfBounds = true;
-  }
-  return outOfBounds;
 }
 
 function handleCombatMovement(direction, magnitude) {
