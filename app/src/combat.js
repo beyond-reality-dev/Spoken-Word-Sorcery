@@ -84,7 +84,7 @@ async function handlePlayerTurn() {
     var enemyDistance = relationship[1];
     if (enemy.isObstacle == false) {
       quickPrint(
-        `${i + 1}. ${enemy.name} has ${
+        `${i + 1}. ${enemy.name}, a ${enemy.baseType}, has ${
           enemy.health
         } health and is standing ${enemyDistance} feet away to the ${enemyDirection}.`
       );

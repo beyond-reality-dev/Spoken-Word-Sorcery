@@ -11,3 +11,8 @@ You must have been unconscious for some time, and you are feeling the effects of
 You look around, trying to get your bearings, and see a path leading away from the beach.
 You know that you need to find help, and that the only way to do so is to follow that path.
 You take a deep breath, steeling yourself for the journey ahead, and begin to walk.
+After only a few steps, however, you hear a voice calling out to you.
+You turn, and see a figure standing on the beach, waving to get your attention.
+Do you:
+1. Approach the figure and see what they want?
+2. Ignore the figure and continue on your way?

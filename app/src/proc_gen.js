@@ -382,7 +382,7 @@ function generateEnemy(tier, quantity = 1) {
     if (tier < 4) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
-      var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+      var enemyName = faction;
       for (let j = 0; j < enemyList.length; j++) {
         if (enemyList[j].name == enemyName) {
           if (enemyName.split(" ").length > 1) {
@@ -491,7 +491,7 @@ function generateEnemy(tier, quantity = 1) {
       } else {
         var enemyTypes = enemies[`tier3${faction}Enemies`];
         var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
-        var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+        var enemyName = faction;
         for (let j = 0; j < enemyList.length; j++) {
           if (enemyList[j].name == enemyName) {
             if (enemyName.split(" ").length > 1) {
@@ -542,9 +542,7 @@ function generateEnemyPosition(enemies) {
   var x = getRandomInt(horizontalTiles) + 1;
   var y = getRandomInt(verticalTiles) + 1;
   var matchingPlayer = findPlayerInCell([x, y]);
-  console.log(matchingPlayer);
   var matchingEnemy = findEnemiesInCell([x, y], enemies);
-  console.log(matchingEnemy);
   while (matchingPlayer || matchingEnemy) {
     x = getRandomInt(horizontalTiles) + 1;
     y = getRandomInt(verticalTiles) + 1;

@@ -1,7 +1,7 @@
 const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections");
 const items = require("../../../class_collections");
-const { generateShop, generateRandomEncounter } = require("../../../proc_gen");
+const { generateShop } = require("../../../proc_gen");
 
 class RockyBeach extends Room {
   constructor() {
@@ -67,7 +67,7 @@ class ForestPath_01 extends Room {
       "Forest Path",
       "unknownShore.forestPath_01",
       "The forest path winds through the trees for a long way, leading to a rocky beach in the east and a clearing in the west.",
-      40.5,
+      80.5,
       10.5
     );
     this.items = {};
@@ -148,7 +148,7 @@ class ForestPath_02 extends Room {
       "Forest Path",
       "unknownShore.forestPath_02",
       "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
-      40.5,
+      80.5,
       10.5
     );
     this.items = {};
@@ -186,18 +186,38 @@ class ForestPath_03 extends Room {
     super(
       "Forest Path",
       "unknownShore.forestPath_03",
-      "The forest path winds through the trees for a long way, leading to a clearing in the east.",
-      40.5,
+      "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
+      80.5,
       10.5
     );
     this.items = {};
     this.exits = {
       east: "unknownShore.clearing_02",
+      west: "unknownShore.clearing_03",
     };
   }
 }
 
 var forestPath_03 = new ForestPath_03();
+
+class Clearing_03 extends Room {
+  constructor() {
+    super(
+      "Clearing",
+      "unknownShore.clearing_03",
+      "The clearing is a small, open area surrounded by trees. There is a forest path to the east and west.",
+      20.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.forestPath_03",
+      west: "unknownShore.forestPath_04",
+    };
+  }
+}
+
+var clearing_03 = new Clearing_03();
 
 module.exports = {
   rockyBeach,
@@ -210,4 +230,5 @@ module.exports = {
   forestPath_02,
   clearing_02,
   forestPath_03,
+  clearing_03,
 };
