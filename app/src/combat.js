@@ -23,8 +23,6 @@ async function handleCombat() {
   var enemies = currentLocation.enemies;
   var enemiesDefeated = false;
   while (getValue("currentHealth") > 0 && enemiesDefeated == false) {
-    console.log("Enemies at the start of the turn:");
-    console.log(enemies);
     var playerSpeed = getValue("speed");
     var turnPlayed = false;
     for (let i = 0; i < enemies.length; i++) {
@@ -35,13 +33,9 @@ async function handleCombat() {
         turnPlayed = true;
         if (enemies.length > 0) {
           newEnemies = await handleEnemyTurn(enemy, newEnemies, i);
-          console.log("Interim enemies:");
-          console.log(newEnemies);
         }
       } else {
         newEnemies = await handleEnemyTurn(enemy, enemies, i);
-        console.log("Interim enemies:");
-        console.log(newEnemies);
       }
     }
     if (turnPlayed == false) {
@@ -60,8 +54,6 @@ async function handleCombat() {
         }
       }
     }
-    console.log("Enemies at the end of the turn:");
-    console.log(newEnemies);
     enemies = newEnemies;
   }
   playerHealth = getValue("currentHealth");
@@ -477,12 +469,11 @@ function checkAmmo(position, enemies) {
 }
 
 async function handleEnemyTurn(enemy, enemies, i) {
-  console.log(enemy);
   var playerPosition = getValue("position");
   var enemyPosition = enemy.position;
   var enemyX = enemyPosition[0];
   var enemyY = enemyPosition[1];
-  var relationship = calculateRelationship(playerPosition, enemyPosition);
+  var relationship = calculateRelationship(enemyPosition, playerPosition);
   var playerDistance = relationship[1];
   var enemyRange = enemy.range;
   if (playerDistance <= enemyRange) {
@@ -538,6 +529,8 @@ function moveEnemyTowardsPlayer(
   var playerPosition = getValue("position");
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
+  var startingX = enemyX;
+  var startingY = enemyY;
   var budget = 4;
   var hasMoved = true;
   while (playerDistance > enemyRange && budget > 0 && hasMoved == true) {
@@ -545,13 +538,17 @@ function moveEnemyTowardsPlayer(
     var originalY = enemyY;
     if (enemyX < playerX) {
       enemyX += 1;
+      budget -= 1;
     } else if (enemyX > playerX) {
       enemyX -= 1;
+      budget -= 1;
     }
     if (enemyY < playerY) {
       enemyY += 1;
+      budget -= 1;
     } else if (enemyY > playerY) {
       enemyY -= 1;
+      budget -= 1;
     }
     if (findEnemiesInCell([enemyX, enemyY], enemies)) {
       enemyX = originalX;
@@ -561,8 +558,61 @@ function moveEnemyTowardsPlayer(
       enemyX = originalX;
       enemyY = originalY;
       break;
+    } else if (checkBounds([enemyX, enemyY]) == false) {
+      enemyX = originalX;
+      enemyY = originalY;
+      break;
     }
     enemies[index].position = [enemyX, enemyY];
+    var relationship = calculateRelationship([enemyX, enemyY], playerPosition);
+    var playerDistance = relationship[1];
+  }
+  relationship = calculateRelationship([enemyX, enemyY], playerPosition);
+  var playerDirection = relationship[0];
+  playerDistance = relationship[1];
+  if (enemyX == startingX && enemyY < startingY) {
+    var distanceTraveled = Math.abs(enemyY - startingY);
+    var direction = "north";
+  } else if (enemyX > startingX && enemyY < startingY) {
+    var distanceX = Math.abs(enemyX - startingX);
+    var distanceY = Math.abs(enemyY - startingY);
+    distanceTraveled = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+    direction = "northeast";
+  } else if (enemyX > startingX && enemyY == startingY) {
+    distanceTraveled = Math.abs(enemyX - startingX);
+    direction = "east";
+  } else if (enemyX > startingX && enemyY > startingY) {
+    distanceX = Math.abs(enemyX - startingX);
+    distanceY = Math.abs(enemyY - startingY);
+    distanceTraveled = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+    direction = "southeast";
+  } else if (enemyX == startingX && enemyY > startingY) {
+    distanceTraveled = Math.abs(enemyY - startingY);
+    direction = "south";
+  } else if (enemyX < startingX && enemyY > startingY) {
+    distanceX = Math.abs(enemyX - startingX);
+    distanceY = Math.abs(enemyY - startingY);
+    distanceTraveled = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+    direction = "southwest";
+  } else if (enemyX < startingX && enemyY == startingY) {
+    distanceTraveled = Math.abs(enemyX - startingX);
+    direction = "west";
+  } else if (enemyX < startingX && enemyY < startingY) {
+    distanceX = Math.abs(enemyX - startingX);
+    distanceY = Math.abs(enemyY - startingY);
+    distanceTraveled = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+    direction = "northwest";
+  } else {
+    var distanceTraveled = 0;
+    var direction = "none";
+  }
+  distanceTraveled = distanceTraveled * 5;
+  distanceTraveled = Math.floor(distanceTraveled);
+  if (distanceTraveled != 0 && direction != "none") {
+    quickPrint(
+      `The enemy moved ${distanceTraveled} feet to the ${direction}, and is now ${playerDistance} feet away to the 
+      ${playerDirection}.`
+    );
   }
   return enemies;
 }
@@ -1082,6 +1132,26 @@ function findPlayerInCell(targetCell) {
     playerInCell = true;
   }
   return playerInCell;
+}
+
+function checkBounds(targetCell) {
+  var location = getValue("location");
+  location = getValue(location, true);
+  var locationWidth = location.width;
+  locationWidth = Math.floor(locationWidth);
+  horizontalTiles = locationWidth / 5;
+  var locationHeight = location.height;
+  locationHeight = Math.floor(locationHeight);
+  verticalTiles = locationHeight / 5;
+  var enemyX = targetCell[0];
+  var enemyY = targetCell[1];
+  if (enemyX < 1 || enemyX > horizontalTiles) {
+    return false;
+  } else if (enemyY < 1 || enemyY > verticalTiles) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 module.exports = {
