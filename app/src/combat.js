@@ -1211,6 +1211,8 @@ function findDirection(playerDirection, direction) {
 function findEnemiesInCell(targetCell, enemies = null) {
   var location = getValue("location");
   location = getValue(location, true);
+  var enemyX = targetCell[0];
+  var enemyY = targetCell[1];
   if (enemies == null) {
     enemies = location.enemies;
   } else {
@@ -1220,8 +1222,11 @@ function findEnemiesInCell(targetCell, enemies = null) {
   for (let i = 0; i < enemies.length; i++) {
     var enemy = enemies[i];
     var enemyPosition = enemy.position;
-    if (enemyPosition == targetCell) {
+    var otherX = enemyPosition[0];
+    var otherY = enemyPosition[1];
+    if (enemyX == otherX && enemyY == otherY) {
       enemiesInCell = true;
+      break;
     }
   }
   return enemiesInCell;
@@ -1230,7 +1235,11 @@ function findEnemiesInCell(targetCell, enemies = null) {
 function findPlayerInCell(targetCell) {
   var playerInCell = false;
   var position = getValue("position");
-  if (position == targetCell) {
+  var playerX = position[0];
+  var playerY = position[1];
+  var enemyX = targetCell[0];
+  var enemyY = targetCell[1];
+  if (playerX == enemyX && playerY == enemyY) {
     playerInCell = true;
   }
   return playerInCell;

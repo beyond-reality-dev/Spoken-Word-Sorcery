@@ -348,15 +348,6 @@ function generateRandomEncounter(tier, hostile = true) {
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
     enemies = enemies.concat(generatedEnemies);
-    for (let i = 0; i < enemies; i++) {
-      var enemy = enemies[i];
-      if (findEnemiesInCell(enemy.position, enemies) || findPlayerInCell(enemy.position)) {
-        enemies.splice(i, 1);
-        var generatedEnemy = generateEnemy(tier, 1);
-        enemies.push(generatedEnemy);
-        i = 0;
-      }
-    }
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     handleCombat();
@@ -397,7 +388,6 @@ function generateEnemy(tier, quantity = 1) {
           if (enemyName.split(" ").length > 1) {
             var end = enemyName.split(" ").length;
             var increment = enemyName.split(" ")[end - 1];
-            console.log(increment);
             increment = parseInt(increment) + 1;
             if (isNaN(increment)) {
               increment = 2;
@@ -507,7 +497,6 @@ function generateEnemy(tier, quantity = 1) {
             if (enemyName.split(" ").length > 1) {
               var end = enemyName.split(" ").length;
               var increment = enemyName.split(" ")[end - 1];
-              console.log(increment);
               increment = parseInt(increment) + 1;
               if (isNaN(increment)) {
                 increment = 2;
@@ -552,17 +541,15 @@ function generateEnemyPosition(enemies) {
   var verticalTiles = height / 5;
   var x = getRandomInt(horizontalTiles) + 1;
   var y = getRandomInt(verticalTiles) + 1;
-  for (let i = 0; i < enemies.length; i++) {
-    console.log([x, y]);
-    console.log("Enemies are in cell:");
-    console.log(findEnemiesInCell([x, y], enemies));
-    console.log("Player in cell:");
-    console.log(findPlayerInCell([x, y]));
-    if (findEnemiesInCell([x, y], enemies) || findPlayerInCell([x, y])) {
-      x = getRandomInt(horizontalTiles) + 1;
-      y = getRandomInt(verticalTiles) + 1;
-      i = 0;
-    }
+  var matchingPlayer = findPlayerInCell([x, y]);
+  console.log(matchingPlayer);
+  var matchingEnemy = findEnemiesInCell([x, y], enemies);
+  console.log(matchingEnemy);
+  while (matchingPlayer || matchingEnemy) {
+    x = getRandomInt(horizontalTiles) + 1;
+    y = getRandomInt(verticalTiles) + 1;
+    matchingPlayer = findPlayerInCell([x, y]);
+    matchingEnemy = findEnemiesInCell([x, y], enemies);
   }
   return [x, y];
 }

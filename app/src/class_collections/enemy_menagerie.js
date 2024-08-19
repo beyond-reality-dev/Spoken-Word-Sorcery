@@ -4,6 +4,7 @@ const catalog = items;
 class Enemy {
   constructor(
     name,
+    baseType,
     position,
     attackDescription,
     health,
@@ -15,6 +16,7 @@ class Enemy {
     items
   ) {
     this.name = name;
+    this.baseType = baseType;
     this.position = position;
     this.attackDescription = attackDescription;
     this.health = health;
@@ -32,6 +34,7 @@ class Enemy {
 class MeleeEnemy extends Enemy {
   constructor(
     name,
+    baseType,
     position,
     attackDescription,
     health,
@@ -44,6 +47,7 @@ class MeleeEnemy extends Enemy {
   ) {
     super(
       name,
+      baseType,
       position,
       attackDescription,
       health,
@@ -61,6 +65,7 @@ class MeleeEnemy extends Enemy {
 class RangedEnemy extends Enemy {
   constructor(
     name,
+    baseType,
     position,
     attackDescription,
     health,
@@ -74,6 +79,7 @@ class RangedEnemy extends Enemy {
   ) {
     super(
       name,
+      baseType,
       position,
       attackDescription,
       health,
@@ -93,6 +99,7 @@ class RebelGrunt extends MeleeEnemy {
   constructor(name, position, items = [new catalog.ShortSword()]) {
     super(
       name,
+      "grunt",
       position,
       "The rebel strikes with his short sword!",
       50,
@@ -110,6 +117,7 @@ class RebelSpearman extends MeleeEnemy {
   constructor(name, position, items = [new catalog.Spear()]) {
     super(
       name,
+      "spearman",
       position,
       "The rebel lunges with his spear!",
       50,
@@ -127,6 +135,7 @@ class RebelCaptain extends MeleeEnemy {
   constructor(name, position, items = [new catalog.LongSword()]) {
     super(
       name,
+      "captain",
       position,
       "The rebel captain strikes with his long sword!",
       100,
@@ -145,6 +154,7 @@ class RebelShortBowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.ShortBow()]) {
     super(
       name,
+      "short bowman",
       position,
       "The rebel archer fires his short bow!",
       50,
@@ -163,6 +173,7 @@ class RebelLongBowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.LongBow()]) {
     super(
       name,
+      "long bowman",
       position,
       "The rebel archer fires his long bow!",
       50,
@@ -181,6 +192,7 @@ class RebelLightCrossbowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.LightCrossbow()]) {
     super(
       name,
+      "light crossbowman",
       position,
       "The rebel fires his light crossbow!",
       50,
@@ -199,6 +211,7 @@ class RebelHeavyCrossbowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.HeavyCrossbow()]) {
     super(
       name,
+      "heavy crossbowman",
       position,
       "The rebel fires his heavy crossbow!",
       50,
@@ -217,6 +230,7 @@ class RebelSlinger extends RangedEnemy {
   constructor(name, position, items = [new catalog.Sling()]) {
     super(
       name,
+      "slinger",
       position,
       "The rebel fires his sling!",
       50,
@@ -235,6 +249,7 @@ class RebelMage extends RangedEnemy {
   constructor(name, position, items = [new catalog.Staff()], spells) {
     super(
       name,
+      "mage",
       position,
       `The rebel mage yells <i>${spells}</i> and casts a spell!`,
       50,
@@ -254,6 +269,7 @@ class BanditGrunt extends MeleeEnemy {
   constructor(name, position, items = [new catalog.ShortSword()]) {
     super(
       name,
+      "grunt",
       position,
       "The bandit strikes with his short sword!",
       50,
@@ -271,6 +287,7 @@ class BanditCaptain extends Enemy {
   constructor(name, position, items = [new catalog.LongSword()]) {
     super(
       name,
+      "captain",
       position,
       "The bandit captain strikes with his long sword!",
       100,
@@ -289,6 +306,7 @@ class BanditShortBowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.ShortBow()]) {
     super(
       name,
+      "short bowman",
       position,
       "The bandit archer fires his short bow!",
       50,
@@ -307,6 +325,7 @@ class BanditLightCrossbowman extends RangedEnemy {
   constructor(name, position, items = [new catalog.LightCrossbow()]) {
     super(
       name,
+      "light crossbowman",
       position,
       "The bandit fires his light crossbow!",
       50,
@@ -325,6 +344,7 @@ class BanditSlinger extends RangedEnemy {
   constructor(name, position, items = [new catalog.Sling()]) {
     super(
       name,
+      "slinger",
       position,
       "The bandit fires his sling!",
       50,
