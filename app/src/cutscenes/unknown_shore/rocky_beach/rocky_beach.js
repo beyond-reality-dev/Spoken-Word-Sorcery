@@ -1,7 +1,7 @@
 const { printLines } = require("../../../general");
 const { closedInput } = require("../../../handle_input");
 const { generateName } = require("../../../proc_gen");
-const { changeValue } = require("../../../save_data");
+const { changeValue, removeEntity } = require("../../../save_data");
 
 var peasantName = generateName("male fullName");
 var villageName = generateName("town") + " Village";
@@ -75,6 +75,30 @@ async function rockyBeach() {
     await printLines("app/src/cutscenes/unknown_shore/rocky_beach/8.txt", {
       peasantName: peasantName,
     });
+  }
+  await closedInput(
+    [
+      "1",
+      "keep",
+      "keep it",
+      "keep the ring",
+      "2",
+      "leave",
+      "leave it",
+      "leave the ring",
+    ],
+    "What will you do with the ring?"
+  );
+  if (
+    response == "1" ||
+    response == "keep" ||
+    response == "keep it" ||
+    response == "keep the ring"
+  ) {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/9.txt");
+  } else {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/10.txt");
+    removeEntity("Imperial Signet Ring", "inventory");
   }
   changeValue("unknownShore.rockyBeach.cutscenePlayed", true, "locations");
 }

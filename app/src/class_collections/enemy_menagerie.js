@@ -10,6 +10,7 @@ class Enemy {
     health,
     armor,
     attack,
+    range,
     speed,
     gold,
     xp,
@@ -22,6 +23,7 @@ class Enemy {
     this.health = health;
     this.armor = armor;
     this.attack = attack;
+    this.range = range;
     this.speed = speed;
     this.gold = gold;
     this.xp = xp;
@@ -43,7 +45,8 @@ class MeleeEnemy extends Enemy {
     speed,
     gold,
     xp,
-    items
+    items,
+    range = 7.5
   ) {
     super(
       name,
@@ -53,12 +56,12 @@ class MeleeEnemy extends Enemy {
       health,
       armor,
       attack,
+      range,
       speed,
       gold,
       xp,
       items
     );
-    this.range = 7.5;
   }
 }
 
