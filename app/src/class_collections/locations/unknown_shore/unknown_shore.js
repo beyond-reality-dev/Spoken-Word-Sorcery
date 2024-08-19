@@ -220,6 +220,44 @@ class Clearing_03 extends Room {
 
 var clearing_03 = new Clearing_03();
 
+class ForestPath_04 extends Room {
+  constructor() {
+    super(
+      "Forest Path",
+      "unknownShore.forestPath_04",
+      "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
+      80.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.clearing_03",
+      west: "unknownShore.clearing_04",
+    };
+  }
+}
+
+var forestPath_04 = new ForestPath_04();
+
+class Clearing_04 extends Room {
+  constructor() {
+    super(
+      "Clearing",
+      "unknownShore.clearing_04",
+      "The clearing is a small, open area surrounded by trees. There is a forest path to the east and west.",
+      20.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "unknownShore.forestPath_04",
+      west: "unknownShore.forestPath_05",
+    };
+  }
+}
+
+var clearing_04 = new Clearing_04();
+
 module.exports = {
   rockyBeach,
   northBeach,
@@ -232,4 +270,6 @@ module.exports = {
   clearing_02,
   forestPath_03,
   clearing_03,
+  forestPath_04,
+  clearing_04,
 };
