@@ -517,7 +517,7 @@ async function handleEnemyTurn(enemy, enemies, i) {
     calculateValue("currentHealth", "subtract", playerDamage);
     quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
   } else if (playerDistance > enemyRange) {
-    tryToMoveAndAttack(
+    enemies = tryToMoveAndAttack(
       playerX,
       playerY,
       enemyX,
@@ -527,6 +527,34 @@ async function handleEnemyTurn(enemy, enemies, i) {
       i,
       enemies
     );
+    if (enemies[i].range >= playerDistance) {
+      var playerDefense = getRandomInt(getValue("armor"));
+      var enemyAttack = diceRoll(enemy.attack);
+      var rolls = enemyAttack[0];
+      for (let i = 0; i < rolls.length; i++) {
+        quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
+      }
+      if (playerDefense > 0) {
+        quickPrint(
+          `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
+        );
+      }
+      var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
+      var tempHealth = getValue("tempHealth");
+      if (tempHealth > 0) {
+        var difference = playerDamage - tempHealth;
+        if (difference > 0) {
+          playerDamage = difference;
+          tempHealth = 0;
+        } else {
+          tempHealth = tempHealth - playerDamage;
+          playerDamage = 0;
+        }
+        changeValue("tempHealth", tempHealth);
+      }
+      calculateValue("currentHealth", "subtract", playerDamage);
+      quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+    }
   }
   return enemies;
 }
@@ -541,166 +569,159 @@ function tryToMoveAndAttack(
   i,
   enemies
 ) {
-  var originalEnemyX = enemyX;
-  var originalEnemyY = enemyY;
-  var differenceX = playerX - enemyX;
-  differenceX = differenceX - 1;
-  if (differenceX > 0) {
-    var multiplierX = 1;
+  if (enemyRange == 7.5) {
+    var targetCells = [
+      [playerX - 1, playerY - 1],
+      [playerX, playerY - 1],
+      [playerX + 1, playerY - 1],
+      [playerX - 1, playerY],
+      [playerX + 1, playerY],
+      [playerX - 1, playerY + 1],
+      [playerX, playerY + 1],
+      [playerX + 1, playerY + 1],
+    ];
   } else {
-    var multiplierX = -1;
-  }
-  differenceX = Math.abs(differenceX);
-  var differenceY = playerY - enemyY;
-  differenceY = differenceY - 1;
-  if (differenceY > 0) {
-    var multiplierY = 1;
-  } else {
-    var multiplierY = -1;
-  }
-  differenceY = Math.abs(differenceY);
-  var originalDifferenceX = differenceX;
-  var originalDifferenceY = differenceY;
-  var budget = 4; // Enemies can move up to 4 tiles per turn, the equivalent of 20 ft.
-  while (budget >= 1) {
-    if (differenceX == 0 && differenceY == 0) {
-      budget = 0;
-    } else if (differenceX > 0 && differenceY > 0 && budget >= 1.5) {
-      enemyX = enemyX + multiplierX;
-      enemyY = enemyY + multiplierY;
-      differenceX = differenceX - 1;
-      differenceY = differenceY - 1;
-      var cost = 1.5;
-      var direction = "diagonal";
-      budget = budget - cost;
-    } else if (differenceX > 0 && budget >= 1) {
-      enemyX = enemyX + multiplierX;
-      differenceX = differenceX - 1;
-      cost = 1;
-      direction = "horizontal";
-      budget = 1;
-    } else if (differenceY > 0 && budget >= 1) {
-      enemyY = enemyY + multiplierY;
-      differenceY = differenceY - 1;
-      cost = 1;
-      direction = "vertical";
-      budget = budget - cost;
+    var targetDistance = enemyRange / 5;
+    if (targetDistance % 1 != 0) {
+      targetDistance = Math.floor(targetDistance);
+      targetDistance = targetDistance - 1;
     }
-    for (let j = 0; j < enemies.length; j++) {
-      if (j != i) {
-        var playerData = JSON.parse(localStorage.getItem("playerData"));
-        var locations = playerData["locations"];
-        var primaryLocation = getValue("location").split(".")[0];
-        var secondaryLocation = getValue("location").split(".")[1];
-        var enemies = locations[primaryLocation][secondaryLocation]["enemies"];
-        var otherEnemy = enemies[j];
-        var otherEnemyPosition = otherEnemy.position;
-        var otherEnemyX = otherEnemyPosition[0];
-        var otherEnemyY = otherEnemyPosition[1];
-        if (
-          (enemyX == otherEnemyX && enemyY == otherEnemyY) ||
-          (enemyX == playerX && enemyY == playerY)
-        ) {
-          if (direction == "diagonal") {
-            if (multiplierX > 0 && multiplierY > 0) {
-              enemyX = enemyX - 1;
-              enemyY = enemyY - 1;
-            } else if (multiplierX > 0 && multiplierY < 0) {
-              enemyX = enemyX - 1;
-              enemyY = enemyY + 1;
-            } else if (multiplierX < 0 && multiplierY > 0) {
-              enemyX = enemyX + 1;
-              enemyY = enemyY - 1;
-            } else if (multiplierX < 0 && multiplierY < 0) {
-              enemyX = enemyX + 1;
-              enemyY = enemyY + 1;
-            }
-          } else if (direction == "horizontal") {
-            if (multiplierX > 0) {
-              enemyX = enemyX - 1;
-            } else if (multiplierX < 0) {
-              enemyX = enemyX + 1;
-            }
-          } else if (direction == "vertical") {
-            if (multiplierY > 0) {
-              enemyY = enemyY - 1;
-            } else if (multiplierY < 0) {
-              enemyY = enemyY + 1;
-            }
-          }
-        }
-      }
-    }
+    var targetCells = calculateTargetCells(playerX, playerY, targetDistance);
   }
-  var checkedPosition = checkBounds(
-    enemies,
-    originalEnemyX,
-    originalEnemyY,
-    enemyX,
-    enemyY
-  );
-  enemyX = checkedPosition[0];
-  enemyY = checkedPosition[1];
-  enemyPosition = [enemyX, enemyY];
-  if (originalDifferenceX > 0 && originalDifferenceY > 0) {
-    var distanceTraveled = Math.sqrt(
-      (originalDifferenceX * 5) ** 2 + (originalDifferenceX * 5) ** 2
-    );
-    distanceTraveled = Math.floor(distanceTraveled);
-  } else if (originalDifferenceX > 0) {
-    distanceTraveled = originalDifferenceX * 5;
-  } else if (originalDifferenceY > 0) {
-    distanceTraveled = originalDifferenceY * 5;
+  var distances = [];
+  var cells = [];
+  var minDistance = Infinity;
+  var minIndex = -1;
+  targetCells.forEach((element, index) => {
+    var result = moveTowardsTarget(element, enemies);
+    var distance = result[0];
+    distances.push(distance);
+    var cell = result[1];
+    cells.push(cell);
+    if (distance < minDistance) {
+      minDistance = distance;
+      minIndex = index;
+    }
+    if (distance == 1) {
+      minIndex = index;
+      return;
+    }
+  });
+  var enemy = enemies[i];
+  enemy.position = cells[minIndex];
+  enemies[i] = enemy;
+  var newX = cells[minIndex][0];
+  var newY = cells[minIndex][1];
+  var differenceX = newX - enemyX;
+  var differenceY = newY - enemyY;
+  if (differenceX == 0 && differenceY < 1) {
+    var distance = differenceY * 5;
+    quickPrint(`${enemy.name} moved north ${distance} ft.`);
+  } else if (differenceX > 0 && differenceY < 1) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved northeast ${distance} ft.`);
+  } else if (differenceX > 0 && differenceY == 0) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved east ${distance} ft.`);
+  } else if (differenceX > 0 && differenceY > 0) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved southeast ${distance} ft.`);
+  } else if (differenceX == 0 && differenceY > 0) {
+    var distance = differenceY * 5;
+    quickPrint(`${enemy.name} moved south ${distance} ft.`);
+  } else if (differenceX < 0 && differenceY > 0) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved southwest ${distance} ft.`);
+  } else if (differenceX < 0 && differenceY == 0) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved west ${distance} ft.`);
+  } else if (differenceX < 0 && differenceY < 1) {
+    var distance = differenceX * 5;
+    quickPrint(`${enemy.name} moved northwest ${distance} ft.`);
   }
-  var playerPosition = getValue("position");
-  var relationship = calculateRelationship(enemyPosition, playerPosition);
-  var enemyDirection = relationship[0];
-  var enemyDistance = relationship[1];
-  quickPrint(
-    `${enemy.name} moved ${distanceTraveled} ft. to be ${enemyDistance} ft. from you, to your ${enemyDirection}.`
-  );
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  var locations = playerData["locations"];
-  var primaryLocation = getValue("location").split(".")[0];
-  var secondaryLocation = getValue("location").split(".")[1];
-  locations[primaryLocation][secondaryLocation]["enemies"][i]["position"] =
-    enemyPosition;
-  localStorage.setItem("playerData", JSON.stringify(playerData));
-  if (enemyDistance <= enemyRange) {
-    var playerDefense = getRandomInt(getValue("armor"));
-    var enemyAttack = diceRoll(enemy.attack);
-    var rolls = enemyAttack[0];
-    var attackDescription = enemy.attackDescription;
-    quickPrint(attackDescription);
-    for (let i = 0; i < rolls.length; i++) {
-      quickPrint(`${enemy.name} rolled a ${rolls[i]}.`);
-    }
-    if (playerDefense > 0) {
-      quickPrint(
-        `You resisted ${enemy.name}'s attack, reducing the damage by ${playerDefense}.`
-      );
-    }
-    var playerDamage = Math.max(enemyAttack[1] - playerDefense, 0);
-    var tempHealth = getValue("tempHealth");
-    if (tempHealth > 0) {
-      var difference = playerDamage - tempHealth;
-      if (difference > 0) {
-        playerDamage = difference;
-        tempHealth = 0;
-      } else {
-        tempHealth = tempHealth - playerDamage;
-        playerDamage = 0;
-      }
-      changeValue("tempHealth", tempHealth);
-    }
-    calculateValue("currentHealth", "subtract", playerDamage);
-    quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-  } else {
-    quickPrint("You are still out of range of the enemy's attack.");
-  }
+  return enemies;
 }
 
-function checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY) {
+function calculateTargetCells(playerX, playerY, targetDistance) {
+  var targetCells = [];
+  for (let i = 0; i < targetDistance; i++) {
+    for (let j = 0; j < targetDistance; j++) {
+      var cell = [playerX - i, playerY - j];
+      targetCells.push(cell);
+    }
+  }
+  return targetCells;
+}
+
+function moveTowardsTarget(target, enemies) {
+  var budget = 4; // enemies can move a maximum of 4 cells per turn, with diagonal movement costing 1.5 cells
+  var enemyX = enemies[0].position[0];
+  var enemyY = enemies[0].position[1];
+  var targetX = target[0];
+  var targetY = target[1];
+  var distance = Math.sqrt((targetX - enemyX) ** 2 + (targetY - enemyY) ** 2);
+  distance = Math.floor(distance);
+  var differenceX = targetX - enemyX;
+  var differenceY = targetY - enemyY;
+  var hasMoved = true;
+  while (budget > 0 && hasMoved == true) {
+    var originalX = enemyX;
+    var originalY = enemyY;
+    hasMoved = false;
+    if (differenceX > 0 && differenceY < 1) {
+      enemyX = enemyX + 1;
+      differenceX = differenceX - 1;
+      enemyY = enemyY - 1;
+      differenceY = differenceY + 1;
+      budget = budget - 1.5;
+      hasMoved = true;
+    } else if (differenceX > 0 && differenceY == 0) {
+      enemyX = enemyX + 1;
+      differenceX = differenceX - 1;
+      budget = budget - 1;
+      hasMoved = true;
+    } else if (differenceX > 0 && differenceY > 0) {
+      enemyX = enemyX + 1;
+      differenceX = differenceX - 1;
+      enemyY = enemyY + 1;
+      differenceY = differenceY - 1;
+      budget = budget - 1.5;
+      hasMoved = true;
+    } else if (differenceX == 0 && differenceY > 0) {
+      enemyY = enemyY + 1;
+      differenceY = differenceY - 1;
+      budget = budget - 1;
+      hasMoved = true;
+    } else if (differenceX < 0 && differenceY > 0) {
+      enemyX = enemyX - 1;
+      differenceX = differenceX + 1;
+      enemyY = enemyY + 1;
+      differenceY = differenceY - 1;
+      budget = budget - 1.5;
+      hasMoved = true;
+    } else if (differenceX < 0 && differenceY == 0) {
+      enemyX = enemyX - 1;
+      differenceX = differenceX + 1;
+      budget = budget - 1;
+      hasMoved = true;
+    } else if (differenceX < 0 && differenceY < 1) {
+      enemyX = enemyX - 1;
+      differenceX = differenceX + 1;
+      enemyY = enemyY - 1;
+      differenceY = differenceY + 1;
+      budget = budget - 1.5;
+      hasMoved = true;
+    }
+    if (checkBounds(enemies, enemyX, enemyY) == true) {
+      enemyX = originalX;
+      enemyY = originalY;
+      hasMoved = false;
+    }
+  }
+  return [distance, [enemyX, enemyY]];
+}
+
+function checkBounds(enemies, enemyX, enemyY) {
   var location = getValue("location");
   location = getValue(location, true);
   var locationWidth = location.width;
@@ -709,23 +730,18 @@ function checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY) {
   var locationHeight = location.height;
   locationHeight = Math.floor(locationHeight);
   verticalTiles = locationHeight / 5;
-  if (enemyX == 0) {
-    enemyX = 1;
-  } else if (enemyX > horizontalTiles) {
-    enemyX = horizontalTiles;
+  var outOfBounds = false;
+  if (enemyX < 0 || enemyX > horizontalTiles) {
+    outOfBounds = true;
+  } else if (enemyY < 0 || enemyY > verticalTiles) {
+    outOfBounds = true;
+  } else if (
+    findEnemiesInCell([enemyX, enemyY], enemies) == true ||
+    findPlayerInCell([enemyX, enemyY]) == true
+  ) {
+    outOfBounds = true;
   }
-  if (enemyY == 0) {
-    enemyY = 1;
-  } else if (enemyY > verticalTiles) {
-    enemyY = verticalTiles;
-  }
-  var enemyIntersect = findEnemiesInCell([enemyX, enemyY], enemies);
-  var playerIntersect = findPlayerInCell([enemyX, enemyY]);
-  if (enemyIntersect || playerIntersect) {
-    enemyX = originalEnemyX;
-    enemyY = originalEnemyY;
-  }
-  return [enemyX, enemyY];
+  return outOfBounds;
 }
 
 function handleCombatMovement(direction, magnitude) {

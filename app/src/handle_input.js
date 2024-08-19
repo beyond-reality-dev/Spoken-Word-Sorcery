@@ -1046,6 +1046,7 @@ function handleMovement(direction) {
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
     if (currentLocation.hasOwnProperty("encounter")) {
+      console.log(currentLocation.encountered);
       if (currentLocation.encountered == false) {
         eval(currentLocation.encounter);
       }
@@ -1134,6 +1135,7 @@ function handleMovement(direction) {
     quickPrint(newLocation.description);
     changeValue(`${newLocation.id}.isVisited`, true, "locations");
     if (newLocation.hasOwnProperty("encounter")) {
+      console.log(currentLocation.encountered);
       if (newLocation.encountered == false) {
         eval(newLocation.encounter);
       }
