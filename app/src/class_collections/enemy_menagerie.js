@@ -106,7 +106,24 @@ class RebelGrunt extends MeleeEnemy {
   }
 }
 
-class RebelCaptain extends Enemy {
+class RebelSpearman extends MeleeEnemy {
+  constructor(name, position, items = [new catalog.Spear()]) {
+    super(
+      name,
+      position,
+      "The rebel lunges with his spear!",
+      50,
+      0,
+      "1d8",
+      10,
+      5,
+      5,
+      items
+    );
+  }
+}
+
+class RebelCaptain extends MeleeEnemy {
   constructor(name, position, items = [new catalog.LongSword()]) {
     super(
       name,
@@ -207,24 +224,6 @@ class RebelSlinger extends RangedEnemy {
       "1d4",
       30,
       10,
-      5,
-      10,
-      items
-    );
-  }
-}
-
-class RebelSpearman extends RangedEnemy {
-  constructor(name, position, items = [new catalog.Spear()]) {
-    super(
-      name,
-      position,
-      "The rebel throws his spear!",
-      50,
-      0,
-      "1d8",
-      10,
-      5,
       5,
       10,
       items

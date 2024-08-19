@@ -719,20 +719,9 @@ function checkBounds(enemies, originalEnemyX, originalEnemyY, enemyX, enemyY) {
   } else if (enemyY > verticalTiles) {
     enemyY = verticalTiles;
   }
-  for (let i = 0; i < enemies.length; i++) {
-    var enemy = enemies[i];
-    var enemyPosition = enemy.position;
-    var otherEnemyX = enemyPosition[0];
-    var otherEnemyY = enemyPosition[1];
-    if (enemyX == otherEnemyX && enemyY == otherEnemyY) {
-      enemyX = originalEnemyX;
-      enemyY = originalEnemyY;
-    }
-  }
-  var playerPosition = getValue("position");
-  var playerX = playerPosition[0];
-  var playerY = playerPosition[1];
-  if (enemyX == playerX && enemyY == playerY) {
+  var enemyIntersect = findEnemiesInCell([enemyX, enemyY], enemies);
+  var playerIntersect = findPlayerInCell([enemyX, enemyY]);
+  if (enemyIntersect || playerIntersect) {
     enemyX = originalEnemyX;
     enemyY = originalEnemyY;
   }
@@ -1238,4 +1227,18 @@ function findEnemiesInCell(targetCell, enemies = null) {
   return enemiesInCell;
 }
 
-module.exports = { handleCombat, handleCombatMovement, findEnemiesInCell };
+function findPlayerInCell(targetCell) {
+  var playerInCell = false;
+  var position = getValue("position");
+  if (position == targetCell) {
+    playerInCell = true;
+  }
+  return playerInCell;
+}
+
+module.exports = {
+  handleCombat,
+  handleCombatMovement,
+  findEnemiesInCell,
+  findPlayerInCell,
+};

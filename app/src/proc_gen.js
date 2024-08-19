@@ -4,9 +4,12 @@ const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt } = require("./general");
 const { getValue } = require("./save_data");
-const { handleCombat, findEnemiesInCell } = require("./combat");
+const {
+  handleCombat,
+  findEnemiesInCell,
+  findPlayerInCell,
+} = require("./combat");
 const { handleMovement } = require("./handle_input");
-const { match } = require("assert");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -345,6 +348,15 @@ function generateRandomEncounter(tier, hostile = true) {
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
     enemies = enemies.concat(generatedEnemies);
+    for (let i = 0; i < enemies; i++) {
+      var enemy = enemies[i];
+      if (findEnemiesInCell(enemy.position, enemies) || findPlayerInCell(enemy.position)) {
+        enemies.splice(i, 1);
+        var generatedEnemy = generateEnemy(tier, 1);
+        enemies.push(generatedEnemy);
+        i = 0;
+      }
+    }
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
     handleCombat();
@@ -384,19 +396,22 @@ function generateEnemy(tier, quantity = 1) {
         if (enemyList[j].name == enemyName) {
           if (enemyName.split(" ").length > 1) {
             var end = enemyName.split(" ").length;
-            var increment = enemyName.split(" ")[end];
+            var increment = enemyName.split(" ")[end - 1];
+            console.log(increment);
             increment = parseInt(increment) + 1;
             if (isNaN(increment)) {
               increment = 2;
-            }
-            var newName = "";
-            for (let i = 0; i < end; i++) {
-              if (i == end) {
-                break;
+              enemyName = enemyName + " " + increment;
+            } else {
+              var newName = "";
+              for (let i = 0; i < end; i++) {
+                if (i == end - 1) {
+                  break;
+                }
+                newName = newName + " " + enemyName.split(" ")[i];
               }
-              newName = newName + " " + enemyName.split(" ")[i];
+              enemyName = newName + " " + increment;
             }
-            enemyName = newName + " " + increment;
           } else {
             enemyName = enemyName + " 1";
           }
@@ -487,8 +502,34 @@ function generateEnemy(tier, quantity = 1) {
         var enemyTypes = enemies[`tier3${faction}Enemies`];
         var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
         var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
-        var enemyPosition = generateEnemyPosition(enemies);
-        var enemy = new enemies[enemyType](enemyName, enemyPosition);
+        for (let j = 0; j < enemyList.length; j++) {
+          if (enemyList[j].name == enemyName) {
+            if (enemyName.split(" ").length > 1) {
+              var end = enemyName.split(" ").length;
+              var increment = enemyName.split(" ")[end - 1];
+              console.log(increment);
+              increment = parseInt(increment) + 1;
+              if (isNaN(increment)) {
+                increment = 2;
+                enemyName = enemyName + " " + increment;
+              } else {
+                var newName = "";
+                for (let i = 0; i < end; i++) {
+                  if (i == end - 1) {
+                    break;
+                  }
+                  newName = newName + " " + enemyName.split(" ")[i];
+                }
+                enemyName = newName + " " + increment;
+              }
+            } else {
+              enemyName = enemyName + " 1";
+            }
+            j = 0;
+          }
+        }
+        var enemyPosition = generateEnemyPosition(enemyList);
+        var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
       }
       enemyList.push(enemy);
     }
@@ -509,13 +550,15 @@ function generateEnemyPosition(enemies) {
   var height = location.height;
   height = Math.floor(height);
   var verticalTiles = height / 5;
-  var playerPosition = getValue("position");
-  var playerX = playerPosition[0];
-  var playerY = playerPosition[1];
   var x = getRandomInt(horizontalTiles) + 1;
   var y = getRandomInt(verticalTiles) + 1;
   for (let i = 0; i < enemies.length; i++) {
-    if (findEnemiesInCell([x, y], enemies) || (x == playerX && y == playerY)) {
+    console.log([x, y]);
+    console.log("Enemies are in cell:");
+    console.log(findEnemiesInCell([x, y], enemies));
+    console.log("Player in cell:");
+    console.log(findPlayerInCell([x, y]));
+    if (findEnemiesInCell([x, y], enemies) || findPlayerInCell([x, y])) {
       x = getRandomInt(horizontalTiles) + 1;
       y = getRandomInt(verticalTiles) + 1;
       i = 0;
