@@ -29,24 +29,24 @@ async function handleCombat() {
       var enemy = eval(enemies[i]);
       var enemySpeed = enemy.speed;
       if (playerSpeed >= enemySpeed && turnPlayed == false) {
-        var newEnemies = await handlePlayerTurn(enemies, enemies.length);
+        var enemies = await handlePlayerTurn(enemies, enemies.length);
         turnPlayed = true;
         if (enemies.length > 0) {
-          newEnemies = await handleEnemyTurn(enemy, newEnemies, i);
+          enemies = await handleEnemyTurn(enemy, enemies, i);
         }
       } else {
-        newEnemies = await handleEnemyTurn(enemy, enemies, i);
+        enemies = await handleEnemyTurn(enemy, enemies, i);
       }
     }
     if (turnPlayed == false) {
-      newEnemies = await handlePlayerTurn(enemy, newEnemies.length);
+      enemies = await handlePlayerTurn(enemy, enemies.length);
       turnPlayed = true;
     }
-    if (newEnemies.length == 0) {
+    if (enemies.length == 0) {
       enemiesDefeated = true;
     } else {
-      for (let i = 0; i < newEnemies.length; i++) {
-        if (newEnemies[i].isObstacle == false) {
+      for (let i = 0; i < enemies.length; i++) {
+        if (enemies[i].isObstacle == false) {
           enemiesDefeated = false;
           break;
         } else {
@@ -54,7 +54,13 @@ async function handleCombat() {
         }
       }
     }
-    enemies = newEnemies;
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var locations = playerData["locations"];
+    var location = getValue("location");
+    var primaryLocation = location.split(".")[0];
+    var secondaryLocation = location.split(".")[1];
+    locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+    localStorage.setItem("playerData", JSON.stringify(playerData));
   }
   playerHealth = getValue("currentHealth");
   if (playerHealth <= 0) {
@@ -610,7 +616,7 @@ function moveEnemyTowardsPlayer(
   distanceTraveled = Math.floor(distanceTraveled);
   if (distanceTraveled != 0 && direction != "none") {
     quickPrint(
-      `The enemy moved ${distanceTraveled} feet to the ${direction}, and is now ${playerDistance} feet away to the 
+      `${enemies[index].name} moved ${distanceTraveled} feet to the ${direction}, and is now ${playerDistance} feet away to the 
       ${playerDirection}.`
     );
   }

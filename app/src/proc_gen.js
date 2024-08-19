@@ -2,14 +2,14 @@ const items = require("./class_collections/item_catalog");
 const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
-const { getRandomInt } = require("./general");
-const { getValue } = require("./save_data");
+const { getRandomInt, printLines } = require("./general");
+const { getValue, calculateValue } = require("./save_data");
 const {
   handleCombat,
   findEnemiesInCell,
   findPlayerInCell,
 } = require("./combat");
-const { handleMovement } = require("./handle_input");
+const { handleMovement, closedInput } = require("./handle_input");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -355,10 +355,12 @@ function generateRandomEncounter(tier, hostile = true) {
     }
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
+    var faction = generatedEnemies[0];
+    var generatedEnemies = generatedEnemies[1];
     enemies = enemies.concat(generatedEnemies);
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
-    handleCombat();
+    handleEncounter(faction, tier);
   } else {
     var encounterTypes = ["shop"];
     var encounterType = encounterTypes[getRandomInt(encounterTypes.length)];
@@ -392,33 +394,8 @@ function generateEnemy(tier, quantity = 1) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
       var enemyName = faction;
-      for (let j = 0; j < enemyList.length; j++) {
-        if (enemyList[j].name == enemyName) {
-          if (enemyName.split(" ").length > 1) {
-            var end = enemyName.split(" ").length;
-            var increment = enemyName.split(" ")[end - 1];
-            increment = parseInt(increment) + 1;
-            if (isNaN(increment)) {
-              increment = 2;
-              enemyName = enemyName + " " + increment;
-            } else {
-              var newName = "";
-              for (let i = 0; i < end; i++) {
-                if (i == end - 1) {
-                  break;
-                }
-                newName = newName + " " + enemyName.split(" ")[i];
-              }
-              enemyName = newName + " " + increment;
-            }
-          } else {
-            enemyName = enemyName + " 1";
-          }
-          j = 0;
-        }
-      }
       var enemyPosition = generateEnemyPosition(enemyList);
-      var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
+      var enemy = new enemies[enemyType](enemyName, enemyPosition);
       enemyList.push(enemy);
     } else {
       var coinFlip = Math.random();
@@ -501,38 +478,18 @@ function generateEnemy(tier, quantity = 1) {
         var enemyTypes = enemies[`tier3${faction}Enemies`];
         var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
         var enemyName = faction;
-        for (let j = 0; j < enemyList.length; j++) {
-          if (enemyList[j].name == enemyName) {
-            if (enemyName.split(" ").length > 1) {
-              var end = enemyName.split(" ").length;
-              var increment = enemyName.split(" ")[end - 1];
-              increment = parseInt(increment) + 1;
-              if (isNaN(increment)) {
-                increment = 2;
-                enemyName = enemyName + " " + increment;
-              } else {
-                var newName = "";
-                for (let i = 0; i < end; i++) {
-                  if (i == end - 1) {
-                    break;
-                  }
-                  newName = newName + " " + enemyName.split(" ")[i];
-                }
-                enemyName = newName + " " + increment;
-              }
-            } else {
-              enemyName = enemyName + " 1";
-            }
-            j = 0;
-          }
-        }
         var enemyPosition = generateEnemyPosition(enemyList);
-        var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
+        var enemy = new enemies[enemyType](enemyName, enemyPosition);
       }
       enemyList.push(enemy);
     }
   }
-  return enemyList;
+  if (enemyList.length > 1) {
+    for (let i = 0; i < enemyList.length; i++) {
+      enemyList[i].name = `${enemyList[i].name} ${i + 1}`;
+    }
+  }
+  return [faction, enemyList];
 }
 
 function generateEnemyPosition(enemies) {
@@ -559,6 +516,134 @@ function generateEnemyPosition(enemies) {
     matchingEnemy = findEnemiesInCell([x, y], enemies);
   }
   return [x, y];
+}
+
+async function handleEncounter(faction, tier) {
+  if (faction == "Bandit") {
+    var extortion = tier * getRandomInt(100) + 100;
+    await printLines("app/src/class_collections/encounters/bandit/1.txt", {
+      extortion: extortion,
+    });
+    var response = await closedInput([
+      "1",
+      "pay",
+      "pay the bandits",
+      "2",
+      "refuse",
+      "refuse to pay",
+      "fight",
+      "fight the bandits",
+    ]);
+    if (response == "1" || response == "pay" || response == "pay the bandits") {
+      var gold = getValue("gold");
+      if (gold < extortion) {
+        await printLines("app/src/class_collections/encounters/bandit/2.txt");
+        handleCombat();
+      } else {
+        await printLines("app/src/class_collections/encounters/bandit/3.txt", {
+          extortion: extortion,
+        });
+        calculateValue("gold", "subtract", extortion);
+        var location = getValue("location");
+        var primaryLocation = location.split(".")[0];
+        var secondaryLocation = location.split(".")[1];
+        var playerData = JSON.parse(localStorage.getItem("playerData"));
+        var locations = playerData.locations;
+        var location = locations[primaryLocation][secondaryLocation];
+        location.enemies = [];
+      }
+    }
+  } else if (faction == "Rebel") {
+    var rebelName = generateName("either fullName");
+    var cellName = generateName("town") + " Militia";
+    var extortion = tier * getRandomInt(50) + 50;
+    await printLines("app/src/class_collections/encounters/rebel/1.txt", {
+      rebelName: rebelName,
+      cellName: cellName
+    });
+    var response = await closedInput(
+      [
+        "1",
+        "comply",
+        "comply with their demands",
+        "comply with the rebels",
+        "2",
+        "refuse",
+        "refuse to comply",
+        "fight",
+        "fight the rebels",
+      ],
+      "How do you respond?"
+    );
+    if (
+      response == "1" ||
+      response == "comply" ||
+      response == "comply with their demands" ||
+      response == "comply with the rebels"
+    ) {
+      var playerData = JSON.parse(localStorage.getItem("playerData"));
+      var inventory = playerData.inventory;
+      var hasRing = false;
+      for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i].name == "Imperial Signet Ring") {
+          hasRing = true;
+        }
+      }
+      if (hasRing == true) {
+        var rebelName2 = generateName("either forename");
+        await printLines("app/src/class_collections/encounters/rebel/2.txt", {
+          rebelName2: rebelName2,
+          rebelName: rebelName,
+          cellName: cellName,
+        });
+        handleCombat();
+      } else {
+        var rebelName2 = generateName("either forename");
+        await printLines("app/src/class_collections/encounters/rebel/3.txt", {
+          extortion: extortion,
+          rebelName2: rebelName2,
+        });
+        response = await closedInput(
+          [
+            "1",
+            "pay",
+            "pay the rebels",
+            "2",
+            "refuse",
+            "refuse to pay",
+            "fight",
+            "fight the rebels",
+          ],
+          "How do you respond?"
+        );
+        if (
+          response == "1" ||
+          response == "pay" ||
+          response == "pay the rebels"
+        ) {
+          var gold = getValue("gold");
+          if (gold < extortion) {
+            await printLines("app/src/class_collections/encounters/rebel/4.txt");
+            handleCombat();
+          } else {
+            await printLines("app/src/class_collections/encounters/rebel/5.txt", {
+              rebelName: rebelName,
+              extortion: extortion,
+            });
+            calculateValue("gold", "subtract", extortion);
+            var location = getValue("location");
+            var primaryLocation = location.split(".")[0];
+            var secondaryLocation = location.split(".")[1];
+            var playerData = JSON.parse(localStorage.getItem("playerData"));
+            var locations = playerData.locations;
+            var location = locations[primaryLocation][secondaryLocation];
+            location.enemies = [];
+          }
+        } else if (
+      }
+    }
+  } else if (faction == "Loyalist") {
+  }
 }
 
 module.exports = { generateName, generateShop, generateRandomEncounter };
