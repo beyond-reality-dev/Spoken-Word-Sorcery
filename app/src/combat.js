@@ -474,6 +474,8 @@ async function handleEnemyTurn(enemy, enemies, i) {
   locationHeight = Math.floor(locationHeight);
   verticalTiles = locationHeight / 5;
   var enemyRange = enemy.range;
+  console.log(playerDistance);
+  console.log(enemyRange);
   if (playerDistance <= enemyRange) {
     var playerDefense = getRandomInt(getValue("armor"));
     var enemyAttack = diceRoll(enemy.attack);
@@ -501,6 +503,7 @@ async function handleEnemyTurn(enemy, enemies, i) {
     }
     calculateValue("currentHealth", "subtract", playerDamage);
     quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
+    console.log(getValue("currentHealth"));
   } else if (playerDistance > enemyRange) {
     tryToMoveAndAttack(
       playerX,
@@ -1204,10 +1207,14 @@ function findDirection(playerDirection, direction) {
   }
 }
 
-function findEnemiesInCell(targetCell) {
+function findEnemiesInCell(targetCell, enemies=null) {
   var location = getValue("location");
   location = getValue(location, true);
-  var enemies = location.enemies;
+  if (enemies == null) {
+    enemies = location.enemies;
+  } else {
+    enemies = enemies;
+  }
   var enemiesInCell = false;
   for (let i = 0; i < enemies.length; i++) {
     var enemy = enemies[i];
@@ -1219,4 +1226,4 @@ function findEnemiesInCell(targetCell) {
   return enemiesInCell;
 }
 
-module.exports = { handleCombat, handleCombatMovement };
+module.exports = { handleCombat, handleCombatMovement, findEnemiesInCell };

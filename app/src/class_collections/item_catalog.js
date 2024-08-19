@@ -663,19 +663,19 @@ class SuperSpeedPotion extends Consumable {
 
 class Arrow extends Consumable {
   constructor(quantity = 1) {
-    super("Arrow", "A simple arrow", "consumable", 1, 0, 0, 0, 1, quantity);
+    super("Arrow", "A simple arrow", "consumable", 2, 0, 0, 0, 1, quantity);
   }
 }
 
 class Bolt extends Consumable {
   constructor(quantity = 1) {
-    super("Bolt", "A simple bolt", "consumable", 1, 0, 0, 0, 1, quantity);
+    super("Bolt", "A simple bolt", "consumable", 3, 0, 0, 0, 1, quantity);
   }
 }
 
 class Stone extends Consumable {
   constructor(quantity = 1) {
-    super("Stone", "A simple stone", "consumable", 0, 0, 0, 0, 1, quantity);
+    super("Stone", "A simple stone", "consumable", 1, 0, 0, 0, 1, quantity);
   }
 }
 

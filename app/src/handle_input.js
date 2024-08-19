@@ -14,11 +14,7 @@ const {
   updateUI,
   updateEquipment,
 } = require("./save_data");
-const {
-  toTitleCase,
-  quickPrint,
-  printLines,
-} = require("./general");
+const { toTitleCase, quickPrint, printLines } = require("./general");
 const { handleCombat, handleCombatMovement } = require("./combat");
 const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
@@ -1200,10 +1196,22 @@ async function handleShop(location) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var gold = playerData["gold"];
     if (gold < price) {
-      if (item.name.charAt(0).match(/[aeiou]/i)) {
-        quickPrint(`You do not have enough money to buy an ${item.name}.`);
+      if (item.hasOwnProperty("saleName")) {
+        itemName = item.saleName.toLowerCase();
+        if (item.saleName.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(
+            `You do not have enough money to buy an ${itemName}.`
+          );
+        } else {
+          quickPrint(`You do not have enough money to buy a ${itemName}.`);
+        }
       } else {
-        quickPrint(`You do not have enough money to buy a ${item.name}.`);
+        itemName = item.name.toLowerCase();
+        if (item.name.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You do not have enough money to buy an ${itemName}.`);
+        } else {
+          quickPrint(`You do not have enough money to buy a ${itemName}.`);
+        }
       }
     } else {
       calculateValue("gold", "subtract", price);
@@ -1220,10 +1228,11 @@ async function handleShop(location) {
       locations[primaryLocation][secondaryLocation]["shopItems"] =
         location.shopItems;
       localStorage.setItem("playerData", JSON.stringify(playerData));
+      var itemName = item.name.toLowerCase();
       if (item.name.charAt(0).match(/[aeiou]/i)) {
-        quickPrint(`You bought an ${item.name}.`);
+        quickPrint(`You bought an ${itemName}.`);
       } else {
-        quickPrint(`You bought a ${item.name}.`);
+        quickPrint(`You bought a ${itemName}.`);
       }
     }
     handleShop(location);
@@ -1292,14 +1301,26 @@ async function handleShop(location) {
           location.shopItems;
         playerData["inventory"] = items;
         localStorage.setItem("playerData", JSON.stringify(playerData));
+        var itemName = itemEntity.name.toLowerCase();
         if (itemEntity.name.charAt(0).match(/[aeiou]/i)) {
-          quickPrint(`You sold an ${itemEntity.name}.`);
+          quickPrint(`You sold an ${itemName}.`);
         } else {
-          quickPrint(`You sold a ${itemEntity.name}.`);
+          quickPrint(`You sold a ${itemName}.`);
         }
         break;
+      } else {
+        var itemName = itemEntity.name.toLowerCase();
+        if (item.charAt(0).match(/[aeiou]/i)) {
+          quickPrint(`You do not have an ${itemName}.`);
+        } else {
+          quickPrint(`You do not have a ${itemName}.`);
+        }
       }
     }
+    if (items.length == 0) {
+      quickPrint("You have nothing left to sell.");
+    }
+    console.log(items);
     handleShop(location);
   } else if (response == "3" || response == "leave") {
     quickPrint("Thank you for your business.");

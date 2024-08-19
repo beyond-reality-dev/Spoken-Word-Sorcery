@@ -4,8 +4,9 @@ const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt } = require("./general");
 const { getValue } = require("./save_data");
-const { handleCombat } = require("./combat");
+const { handleCombat, findEnemiesInCell } = require("./combat");
 const { handleMovement } = require("./handle_input");
+const { match } = require("assert");
 
 function generateName(type, quantity = 1) {
   if (type.split(" ").length > 1) {
@@ -300,6 +301,7 @@ function generateScroll() {
     saleDescription: `A scroll that grants the ability to cast a spell. Of course, you cannot know what spell it contains until you read it.`,
     spell: scrollType,
     goldValue: 100,
+    quantity: 1,
     type: "scroll",
   };
   return scroll;
@@ -378,12 +380,26 @@ function generateEnemy(tier, quantity = 1) {
     var enemyFactions = enemies["factions"];
     console.log(enemyFactions);
     var faction = enemyFactions[getRandomInt(enemyFactions.length)];
+    console.log(faction);
     if (tier < 4) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
       var enemyName = enemyType.match(/[A-Z][a-z]+/g).join(" ");
+      for (let j = 0; j < enemyList.length; j++) {
+        if (enemyList[j].name == enemyName) {
+          if (enemyName.split(" ").length > 1) {
+            var increment = enemyName.split(" ")[1];
+            console.log(increment);
+            increment = parseInt(increment) + 1;
+            enemyName = enemyName.split(" ")[0] + " " + increment;
+          } else {
+            enemyName = enemyName + " 1";
+          }
+          j = 0;
+        }
+      }
       console.log(enemyType);
-      var enemyPosition = generateEnemyPosition(enemies);
+      var enemyPosition = generateEnemyPosition(enemyList);
       console.log(eval(`new enemies.${enemyType}`));
       var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
       console.log(enemy);
@@ -494,15 +510,12 @@ function generateEnemyPosition(enemies) {
   var playerPosition = getValue("position");
   var playerX = playerPosition[0];
   var playerY = playerPosition[1];
-  var x = getRandomInt(horizontalTiles);
-  var y = getRandomInt(verticalTiles + 1);
+  var x = getRandomInt(horizontalTiles) + 1;
+  var y = getRandomInt(verticalTiles) + 1;
   for (let i = 0; i < enemies.length; i++) {
-    var enemyPosition = enemies[i].position;
-    var enemyX = enemyPosition[0];
-    var enemyY = enemyPosition[1];
-    if ((x == enemyX && y == enemyY) || (x == playerX && y == playerY)) {
-      x = getRandomInt(horizontalTiles);
-      y = getRandomInt(verticalTiles + 1);
+    if (findEnemiesInCell([x, y], enemies) || (x == playerX && y == playerY)) {
+      x = getRandomInt(horizontalTiles) + 1;
+      y = getRandomInt(verticalTiles) + 1;
       i = 0;
     }
   }
