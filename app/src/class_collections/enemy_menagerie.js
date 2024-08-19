@@ -89,7 +89,7 @@ class RangedEnemy extends Enemy {
   }
 }
 
-class Rebel extends MeleeEnemy {
+class RebelGrunt extends MeleeEnemy {
   constructor(name, position, items = [new catalog.ShortSword()]) {
     super(
       name,
@@ -251,7 +251,7 @@ class RebelMage extends RangedEnemy {
   }
 }
 
-class Bandit extends MeleeEnemy {
+class BanditGrunt extends MeleeEnemy {
   constructor(name, position, items = [new catalog.ShortSword()]) {
     super(
       name,
@@ -376,14 +376,14 @@ const factions = [
 ];
 
 const tier1RebelEnemies = [
-  "Rebel",
+  "RebelGrunt",
   "RebelSpearman",
   "RebelSlinger",
   "RebelShortBowman",
 ];
 
 const tier2RebelEnemies = [
-  "Rebel",
+  "RebelGrunt",
   "RebelSpearman",
   "RebelSlinger",
   "RebelShortBowman",
@@ -393,7 +393,7 @@ const tier2RebelEnemies = [
 ];
 
 const tier3RebelEnemies = [
-  "Rebel",
+  "RebelGrunt",
   "RebelSpearman",
   "RebelSlinger",
   "RebelShortBowman",
@@ -405,19 +405,19 @@ const tier3RebelEnemies = [
 ];
 
 const tier1BanditEnemies = [
-  "Bandit",
+  "BanditGrunt",
   "BanditSlinger",
 ];
 
 const tier2BanditEnemies = [
-  "Bandit",
+  "BanditGrunt",
   "BanditSlinger",
   "BanditCaptain",
   "BanditShortBowman",
 ];
 
 const tier3BanditEnemies = [
-  "Bandit",
+  "BanditGrunt",
   "BanditSlinger",
   "BanditCaptain",
   "BanditShortBowman",
@@ -428,7 +428,7 @@ module.exports = {
   Enemy,
   MeleeEnemy,
   RangedEnemy,
-  Rebel,
+  RebelGrunt,
   RebelCaptain,
   RebelShortBowman,
   RebelLongBowman,
@@ -437,7 +437,7 @@ module.exports = {
   RebelSlinger,
   RebelSpearman,
   RebelMage,
-  Bandit,
+  BanditGrunt,
   BanditCaptain,
   BanditShortBowman,
   BanditLightCrossbowman,

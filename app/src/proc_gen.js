@@ -336,17 +336,14 @@ function generateRandomEncounter(tier, hostile = true) {
     var primaryLocation = locationName.split(".")[0];
     var secondaryLocation = locationName.split(".")[1];
     var location = locations[primaryLocation][secondaryLocation];
-    console.log(location);
     if (location.hasOwnProperty("enemies")) {
       var enemies = location.enemies;
     } else {
       location.enemies = [];
       var enemies = location.enemies;
     }
-    console.log(enemies);
     var numEnemies = tier * getRandomInt(5) + 1;
     var generatedEnemies = generateEnemy(tier, numEnemies);
-    console.log(generatedEnemies);
     enemies = enemies.concat(generatedEnemies);
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
     localStorage.setItem("playerData", JSON.stringify(playerData));
@@ -376,11 +373,9 @@ function generateRandomEncounter(tier, hostile = true) {
 
 function generateEnemy(tier, quantity = 1) {
   var enemyList = [];
+  var enemyFactions = enemies["factions"];
+  var faction = enemyFactions[getRandomInt(enemyFactions.length)];
   for (let i = 0; i < quantity; i++) {
-    var enemyFactions = enemies["factions"];
-    console.log(enemyFactions);
-    var faction = enemyFactions[getRandomInt(enemyFactions.length)];
-    console.log(faction);
     if (tier < 4) {
       var enemyTypes = enemies[`tier${tier}${faction}Enemies`];
       var enemyType = enemyTypes[getRandomInt(enemyTypes.length)];
@@ -388,21 +383,28 @@ function generateEnemy(tier, quantity = 1) {
       for (let j = 0; j < enemyList.length; j++) {
         if (enemyList[j].name == enemyName) {
           if (enemyName.split(" ").length > 1) {
-            var increment = enemyName.split(" ")[1];
-            console.log(increment);
+            var end = enemyName.split(" ").length;
+            var increment = enemyName.split(" ")[end];
             increment = parseInt(increment) + 1;
-            enemyName = enemyName.split(" ")[0] + " " + increment;
+            if (isNaN(increment)) {
+              increment = 2;
+            }
+            var newName = "";
+            for (let i = 0; i < end; i++) {
+              if (i == end) {
+                break;
+              }
+              newName = newName + " " + enemyName.split(" ")[i];
+            }
+            enemyName = newName + " " + increment;
           } else {
             enemyName = enemyName + " 1";
           }
           j = 0;
         }
       }
-      console.log(enemyType);
       var enemyPosition = generateEnemyPosition(enemyList);
-      console.log(eval(`new enemies.${enemyType}`));
       var enemy = eval(`new enemies.${enemyType}(enemyName, enemyPosition)`);
-      console.log(enemy);
       enemyList.push(enemy);
     } else {
       var coinFlip = Math.random();

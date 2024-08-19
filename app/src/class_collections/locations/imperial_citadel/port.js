@@ -17,8 +17,8 @@ class PortEntrance extends Room {
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel Captain", [2, 3]),
-      new enemies.Rebel("Rebel 1", [2, 2]),
-      new enemies.Rebel("Rebel 2", [2, 4]),
+      new enemies.RebelGrunt("Rebel 1", [2, 2]),
+      new enemies.RebelGrunt("Rebel 2", [2, 4]),
     ];
   }
 }

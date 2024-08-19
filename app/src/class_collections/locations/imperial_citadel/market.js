@@ -37,9 +37,9 @@ class Market extends Room {
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel Captain", [10, 11]),
-      new enemies.Rebel("Rebel 1", [8, 10]),
-      new enemies.Rebel("Rebel 2", [12, 7]),
-      new enemies.Rebel("Rebel 3", [9, 8]),
+      new enemies.RebelGrunt("Rebel 1", [8, 10]),
+      new enemies.RebelGrunt("Rebel 2", [12, 7]),
+      new enemies.RebelGrunt("Rebel 3", [9, 8]),
       new enemies.RebelShortBowman("Rebel Archer 1", [2, 4]),
       new enemies.RebelShortBowman("Rebel Archer 2", [3, 16]),
       new enemies.RebelShortBowman("Rebel Archer 3", [5, 8]),
@@ -67,10 +67,10 @@ class ImperialTreasuryExterior extends Room {
       south: "imperialMarket.citadelRoad",
     };
     this.enemies = [
-      new enemies.Rebel("Rebel 1", [3, 5]),
-      new enemies.Rebel("Rebel 2", [3, 6]),
-      new enemies.Rebel("Rebel 3", [3, 7]),
-      new enemies.Rebel("Rebel 4", [3, 8]),
+      new enemies.RebelGrunt("Rebel 1", [3, 5]),
+      new enemies.RebelGrunt("Rebel 2", [3, 6]),
+      new enemies.RebelGrunt("Rebel 3", [3, 7]),
+      new enemies.RebelGrunt("Rebel 4", [3, 8]),
     ];
     this.cutsene = "imperialTreasuryExterior";
     this.cutscenePlayed = false;
@@ -133,12 +133,12 @@ class MainGate extends Room {
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel Captain", [2, 3]),
-      new enemies.Rebel("Rebel 1", [1, 1]),
-      new enemies.Rebel("Rebel 2", [3, 1]),
-      new enemies.Rebel("Rebel 3", [1, 2]),
-      new enemies.Rebel("Rebel 4", [3, 2]),
-      new enemies.Rebel("Rebel 5", [1, 3]),
-      new enemies.Rebel("Rebel 6", [3, 3]),
+      new enemies.RebelGrunt("Rebel 1", [1, 1]),
+      new enemies.RebelGrunt("Rebel 2", [3, 1]),
+      new enemies.RebelGrunt("Rebel 3", [1, 2]),
+      new enemies.RebelGrunt("Rebel 4", [3, 2]),
+      new enemies.RebelGrunt("Rebel 5", [1, 3]),
+      new enemies.RebelGrunt("Rebel 6", [3, 3]),
     ];
     this.cutscene = "mainGate";
     this.cutscenePlayed = false;
@@ -380,8 +380,8 @@ class LargeChamber_01 extends Room {
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel 1", [5, 4]),
-      new enemies.Rebel("Rebel 2", [3, 2]),
-      new enemies.Rebel("Rebel 3", [4, 6]),
+      new enemies.RebelGrunt("Rebel 2", [3, 2]),
+      new enemies.RebelGrunt("Rebel 3", [4, 6]),
       new enemies.Crate([1, 2]),
       new enemies.Crate([3, 4]),
       new enemies.Crate([5, 6]),

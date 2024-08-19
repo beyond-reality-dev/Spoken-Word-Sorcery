@@ -30,7 +30,6 @@ function updateMap() {
     startingWidth + 1.5,
     startingHeight + 1.5
   );
-  console.log(getValue("isCombat"));
   if (getValue("isCombat") == true) {
     buildCombatMap(ctx, currentLocation, startingX, startingY);
     buildRooms(exits, startingWidth, startingHeight, startingX, startingY, 4);
@@ -61,7 +60,6 @@ function updateMap() {
 
 function buildCombatMap(ctx, currentLocation, startingX, startingY) {
   var enemies = currentLocation["enemies"];
-  console.log(enemies);
   for (let i = 0; i < enemies.length; i++) {
     var enemy = enemies[i];
     var enemyPosition = enemy["position"];

@@ -19,8 +19,8 @@ class Nexus extends Room {
     };
     this.enemies = [
       new enemies.RebelCaptain("Rebel Captain", "south"),
-      new enemies.Rebel("Rebel 1", "southwest"),
-      new enemies.Rebel("Rebel 2", "southwest"),
+      new enemies.RebelGrunt("Rebel 1", "southwest"),
+      new enemies.RebelGrunt("Rebel 2", "southwest"),
     ];
   }
 }

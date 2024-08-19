@@ -97,6 +97,16 @@ async function openInput(combatOverride = false) {
                 quickPrint("Invalid location.");
               }
             }
+          } else if (
+            clauses[i].substring(0, 3) == "end" ||
+            clauses[i].substring(0, 8) == "end turn" ||
+            clauses[i].substring(0, 6) == "finish" ||
+            clauses[i].substring(0, 11) == "finish turn"
+          ) {
+            if (getValue("isCombat") != true) {
+              quickPrint("You are not in combat.");
+            }
+            text = ["finish"];
           } else if (clauses[i].substring(0, 9) == "remember ") {
             var memory = clauses[i].substring(9);
             addEntity(memory, "memories");
@@ -1051,9 +1061,7 @@ function handleMovement(direction) {
   }
   try {
     var newLocation = currentLocation.exits[direction];
-    console.log(newLocation);
     newLocation = eval(getValue(newLocation, true));
-    console.log(newLocation);
     if (newLocation.hasOwnProperty("isLocked")) {
       if (newLocation.isLocked == true) {
         if (newLocation.hasOwnProperty("key")) {
@@ -1157,7 +1165,6 @@ async function handleShop(location) {
     ["1", "buy something", "buy", "2", "sell something", "sell", "leave"],
     '"Would you like to buy or sell something?"'
   );
-  console.log(response);
   if (response == "1" || response == "buy something" || response == "buy") {
     quickPrint('"Here is what I have for sale:"');
     for (let i = 0; i < inventory.length; i++) {
@@ -1199,9 +1206,7 @@ async function handleShop(location) {
       if (item.hasOwnProperty("saleName")) {
         itemName = item.saleName.toLowerCase();
         if (item.saleName.charAt(0).match(/[aeiou]/i)) {
-          quickPrint(
-            `You do not have enough money to buy an ${itemName}.`
-          );
+          quickPrint(`You do not have enough money to buy an ${itemName}.`);
         } else {
           quickPrint(`You do not have enough money to buy a ${itemName}.`);
         }
@@ -1320,7 +1325,6 @@ async function handleShop(location) {
     if (items.length == 0) {
       quickPrint("You have nothing left to sell.");
     }
-    console.log(items);
     handleShop(location);
   } else if (response == "3" || response == "leave") {
     quickPrint("Thank you for your business.");

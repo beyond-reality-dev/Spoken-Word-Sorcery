@@ -304,9 +304,9 @@ class MilitaryAnnex extends Room {
       south: "imperialAcademy.longPassage",
     };
     this.enemies = [
-      new enemies.Rebel("Rebel 1", [1, 3]),
-      new enemies.Rebel("Rebel 2", [2, 3]),
-      new enemies.Rebel("Rebel 3", [3, 3]),
+      new enemies.RebelGrunt("Rebel 1", [1, 3]),
+      new enemies.RebelGrunt("Rebel 2", [2, 3]),
+      new enemies.RebelGrunt("Rebel 3", [3, 3]),
     ];
     this.cutscene = "militaryAnnex";
     this.cutscenePlayed = false;

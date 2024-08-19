@@ -93,213 +93,123 @@ async function handlePlayerTurn() {
   quickPrint(
     `You are facing ${getValue(
       "direction"
-    )}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, use each of your weapons once, and cast a spell once. If you need help, type "help" for a list of commands.`
+    )}. What would you like to do? You may equip and unequip up to one time, change the direction you are facing one time, use each of your weapons once, and cast a spell once. When you are finished, type "finish." If you need help, type "help" for a list of commands.`
   );
-  var helpAsked = true;
-  while (helpAsked == true) {
+  var turnEnded = false;
+  while (turnEnded == false) {
     var choiceInput = await openInput();
     var choice = choiceInput[0];
-    if (choice != "help" && choice != "info" && choice != "instructions") {
-      helpAsked = false;
+    if (choiceInput[0] == "finish") {
+      turnEnded = true;
+      return enemies;
+    } else if (choiceInput[1] == "0" && choiceInput[2] == "none") {
+      continue;
+    } else if (choiceInput[1] == "none") {
+      continue;
     }
-  }
-  if (choiceInput[1] == "0" && choiceInput[2] == "none") {
-    return enemies;
-  } else if (choiceInput[1] == "none") {
-    return enemies;
-  }
-  if (choice == "weapon") {
-    for (let i = 0; i < enemies.length; i++) {
-      var matched = false;
-      var matchingEnemies = [];
-      enemy = enemies[i];
-      enemy.hitLastTurn = false;
-      var enemyPosition = enemy.position;
-      enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
-      enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
-      if (enemyDirection == getValue("direction")) {
-        matched = true;
-        matchingEnemies.push((enemy, enemyDistance));
+    if (choice == "weapon") {
+      for (let i = 0; i < enemies.length; i++) {
+        var matched = false;
+        var matchingEnemies = [];
+        enemy = enemies[i];
+        enemy.hitLastTurn = false;
+        var enemyPosition = enemy.position;
+        enemyDirection = calculateRelationship(
+          enemy.position,
+          playerPosition
+        )[0];
+        enemyDistance = calculateRelationship(
+          enemy.position,
+          playerPosition
+        )[1];
+        if (enemyDirection == getValue("direction")) {
+          matched = true;
+          matchingEnemies.push((enemy, enemyDistance));
+        }
+        if (matched == true && i == enemies.length - 1) {
+          var enemy = matchingEnemies[0];
+          for (let i = 0; i < matchingEnemies.length; i++) {
+            if (matchingEnemies[i][1] < enemy[1]) {
+              enemy = matchingEnemies[i];
+            }
+          }
+          break;
+        } else if (matched == false && i == enemies.length - 1) {
+          enemy = null;
+        }
       }
-      if (matched == true && i == enemies.length - 1) {
-        var enemy = matchingEnemies[0];
-        for (let i = 0; i < matchingEnemies.length; i++) {
-          if (matchingEnemies[i][1] < enemy[1]) {
-            enemy = matchingEnemies[i];
+      if (enemy != null) {
+        var weaponType = choiceInput[1];
+        var hand = choiceInput[2];
+        var equipment = getValue("equipment");
+        var weapon = equipment[hand];
+        if (weaponType == "melee") {
+          var playerAttack = weapon.attackValue;
+          var playerRange = 7.5;
+          if (enemyDistance <= playerRange) {
+            distance = "inRange";
+          } else if (enemyDistance < playerRange) {
+            distance = "outOfRange";
+          }
+        } else if (weaponType == "ranged") {
+          try {
+            var ammoCheck = checkAmmo(weapon, enemies);
+          } catch (error) {
+            quickPrint("You do not have any ammunition for that weapon.");
+            continue;
+          }
+          enemies = ammoCheck[0];
+          if (ammoCheck[1] == false) {
+            continue;
+          }
+          playerAttack = weapon.rangedAttackValue;
+          var minRange = weapon.minRange;
+          var effectiveRange = weapon.effectiveRange;
+          var maxRange = weapon.maxRange;
+          if (enemyDistance < minRange) {
+            distance = "tooClose";
+          } else if (enemyDistance > maxRange) {
+            distance = "outOfRange";
+          } else if (enemyDistance <= effectiveRange) {
+            distance = "inRange";
+          } else if (enemyDistance > effectiveRange) {
+            distance = "barelyInRange";
           }
         }
-        break;
-      } else if (matched == false && i == enemies.length - 1) {
-        enemy = null;
-      }
-    }
-    if (enemy != null) {
-      var weaponType = choiceInput[1];
-      var hand = choiceInput[2];
-      var equipment = getValue("equipment");
-      var weapon = equipment[hand];
-      if (weaponType == "melee") {
-        var playerAttack = weapon.attackValue;
-        var playerRange = 7.5;
-        if (enemyDistance <= playerRange) {
-          distance = "inRange";
-        } else if (enemyDistance < playerRange) {
-          distance = "outOfRange";
-        }
-      } else if (weaponType == "ranged") {
         try {
-          var ammoCheck = checkAmmo(weapon, enemies);
+          playerAttack = levelScaling(playerAttack);
         } catch (error) {
-          quickPrint("You do not have any ammunition for that weapon.");
-          return enemies;
+          quickPrint("You do not have a weapon equipped.");
+          continue;
         }
-        enemies = ammoCheck[0];
-        if (ammoCheck[1] == false) {
-          return enemies;
+        if (distance == "outOfRange") {
+          quickPrint("The enemy is out of range.");
+          continue;
+        } else if (distance == "tooClose") {
+          quickPrint("You are too close to the enemy, move back to attack.");
+          continue;
+        } else if (distance == "barelyInRange") {
+          quickPrint(
+            "The enemy is barely in range, the attack's power will be reduced."
+          );
+          var reducedRange = true;
+        } else if (distance == "inRange") {
+          quickPrint("The enemy is range.");
         }
-        playerAttack = weapon.rangedAttackValue;
-        var minRange = weapon.minRange;
-        var effectiveRange = weapon.effectiveRange;
-        var maxRange = weapon.maxRange;
-        if (enemyDistance < minRange) {
-          distance = "tooClose";
-        } else if (enemyDistance > maxRange) {
-          distance = "outOfRange";
-        } else if (enemyDistance <= effectiveRange) {
-          distance = "inRange";
-        } else if (enemyDistance > effectiveRange) {
-          distance = "barelyInRange";
+        quickPrint(`You roll ${playerAttack}.`);
+        var rolledDice = diceRoll(playerAttack);
+        var rolls = rolledDice[0];
+        for (let i = 0; i < rolls.length; i++) {
+          quickPrint(`You rolled a ${rolls[i]}.`);
         }
-      }
-      try {
-        playerAttack = levelScaling(playerAttack);
-      } catch (error) {
-        quickPrint("You do not have a weapon equipped.");
-        return enemies;
-      }
-      if (distance == "outOfRange") {
-        quickPrint("The enemy is out of range.");
-        return enemies;
-      } else if (distance == "tooClose") {
-        quickPrint("You are too close to the enemy, move back to attack.");
-        return enemies;
-      } else if (distance == "barelyInRange") {
-        quickPrint(
-          "The enemy is barely in range, the attack's power will be reduced."
-        );
-        var reducedRange = true;
-      } else if (distance == "inRange") {
-        quickPrint("The enemy is range.");
-      }
-      quickPrint(`You roll ${playerAttack}.`);
-      var rolledDice = diceRoll(playerAttack);
-      var rolls = rolledDice[0];
-      for (let i = 0; i < rolls.length; i++) {
-        quickPrint(`You rolled a ${rolls[i]}.`);
-      }
-      if (reducedRange == true) {
-        playerAttack = Math.floor(rolledDice[1] / 2);
-        quickPrint(`The attack's power is reduced to ${reducedPower}.`);
-      } else {
-        playerAttack = rolledDice[1];
-      }
-      var enemyDefense = getRandomInt(enemy.armor);
-      var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
-      enemy.health = Math.max(enemy.health - enemyDamage, 0);
-      if (enemyDefense > 0) {
-        quickPrint(
-          `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
-        );
-      }
-      quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
-      enemy.hitLastTurn = true;
-      var location = getValue("location");
-      var primaryLocation = location.split(".")[0];
-      var secondaryLocation = location.split(".")[1];
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
-      var locations = playerData["locations"];
-      locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
-      if (enemy.health <= 0) {
-        quickPrint(`You have defeated ${enemy.name}.`);
-        quickPrint(
-          `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold} gold pieces.`
-        );
-        calculateValue("experiencePoints", "add", enemy.xp);
-        calculateValue("gold", "add", enemy.gold);
-        for (var i = 0; i < enemy.items.length; i++) {
-          var item = enemy.items[i];
-          var itemName = item.name;
-          itemName = itemName.toLowerCase();
-          if (itemName.charAt(0).match(/[aeiou]/i)) {
-            quickPrint(`${enemy.name} dropped an ${itemName}.`);
-          } else {
-            quickPrint(`${enemy.name} dropped a ${itemName}.`);
-          }
-          locations[primaryLocation][secondaryLocation]["items"][itemName] =
-            item;
+        if (reducedRange == true) {
+          playerAttack = Math.floor(rolledDice[1] / 2);
+          quickPrint(`The attack's power is reduced to ${reducedPower}.`);
+        } else {
+          playerAttack = rolledDice[1];
         }
-        var index = enemies.indexOf(enemy);
-        enemies.splice(index, 1);
-        locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-        playerData["gold"] = getValue("gold");
-        playerData["experiencePoints"] = getValue("experiencePoints");
-        localStorage.setItem("playerData", JSON.stringify(playerData));
-      }
-    } else {
-      quickPrint("There is no enemy in that direction.");
-    }
-  } else if (choice == "spell") {
-    var spellPower = choiceInput[1];
-    var spellEffect = choiceInput[3];
-    var spellRange = choiceInput[4];
-    spellPower = levelScaling(spellPower);
-    quickPrint(`You roll ${spellPower}.`);
-    var rolledDice = diceRoll(spellPower);
-    var rolls = rolledDice[0];
-    for (let i = 0; i < rolls.length; i++) {
-      quickPrint(`You rolled a ${rolls[i]}.`);
-    }
-    spellPower = rolledDice[1];
-    var spellDirection = choiceInput[2];
-    for (let i = 0; i < enemies.length; i++) {
-      console.log(i);
-      var matched = false;
-      var matchingEnemies = [];
-      enemy = enemies[i];
-      enemy.hitLastTurn = false;
-      var enemyPosition = enemy.position;
-      enemyDirection = calculateRelationship(enemy.position, playerPosition)[0];
-      enemyDistance = calculateRelationship(enemy.position, playerPosition)[1];
-      if (enemyDirection == spellDirection) {
-        matched = true;
-        matchingEnemies.push((enemy, enemyDistance));
-      }
-      if (matched == true && i == enemies.length) {
-        var enemy = matchingEnemies[0];
-        for (let i = 0; i < matchingEnemies.length; i++) {
-          if (matchingEnemies[i][1] < enemy[1]) {
-            enemy = matchingEnemies[i];
-          }
-        }
-        break;
-      } else if (matched == false && i == enemies.length) {
-        enemy = null;
-      }
-    }
-    if (enemy != null) {
-      if (enemyDistance <= spellRange) {
-        distance = "inRange";
-        quickPrint("The enemy is in range.");
-      } else if (enemyDistance > spellRange) {
-        distance = "outOfRange";
-        quickPrint("The enemy is out of range.");
-        return enemies;
-      }
-      if (spellEffect == "damage") {
-        playerRange = spellRange;
-        enemyDefense = getRandomInt(enemy.armor);
-        enemyDamage = Math.max(spellPower - enemyDefense, 0);
+        var enemyDefense = getRandomInt(enemy.armor);
+        var enemyDamage = Math.max(playerAttack - enemyDefense, 0);
         enemy.health = Math.max(enemy.health - enemyDamage, 0);
         if (enemyDefense > 0) {
           quickPrint(
@@ -325,7 +235,7 @@ async function handlePlayerTurn() {
           for (var i = 0; i < enemy.items.length; i++) {
             var item = enemy.items[i];
             var itemName = item.name;
-            var itemName = itemName.toLowerCase();
+            itemName = itemName.toLowerCase();
             if (itemName.charAt(0).match(/[aeiou]/i)) {
               quickPrint(`${enemy.name} dropped an ${itemName}.`);
             } else {
@@ -336,58 +246,163 @@ async function handlePlayerTurn() {
           }
           var index = enemies.indexOf(enemy);
           enemies.splice(index, 1);
+          locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
           playerData["gold"] = getValue("gold");
           playerData["experiencePoints"] = getValue("experiencePoints");
-          locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
           localStorage.setItem("playerData", JSON.stringify(playerData));
         }
+      } else {
+        quickPrint("There is no enemy in that direction.");
       }
-    } else if (spellEffect == "healthIncrease") {
-      if (spellDirection != "Within") {
-        quickPrint("You cannot heal an enemy.");
-        return enemies;
+    } else if (choice == "spell") {
+      var spellPower = choiceInput[1];
+      var spellEffect = choiceInput[3];
+      var spellRange = choiceInput[4];
+      spellPower = levelScaling(spellPower);
+      quickPrint(`You roll ${spellPower}.`);
+      var rolledDice = diceRoll(spellPower);
+      var rolls = rolledDice[0];
+      for (let i = 0; i < rolls.length; i++) {
+        quickPrint(`You rolled a ${rolls[i]}.`);
       }
-      var healthIncrease = spellPower;
-      if (getValue("currentHealth") + healthIncrease > getValue("maxHealth")) {
-        healthIncrease = getValue("maxHealth") - getValue("currentHealth");
+      spellPower = rolledDice[1];
+      var spellDirection = choiceInput[2];
+      for (let i = 0; i < enemies.length; i++) {
+        var matched = false;
+        var matchingEnemies = [];
+        enemy = enemies[i];
+        enemy.hitLastTurn = false;
+        var enemyPosition = enemy.position;
+        enemyDirection = calculateRelationship(
+          enemy.position,
+          playerPosition
+        )[0];
+        enemyDistance = calculateRelationship(
+          enemy.position,
+          playerPosition
+        )[1];
+        if (enemyDirection == spellDirection) {
+          matched = true;
+          matchingEnemies.push((enemy, enemyDistance));
+        }
+        if (matched == true && i == enemies.length) {
+          var enemy = matchingEnemies[0];
+          for (let i = 0; i < matchingEnemies.length; i++) {
+            if (matchingEnemies[i][1] < enemy[1]) {
+              enemy = matchingEnemies[i];
+            }
+          }
+          break;
+        } else if (matched == false && i == enemies.length) {
+          enemy = null;
+        }
       }
-      calculateValue("currentHealth", "add", healthIncrease);
-      quickPrint(`You healed yourself for ${healthIncrease} health.`);
-    } else if (spellEffect == "tempHealth") {
-      if (spellDirection != "Within") {
-        quickPrint("You cannot grant temporary health to an enemy.");
-        return enemies;
+      if (enemy != null) {
+        if (enemyDistance <= spellRange) {
+          distance = "inRange";
+          quickPrint("The enemy is in range.");
+        } else if (enemyDistance > spellRange) {
+          distance = "outOfRange";
+          quickPrint("The enemy is out of range.");
+          continue;
+        }
+        if (spellEffect == "damage") {
+          playerRange = spellRange;
+          enemyDefense = getRandomInt(enemy.armor);
+          enemyDamage = Math.max(spellPower - enemyDefense, 0);
+          enemy.health = Math.max(enemy.health - enemyDamage, 0);
+          if (enemyDefense > 0) {
+            quickPrint(
+              `${enemy.name} resisted your attack, reducing the damage by ${enemyDefense}.`
+            );
+          }
+          quickPrint(`You dealt ${enemyDamage} damage to ${enemy.name}.`);
+          enemy.hitLastTurn = true;
+          var location = getValue("location");
+          var primaryLocation = location.split(".")[0];
+          var secondaryLocation = location.split(".")[1];
+          var playerData = JSON.parse(localStorage.getItem("playerData"));
+          var locations = playerData["locations"];
+          locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+          localStorage.setItem("playerData", JSON.stringify(playerData));
+          if (enemy.health <= 0) {
+            quickPrint(`You have defeated ${enemy.name}.`);
+            quickPrint(
+              `You gained ${enemy.xp} experience points, and the enemy dropped ${enemy.gold} gold pieces.`
+            );
+            calculateValue("experiencePoints", "add", enemy.xp);
+            calculateValue("gold", "add", enemy.gold);
+            for (var i = 0; i < enemy.items.length; i++) {
+              var item = enemy.items[i];
+              var itemName = item.name;
+              var itemName = itemName.toLowerCase();
+              if (itemName.charAt(0).match(/[aeiou]/i)) {
+                quickPrint(`${enemy.name} dropped an ${itemName}.`);
+              } else {
+                quickPrint(`${enemy.name} dropped a ${itemName}.`);
+              }
+              locations[primaryLocation][secondaryLocation]["items"][itemName] =
+                item;
+            }
+            var index = enemies.indexOf(enemy);
+            enemies.splice(index, 1);
+            playerData["gold"] = getValue("gold");
+            playerData["experiencePoints"] = getValue("experiencePoints");
+            locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
+            localStorage.setItem("playerData", JSON.stringify(playerData));
+          }
+        }
+      } else if (spellEffect == "healthIncrease") {
+        if (spellDirection != "Within") {
+          quickPrint("You cannot heal an enemy.");
+          continue;
+        }
+        var healthIncrease = spellPower;
+        if (
+          getValue("currentHealth") + healthIncrease >
+          getValue("maxHealth")
+        ) {
+          healthIncrease = getValue("maxHealth") - getValue("currentHealth");
+        }
+        calculateValue("currentHealth", "add", healthIncrease);
+        quickPrint(`You healed yourself for ${healthIncrease} health.`);
+      } else if (spellEffect == "tempHealth") {
+        if (spellDirection != "Within") {
+          quickPrint("You cannot grant temporary health to an enemy.");
+          continue;
+        }
+        changeValue("tempHealth", spellPower);
+        quickPrint(`You gained ${spellPower} temporary health.`);
+      } else if (spellEffect == "manaIncrease") {
+        if (spellDirection != "Within") {
+          quickPrint("You cannot grant mana to an enemy.");
+          continue;
+        }
+        var manaIncrease = spellPower;
+        if (getValue("currentMana") + manaIncrease > getValue("maxMana")) {
+          manaIncrease = getValue("maxMana") - getValue("currentMana");
+        }
+        calculateValue("currentMana", "add", manaIncrease);
+        quickPrint(`You gained ${manaIncrease} mana.`);
+      } else if (spellEffect == "tempMana") {
+        if (spellDirection != "Within") {
+          quickPrint("You cannot grant temporary mana to an enemy.");
+          continue;
+        }
+        changeValue("tempMana", spellPower);
+        quickPrint(`You gained ${spellPower} temporary mana.`);
+      } else if (spellEffect == "tempArmor") {
+        if (spellDirection != "Within") {
+          quickPrint("You cannot grant temporary armor to an enemy.");
+          continue;
+        }
+        changeValue("tempArmor", spellPower);
+        quickPrint(`You gained ${spellPower} temporary armor.`);
+      } else {
+        quickPrint("There is no enemy in that direction.");
       }
-      changeValue("tempHealth", spellPower);
-      quickPrint(`You gained ${spellPower} temporary health.`);
-    } else if (spellEffect == "manaIncrease") {
-      if (spellDirection != "Within") {
-        quickPrint("You cannot grant mana to an enemy.");
-        return enemies;
-      }
-      var manaIncrease = spellPower;
-      if (getValue("currentMana") + manaIncrease > getValue("maxMana")) {
-        manaIncrease = getValue("maxMana") - getValue("currentMana");
-      }
-      calculateValue("currentMana", "add", manaIncrease);
-      quickPrint(`You gained ${manaIncrease} mana.`);
-    } else if (spellEffect == "tempMana") {
-      if (spellDirection != "Within") {
-        quickPrint("You cannot grant temporary mana to an enemy.");
-        return enemies;
-      }
-      changeValue("tempMana", spellPower);
-      quickPrint(`You gained ${spellPower} temporary mana.`);
-    } else if (spellEffect == "tempArmor") {
-      if (spellDirection != "Within") {
-        quickPrint("You cannot grant temporary armor to an enemy.");
-        return enemies;
-      }
-      changeValue("tempArmor", spellPower);
-      quickPrint(`You gained ${spellPower} temporary armor.`);
-    } else {
-      quickPrint("There is no enemy in that direction.");
     }
+    continue;
   }
   return enemies;
 }
@@ -474,8 +489,6 @@ async function handleEnemyTurn(enemy, enemies, i) {
   locationHeight = Math.floor(locationHeight);
   verticalTiles = locationHeight / 5;
   var enemyRange = enemy.range;
-  console.log(playerDistance);
-  console.log(enemyRange);
   if (playerDistance <= enemyRange) {
     var playerDefense = getRandomInt(getValue("armor"));
     var enemyAttack = diceRoll(enemy.attack);
@@ -503,7 +516,6 @@ async function handleEnemyTurn(enemy, enemies, i) {
     }
     calculateValue("currentHealth", "subtract", playerDamage);
     quickPrint(`${enemy.name} dealt ${playerDamage} damage.`);
-    console.log(getValue("currentHealth"));
   } else if (playerDistance > enemyRange) {
     tryToMoveAndAttack(
       playerX,
@@ -1207,7 +1219,7 @@ function findDirection(playerDirection, direction) {
   }
 }
 
-function findEnemiesInCell(targetCell, enemies=null) {
+function findEnemiesInCell(targetCell, enemies = null) {
   var location = getValue("location");
   location = getValue(location, true);
   if (enemies == null) {
