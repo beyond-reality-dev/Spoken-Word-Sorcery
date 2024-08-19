@@ -16,6 +16,7 @@ const {
   inputLoop,
   handleMovement,
 } = require("../../../../handle_input");
+const { generateName } = require("../../../../proc_gen");
 const {
   Earth,
   Fire,
@@ -27,6 +28,9 @@ const {
 } = require("../../../../class_collections/spellbook");
 
 var validInput = false;
+
+var grandmasterName = generateName("male fullName");
+var lowerCaseName = grandmasterName.toLowerCase();
 
 async function intro() {
   if (localStorage.getItem("playerData") != null) {
@@ -71,7 +75,7 @@ async function intro() {
       "memories"
     );
     addEntity(
-      "I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.",
+      `I am obedient to Grandmaster ${grandmasterName} of the Arcane Order and to those under his command.`,
       "memories"
     );
     addEntity(new Fire(), "knownSpells");
@@ -168,15 +172,18 @@ async function intro() {
     ["remember"],
     '"You must speak the word <i>Remember</i>!" he ordered, nearly shouting.'
   );
-  printLines("app/src/cutscenes/imperial_citadel/imperial_academy/intro/9.txt");
+  printLines(
+    "app/src/cutscenes/imperial_citadel/imperial_academy/intro/9.txt",
+    { grandmasterName: grandmasterName }
+  );
   await requireAnswer(
     [
-      "i am obedient to grandmaster arnoch segeric of the arcane order and to those under his command",
+      `i am obedient to grandmaster ${lowerCaseName} of the arcane order and to those under his command`,
     ],
     '"No, no, no!" he shouted, interrupting you. "You must repeat the words exactly as they were spoken to you!"'
   );
   addEntity(
-    "I am obedient to Grandmaster Arnoch Segeric of the Arcane Order and to those under his command.",
+    `I am obedient to Grandmaster ${grandmasterName} of the Arcane Order and to those under his command.`,
     "memories"
   );
   printLines(

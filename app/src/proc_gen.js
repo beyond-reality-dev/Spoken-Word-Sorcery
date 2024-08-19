@@ -332,6 +332,14 @@ function generateAmmo(tier) {
 }
 
 function generateRandomEncounter(tier, hostile = true) {
+  if (hostile == "either") {
+    var coinFlip = Math.random();
+    if (coinFlip > 0.5) {
+      var hostile = true;
+    } else {
+      var hostile = false;
+    }
+  }
   if (hostile) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData.locations;
@@ -372,6 +380,7 @@ function generateRandomEncounter(tier, hostile = true) {
       handleMovement("load");
     }
   }
+  location.encountered = true;
 }
 
 function generateEnemy(tier, quantity = 1) {

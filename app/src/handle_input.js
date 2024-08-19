@@ -1046,7 +1046,9 @@ function handleMovement(direction) {
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
     if (currentLocation.hasOwnProperty("encounter")) {
-      eval(currentLocation.encounter);
+      if (currentLocation.encountered == false) {
+        eval(currentLocation.encounter);
+      }
     } else if (currentLocation.hasOwnProperty("cutscene")) {
       if (currentLocation.cutscenePlayed == false) {
         var cutsceneName = currentLocation.cutscene;
@@ -1132,7 +1134,9 @@ function handleMovement(direction) {
     quickPrint(newLocation.description);
     changeValue(`${newLocation.id}.isVisited`, true, "locations");
     if (newLocation.hasOwnProperty("encounter")) {
-      eval(newLocation.encounter);
+      if (newLocation.encountered == false) {
+        eval(newLocation.encounter);
+      }
     } else if (newLocation.hasOwnProperty("cutscene")) {
       if (newLocation.cutscenePlayed == false) {
         var cutsceneName = newLocation.cutscene;

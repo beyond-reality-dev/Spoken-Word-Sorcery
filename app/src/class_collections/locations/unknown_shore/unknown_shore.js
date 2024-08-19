@@ -157,6 +157,7 @@ class ForestPath_02 extends Room {
       west: "unknownShore.clearing_02",
     };
     this.encounter = "generateRandomEncounter(1)";
+    this.encountered = false;
   }
 }
 
