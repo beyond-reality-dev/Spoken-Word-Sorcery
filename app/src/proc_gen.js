@@ -2,7 +2,7 @@ const items = require("./class_collections/item_catalog");
 const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
-const { getRandomInt, printLines } = require("./general");
+const { getRandomInt, printLines, requireAnswer } = require("./general");
 const { getValue, calculateValue } = require("./save_data");
 const {
   handleCombat,
@@ -538,6 +538,7 @@ async function handleEncounter(faction, tier) {
       var gold = getValue("gold");
       if (gold < extortion) {
         await printLines("app/src/class_collections/encounters/bandit/2.txt");
+        await requireAnswer(["any"], "unreachable");
         handleCombat();
       } else {
         await printLines("app/src/class_collections/encounters/bandit/3.txt", {
@@ -596,6 +597,7 @@ async function handleEncounter(faction, tier) {
           rebelName: rebelName,
           cellName: cellName,
         });
+        await requireAnswer(["any"], "unreachable");
         handleCombat();
       } else {
         var rebelName2 = generateName("either forename");
@@ -624,6 +626,7 @@ async function handleEncounter(faction, tier) {
           var gold = getValue("gold");
           if (gold < extortion) {
             await printLines("app/src/class_collections/encounters/rebel/4.txt");
+            await requireAnswer(["any"], "unreachable");
             handleCombat();
           } else {
             await printLines("app/src/class_collections/encounters/rebel/5.txt", {
@@ -639,8 +642,19 @@ async function handleEncounter(faction, tier) {
             var location = locations[primaryLocation][secondaryLocation];
             location.enemies = [];
           }
-        } else if (
+        } else {
+          await printLines("app/src/class_collections/encounters/rebel/6.txt", {
+            rebelName: rebelName,
+            extortion: extortion,
+          });
+          await requireAnswer(["any"], "unreachable");
+          handleCombat();
+        }
       }
+    } else {
+      await printLines("app/src/class_collections/encounters/rebel/7.txt");
+      await requireAnswer(["any"], "unreachable");
+      handleCombat();
     }
   } else if (faction == "Loyalist") {
   }
