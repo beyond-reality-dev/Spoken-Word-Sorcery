@@ -5,4 +5,4 @@ More importantly, they do not look armed.
 "I am {"peasantName"}," he continued. 
 "I saw you wash ashore, but I didn't want to disturb you in case you were dead."
 "Don't want any bad spirits or the like, of course."
-"I'm sure you can understand that, can't you."
+"I'm sure you can understand that, can't you?"

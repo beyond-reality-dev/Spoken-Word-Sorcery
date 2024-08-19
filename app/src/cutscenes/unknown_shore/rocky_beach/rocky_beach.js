@@ -28,7 +28,31 @@ async function rockyBeach() {
       peasantName: peasantName,
     });
   }
-  await closedInput(["yes", "y", "no", "n"], '"You get it, right?')
+  await closedInput(["yes", "y", "no", "n"], '"You get it, right?');
+  if (response == "yes" || response == "y") {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/4.txt", {
+      peasantName: peasantName,
+    });
+  } else {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/5.txt", {
+      peasantName: peasantName,
+    });
+  }
+  await closedInput(
+    [
+      "1",
+      "yes",
+      "yes, i serve the emperor",
+      "2",
+      "no",
+      "no, i am just a traveler",
+      "3",
+      "what",
+      "what do you mean",
+      "what do you mean by loyalist",
+    ],
+    "How do you respond?"
+  );
   changeValue("unknownShore.rockyBeach.cutscenePlayed", true, "locations");
 }
 
