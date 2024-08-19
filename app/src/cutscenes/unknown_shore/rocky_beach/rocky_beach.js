@@ -4,6 +4,7 @@ const { generateName } = require("../../../proc_gen");
 const { changeValue } = require("../../../save_data");
 
 var peasantName = generateName("male fullName");
+var villageName = generateName("town") + " Village";
 
 async function rockyBeach() {
   await printLines("app/src/cutscenes/unknown_shore/rocky_beach/1.txt");
@@ -53,6 +54,28 @@ async function rockyBeach() {
     ],
     "How do you respond?"
   );
+  if (
+    response == "1" ||
+    response == "yes" ||
+    response == "yes, i serve the emperor"
+  ) {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/6.txt", {
+      peasantName: peasantName,
+      villageName: villageName,
+    });
+  } else if (
+    response == "2" ||
+    response == "no" ||
+    response == "no, i am just a traveler"
+  ) {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/7.txt", {
+      peasantName: peasantName,
+    });
+  } else {
+    await printLines("app/src/cutscenes/unknown_shore/rocky_beach/8.txt", {
+      peasantName: peasantName,
+    });
+  }
   changeValue("unknownShore.rockyBeach.cutscenePlayed", true, "locations");
 }
 
