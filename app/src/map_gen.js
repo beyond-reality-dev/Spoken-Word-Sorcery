@@ -1,6 +1,8 @@
+const Ocean = require("./class_collections/locations/generated/ocean");
+
 const MAP_KEY = {
   X: null, // empty cell
-  U: "U", // unknown shore
+  U: "U", // Unknown Shore
   P: "P", // Paragon City
   L: "L", // Liberty City
   F: "🟩", // forest
@@ -11,6 +13,7 @@ const MAP_KEY = {
   O: "🟦", // ocean
   S: "🟫", // shore
   R: "🟦", // river
+  C: "C", // river crossing
 };
 
 var row01 = ["O","O","O","O","O","O","O","O","O","O","O","O","O","O","O"]; // prettier-ignore
@@ -60,6 +63,7 @@ function generateMap(map) {
   generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
   generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
   generateUnknownShore(map); // Generate the Unknown Shore
+  generateRegions(map); // Generate regions for each cell
   return mapGrid;
 }
 
@@ -385,7 +389,6 @@ function generateRiver(mapGrid) {
   var currentRow = startRow;
   var currentCol = startCol;
   while (xDistance != 0 || yDistance != 0) {
-    console.log(xDistance, yDistance);
     if (xDistance > 0) {
       mapGrid[currentRow][currentCol + 1] = "R";
       currentCol++;
@@ -581,53 +584,78 @@ function generateSpecialBiome(
   generateSpecialBiome(mapGrid, biome, specialBiome, targetNumber, currentNum);
 }
 
-function generateUnknownShore(mapGrid, iterations = 0) {
-  var randomRow = Math.floor(Math.random() * mapGrid.length);
-  var randomCol = Math.floor(Math.random() * mapGrid[randomRow].length);
-  var iterations = iterations;
-  if (mapGrid[randomRow][randomCol] == "S") {
-    // Ensure it is not within 5 tiles of Paragon City or Liberty City
-    var paragonCityCoords = findParagonCity(mapGrid);
-    var libertyCityCoords = findLibertyCity(mapGrid);
-    var xDistanceParagon = Math.abs(paragonCityCoords[0] - randomRow);
-    var yDistanceParagon = Math.abs(paragonCityCoords[1] - randomCol);
-    var xDistanceLiberty = Math.abs(libertyCityCoords[0] - randomRow);
-    var yDistanceLiberty = Math.abs(libertyCityCoords[1] - randomCol);
-    if (iterations < 1000) {
-      var targetDistance = 5;
-    } else if (iterations < 2000) {
-      var targetDistance = 4;
-    } else if (iterations < 3000) {
-      var targetDistance = 3;
-    } else if (iterations < 4000) {
-      var targetDistance = 2;
-    } else if (iterations < 5000) {
-      var targetDistance = 1;
+function generateUnknownShore(mapGrid) {
+  for (let i = 0; i < mapGrid.length; i++) {
+    for (let j = 0; j < mapGrid[i].length; j++) {
+      if (mapGrid[i][j] == "S") {
+        var paragonCityCoords = findParagonCity(mapGrid);
+        var libertyCityCoords = findLibertyCity(mapGrid);
+        var xDistanceParagon = Math.abs(paragonCityCoords[0] - i);
+        var yDistanceParagon = Math.abs(paragonCityCoords[1] - j);
+        var xDistanceLiberty = Math.abs(libertyCityCoords[0] - i);
+        var yDistanceLiberty = Math.abs(libertyCityCoords[1] - j);
+        if (xDistanceParagon > 5 || yDistanceParagon > 5) {
+          if (xDistanceLiberty > 5 || yDistanceLiberty > 5) {
+            mapGrid[i][j] = "U";
+            return;
+          }
+        }
+      }
     }
-    if (
-      xDistanceParagon > targetDistance &&
-      yDistanceParagon > targetDistance &&
-      xDistanceLiberty > targetDistance &&
-      yDistanceLiberty > targetDistance
-    ) {
-      mapGrid[randomRow][randomCol] = "U";
-      return;
-    } else {
-      iterations++;
-      generateUnknownShore(mapGrid);
+  }
+}
+
+function generateRegions(mapGrid) {
+  for (let i = 0; i < mapGrid.length; i++) {
+    for (let j = 0; j < mapGrid[i].length; j++) {
+      if (mapGrid[i][j] == "O") {
+        generateOceanTile(mapGrid, [i, j]);
+      }
     }
-  } else {
-    iterations++;
-    generateUnknownShore(mapGrid, iterations);
+  }
+}
+
+function generateOceanTile(mapGrid, targetTile) {
+  var increment = 1;
+  for (let i = 0; i < mapGrid.length; i++) {
+    for (let j = 0; j < mapGrid[i].length; j++) {
+      if (mapGrid[i][j].hasOwnProperty("id")) {
+        var id = mapGrid[i][j].id;
+        if (id.includes("oceanTile")) {
+          id = id.split("_");
+          id = id[1];
+          id = parseInt(id);
+          increment++;
+        }
+      }
+    }
+  }
+  var oceanTile = new Ocean(`oceanTile_${increment}`);
+  mapGrid[targetTile[0]][targetTile[1]] = oceanTile;
+}
+
+function displayMap(mapGrid) {
+  var mapGenerated = false;
+  while (!mapGenerated) {
+    try {
+      var generatedMap = generateMap(mapGrid);
+      mapGenerated = true;
+    } catch (error) {
+      mapGenerated = false;
+    }
+  }
+  var displayMap = generatedMap.map((row) => {
+    return row.map((cell) => MAP_KEY[cell]);
+  });
+  for (let i = 0; i < displayMap.length; i++) {
+    console.log(displayMap[i].join(""));
   }
 }
 
 var generatedMap = generateMap(mapGrid);
+console.log(generatedMap);
 
-var displayMap = generatedMap.map((row) => {
-  return row.map((cell) => MAP_KEY[cell]);
-});
-
-for (let i = 0; i < displayMap.length; i++) {
-  console.log(displayMap[i].join(""));
-}
+module.exports = {
+  generateMap,
+  displayMap,
+};
