@@ -13,7 +13,6 @@ const MAP_KEY = {
   O: "🟦", // ocean
   S: "🟫", // shore
   R: "🟦", // river
-  C: "C", // river crossing
 };
 
 var row01 = ["O","O","O","O","O","O","O","O","O","O","O","O","O","O","O"]; // prettier-ignore
@@ -557,6 +556,21 @@ function findLibertyCity(mapGrid) {
   }
 }
 
+function findUnknownShore(mapGrid) {
+  try {
+    for (let i = 0; i < mapGrid.length; i++) {
+      for (let j = 0; j < mapGrid[i].length; j++) {
+        if (mapGrid[i][j] == "U") {
+          return [i, j];
+        }
+      }
+    }
+  } catch (error) {
+    generateUnknownShore(mapGrid);
+    findUnknownShore(mapGrid);
+  }
+}
+
 function generateSpecialBiome(
   mapGrid,
   biome,
@@ -610,18 +624,20 @@ function generateRegions(mapGrid) {
     for (let j = 0; j < mapGrid[i].length; j++) {
       if (mapGrid[i][j] == "O") {
         generateOceanTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "F") {
+        generateForestTile(mapGrid, [i, j]);
       }
     }
   }
 }
 
-function generateOceanTile(mapGrid, targetTile) {
+function getIncrement(mapGrid, roomType) {
   var increment = 1;
   for (let i = 0; i < mapGrid.length; i++) {
     for (let j = 0; j < mapGrid[i].length; j++) {
       if (mapGrid[i][j].hasOwnProperty("id")) {
         var id = mapGrid[i][j].id;
-        if (id.includes("oceanTile")) {
+        if (id.includes(roomType)) {
           id = id.split("_");
           id = id[1];
           id = parseInt(id);
@@ -630,8 +646,148 @@ function generateOceanTile(mapGrid, targetTile) {
       }
     }
   }
+  return increment;
+}
+
+function getTier(targetTile) {
+  var unknownShoreCoords = findUnknownShore(mapGrid);
+  var xDistance = Math.abs(unknownShoreCoords[0] - targetTile[0]);
+  var yDistance = Math.abs(unknownShoreCoords[1] - targetTile[1]);
+  var distance = xDistance + yDistance;
+  var tier = Math.floor(distance / 5);
+  return tier;
+}
+
+function generateOceanTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "oceanTile");
   var oceanTile = new Ocean(`oceanTile_${increment}`);
   mapGrid[targetTile[0]][targetTile[1]] = oceanTile;
+}
+
+const {
+  HorizontalForestEntrance,
+  VerticalForestEntrance,
+} = require("./class_collections/locations/generated/forest");
+
+function generateForestTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "forestEntrance");
+  var westernForestEntrance = new HorizontalForestEntrance(
+    `forestEntrance_${increment}`
+  );
+  var easternForestEntrance = new HorizontalForestEntrance(
+    `forestEntrance_${increment + 1}`
+  );
+  var northernForestEntrance = new VerticalForestEntrance(
+    `forestEntrance_${increment + 2}`
+  );
+  var southernForestEntrance = new VerticalForestEntrance(
+    `forestEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernForestEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternForestEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernForestEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernForestEntrance;
+  var roomTypes = ["SmallClearing", "LargeClearing", "Crossroads"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generate9x9Grid(roomTypes, tier, baseId) {
+  const {
+    HorizontalForestPath,
+    VerticalForestPath,
+  } = require("./class_collections/locations/generated/forest");
+  const gridSize = 3;
+  var interiorGrid = Array(gridSize)
+    .fill(null)
+    .map(() => Array(gridSize).fill(null));
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      let roomType = getRandomRoomType(roomTypes);
+      let roomId = `${baseId}.room_${row}_${col}`;
+      interiorGrid[row][col] = createRoom(roomType, roomId, tier);
+    }
+  }
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      if (row % 2 == 0 && col % 2 == 0) {
+        let pathType =
+          Math.random() > 0.5 ? "HorizontalForestPath" : "VerticalForestPath";
+        interiorGrid[row][col] = createRoom(
+          pathType,
+          `${baseId}.room_${row}_${col}`,
+          tier
+        );
+      }
+    }
+  }
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      let room = interiorGrid[row][col];
+      room.exits = {};
+      if (room.type == "horizontalForestPath") {
+        if (col > 0) {
+          room.exits["west"] = interiorGrid[row][col - 1].id;
+        } else if (col < gridSize - 1) {
+          room.exits["east"] = interiorGrid[row][col + 1].id;
+        } else if (row > 0) {
+          room.exits["north"] = interiorGrid[row - 1][col].id;
+        } else if (row < gridSize - 1) {
+          room.exits["south"] = interiorGrid[row + 1][col].id;
+        }
+      } else if (room.type == "verticalForestPath") {
+        if (row > 0) {
+          room.exits["north"] = interiorGrid[row - 1][col].id;
+        } else if (row < gridSize - 1) {
+          room.exits["south"] = interiorGrid[row + 1][col].id;
+        } else if (col > 0) {
+          room.exits["west"] = interiorGrid[row][col - 1].id;
+        } else if (col < gridSize - 1) {
+          room.exits["east"] = interiorGrid[row][col + 1].id;
+        }
+      } else {
+        if (row > 0) {
+          room.exits["north"] = interiorGrid[row - 1][col].id;
+        }
+        if (row < gridSize - 1) {
+          room.exits["south"] = interiorGrid[row + 1][col].id;
+        }
+        if (col > 0) {
+          room.exits["west"] = interiorGrid[row][col - 1].id;
+        }
+        if (col < gridSize - 1) {
+          room.exits["east"] = interiorGrid[row][col + 1].id;
+        }
+      }
+    }
+  }
+  return interiorGrid;
+}
+
+function getRandomRoomType(roomTypes) {
+  return roomTypes[Math.floor(Math.random() * roomTypes.length)];
+}
+
+function createRoom(type, id, tier) {
+  const {
+    HorizontalForestPath,
+    VerticalForestPath,
+    SmallClearing,
+    LargeClearing,
+    Crossroads,
+  } = require("./class_collections/locations/generated/forest");
+  return eval(`new ${type}('${id}', ${tier})`);
 }
 
 function displayMap(mapGrid) {

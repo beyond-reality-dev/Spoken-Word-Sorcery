@@ -1,4 +1,5 @@
 exports.ocean = require("./generated/ocean");
+exports.forest = require("./generated/forest");
 exports.imperialAcademy = require("./imperial_citadel/academy");
 exports.imperialMarket = require("./imperial_citadel/market");
 exports.imperialNexus = require("./imperial_citadel/nexus");

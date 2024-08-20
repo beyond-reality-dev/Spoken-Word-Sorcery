@@ -332,6 +332,16 @@ function generateAmmo(tier) {
 }
 
 function generateRandomEncounter(tier, hostile = true) {
+  if (tier == 0) {
+    var playerData = JSON.parse(localStorage.getItem("playerData"));
+    var locations = playerData.locations;
+    var locationName = getValue("location");
+    var primaryLocation = locationName.split(".")[0];
+    var secondaryLocation = locationName.split(".")[1];
+    var location = locations[primaryLocation][secondaryLocation];
+    location.encountered = true;
+    return;
+  }
   if (hostile == "either") {
     var coinFlip = Math.random();
     if (coinFlip > 0.5) {
