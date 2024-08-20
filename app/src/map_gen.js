@@ -51,7 +51,7 @@ function generateMap(map) {
   generateBiome(map, "M");
   generateBiome(map, "D");
   propagateBiomes(map);
-  //generateParagonCity(map);
+  generateParagonCity(map);
   return mapGrid;
 }
 
@@ -163,6 +163,7 @@ function propagateBiomes(mapGrid) {
       var nextRow = mapGrid[i + 1];
     }
     var currentRow = mapGrid[i];
+    var iteration = 0
     for (let i = 0; i < currentRow.length; i++) {
       if (i == 0) {
         var left = null;
@@ -173,8 +174,12 @@ function propagateBiomes(mapGrid) {
         var right = currentRow[i + 1];
       }
       if (currentRow[i] == "X") {
-        var randomChoice = Math.random();
-        if (randomChoice > 0.5) {
+        if (iteration < 4) {
+          iteration++;
+        } else {
+          iteration = 0;
+        }
+        if (iteration == 0 || iteration == 1) {
           if (
             priorRow[i] == "F" ||
             nextRow[i] == "F" ||
@@ -200,7 +205,7 @@ function propagateBiomes(mapGrid) {
             currentRow[i] = "D";
             i = 0;
           }
-        } else if (randomChoice > 0.25) {
+        } else if (iteration == 2) {
           if (
             priorRow[i] == "D" ||
             nextRow[i] == "D" ||
@@ -226,7 +231,7 @@ function propagateBiomes(mapGrid) {
             currentRow[i] = "M";
             i = 0;
           }
-        } else if (randomChoice > 0.0) {
+        } else if (iteration == 3) {
           if (
             priorRow[i] == "M" ||
             nextRow[i] == "M" ||
@@ -258,27 +263,110 @@ function propagateBiomes(mapGrid) {
   }
 }
 
-function generateParagonCity(mapGrid, iterations = 0) {
+function generateParagonCity(mapGrid, targetNumber = 4) {
+  var targetNum = targetNumber;
+  var currentNum = 0;
+  for (let i = 0; i < mapGrid.length; i++) {
+    if (i == 0) {
+      var priorRow = null;
+    } else if (i == mapGrid.length - 1) {
+      var nextRow = null;
+    } else {
+      var priorRow = mapGrid[i - 1];
+      var nextRow = mapGrid[i + 1];
+    }
+    var currentRow = mapGrid[i];
+    for (j = 0; j < currentRow.length; j++) {
+      if (j == 0) {
+        var left = null;
+      } else if (j == currentRow.length - 1) {
+        var right = null;
+      } else {
+        var left = currentRow[j - 1];
+        var right = currentRow[j + 1];
+      }
+      if (left != null) {
+        if (left == "M") {
+          currentNum++;
+        }
+      }
+      if (right != null) {
+        if (right == "M") {
+          currentNum++;
+        }
+      }
+      if (priorRow != null) {
+        if (priorRow[j] == "M") {
+          currentNum++;
+        }
+      }
+      if (nextRow != null) {
+        if (nextRow[j] == "M") {
+          currentNum++;
+        }
+      }
+      if (currentNum >= targetNum) {
+        mapGrid[i][j] = "P";
+        return;
+      }
+      currentNum = 0;
+    }
+  }
+  targetNum--;
+  generateParagonCity(mapGrid, targetNum);
+}
+
+function generateOldParagonCity(mapGrid, iterations = 0, level = 0) {
   var rowChoice = Math.floor(Math.random() * mapGrid.length);
   var colChoice = Math.floor(Math.random() * mapGrid[rowChoice].length);
   if (mapGrid[rowChoice][colChoice] == "M") {
     if (
-      mapGrid[rowChoice - 1][colChoice] == "M" &&
-      mapGrid[rowChoice + 1][colChoice] == "M" &&
-      mapGrid[rowChoice][colChoice - 1] == "M" &&
-      mapGrid[rowChoice][colChoice + 1] == "M"
+      (level == 0 &&
+        mapGrid[rowChoice - 1][colChoice] == "M" &&
+        mapGrid[rowChoice + 1][colChoice] == "M" &&
+        mapGrid[rowChoice][colChoice - 1] == "M" &&
+        mapGrid[rowChoice][colChoice + 1] == "M") ||
+      (level == 1 &&
+        mapGrid[rowChoice - 1][colChoice] == "M" &&
+        mapGrid[rowChoice + 1][colChoice] == "M" &&
+        mapGrid[rowChoice][colChoice - 1] == "M") ||
+      mapGrid[rowChoice][colChoice + 1] == "M" ||
+      (level == 2 &&
+        mapGrid[rowChoice - 1][colChoice] == "M" &&
+        mapGrid[rowChoice + 1][colChoice] == "M") ||
+      mapGrid[rowChoice][colChoice - 1] == "M" ||
+      mapGrid[rowChoice][colChoice + 1] == "M" ||
+      level == 3
     ) {
       mapGrid[rowChoice][colChoice] = "P";
     } else {
-      if (iterations < 100) {
+      if (iterations < 225) {
         iterations++;
-        generateParagonCity(mapGrid, iterations);
+        generateParagonCity(mapGrid, iterations, level);
+      } else if (level == 1 && iterations < 550) {
+        iterations++;
+        generateParagonCity(mapGrid, iterations, level);
+      } else if (level == 2 && iterations < 775) {
+        iterations++;
+        generateParagonCity(mapGrid, iterations, level);
+      } else if (level == 3 && iterations < 1100) {
+        iterations++;
+        generateParagonCity(mapGrid, iterations, level);
       } else {
         return false;
       }
     }
   } else {
-    if (iterations < 100) {
+    if (iterations < 225) {
+      iterations++;
+      generateParagonCity(mapGrid, iterations);
+    } else if (level == 1 && iterations < 550) {
+      iterations++;
+      generateParagonCity(mapGrid, iterations);
+    } else if (level == 2 && iterations < 775) {
+      iterations++;
+      generateParagonCity(mapGrid, iterations);
+    } else if (level == 3 && iterations < 1100) {
       iterations++;
       generateParagonCity(mapGrid, iterations);
     } else {
