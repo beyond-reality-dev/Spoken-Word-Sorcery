@@ -31,12 +31,12 @@ class VerticalForestEntrance extends Room {
 }
 
 class HorizontalForestPath extends Room {
-  constructor(id, width, tier) {
+  constructor(id, tier) {
     super(
       "Forest Path",
       id,
       "The forest path winds through the trees for a long way, leading to different areas to the east and west.",
-      width,
+      40.5,
       10.5
     );
     this.items = {};
@@ -48,13 +48,13 @@ class HorizontalForestPath extends Room {
 }
 
 class VerticalForestPath extends Room {
-  constructor(id, height, tier) {
+  constructor(id, tier) {
     super(
       "Forest Path",
       id,
       "The forest path winds through the trees for a long way, leading to different areas to the north and south.",
       10.5,
-      height
+      40.5
     );
     this.items = {};
     this.exits = {};

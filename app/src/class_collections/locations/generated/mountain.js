@@ -31,12 +31,12 @@ class VerticalMountainEntrance extends Room {
 }
 
 class HorizontalMountainPath extends Room {
-  constructor(id, width, tier) {
+  constructor(id, tier) {
     super(
       'Mountain Path',
       id,
       'The mountain path winds through the rocks for a long way, leading to different areas to the east and west.',
-      width,
+      40.5,
       10.5
     );
     this.items = {};
@@ -48,13 +48,13 @@ class HorizontalMountainPath extends Room {
 }
 
 class VerticalMountainPath extends Room {
-  constructor(id, height, tier) {
+  constructor(id, tier) {
     super(
       'Mountain Path',
       id,
       'The mountain path winds through the rocks for a long way, leading to different areas to the north and south.',
       10.5,
-      height
+      40.5
     );
     this.items = {};
     this.exits = {};
@@ -65,7 +65,7 @@ class VerticalMountainPath extends Room {
 }
 
 class MountainPeak extends Room {
-  constructor(id) {
+  constructor(id, tier) {
     super(
       'Mountain Peak',
       id,
@@ -75,12 +75,13 @@ class MountainPeak extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.encounter = `generateRandomEncounter(${tier})`;
     this.type = 'mountainPeak';
   }
 }
 
 class BoulderField extends Room {
-  constructor(id) {
+  constructor(id, tier) {
     super(
       'Boulder Field',
       id,
@@ -90,12 +91,14 @@ class BoulderField extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.encounter = `generateRandomEncounter(${tier})`;
+    this.encountered = false;
     this.type = 'boulderField';
   }
 }
 
 class Cave extends Room {
-  constructor(id) {
+  constructor(id, tier) {
     super(
       'Cave',
       id,
@@ -105,6 +108,8 @@ class Cave extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.encounter = `generateRandomEncounter(${tier})`;
+    this.encountered = false;
     this.type = 'cave';
   }
 }

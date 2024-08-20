@@ -31,12 +31,12 @@ class VerticalDesertEntrance extends Room {
 }
 
 class HorizontalDesertPath extends Room {
-  constructor(id, width, tier) {
+  constructor(id, tier) {
     super(
       'Desert Path',
       id,
       'The desert path winds through the sand for a long way, leading to different areas to the east and west.',
-      width,
+      40.5,
       10.5
     );
     this.items = {};
@@ -48,13 +48,13 @@ class HorizontalDesertPath extends Room {
 }
 
 class VerticalDesertPath extends Room {
-  constructor(id, height, tier) {
+  constructor(id, tier) {
     super(
       'Desert Path',
       id,
       'The desert path winds through the sand for a long way, leading to different areas to the north and south.',
       10.5,
-      height
+      40.5
     );
     this.items = {};
     this.exits = {};

@@ -66,6 +66,22 @@ function generateMap(map) {
   return mapGrid;
 }
 
+function partiallyGenerateMap(map) {
+  generateOceans(map); // If a cell is adjacent to ocean, it will become ocean 33% of the time, otherwise it will become shore
+  generateBiome(map, "F"); // Generate 5 forest tiles
+  generateBiome(map, "M"); // Generate 5 mountain tiles
+  generateBiome(map, "D"); // Generate 5 desert tiles
+  propagateBiomes(map); // Biomes will propagate to adjacent cells
+  generateParagonCity(map); // Generate Paragon City, on a tile that is surrounded by four mountain tiles (or less if that is not possible)
+  fillShoreline(map); // If there are empty cells adjacent to ocean cells, they will become shore
+  trimShoreline(map); // If there are shore cells that are not adjacent to non-shore tiles, they will become ocean
+  generateRiver(map); // Generate a river that starts at the ocean and ends at the ocean
+  generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
+  generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
+  generateUnknownShore(map); // Generate the Unknown Shore
+  return mapGrid;
+}
+
 function generateOceans(mapGrid) {
   for (let i = 0; i < mapGrid.length; i++) {
     if (i == 0) {
@@ -626,6 +642,20 @@ function generateRegions(mapGrid) {
         generateOceanTile(mapGrid, [i, j]);
       } else if (mapGrid[i][j] == "F") {
         generateForestTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "D") {
+        generateDesertTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "M") {
+        generateMountainTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "V") {
+        generateVolcanoTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "S") {
+        generateShoreTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "R") {
+        generateRiverTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "P") {
+        generateParagonCityTile(mapGrid, [i, j]);
+      } else if (mapGrid[i][j] == "L") {
+        generateLibertyCityTile(mapGrid, [i, j]);
       }
     }
   }
@@ -650,11 +680,16 @@ function getIncrement(mapGrid, roomType) {
 }
 
 function getTier(targetTile) {
-  var unknownShoreCoords = findUnknownShore(mapGrid);
-  var xDistance = Math.abs(unknownShoreCoords[0] - targetTile[0]);
-  var yDistance = Math.abs(unknownShoreCoords[1] - targetTile[1]);
-  var distance = xDistance + yDistance;
-  var tier = Math.floor(distance / 5);
+  var d10 = Math.floor(Math.random() * 10 + 1);
+  if (d10 == 1) {
+    var unknownShoreCoords = findUnknownShore(mapGrid);
+    var xDistance = Math.abs(unknownShoreCoords[0] - targetTile[0]);
+    var yDistance = Math.abs(unknownShoreCoords[1] - targetTile[1]);
+    var distance = xDistance + yDistance;
+    var tier = Math.floor(distance / 5);
+  } else {
+    tier = 0;
+  }
   return tier;
 }
 
@@ -668,6 +703,34 @@ const {
   HorizontalForestEntrance,
   VerticalForestEntrance,
 } = require("./class_collections/locations/generated/forest");
+const {
+  HorizontalDesertEntrance,
+  VerticalDesertEntrance,
+} = require("./class_collections/locations/generated/desert");
+const {
+  HorizontalMountainEntrance,
+  VerticalMountainEntrance,
+} = require("./class_collections/locations/generated/mountain");
+const {
+  HorizontalVolcanicEntrance,
+  VerticalVolcanicEntrance,
+} = require("./class_collections/locations/generated/volcano");
+const {
+  HorizontalShoreEntrance,
+  VerticalShoreEntrance,
+} = require("./class_collections/locations/generated/shore");
+const {
+  HorizontalRiverEntrance,
+  VerticalRiverEntrance,
+} = require("./class_collections/locations/generated/river");
+const {
+  HorizontalParagonCityEntrance,
+  VerticalParagonCityEntrance,
+} = require("./class_collections/locations/paragon_city/paragon_city");
+const {
+  HorizontalLibertyCityEntrance,
+  VerticalLibertyCityEntrance,
+} = require("./class_collections/locations/liberty_city/liberty_city");
 
 function generateForestTile(mapGrid, targetTile) {
   var increment = getIncrement(mapGrid, "forestEntrance");
@@ -689,9 +752,10 @@ function generateForestTile(mapGrid, targetTile) {
   mapGrid[targetTile[0]][targetTile[1]]["north"] = northernForestEntrance;
   mapGrid[targetTile[0]][targetTile[1]]["south"] = southernForestEntrance;
   var roomTypes = ["SmallClearing", "LargeClearing", "Crossroads"];
+  var pathTypes = ["HorizontalForestPath", "VerticalForestPath"];
   var tier = getTier(targetTile);
   var baseId = `interior`;
-  var interiorGrid = generate9x9Grid(roomTypes, tier, baseId);
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
   mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
   mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
     interiorGrid[1][0].id;
@@ -703,12 +767,287 @@ function generateForestTile(mapGrid, targetTile) {
     interiorGrid[2][1].id;
 }
 
-function generate9x9Grid(roomTypes, tier, baseId) {
+function generateDesertTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "desertEntrance");
+  var westernDesertEntrance = new HorizontalDesertEntrance(
+    `desertEntrance_${increment}`
+  );
+  var easternDesertEntrance = new HorizontalDesertEntrance(
+    `desertEntrance_${increment + 1}`
+  );
+  var northernDesertEntrance = new VerticalDesertEntrance(
+    `desertEntrance_${increment + 2}`
+  );
+  var southernDesertEntrance = new VerticalDesertEntrance(
+    `desertEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernDesertEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternDesertEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernDesertEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernDesertEntrance;
+  var roomTypes = ["SmallDunes", "LargeDunes", "SmallOasis", "LargeOasis"];
+  var pathTypes = ["HorizontalDesertPath", "VerticalDesertPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateMountainTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "mountainEntrance");
+  var westernMountainEntrance = new HorizontalMountainEntrance(
+    `mountainEntrance_${increment}`
+  );
+  var easternMountainEntrance = new HorizontalMountainEntrance(
+    `mountainEntrance_${increment + 1}`
+  );
+  var northernMountainEntrance = new VerticalMountainEntrance(
+    `mountainEntrance_${increment + 2}`
+  );
+  var southernMountainEntrance = new VerticalMountainEntrance(
+    `mountainEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernMountainEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternMountainEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernMountainEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernMountainEntrance;
+  var roomTypes = ["MountainPeak", "BoulderField", "Cave"];
+  var pathTypes = ["HorizontalMountainPath", "VerticalMountainPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateVolcanoTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "volcanicEntrance");
+  var westernVolcanicEntrance = new HorizontalVolcanicEntrance(
+    `volcanicEntrance_${increment}`
+  );
+  var easternVolcanicEntrance = new HorizontalVolcanicEntrance(
+    `volcanicEntrance_${increment + 1}`
+  );
+  var northernVolcanicEntrance = new VerticalVolcanicEntrance(
+    `volcanicEntrance_${increment + 2}`
+  );
+  var southernVolcanicEntrance = new VerticalVolcanicEntrance(
+    `volcanicEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernVolcanicEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternVolcanicEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernVolcanicEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernVolcanicEntrance;
+  var roomTypes = ["LavaLake", "LavaFlow", "LavaCave"];
+  var pathTypes = ["HorizontalVolcanicPath", "VerticalVolcanicPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateShoreTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "shoreEntrance");
+  var westernShoreEntrance = new HorizontalShoreEntrance(
+    `shoreEntrance_${increment}`
+  );
+  var easternShoreEntrance = new HorizontalShoreEntrance(
+    `shoreEntrance_${increment + 1}`
+  );
+  var northernShoreEntrance = new VerticalShoreEntrance(
+    `shoreEntrance_${increment + 2}`
+  );
+  var southernShoreEntrance = new VerticalShoreEntrance(
+    `shoreEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernShoreEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternShoreEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernShoreEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernShoreEntrance;
+  var roomTypes = ["Beach", "Tidepool", "CoralReef"];
+  var pathTypes = ["HorizontalBeachPath", "VerticalBeachPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateRiverTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "riverEntrance");
+  var westernRiverEntrance = new HorizontalRiverEntrance(
+    `riverEntrance_${increment}`
+  );
+  var easternRiverEntrance = new HorizontalRiverEntrance(
+    `riverEntrance_${increment + 1}`
+  );
+  var northernRiverEntrance = new VerticalRiverEntrance(
+    `riverEntrance_${increment + 2}`
+  );
+  var southernRiverEntrance = new VerticalRiverEntrance(
+    `riverEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernRiverEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternRiverEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernRiverEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernRiverEntrance;
+  var roomTypes = ["RiverBank"];
+  var pathTypes = ["HorizontalBridge", "VerticalBridge"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateParagonCityTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "paragonCityEntrance");
+  var westernParagonCityEntrance = new HorizontalParagonCityEntrance(
+    `paragonCityEntrance_${increment}`
+  );
+  var easternParagonCityEntrance = new HorizontalParagonCityEntrance(
+    `paragonCityEntrance_${increment + 1}`
+  );
+  var northernParagonCityEntrance = new VerticalParagonCityEntrance(
+    `paragonCityEntrance_${increment + 2}`
+  );
+  var southernParagonCityEntrance = new VerticalParagonCityEntrance(
+    `paragonCityEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernParagonCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternParagonCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernParagonCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernParagonCityEntrance;
+  var roomTypes = ["CitySquare"];
+  var pathTypes = ["HorizontalParagonCityPath", "VerticalParagonCityPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generateLibertyCityTile(mapGrid, targetTile) {
+  var increment = getIncrement(mapGrid, "libertyCityEntrance");
+  var westernLibertyCityEntrance = new HorizontalLibertyCityEntrance(
+    `libertyCityEntrance_${increment}`
+  );
+  var easternLibertyCityEntrance = new HorizontalLibertyCityEntrance(
+    `libertyCityEntrance_${increment + 1}`
+  );
+  var northernLibertyCityEntrance = new VerticalLibertyCityEntrance(
+    `libertyCityEntrance_${increment + 2}`
+  );
+  var southernLibertyCityEntrance = new VerticalLibertyCityEntrance(
+    `libertyCityEntrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]]["west"] = westernLibertyCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["east"] = easternLibertyCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["north"] = northernLibertyCityEntrance;
+  mapGrid[targetTile[0]][targetTile[1]]["south"] = southernLibertyCityEntrance;
+  var roomTypes = ["CitySquare"];
+  var pathTypes = ["HorizontalLibertyCityPath", "VerticalLibertyCityPath"];
+  var tier = getTier(targetTile);
+  var baseId = `interior`;
+  var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
+  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
+  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
+    interiorGrid[1][0].id;
+  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
+    interiorGrid[1][2].id;
+  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
+    interiorGrid[0][1].id;
+  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
+    interiorGrid[2][1].id;
+}
+
+function generate9x9Grid(roomTypes, pathTypes, tier, baseId) {
   const {
     HorizontalForestPath,
     VerticalForestPath,
   } = require("./class_collections/locations/generated/forest");
+  const {
+    HorizontalDesertPath,
+    VerticalDesertPath,
+  } = require("./class_collections/locations/generated/desert");
+  const {
+    HorizontalMountainPath,
+    VerticalMountainPath,
+  } = require("./class_collections/locations/generated/mountain");
+  const {
+    HorizontalVolcanicPath,
+    VerticalVolcanicPath,
+  } = require("./class_collections/locations/generated/volcano");
+  const {
+    HorizontalBeachPath,
+    VerticalBeachPath,
+  } = require("./class_collections/locations/generated/shore");
+  const {
+    HorizontalBridge,
+    VerticalBridge,
+  } = require("./class_collections/locations/generated/river");
+  const {
+    HorizontalParagonCityPath,
+    VerticalParagonCityPath,
+  } = require("./class_collections/locations/paragon_city/paragon_city");
+  const {
+    HorizontalLibertyCityPath,
+    VerticalLibertyCityPath,
+  } = require("./class_collections/locations/liberty_city/liberty_city");
   const gridSize = 3;
+  var horizontalPath = pathTypes[0];
+  var verticalPath = pathTypes[1];
   var interiorGrid = Array(gridSize)
     .fill(null)
     .map(() => Array(gridSize).fill(null));
@@ -722,8 +1061,7 @@ function generate9x9Grid(roomTypes, tier, baseId) {
   for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
       if (row % 2 == 0 && col % 2 == 0) {
-        let pathType =
-          Math.random() > 0.5 ? "HorizontalForestPath" : "VerticalForestPath";
+        let pathType = Math.random() > 0.5 ? horizontalPath : verticalPath;
         interiorGrid[row][col] = createRoom(
           pathType,
           `${baseId}.room_${row}_${col}`,
@@ -736,7 +1074,7 @@ function generate9x9Grid(roomTypes, tier, baseId) {
     for (let col = 0; col < gridSize; col++) {
       let room = interiorGrid[row][col];
       room.exits = {};
-      if (room.type == "horizontalForestPath") {
+      if (room.type == horizontalPath) {
         if (col > 0) {
           room.exits["west"] = interiorGrid[row][col - 1].id;
         } else if (col < gridSize - 1) {
@@ -746,7 +1084,7 @@ function generate9x9Grid(roomTypes, tier, baseId) {
         } else if (row < gridSize - 1) {
           room.exits["south"] = interiorGrid[row + 1][col].id;
         }
-      } else if (room.type == "verticalForestPath") {
+      } else if (room.type == verticalPath) {
         if (row > 0) {
           room.exits["north"] = interiorGrid[row - 1][col].id;
         } else if (row < gridSize - 1) {
@@ -787,6 +1125,49 @@ function createRoom(type, id, tier) {
     LargeClearing,
     Crossroads,
   } = require("./class_collections/locations/generated/forest");
+  const {
+    HorizontalDesertPath,
+    VerticalDesertPath,
+    SmallDunes,
+    LargeDunes,
+    SmallOasis,
+    LargeOasis,
+  } = require("./class_collections/locations/generated/desert");
+  const {
+    HorizontalMountainPath,
+    VerticalMountainPath,
+    MountainPeak,
+    BoulderField,
+    Cave,
+  } = require("./class_collections/locations/generated/mountain");
+  const {
+    HorizontalVolcanicPath,
+    VerticalVolcanicPath,
+    LavaLake,
+    LavaFlow,
+    LavaCave,
+  } = require("./class_collections/locations/generated/volcano");
+  const {
+    HorizontalBeachPath,
+    VerticalBeachPath,
+    Beach,
+    Tidepool,
+    CoralReef,
+  } = require("./class_collections/locations/generated/shore");
+  const {
+    HorizontalBridge,
+    VerticalBridge,
+    RiverBank,
+  } = require("./class_collections/locations/generated/river");
+  const {
+    HorizontalParagonCityPath,
+    VerticalParagonCityPath,
+    CitySquare,
+  } = require("./class_collections/locations/paragon_city/paragon_city");
+  const {
+    HorizontalLibertyCityPath,
+    VerticalLibertyCityPath,
+  } = require("./class_collections/locations/liberty_city/liberty_city");
   return eval(`new ${type}('${id}', ${tier})`);
 }
 
@@ -794,7 +1175,7 @@ function displayMap(mapGrid) {
   var mapGenerated = false;
   while (!mapGenerated) {
     try {
-      var generatedMap = generateMap(mapGrid);
+      var generatedMap = partiallyGenerateMap(mapGrid);
       mapGenerated = true;
     } catch (error) {
       mapGenerated = false;
@@ -807,9 +1188,6 @@ function displayMap(mapGrid) {
     console.log(displayMap[i].join(""));
   }
 }
-
-var generatedMap = generateMap(mapGrid);
-console.log(generatedMap);
 
 module.exports = {
   generateMap,
