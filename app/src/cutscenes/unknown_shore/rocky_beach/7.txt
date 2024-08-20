@@ -17,6 +17,11 @@ He paused, looking at you with a mix of pity and wariness.
 "I would suggest that you change your clothes and find a place to stay."
 "There's a village to the west, by the name of {"villageName"}."
 "You should be able to find some help there."
+"Actually," he added, "I can offer you something."
+"Since you're not from here, you might need some help with the geography."
+He reached into his pocket and pulled out a small map.
+It was a rough sketch, but it showed the general layout of the area.
+He handed it to you.
 "Good luck, traveler."
 With that, {"peasantName"} turned and walked away.
 You watched him go, feeling a sense of unease.
