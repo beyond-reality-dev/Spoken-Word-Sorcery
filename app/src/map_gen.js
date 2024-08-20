@@ -163,7 +163,7 @@ function propagateBiomes(mapGrid) {
       var nextRow = mapGrid[i + 1];
     }
     var currentRow = mapGrid[i];
-    var iteration = 0
+    var iteration = 0;
     for (let i = 0; i < currentRow.length; i++) {
       if (i == 0) {
         var left = null;
@@ -285,29 +285,31 @@ function generateParagonCity(mapGrid, targetNumber = 4) {
         var left = currentRow[j - 1];
         var right = currentRow[j + 1];
       }
-      if (left != null) {
-        if (left == "M") {
-          currentNum++;
+      if (currentRow[j] == "M") {
+        if (left != null) {
+          if (left == "M") {
+            currentNum++;
+          }
         }
-      }
-      if (right != null) {
-        if (right == "M") {
-          currentNum++;
+        if (right != null) {
+          if (right == "M") {
+            currentNum++;
+          }
         }
-      }
-      if (priorRow != null) {
-        if (priorRow[j] == "M") {
-          currentNum++;
+        if (priorRow != null) {
+          if (priorRow[j] == "M") {
+            currentNum++;
+          }
         }
-      }
-      if (nextRow != null) {
-        if (nextRow[j] == "M") {
-          currentNum++;
+        if (nextRow != null) {
+          if (nextRow[j] == "M") {
+            currentNum++;
+          }
         }
-      }
-      if (currentNum >= targetNum) {
-        mapGrid[i][j] = "P";
-        return;
+        if (currentNum >= targetNum) {
+          mapGrid[i][j] = "P";
+          return;
+        }
       }
       currentNum = 0;
     }
@@ -436,6 +438,41 @@ for (let i = 0; i < generatedMap.length; i++) {
         generatedMap[i][j + 1] != "S"
       ) {
         generatedMap[i][j] = "S";
+      }
+    }
+  }
+}
+
+// Turn all shore tiles that are not adjacent to at least one non-shore non-ocean tile into ocean tiles
+for (let i = 0; i < generatedMap.length; i++) {
+  for (let j = 0; j < generatedMap[i].length; j++) {
+    if (generatedMap[i][j] == "S") {
+      if (
+        i > 0 &&
+        generatedMap[i - 1][j] != "S" &&
+        generatedMap[i - 1][j] != "O"
+      ) {
+        continue;
+      } else if (
+        i < generatedMap.length - 1 &&
+        generatedMap[i + 1][j] != "S" &&
+        generatedMap[i + 1][j] != "O"
+      ) {
+        continue;
+      } else if (
+        j > 0 &&
+        generatedMap[i][j - 1] != "S" &&
+        generatedMap[i][j - 1] != "O"
+      ) {
+        continue;
+      } else if (
+        j < generatedMap[i].length - 1 &&
+        generatedMap[i][j + 1] != "S" &&
+        generatedMap[i][j + 1] != "O"
+      ) {
+        continue;
+      } else {
+        generatedMap[i][j] = "O";
       }
     }
   }
