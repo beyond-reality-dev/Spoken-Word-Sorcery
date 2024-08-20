@@ -1042,7 +1042,11 @@ function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
 function handleMovement(direction) {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
+  var playerData = JSON.parse(localStorage.getItem("playerData"));
+  var locations = playerData["locations"];
+  console.log(locations);
   if (direction == "load") {
+    console.log(currentLocation);
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
     if (currentLocation.hasOwnProperty("encounter")) {

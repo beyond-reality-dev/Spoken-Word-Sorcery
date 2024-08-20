@@ -25,6 +25,7 @@ const {
   imperialPort,
   unknownShore,
 } = require("./class_collections/locations");
+const { generateMap, mapGrid } = require("./map_gen");
 
 function initializeData(saveFile) {
   var playerData = {
@@ -69,6 +70,26 @@ function initializeData(saveFile) {
   var keys = Object.keys(locationsObjects);
   for (let i = 0; i < keys.length; i++) {
     locations[keys[i]] = eval("locationsObjects." + keys[i]);
+  }
+  console.log(locations);
+  var mapGenerated = false;
+  var map = mapGrid;
+  while (mapGenerated == false) {
+    var generatedMap = generateMap(map);
+    if (generatedMap != false) {
+      mapGenerated = true;
+    }
+  }
+  console.log(generatedMap);
+  for (let i = 0; i < generatedMap.length; i++) {
+    for (let j = 0; j < generatedMap[i].length; j++) {
+      try {
+        var id = generatedMap[i][j].id.split(".")[0];
+      } catch {
+        id = generatedMap[i][j].id;
+      }
+      locations[id] = generatedMap[i][j];
+    }
   }
   playerData["inventory"] = inventory;
   playerData["equipment"] = equipment;

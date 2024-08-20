@@ -175,88 +175,30 @@ class Clearing_02 extends Room {
     this.items = {};
     this.exits = {
       east: "unknownShore.forestPath_02",
-      west: "unknownShore.forestPath_03",
+      west: "unkownShore.unknownShoreEntrace",
     };
   }
 }
 
 var clearing_02 = new Clearing_02();
 
-class ForestPath_03 extends Room {
+class UnknownShoreEntrance extends Room {
   constructor() {
     super(
-      "Forest Path",
-      "unknownShore.forestPath_03",
-      "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
-      80.5,
-      10.5
-    );
-    this.items = {};
-    this.exits = {
-      east: "unknownShore.clearing_02",
-      west: "unknownShore.clearing_03",
-    };
-  }
-}
-
-var forestPath_03 = new ForestPath_03();
-
-class Clearing_03 extends Room {
-  constructor() {
-    super(
-      "Clearing",
-      "unknownShore.clearing_03",
-      "The clearing is a small, open area surrounded by trees. There is a forest path to the east and west.",
+      "Unknown Shore Entrance",
+      "unknownShore.unknownShoreEntrance",
+      "The path leads to the unknown shore in the east and out of the forest in the west.",
       20.5,
-      20.5
+      40.5
     );
     this.items = {};
     this.exits = {
-      east: "unknownShore.forestPath_03",
-      west: "unknownShore.forestPath_04",
+      east: "unknownShore.forestPath_01",
     };
   }
 }
 
-var clearing_03 = new Clearing_03();
-
-class ForestPath_04 extends Room {
-  constructor() {
-    super(
-      "Forest Path",
-      "unknownShore.forestPath_04",
-      "The forest path winds through the trees for a long way, leading to two different clearings in the east and west.",
-      80.5,
-      10.5
-    );
-    this.items = {};
-    this.exits = {
-      east: "unknownShore.clearing_03",
-      west: "unknownShore.clearing_04",
-    };
-  }
-}
-
-var forestPath_04 = new ForestPath_04();
-
-class Clearing_04 extends Room {
-  constructor() {
-    super(
-      "Clearing",
-      "unknownShore.clearing_04",
-      "The clearing is a small, open area surrounded by trees. There is a forest path to the east and west.",
-      20.5,
-      20.5
-    );
-    this.items = {};
-    this.exits = {
-      east: "unknownShore.forestPath_04",
-      west: "unknownShore.forestPath_05",
-    };
-  }
-}
-
-var clearing_04 = new Clearing_04();
+var unknownShoreEntrance = new UnknownShoreEntrance();
 
 module.exports = {
   rockyBeach,
@@ -268,8 +210,5 @@ module.exports = {
   oldTreeStump,
   forestPath_02,
   clearing_02,
-  forestPath_03,
-  clearing_03,
-  forestPath_04,
-  clearing_04,
+  unknownShoreEntrance,
 };
