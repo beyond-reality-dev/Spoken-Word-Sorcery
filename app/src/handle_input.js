@@ -1041,6 +1041,7 @@ function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
 
 function handleMovement(direction) {
   var currentLocation = getValue("location");
+  console.log(currentLocation);
   currentLocation = eval(getValue(currentLocation, true));
   var playerData = JSON.parse(localStorage.getItem("playerData"));
   var locations = playerData["locations"];

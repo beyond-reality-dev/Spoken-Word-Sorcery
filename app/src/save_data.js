@@ -703,9 +703,14 @@ function getValue(target, locations = false) {
   if (locations) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
+    console.log(locations);
     var primaryTarget = target.split(".")[0];
-    var secondaryTarget = target.split(".")[1];
-    var value = locations[primaryTarget][secondaryTarget];
+    if (target.split(".").length == 2) {
+      var secondaryTarget = target.split(".")[1];
+      var value = locations[primaryTarget][secondaryTarget];
+    } else {
+      var value = locations[primaryTarget];
+    }
     return value;
   }
   var playerData = JSON.parse(localStorage.getItem("playerData"));
@@ -719,10 +724,15 @@ function changeValue(target, newValue, i = 0) {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {
     var primaryLocation = target.split(".")[0];
-    var secondaryLocation = target.split(".")[1];
-    var primaryTarget = target.split(".")[2];
-    playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] =
+    if (target.split(".").length == 2) {
+      var secondaryLocation = target.split(".")[1];
+      var primaryTarget = target.split(".")[2];
+      playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] =
       newValue;
+    } else {
+      var primaryTarget = target.split(".")[1];
+      playerData["locations"][primaryLocation][primaryTarget] = newValue;
+    }
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
     localStorage.setItem("playerData", JSON.stringify(playerData));

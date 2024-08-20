@@ -701,9 +701,8 @@ function getTier(targetTile) {
 
 function generateOceanTile(mapGrid, targetTile) {
   var increment = getIncrement(mapGrid, "oceanTile");
-  var oceanTile = new Ocean(`oceanTile_${increment}.oceanTile`);
-  mapGrid[targetTile[0]][targetTile[1]] = {};
-  mapGrid[targetTile[0]][targetTile[1]]["oceanTile"] = oceanTile;
+  var oceanTile = new Ocean(`oceanTile_${increment}`);
+  mapGrid[targetTile[0]][targetTile[1]] = oceanTile;
 }
 
 const {
@@ -742,6 +741,34 @@ const {
 function generateForestTile(mapGrid, targetTile) {
   var regionIncrement = getIncrement(mapGrid, "forest");
   var regionId = `forestTile_${regionIncrement}`;
+  var increment = 1;
+  var westernForestEntrance = new HorizontalForestEntrance(
+    `${regionId}.entrance_${increment}`
+  );
+  var easternForestEntrance = new HorizontalForestEntrance(
+    `${regionId}.entrance_${increment + 1}`
+  );
+  var northernForestEntrance = new VerticalForestEntrance(
+    `${regionId}.entrance_${increment + 2}`
+  );
+  var southernForestEntrance = new VerticalForestEntrance(
+    `${regionId}.entrance_${increment + 3}`
+  );
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  increment = 1;
+  mapGrid[targetTile[0]][targetTile[1]][regionId][`entrance_${increment}`] = westernForestEntrance;
+  increment++;
+  mapGrid[targetTile[0]][targetTile[1]][regionId][`entrance_${increment}`] = easternForestEntrance;
+  increment++;
+  mapGrid[targetTile[0]][targetTile[1]][regionId][`entrance_${increment}`] = northernForestEntrance;
+  increment++;
+  mapGrid[targetTile[0]][targetTile[1]][regionId][`entrance_${increment}`] = southernForestEntrance;
+}
+  
+
+function generateOldForestTile(mapGrid, targetTile) {
+  var regionIncrement = getIncrement(mapGrid, "forest");
+  var regionId = `forestTile_${regionIncrement}`;
   var increment = getIncrement(mapGrid, `${regionId}.entrance`);
   var westernForestEntrance = new HorizontalForestEntrance(
     `${regionId}.entrance_${increment}`
@@ -765,15 +792,8 @@ function generateForestTile(mapGrid, targetTile) {
   var tier = getTier(targetTile);
   var baseId = `forestTile_${regionIncrement}`;
   var interiorGrid = generate9x9Grid(roomTypes, pathTypes, tier, baseId);
-  mapGrid[targetTile[0]][targetTile[1]]["interior"] = interiorGrid;
-  mapGrid[targetTile[0]][targetTile[1]]["west"].exits["east"] =
-    interiorGrid[1][0].id;
-  mapGrid[targetTile[0]][targetTile[1]]["east"].exits["west"] =
-    interiorGrid[1][2].id;
-  mapGrid[targetTile[0]][targetTile[1]]["north"].exits["south"] =
-    interiorGrid[0][1].id;
-  mapGrid[targetTile[0]][targetTile[1]]["south"].exits["north"] =
-    interiorGrid[2][1].id;
+  mapGrid[targetTile[0]][targetTile[1]][baseId] = interiorGrid;
+  console.log(mapGrid[targetTile[0]][targetTile[1]][baseId]);
 }
 
 function generateDesertTile(mapGrid, targetTile) {
@@ -1085,11 +1105,12 @@ function generate9x9Grid(roomTypes, pathTypes, tier, baseId) {
     for (let col = 0; col < gridSize; col++) {
       if (row % 2 == 0 && col % 2 == 0) {
         let pathType = Math.random() > 0.5 ? horizontalPath : verticalPath;
-        interiorGrid[row][col] = createRoom(
+        interiorGrid[row][col][baseId] = createRoom(
           pathType,
           `${baseId}.room_${row}_${col}`,
           tier
         );
+        console.log(interiorGrid[row][col][baseId]);
       }
     }
   }
@@ -1199,30 +1220,30 @@ function linkRegions(mapGrid) {
     for (let j = 0; j < mapGrid[i].length; j++) {
       if (mapGrid[i][j].hasOwnProperty("id")) {
         var id = mapGrid[i][j].id;
-        if (id.includes("Entrance")) {
-          id = id.split("_");
-          id = id[1];
-          id = parseInt(id);
-          var room = mapGrid[i][j];
-          var west = room.west;
-          var east = room.east;
-          var north = room.north;
-          var south = room.south;
-          if (west != null) {
-            var westRoom = mapGrid[i][j - 1];
-            westRoom.east = room;
+        if (id.includes("Entrance") || id.includes("oceanTile")) {
+          if (i > 0) {
+            if (mapGrid[i - 1][j].hasOwnProperty("id")) {
+              var northId = mapGrid[i - 1][j].id;
+              mapGrid[i][j].exits["north"] = northId;
+            }
           }
-          if (east != null) {
-            var eastRoom = mapGrid[i][j + 1];
-            eastRoom.west = room;
+          if (i < mapGrid.length - 1) {
+            if (mapGrid[i + 1][j].hasOwnProperty("id")) {
+              var southId = mapGrid[i + 1][j].id;
+              mapGrid[i][j].exits["south"] = southId;
+            }
           }
-          if (north != null) {
-            var northRoom = mapGrid[i - 1][j];
-            northRoom.south = room;
+          if (j > 0) {
+            if (mapGrid[i][j - 1].hasOwnProperty("id")) {
+              var westId = mapGrid[i][j - 1].id;
+              mapGrid[i][j].exits["west"] = westId;
+            }
           }
-          if (south != null) {
-            var southRoom = mapGrid[i + 1][j];
-            southRoom.north = room;
+          if (j < mapGrid[i].length - 1) {
+            if (mapGrid[i][j + 1].hasOwnProperty("id")) {
+              var eastId = mapGrid[i][j + 1].id;
+              mapGrid[i][j].exits["east"] = eastId;
+            }
           }
         }
       }
