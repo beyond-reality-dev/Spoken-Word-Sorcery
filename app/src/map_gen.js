@@ -45,13 +45,14 @@ var mapGrid = [
   row15,
 ];
 
-function generateMap(mapGrid) {
-  generateOceans(mapGrid);
-  generateBiome(mapGrid, "F");
-  generateBiome(mapGrid, "M");
-  generateBiome(mapGrid, "D");
-  propagateBiomes(mapGrid);
-  generateParagonCity(mapGrid);
+function generateMap(map) {
+  generateOceans(map);
+  generateBiome(map, "F");
+  generateBiome(map, "M");
+  generateBiome(map, "D");
+  propagateBiomes(map);
+  //generateParagonCity(map);
+  return mapGrid;
 }
 
 function generateOceans(mapGrid) {
@@ -106,7 +107,6 @@ function generateOceans(mapGrid) {
     }
   }
   for (let i = 0; i < mapGrid.length; i++) {
-    // If any of the shore tiles are surrounded by ocean, they become ocean
     if (i == 0) {
       var priorRow = null;
     } else if (i == mapGrid.length - 1) {
@@ -200,16 +200,8 @@ function propagateBiomes(mapGrid) {
             currentRow[i] = "D";
             i = 0;
           }
-        } else if (randomChoice > 0.33) {
+        } else if (randomChoice > 0.25) {
           if (
-            priorRow[i] == "M" ||
-            nextRow[i] == "M" ||
-            left == "M" ||
-            right == "M"
-          ) {
-            currentRow[i] = "M";
-            i = 0;
-          } else if (
             priorRow[i] == "D" ||
             nextRow[i] == "D" ||
             left == "D" ||
@@ -224,10 +216,26 @@ function propagateBiomes(mapGrid) {
             right == "F"
           ) {
             currentRow[i] = "F";
+            i = 0;
+          } else if (
+            priorRow[i] == "M" ||
+            nextRow[i] == "M" ||
+            left == "M" ||
+            right == "M"
+          ) {
+            currentRow[i] = "M";
             i = 0;
           }
-        } else {
+        } else if (randomChoice > 0.0) {
           if (
+            priorRow[i] == "M" ||
+            nextRow[i] == "M" ||
+            left == "M" ||
+            right == "M"
+          ) {
+            currentRow[i] = "M";
+            i = 0;
+          } else if (
             priorRow[i] == "D" ||
             nextRow[i] == "D" ||
             left == "D" ||
@@ -242,14 +250,6 @@ function propagateBiomes(mapGrid) {
             right == "F"
           ) {
             currentRow[i] = "F";
-            i = 0;
-          } else if (
-            priorRow[i] == "M" ||
-            nextRow[i] == "M" ||
-            left == "M" ||
-            right == "M"
-          ) {
-            currentRow[i] = "M";
             i = 0;
           }
         }
@@ -258,7 +258,7 @@ function propagateBiomes(mapGrid) {
   }
 }
 
-function generateParagonCity(mapGrid) {
+function generateParagonCity(mapGrid, iterations = 0) {
   var rowChoice = Math.floor(Math.random() * mapGrid.length);
   var colChoice = Math.floor(Math.random() * mapGrid[rowChoice].length);
   if (mapGrid[rowChoice][colChoice] == "M") {
@@ -270,16 +270,90 @@ function generateParagonCity(mapGrid) {
     ) {
       mapGrid[rowChoice][colChoice] = "P";
     } else {
-      generateParagonCity(mapGrid);
+      if (iterations < 100) {
+        iterations++;
+        generateParagonCity(mapGrid, iterations);
+      } else {
+        return false;
+      }
     }
   } else {
-    generateParagonCity(mapGrid);
+    if (iterations < 100) {
+      iterations++;
+      generateParagonCity(mapGrid, iterations);
+    } else {
+      return false;
+    }
   }
 }
 
-generateMap(mapGrid);
+var generatedMap = generateMap(mapGrid);
+for (let i = 0; i < generatedMap.length; i++) {
+  for (let j = 0; j < generatedMap[i].length; j++) {
+    if (generatedMap[i][j] == "X") {
+      if (
+        i > 0 &&
+        generatedMap[i - 1][j] != "X" &&
+        generatedMap[i - 1][j] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        i < generatedMap.length - 1 &&
+        generatedMap[i + 1][j] != "X" &&
+        generatedMap[i + 1][j] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        j > 0 &&
+        generatedMap[i][j - 1] != "X" &&
+        generatedMap[i][j - 1] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        j < generatedMap[i].length - 1 &&
+        generatedMap[i][j + 1] != "X" &&
+        generatedMap[i][j + 1] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else {
+        generatedMap[i][j] = "O";
+      }
+    }
+  }
+}
+for (let i = 0; i < generatedMap.length; i++) {
+  for (let j = 0; j < generatedMap[i].length; j++) {
+    if (generatedMap[i][j] != "O" && generatedMap[i][j] != "S") {
+      if (
+        i > 0 &&
+        generatedMap[i - 1][j] == "O" &&
+        generatedMap[i - 1][j] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        i < generatedMap.length - 1 &&
+        generatedMap[i + 1][j] == "O" &&
+        generatedMap[i + 1][j] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        j > 0 &&
+        generatedMap[i][j - 1] == "O" &&
+        generatedMap[i][j - 1] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      } else if (
+        j < generatedMap[i].length - 1 &&
+        generatedMap[i][j + 1] == "O" &&
+        generatedMap[i][j + 1] != "S"
+      ) {
+        generatedMap[i][j] = "S";
+      }
+    }
+  }
+}
 
-var displayMap = mapGrid.map((row) => {
+var displayMap = generatedMap.map((row) => {
   return row.map((cell) => MAP_KEY[cell]);
 });
 
