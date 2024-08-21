@@ -764,6 +764,15 @@ const {
 const {
   HorizontalUnknownShoreEntrance,
   VerticalUnknownShoreEntrance,
+  rockyBeach,
+  firstBeach,
+  secondBeach,
+  forestPath_01,
+  clearing_01,
+  travelingMerchant,
+  oldTreeStump,
+  forestPath_02,
+  clearing_02,
 } = require("./class_collections/locations/unknown_shore/unknown_shore");
 
 function generateTile(mapGrid, targetTile, type) {
@@ -1175,6 +1184,103 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
   locationObjects[`entrance_${increment + 1}`] = easternUnknownShoreEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernUnknownShoreEntrance;
   locationObjects[`entrance_${increment + 3}`] = southernUnknownShoreEntrance;
+  var center = Math.floor(mapGrid.length / 2);
+  var xDistance = Math.abs(center - targetTile[0]);
+  var yDistance = Math.abs(center - targetTile[1]);
+  var center = Math.floor(mapGrid.length / 2);
+  var xDistance = Math.abs(center - targetTile[0]);
+  var yDistance = Math.abs(center - targetTile[1]);
+  if (yDistance > xDistance) {
+    if (targetTile[1] < center) {
+      var direction = "north";
+    } else {
+      var direction = "south";
+    }
+  } else {
+    if (targetTile[0] < center) {
+      var direction = "west";
+    } else {
+      var direction = "east";
+    }
+  }
+  switch (direction) {
+    case "north":
+      rockyBeach.exits = {
+        west: firstBeach.id,
+        east: firstBeach.id,
+        south: forestPath_01.id,
+        north: northernUnknownShoreEntrance.id,
+      };
+      rockyBeach.description =
+        rockyBeach.description +
+        " " +
+        "The beach continues to the east and west, and a forest path leads south. The ocean is to the north.";
+      firstBeach.exits = {
+        east: rockyBeach.id,
+        west: westernUnknownShoreEntrance.id,
+      };
+      firstBeach.description =
+        firstBeach.description +
+        " " +
+        "The beach continues to the east and west.";
+      secondBeach.exits = {
+        east: easternUnknownShoreEntrance.id,
+        west: rockyBeach.id,
+      };
+      secondBeach.description =
+        secondBeach.description +
+        " " +
+        "The beach continues to the east and west.";
+      forestPath_01.exits = {
+        north: rockyBeach.id,
+        south: clearing_01.id,
+      };
+      forestPath_01.description =
+        forestPath_01.description + "south and a rocky beach to the north.";
+      clearing_01.exits = {
+        north: forestPath_01.id,
+        west: travelingMerchant.id,
+        east: oldTreeStump.id,
+        south: forestPath_02.id,
+      };
+      clearing_01.description =
+        clearing_01.description +
+        " " +
+        "There is a forest path to the north and south, a traveling merchant to the west, and an old tree stump to the east.";
+      travelingMerchant.exits = {
+        east: clearing_01.id,
+      };
+      travelingMerchant.description =
+        travelingMerchant.description +
+        " " +
+        "There is a clearing to the east.";
+      oldTreeStump.exits = {
+        west: clearing_01.id,
+      };
+      oldTreeStump.description =
+        oldTreeStump.description + " " + "There is a clearing to the west.";
+      forestPath_02.exits = {
+        north: clearing_01.id,
+        south: clearing_02.id,
+      };
+      forestPath_02.description =
+        forestPath_02.description + "a clearing to the north and south.";
+      clearing_02.exits = {
+        north: forestPath_02.id,
+        south: southernUnknownShoreEntrance.id,
+      };
+      clearing_02.description =
+        clearing_02.description +
+        " " +
+        "There is a forest path to the north and south.";
+      break;
+    case "south":
+      break;
+    case "east":
+      break;
+    case "west":
+      break;
+  }
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }
