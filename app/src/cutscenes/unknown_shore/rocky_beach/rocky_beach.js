@@ -1,7 +1,7 @@
 const { printLines } = require("../../../general");
 const { closedInput } = require("../../../handle_input");
 const { generateName } = require("../../../proc_gen");
-const { changeValue, removeEntity } = require("../../../save_data");
+const { changeValue, removeEntity, getValue } = require("../../../save_data");
 
 var peasantName = generateName("male fullName");
 var villageName = generateName("town") + " Village";
@@ -100,7 +100,9 @@ async function rockyBeach() {
     await printLines("app/src/cutscenes/unknown_shore/rocky_beach/10.txt");
     removeEntity("Imperial Signet Ring", "inventory");
   }
+  changeValue("prologueCompleted", true);
   changeValue("unknownShore.rockyBeach.cutscenePlayed", true, "locations");
+  console.log(getValue("unknownShore.rockyBeach.cutscenePlayed", "locations"));
 }
 
 module.exports = { rockyBeach };

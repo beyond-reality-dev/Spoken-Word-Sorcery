@@ -51,6 +51,7 @@ function initializeData(saveFile) {
     movementPoints: 0,
     location: "imperialAcademy.trainingRoom",
     isCombat: false,
+    prologueCompleted: false,
     gameSpeed: 1000,
   };
   var inventory = [];
@@ -734,27 +735,15 @@ function getValue(target, locations = false) {
 
 function changeValue(target, newValue, i = 0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
+  console.log(target);
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {
     var primaryLocation = target.split(".")[0];
-    if (target.split(".").length == 2) {
-      var secondaryLocation = target.split(".")[1];
-      var primaryTarget = target.split(".")[2];
-      playerData["locations"][primaryLocation][secondaryLocation][
-        primaryTarget
-      ] = newValue;
-    } else if (target.split(".").length == 3) {
-      var secondaryLocation = target.split(".")[1];
-      var tertiaryLocation = target.split(".")[2];
-      var primaryTarget = target.split(".")[3];
-      playerData["locations"][primaryLocation][secondaryLocation][
-        tertiaryLocation
-      ][primaryTarget] = newValue;
-    } else {
-      var primaryTarget = target.split(".")[1];
-      playerData["locations"][primaryLocation][primaryTarget] = newValue;
-    }
+    var secondaryLocation = target.split(".")[1];
+    var primaryTarget = target.split(".")[2];
+    playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] =
+      newValue;
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
     localStorage.setItem("playerData", JSON.stringify(playerData));

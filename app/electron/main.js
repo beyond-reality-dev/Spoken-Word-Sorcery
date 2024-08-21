@@ -110,7 +110,17 @@ function createWindow() {
         document.getElementById("map-button").onclick = function () {
           switchScreen("map-screen");
           switchButton("map-button");
-          switchMapButton("local-map-button");
+          var prologueCompleted = getValue("prologueCompleted");
+          if (!prologueCompleted) {
+            document.getElementById("local-map-button").style.display = "none";
+            document.getElementById("world-map-button").style.display = "none";
+            document.getElementById("map").style.marginTop = "2.75vh";
+          } else {
+            document.getElementById("local-map-button").style.display = "inline-block";
+            document.getElementById("world-map-button").style.display = "inline-block";
+            document.getElementById("map").style.marginTop = "0vh";
+            switchMapButton("local-map-button");
+          }
           updateMap();
         }
 

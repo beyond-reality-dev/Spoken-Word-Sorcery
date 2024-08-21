@@ -1192,7 +1192,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
     case "north":
       rockyBeach.exits = {
         west: firstBeach.id,
-        east: firstBeach.id,
+        east: secondBeach.id,
         south: forestPath_01.id,
       };
       rockyBeach.height = 20.5;
@@ -1279,7 +1279,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
     case "south":
       rockyBeach.exits = {
         west: firstBeach.id,
-        east: firstBeach.id,
+        east: secondBeach.id,
         north: forestPath_01.id,
       };
       rockyBeach.height = 20.5;
@@ -1366,7 +1366,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
     case "east":
       rockyBeach.exits = {
         north: firstBeach.id,
-        south: firstBeach.id,
+        south: secondBeach.id,
         west: forestPath_01.id,
       };
       rockyBeach.height = 40.5;
@@ -1449,7 +1449,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
     case "west":
       rockyBeach.exits = {
         north: firstBeach.id,
-        south: firstBeach.id,
+        south: secondBeach.id,
         east: forestPath_01.id,
       };
       rockyBeach.height = 40.5;
