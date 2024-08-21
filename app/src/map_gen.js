@@ -702,7 +702,8 @@ function getTier(targetTile) {
 function generateOceanTile(mapGrid, targetTile) {
   var increment = getIncrement(mapGrid, "oceanTile");
   var oceanTile = new Ocean(`oceanTile_${increment}`);
-  mapGrid[targetTile[0]][targetTile[1]] = oceanTile;
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]][`oceanTile`] = oceanTile;
 }
 
 const {
@@ -762,6 +763,11 @@ function generateForestTile(mapGrid, targetTile) {
   locationObjects[`entrance_${increment + 3}`] = southernForestEntrance;
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
+  const roomTypes = ["SmallClearing", "LargeClearing", "Crossroads"];
+  const pathTypes = ["HorizontalForestPath", "VerticalForestPath"];
+  var tier = getTier(targetTile);
+  var rooms = generate9x9Grid(roomTypes, pathTypes, tier, regionId);
+  mapGrid[targetTile[0]][targetTile[1]][regionId] = rooms;
 }
 
 function generateDesertTile(mapGrid, targetTile) {

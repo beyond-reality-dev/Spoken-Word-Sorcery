@@ -84,11 +84,16 @@ function initializeData(saveFile) {
   for (let i = 0; i < generatedMap.length; i++) {
     for (let j = 0; j < generatedMap[i].length; j++) {
       try {
-        var id = generatedMap[i][j].id.split(".")[0];
-      } catch {
-        id = generatedMap[i][j].id;
+        var id = generatedMap[i][j]["id"];
+        locations[id[0]][id[1]] = generatedMap[i][j];
+      } catch (error) {
+      var keys = Object.keys(generatedMap[i][j]);
+      for (let k = 0; k < keys.length; k++) {
+        var id = keys[k].id.split(".");
+        locations[id[0]] = {};
+        locations[id[0]][id[1]] = generatedMap[i][j];
       }
-      locations[id] = generatedMap[i][j];
+    }
     }
   }
   playerData["inventory"] = inventory;
@@ -708,6 +713,10 @@ function getValue(target, locations = false) {
     if (target.split(".").length == 2) {
       var secondaryTarget = target.split(".")[1];
       var value = locations[primaryTarget][secondaryTarget];
+    } else if (target.split(".").length == 3) {
+      var secondaryTarget = target.split(".")[1];
+      var tertiaryTarget = target.split(".")[2];
+      var value = locations[primaryTarget][secondaryTarget][tertiaryTarget];
     } else {
       var value = locations[primaryTarget];
     }
@@ -727,8 +736,16 @@ function changeValue(target, newValue, i = 0) {
     if (target.split(".").length == 2) {
       var secondaryLocation = target.split(".")[1];
       var primaryTarget = target.split(".")[2];
-      playerData["locations"][primaryLocation][secondaryLocation][primaryTarget] =
-      newValue;
+      playerData["locations"][primaryLocation][secondaryLocation][
+        primaryTarget
+      ] = newValue;
+    } else if (target.split(".").length == 3) {
+      var secondaryLocation = target.split(".")[1];
+      var tertiaryLocation = target.split(".")[2];
+      var primaryTarget = target.split(".")[3];
+      playerData["locations"][primaryLocation][secondaryLocation][
+        tertiaryLocation
+      ][primaryTarget] = newValue;
     } else {
       var primaryTarget = target.split(".")[1];
       playerData["locations"][primaryLocation][primaryTarget] = newValue;

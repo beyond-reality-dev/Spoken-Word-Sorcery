@@ -362,6 +362,24 @@ class BanditSlinger extends RangedEnemy {
   }
 }
 
+class ImperialGuard extends MeleeEnemy {
+  constructor(name, position, items = [new catalog.LongSword()]) {
+    super(
+      name,
+      "guard",
+      position,
+      `${name} strikes with their long sword!`,
+      100,
+      5,
+      "2d8",
+      10,
+      5,
+      10,
+      items
+    );
+  }
+}
+
 class Obstacle {
   constructor(name, position, health, shape, color) {
     this.name = name;
@@ -464,6 +482,7 @@ module.exports = {
   BanditShortBowman,
   BanditLightCrossbowman,
   BanditSlinger,
+  ImperialGuard,
   Obstacle,
   Wall,
   Crate,
