@@ -701,6 +701,11 @@ function generateOceanTile(mapGrid, targetTile) {
 const {
   HorizontalForestEntrance,
   VerticalForestEntrance,
+  HorizontalForestPath,
+  VerticalForestPath,
+  SmallClearing,
+  LargeClearing,
+  Crossroads,
 } = require("./class_collections/locations/generated/forest");
 const {
   HorizontalDesertEntrance,
@@ -735,8 +740,113 @@ function generateForestTile(mapGrid, targetTile) {
   var regionIncrement = getIncrement(mapGrid, "forest");
   var regionId = `forestTile_${regionIncrement}`;
   var increment = 1;
+  const randomTypes = [SmallClearing, LargeClearing];
   var westernForestEntrance = new HorizontalForestEntrance(
     `${regionId}.entrance_${increment}`
+  );
+  var westernPathFromEntrance = new HorizontalForestPath(
+    `${regionId}.path_${increment}`
+  );
+  var firstChoice = Math.floor(Math.random() * randomTypes.length);
+  var firstRandomForestLocation = new randomTypes[firstChoice](
+    `${regionId}.location_${increment}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToNorthwest = new VerticalForestPath(
+    `${regionId}.path_${increment + 1}`,
+    getTier(targetTile)
+  );
+  var secondChoice = Math.floor(Math.random() * randomTypes.length);
+  var secondRandomForestLocation = new randomTypes[secondChoice](
+    `${regionId}.location_${increment + 1}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthwestToEast = new HorizontalForestPath(
+    `${regionId}.path_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var thirdChoice = Math.floor(Math.random() * randomTypes.length);
+  var thirdRandomForestLocation = new randomTypes[thirdChoice](
+    `${regionId}.location_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var northernPathToEntrance = new VerticalForestPath(
+    `${regionId}.path_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthToEast = new HorizontalForestPath(
+    `${regionId}.path_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var fourthChoice = Math.floor(Math.random() * randomTypes.length);
+  var fourthRandomForestLocation = new randomTypes[fourthChoice](
+    `${regionId}.location_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var pathFromNortheastToSouth = new VerticalForestPath(
+    `${regionId}.path_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var fifthChoice = Math.floor(Math.random() * randomTypes.length);
+  var fifthRandomForestLocation = new randomTypes[fifthChoice](
+    `${regionId}.location_${increment + 4}`,
+    getTier(targetTile)
+  );
+  var easternPathToEntrance = new HorizontalForestPath(
+    `${regionId}.path_${increment + 4}`,
+    getTier(targetTile)
+  );
+  var pathFromEastToSouth = new VerticalForestPath(
+    `${regionId}.path_${increment + 5}`,
+    getTier(targetTile)
+  );
+  var sixthChoice = Math.floor(Math.random() * randomTypes.length);
+  var sixthRandomForestLocation = new randomTypes[sixthChoice](
+    `${regionId}.location_${increment + 5}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthEastToSouth = new HorizontalForestPath(
+    `${regionId}.path_${increment + 6}`,
+    getTier(targetTile)
+  );
+  var seventhChoice = Math.floor(Math.random() * randomTypes.length);
+  var seventhRandomForestLocation = new randomTypes[seventhChoice](
+    `${regionId}.location_${increment + 6}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToSouthwest = new VerticalForestPath(
+    `${regionId}.path_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var eighthChoice = Math.floor(Math.random() * randomTypes.length);
+  var eighthRandomForestLocation = new randomTypes[eighthChoice](
+    `${regionId}.location_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthwestToNorth = new HorizontalForestPath(
+    `${regionId}.path_${increment + 8}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthToCenter = new VerticalForestPath(
+    `${regionId}.path_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var center = new Crossroads(`${regionId}.location_${increment + 7}`, getTier(targetTile));
+  var pathFromWestToCenter = new HorizontalForestPath(
+    `${regionId}.path_${increment + 8}`,
+    getTier(targetTile)
+  );
+  var pathFromEastToCenter = new HorizontalForestPath(
+    `${regionId}.path_${increment + 9}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthToCenter = new VerticalForestPath(
+    `${regionId}.path_${increment + 10}`,
+    getTier(targetTile)
+  );
+  var southernPathToEntrance = new VerticalForestPath(
+    `${regionId}.path_${increment + 11}`,
+    getTier(targetTile)
   );
   var easternForestEntrance = new HorizontalForestEntrance(
     `${regionId}.entrance_${increment + 1}`
@@ -747,12 +857,150 @@ function generateForestTile(mapGrid, targetTile) {
   var southernForestEntrance = new VerticalForestEntrance(
     `${regionId}.entrance_${increment + 3}`
   );
-  increment = 1;
+  southernPathToEntrance.exits = {
+    north: seventhRandomForestLocation.id,
+    south: southernForestEntrance.id,
+  };
+  southernForestEntrance.exits = {
+    north: seventhRandomForestLocation.id,
+  };
+  westernForestEntrance.exits = {
+    east: westernPathFromEntrance.id,
+  };
+  westernPathFromEntrance.exits = {
+    west: westernForestEntrance.id,
+    east: firstRandomForestLocation.id,
+  };
+  firstRandomForestLocation.exits = {
+    west: westernPathFromEntrance.id,
+    north: pathFromWestToNorthwest.id,
+    east: pathFromWestToCenter.id,
+    south: pathFromSouthwestToNorth.id,
+  };
+  pathFromWestToNorthwest.exits = {
+    north: secondRandomForestLocation.id,
+    south: firstRandomForestLocation.id,
+  };
+  secondRandomForestLocation.exits = {
+    east: pathFromNorthwestToEast.id,
+    south: pathFromWestToNorthwest.id,
+  };
+  pathFromNorthwestToEast.exits = {
+    west: secondRandomForestLocation.id,
+    east: thirdRandomForestLocation.id,
+  };
+  thirdRandomForestLocation.exits = {
+    north: northernPathToEntrance.id,
+    east: pathFromNorthToEast.id,
+    west: pathFromNorthwestToEast.id,
+    south: pathFromNorthToCenter.id,
+  };
+  northernPathToEntrance.exits = {
+    north: northernForestEntrance.id,
+    south: thirdRandomForestLocation.id,
+  };
+  pathFromNorthToEast.exits = {
+    east: fourthRandomForestLocation.id,
+    west: thirdRandomForestLocation.id,
+  };
+  fourthRandomForestLocation.exits = {
+    west: pathFromNorthToEast.id,
+    south: pathFromNortheastToSouth.id,
+  };
+  pathFromNortheastToSouth.exits = {
+    north: fourthRandomForestLocation.id,
+    south: fifthRandomForestLocation.id,
+  };
+  fifthRandomForestLocation.exits = {
+    north: pathFromNortheastToSouth.id,
+    east: easternPathToEntrance.id,
+    south: pathFromEastToSouth.id,
+    west: pathFromEastToCenter.id,
+  };
+  easternPathToEntrance.exits = {
+    west: fifthRandomForestLocation.id,
+    east: easternForestEntrance.id,
+  };
+  pathFromEastToSouth.exits = {
+    north: fifthRandomForestLocation.id,
+    south: sixthRandomForestLocation.id,
+  };
+  sixthRandomForestLocation.exits = {
+    north: pathFromEastToSouth.id,
+    west: pathFromSouthEastToSouth.id,
+  };
+  pathFromSouthEastToSouth.exits = {
+    east: sixthRandomForestLocation.id,
+    west: seventhRandomForestLocation.id,
+  };
+  seventhRandomForestLocation.exits = {
+    east: pathFromSouthEastToSouth.id,
+    north: pathFromSouthToCenter.id,
+    west: pathFromWestToSouthwest.id,
+    south: southernPathToEntrance.id,
+  };
+  pathFromWestToSouthwest.exits = {
+    west: eighthRandomForestLocation.id,
+    east: seventhRandomForestLocation.id,
+  };
+  eighthRandomForestLocation.exits = {
+    east: pathFromWestToSouthwest.id,
+    north: pathFromSouthwestToNorth.id,
+  };
+  pathFromSouthwestToNorth.exits = {
+    north: firstRandomForestLocation.id,
+    south: eighthRandomForestLocation.id,
+  };
+  pathFromSouthToCenter.exits = {
+    north: center.id,
+    south: seventhRandomForestLocation.id,
+  };
+  center.exits = {
+    east: pathFromWestToCenter.id,
+    north: pathFromSouthToCenter.id,
+    west: pathFromEastToCenter.id,
+    south: pathFromNorthToCenter.id,
+  };
+  pathFromWestToCenter.exits = {
+    east: center.id,
+    west: firstRandomForestLocation.id,
+  };
+  pathFromEastToCenter.exits = {
+    east: fifthRandomForestLocation.id,
+    west: center.id,
+  };
+  pathFromNorthToCenter.exits = {
+    north: thirdRandomForestLocation.id,
+    south: center.id,
+  };
   var locationObjects = {};
   locationObjects[`entrance_${increment}`] = westernForestEntrance;
   locationObjects[`entrance_${increment + 1}`] = easternForestEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernForestEntrance;
   locationObjects[`entrance_${increment + 3}`] = southernForestEntrance;
+  locationObjects[`path_${increment}`] = westernPathFromEntrance;
+  locationObjects[`location_${increment}`] = firstRandomForestLocation;
+  locationObjects[`path_${increment + 1}`] = pathFromWestToNorthwest;
+  locationObjects[`location_${increment + 1}`] = secondRandomForestLocation;
+  locationObjects[`path_${increment + 2}`] = pathFromNorthwestToEast;
+  locationObjects[`location_${increment + 2}`] = thirdRandomForestLocation;
+  locationObjects[`path_${increment + 3}`] = northernPathToEntrance;
+  locationObjects[`path_${increment + 3}`] = pathFromNorthToEast;
+  locationObjects[`location_${increment + 3}`] = fourthRandomForestLocation;
+  locationObjects[`path_${increment + 4}`] = pathFromNortheastToSouth;
+  locationObjects[`location_${increment + 4}`] = fifthRandomForestLocation;
+  locationObjects[`path_${increment + 5}`] = pathFromEastToSouth;
+  locationObjects[`location_${increment + 5}`] = sixthRandomForestLocation;
+  locationObjects[`path_${increment + 6}`] = pathFromSouthEastToSouth;
+  locationObjects[`location_${increment + 6}`] = seventhRandomForestLocation;
+  locationObjects[`path_${increment + 7}`] = pathFromWestToSouthwest;
+  locationObjects[`location_${increment + 7}`] = eighthRandomForestLocation;
+  locationObjects[`path_${increment + 8}`] = pathFromSouthwestToNorth;
+  locationObjects[`path_${increment + 7}`] = pathFromSouthToCenter;
+  locationObjects[`location_${increment + 7}`] = center;
+  locationObjects[`path_${increment + 8}`] = pathFromWestToCenter;
+  locationObjects[`path_${increment + 9}`] = pathFromEastToCenter;
+  locationObjects[`path_${increment + 10}`] = pathFromNorthToCenter;
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }

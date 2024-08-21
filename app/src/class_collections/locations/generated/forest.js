@@ -50,7 +50,7 @@ class HorizontalForestPath extends Room {
 class VerticalForestPath extends Room {
   constructor(id, tier) {
     super(
-      "Forest Path",
+      "Forest/Path",
       id,
       "The forest path winds through the trees for a long way, leading to different areas to the north and south.",
       10.5,
@@ -67,7 +67,7 @@ class VerticalForestPath extends Room {
 class SmallClearing extends Room {
   constructor(id, tier) {
     super(
-      "Small Clearing",
+      "Small/Clearing",
       id,
       "The clearing is a small, open area surrounded by trees.",
       20.5,
@@ -84,7 +84,7 @@ class SmallClearing extends Room {
 class LargeClearing extends Room {
   constructor(id, tier) {
     super(
-      "Large Clearing",
+      "Large/Clearing",
       id,
       "The clearing is a large, open area surrounded by trees.",
       40.5,
