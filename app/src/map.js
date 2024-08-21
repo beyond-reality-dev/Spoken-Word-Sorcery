@@ -395,4 +395,8 @@ function drawCompass(ctx, width, height) {
   ctx.fillText("NW", 20, 20);
 }
 
-module.exports = { updateMap };
+function updateWorldMap() {
+
+}
+
+module.exports = { updateMap, updateWorldMap };

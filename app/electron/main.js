@@ -19,12 +19,12 @@ function createWindow() {
   });
   window.maximize();
   window.webContents.executeJavaScript(`
-        const { switchScreen, switchButton, blockInput, allowInput } = require("./general.js");
+        const { switchScreen, switchButton, switchMapButton, blockInput, allowInput } = require("./general.js");
         const { saveGame, loadGame, deleteGame, updateSaveGames, getValue, changeValue } = require("./save_data.js");
-        const { updateMap } = require("./map.js");
+        const { updateMap, updateWorldMap } = require("./map.js");
         const { intro } = require("./cutscenes/imperial_citadel/imperial_academy/intro/intro.js");
 
-        // Start menu functions.
+        // Start menu functions
         document.getElementById("start-button").onclick = function () {
           document.getElementById("game-screen").style.display = "block";
           document.getElementById("start-screen").style.display = "none";
@@ -86,7 +86,7 @@ function createWindow() {
           document.getElementById("start-screen").style.display = "block";
         }
         
-        // Sidebar functions.
+        // Sidebar functions
         document.getElementById("spellbook-button").onclick = function () {
           switchScreen("spellbook-screen");
           switchButton("spellbook-button");
@@ -118,7 +118,7 @@ function createWindow() {
           switchButton("home-button");
         }
 
-        // Setttings functions.
+        // Setttings functions
         if (localStorage.getItem("gameSpeed") != null) {
           var gameSpeed = getValue("gameSpeed");
         } else {
@@ -172,6 +172,17 @@ function createWindow() {
 
         document.getElementById("quit-button").onclick = function () {
           window.close();
+        }
+
+        // Map functions
+        document.getElementById("local-map-button").onclick = function () {
+          switchMapButton("local-map-button");
+          updateMap();
+        }
+
+        document.getElementById("world-map-button").onclick = function () {
+          switchMapButton("world-map-button");
+          updateWorldMap();
         }
     `);
 }

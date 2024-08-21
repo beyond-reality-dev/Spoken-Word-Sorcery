@@ -1,13 +1,14 @@
 module.exports = {
   switchScreen,
   switchButton,
+  switchMapButton,
   printLines,
   quickPrint,
   requireAnswer,
   toTitleCase,
   diceRoll,
   addDice,
-  getRandomInt
+  getRandomInt,
 };
 
 const { allowInput, blockInput, closedInput } = require("./handle_input");
@@ -38,6 +39,15 @@ function switchButton(button) {
   document.getElementById("map-button").style.cursor = "pointer";
   document.getElementById("home-button").style.backgroundColor = "#ffffff";
   document.getElementById("home-button").style.cursor = "pointer";
+  document.getElementById(button).style.backgroundColor = "#d1d1d1";
+  document.getElementById(button).style.cursor = "default";
+}
+
+function switchMapButton(button) {
+  document.getElementById("local-map-button").style.backgroundColor = "#ffffff";
+  document.getElementById("local-map-button").style.cursor = "pointer";
+  document.getElementById("world-map-button").style.backgroundColor = "#ffffff";
+  document.getElementById("world-map-button").style.cursor = "pointer";
   document.getElementById(button).style.backgroundColor = "#d1d1d1";
   document.getElementById(button).style.cursor = "default";
 }
