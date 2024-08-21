@@ -182,23 +182,35 @@ class Clearing_02 extends Room {
 
 var clearing_02 = new Clearing_02();
 
-class UnknownShoreEntrance extends Room {
-  constructor() {
+class HorizontalUnknownShoreEntrance extends Room {
+  constructor(id) {
     super(
       "Unknown Shore Entrance",
-      "unknownShore.unknownShoreEntrance",
-      "The path leads to the unknown shore in the east and out of the forest in the west.",
+      id,
+      "You can faintly hear the sound of waves crashing against the shore from the entrance to the Unknown Shore. The path leads to the east and west.",
       20.5,
       40.5
     );
     this.items = {};
-    this.exits = {
-      east: "unknownShore.forestPath_01",
-    };
+    this.exits = {};
+    this.type = "horizontalUnknownShoreEntrance";
   }
 }
 
-var unknownShoreEntrance = new UnknownShoreEntrance();
+class VerticalUnknownShoreEntrance extends Room {
+  constructor(id) {
+    super(
+      "Unknown Shore Entrance",
+      id,
+      "You can faintly hear the sound of waves crashing against the shore from the entrance to the Unknown Shore. The path leads to the north and south.",
+      40.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {};
+    this.type = "verticalUnknownShoreEntrance";
+  }
+}
 
 module.exports = {
   rockyBeach,
@@ -210,5 +222,6 @@ module.exports = {
   oldTreeStump,
   forestPath_02,
   clearing_02,
-  unknownShoreEntrance,
+  HorizontalUnknownShoreEntrance,
+  VerticalUnknownShoreEntrance,
 };
