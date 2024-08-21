@@ -1,20 +1,5 @@
 const Ocean = require("./class_collections/locations/generated/ocean");
 
-const MAP_KEY = {
-  X: null, // empty cell
-  U: "U", // Unknown Shore
-  P: "P", // Paragon City
-  L: "L", // Liberty City
-  F: "🟩", // forest
-  M: "⬛", // mountain
-  K: "⬜", // mountain peak
-  V: "🟥", // volcano
-  D: "🟨", // desert
-  O: "🟦", // ocean
-  S: "🟫", // shore
-  R: "🟦", // river
-};
-
 var row01 = ["O","O","O","O","O","O","O","O","O","O","O","O","O","O","O"]; // prettier-ignore
 var row02 = ["O","X","X","X","X","X","X","X","X","X","X","X","X","X","O"]; // prettier-ignore
 var row03 = ["O","X","X","X","X","X","X","X","X","X","X","X","X","X","O"]; // prettier-ignore
@@ -633,7 +618,7 @@ function generateRegions(mapGrid, unknownShoreCoords) {
       } else if (mapGrid[i][j] == "S") {
         generateTile(mapGrid, [i, j], "shore", unknownShoreCoords);
       } else if (mapGrid[i][j] == "R") {
-        generateRiverTile(mapGrid, [i, j]);
+        generateRiverTile(mapGrid, [i, j], unknownShoreCoords);
       } else if (mapGrid[i][j] == "P") {
         generateTile(mapGrid, [i, j], "paragonCity", unknownShoreCoords);
       } else if (mapGrid[i][j] == "L") {
@@ -732,6 +717,10 @@ const {
 const {
   HorizontalRiverEntrance,
   VerticalRiverEntrance,
+  ThickHorizontalBridge,
+  ThinHorizontalBridge,
+  ThickVerticalBridge,
+  ThinVerticalBridge,
 } = require("./class_collections/locations/generated/river");
 const {
   HorizontalParagonCityEntrance,
@@ -1123,7 +1112,7 @@ function generateTile(mapGrid, targetTile, type, unknownShoreCoords) {
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }
 
-function generateRiverTile(mapGrid, targetTile) {
+function generateRiverTile(mapGrid, targetTile, unknownShoreCoords) {
   var regionIncrement = getIncrement(mapGrid, "river");
   var regionId = `riverTile_${regionIncrement}`;
   var increment = getIncrement(mapGrid, `${regionId}.entrance`);
@@ -1140,11 +1129,112 @@ function generateRiverTile(mapGrid, targetTile) {
   var southernRiverEntrance = new VerticalRiverEntrance(
     `${regionId}.entrance_${increment + 3}`
   );
-  increment = 1;
+  var westToEastSegment_01 = new ThickHorizontalBridge(
+    `${regionId}.path_${increment}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var westToEastSegment_02 = new ThinHorizontalBridge(
+    `${regionId}.path_${increment + 1}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var westToEastSegment_03 = new ThickHorizontalBridge(
+    `${regionId}.path_${increment + 2}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var westToEastSegment_04 = new ThinHorizontalBridge(
+    `${regionId}.path_${increment + 3}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var westToEastSegment_05 = new ThickHorizontalBridge(
+    `${regionId}.path_${increment + 4}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var northToSouthSegment_01 = new ThickVerticalBridge(
+    `${regionId}.path_${increment + 5}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var northToSouthSegment_02 = new ThinVerticalBridge(
+    `${regionId}.path_${increment + 6}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var northToSouthSegment_03 = new ThickVerticalBridge(
+    `${regionId}.path_${increment + 7}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var northToSouthSegment_04 = new ThinVerticalBridge(
+    `${regionId}.path_${increment + 8}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  var northToSouthSegment_05 = new ThickVerticalBridge(
+    `${regionId}.path_${increment + 9}`,
+    getTier(targetTile, unknownShoreCoords)
+  );
+  westernRiverEntrance.exits = {
+    east: westToEastSegment_01.id,
+  };
+  westToEastSegment_01.exits = {
+    west: westernRiverEntrance.id,
+    east: westToEastSegment_02.id,
+  };
+  westToEastSegment_02.exits = {
+    west: westToEastSegment_01.id,
+    east: westToEastSegment_03.id,
+  };
+  westToEastSegment_03.exits = {
+    west: westToEastSegment_02.id,
+    east: westToEastSegment_04.id,
+  };
+  westToEastSegment_04.exits = {
+    west: westToEastSegment_03.id,
+    east: westToEastSegment_05.id,
+  };
+  westToEastSegment_05.exits = {
+    west: westToEastSegment_04.id,
+    east: easternRiverEntrance.id,
+  };
+  easternRiverEntrance.exits = {
+    west: westToEastSegment_05.id,
+  };
+  northernRiverEntrance.exits = {
+    south: northToSouthSegment_01.id,
+  };
+  northToSouthSegment_01.exits = {
+    north: northernRiverEntrance.id,
+    south: northToSouthSegment_02.id,
+  };
+  northToSouthSegment_02.exits = {
+    north: northToSouthSegment_01.id,
+    south: northToSouthSegment_03.id,
+  };
+  northToSouthSegment_03.exits = {
+    north: northToSouthSegment_02.id,
+    south: northToSouthSegment_04.id,
+  };
+  northToSouthSegment_04.exits = {
+    north: northToSouthSegment_03.id,
+    south: northToSouthSegment_05.id,
+  };
+  northToSouthSegment_05.exits = {
+    north: northToSouthSegment_04.id,
+    south: southernRiverEntrance.id,
+  };
+  southernRiverEntrance.exits = {
+    north: northToSouthSegment_05.id,
+  };
   locationObjects[`entrance_${increment}`] = westernRiverEntrance;
   locationObjects[`entrance_${increment + 1}`] = easternRiverEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernRiverEntrance;
   locationObjects[`entrance_${increment + 3}`] = southernRiverEntrance;
+  locationObjects[`path_${increment}`] = westToEastSegment_01;
+  locationObjects[`path_${increment + 1}`] = westToEastSegment_02;
+  locationObjects[`path_${increment + 2}`] = westToEastSegment_03;
+  locationObjects[`path_${increment + 3}`] = westToEastSegment_04;
+  locationObjects[`path_${increment + 4}`] = westToEastSegment_05;
+  locationObjects[`path_${increment + 5}`] = northToSouthSegment_01;
+  locationObjects[`path_${increment + 6}`] = northToSouthSegment_02;
+  locationObjects[`path_${increment + 7}`] = northToSouthSegment_03;
+  locationObjects[`path_${increment + 8}`] = northToSouthSegment_04;
+  locationObjects[`path_${increment + 9}`] = northToSouthSegment_05;
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }

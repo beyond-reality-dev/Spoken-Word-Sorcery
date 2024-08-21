@@ -30,30 +30,13 @@ class HorizontalRiverEntrance extends Room {
   }
 }
 
-class HorizontalBridge extends Room {
+class ThickHorizontalBridge extends Room {
   constructor(id, tier) {
     super(
       "Bridge",
       id,
-      "The bridge spans the river, connecting the east and west banks.",
-      20.5,
-      10.5
-    );
-    this.items = {};
-    this.exits = {};
-    this.encounter = `generateRandomEncounter(${tier})`;
-    this.encountered = false;
-    this.type = "bridge";
-  }
-}
-
-class VerticalBridge extends Room {
-  constructor(id, tier) {
-    super(
-      "Bridge",
-      id,
-      "The bridge spans the river, connecting the north and south banks.",
-      10.5,
+      "The bridge over the great river continues to the east and west.",
+      40.5,
       20.5
     );
     this.items = {};
@@ -64,12 +47,12 @@ class VerticalBridge extends Room {
   }
 }
 
-class RiverBank extends Room {
+class ThinHorizontalBridge extends Room {
   constructor(id, tier) {
     super(
-      "River Path",
+      "Bridge",
       id,
-      "The river path winds along the riverbank, leading to different areas to the east and west.",
+      "The bridge spans the river, connecting the east and west banks.",
       40.5,
       10.5
     );
@@ -77,14 +60,49 @@ class RiverBank extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = "riverPath";
+    this.type = "bridge";
+  }
+}
+
+class ThickVerticalBridge extends Room {
+  constructor(id, tier) {
+    super(
+      "Bridge",
+      id,
+      "The bridge over the great river continues to the north and south.",
+      20.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {};
+    this.encounter = `generateRandomEncounter(${tier})`;
+    this.encountered = false;
+    this.type = "bridge";
+  }
+}
+
+class ThinVerticalBridge extends Room {
+  constructor(id, tier) {
+    super(
+      "Bridge",
+      id,
+      "The bridge spans the river, connecting the north and south banks.",
+      10.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {};
+    this.encounter = `generateRandomEncounter(${tier})`;
+    this.encountered = false;
+    this.type = "bridge";
   }
 }
 
 module.exports = {
   VerticalRiverEntrance,
   HorizontalRiverEntrance,
-  HorizontalBridge,
-  VerticalBridge,
-  RiverBank,
+  ThickHorizontalBridge,
+  ThinHorizontalBridge,
+  ThickVerticalBridge,
+  ThinVerticalBridge,
 };
