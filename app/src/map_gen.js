@@ -671,12 +671,9 @@ function getIncrement(mapGrid, roomType) {
   var increment = 1;
   for (let i = 0; i < mapGrid.length; i++) {
     for (let j = 0; j < mapGrid[i].length; j++) {
-      if (mapGrid[i][j].hasOwnProperty("id")) {
-        var id = mapGrid[i][j].id;
-        if (id.includes(roomType)) {
-          id = id.split("_");
-          id = id[1];
-          id = parseInt(id);
+      var keys = Object.keys(mapGrid[i][j]);
+      for (let k = 0; k < keys.length; k++) {
+        if (keys[k].includes(roomType)) {
           increment++;
         }
       }
@@ -701,9 +698,12 @@ function getTier(targetTile) {
 
 function generateOceanTile(mapGrid, targetTile) {
   var increment = getIncrement(mapGrid, "oceanTile");
-  var oceanTile = new Ocean(`oceanTile_${increment}`);
+  var regionId = `oceanTile_${increment}`;
+  var oceanTile = new Ocean(`${regionId}.oceanTile_1`);
+  var locationObjects = {};
+  locationObjects[`oceanTile_1`] = oceanTile;
   mapGrid[targetTile[0]][targetTile[1]] = {};
-  mapGrid[targetTile[0]][targetTile[1]][`oceanTile`] = oceanTile;
+  mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }
 
 const {
@@ -743,7 +743,6 @@ function generateForestTile(mapGrid, targetTile) {
   var regionIncrement = getIncrement(mapGrid, "forest");
   var regionId = `forestTile_${regionIncrement}`;
   var increment = 1;
-  var locationObjects = {};
   var westernForestEntrance = new HorizontalForestEntrance(
     `${regionId}.entrance_${increment}`
   );
@@ -757,17 +756,13 @@ function generateForestTile(mapGrid, targetTile) {
     `${regionId}.entrance_${increment + 3}`
   );
   increment = 1;
+  var locationObjects = {};
   locationObjects[`entrance_${increment}`] = westernForestEntrance;
   locationObjects[`entrance_${increment + 1}`] = easternForestEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernForestEntrance;
   locationObjects[`entrance_${increment + 3}`] = southernForestEntrance;
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
-  const roomTypes = ["SmallClearing", "LargeClearing", "Crossroads"];
-  const pathTypes = ["HorizontalForestPath", "VerticalForestPath"];
-  var tier = getTier(targetTile);
-  var rooms = generate9x9Grid(roomTypes, pathTypes, tier, regionId);
-  mapGrid[targetTile[0]][targetTile[1]][regionId] = rooms;
 }
 
 function generateDesertTile(mapGrid, targetTile) {
@@ -901,8 +896,7 @@ function generateRiverTile(mapGrid, targetTile) {
 }
 
 function generateParagonCityTile(mapGrid, targetTile) {
-  var regionIncrement = getIncrement(mapGrid, "paragonCity");
-  var regionId = `paragonCityTile_${regionIncrement}`;
+  var regionId = "paragonCity";
   var increment = getIncrement(mapGrid, `${regionId}.entrance`);
   var locationObjects = {};
   var westernParagonCityEntrance = new HorizontalParagonCityEntrance(
@@ -927,8 +921,7 @@ function generateParagonCityTile(mapGrid, targetTile) {
 }
 
 function generateLibertyCityTile(mapGrid, targetTile) {
-  var regionIncrement = getIncrement(mapGrid, "libertyCity");
-  var regionId = `libertyCityTile_${regionIncrement}`;
+  var regionId = "libertyCity";
   var increment = getIncrement(mapGrid, `${regionId}.entrance`);
   var locationObjects = {};
   var westernLibertyCityEntrance = new HorizontalLibertyCityEntrance(
@@ -1115,34 +1108,72 @@ function createRoom(type, id, tier) {
 function linkRegions(mapGrid) {
   for (let i = 0; i < mapGrid.length; i++) {
     for (let j = 0; j < mapGrid[i].length; j++) {
-      if (mapGrid[i][j].hasOwnProperty("id")) {
-        var id = mapGrid[i][j].id;
-        if (id.includes("Entrance") || id.includes("oceanTile")) {
-          if (i > 0) {
-            if (mapGrid[i - 1][j].hasOwnProperty("id")) {
-              var northId = mapGrid[i - 1][j].id;
-              mapGrid[i][j].exits["north"] = northId;
-            }
-          }
-          if (i < mapGrid.length - 1) {
-            if (mapGrid[i + 1][j].hasOwnProperty("id")) {
-              var southId = mapGrid[i + 1][j].id;
-              mapGrid[i][j].exits["south"] = southId;
-            }
-          }
-          if (j > 0) {
-            if (mapGrid[i][j - 1].hasOwnProperty("id")) {
-              var westId = mapGrid[i][j - 1].id;
-              mapGrid[i][j].exits["west"] = westId;
-            }
-          }
-          if (j < mapGrid[i].length - 1) {
-            if (mapGrid[i][j + 1].hasOwnProperty("id")) {
-              var eastId = mapGrid[i][j + 1].id;
-              mapGrid[i][j].exits["east"] = eastId;
+      try {
+        var keys = Object.keys(mapGrid[i][j]);
+        for (let k = 0; k < keys.length; k++) {
+          var secondaryKeys = Object.keys(mapGrid[i][j][keys[k]]);
+          for (let l = 0; l < secondaryKeys.length; l++) {
+            if (secondaryKeys[l].id.includes("entrance")) {
+              if (secondaryKeys[l].id.includes("1")) {
+                if (j > 0) {
+                  var westernRoom = mapGrid[i][j - 1];
+                  var westernKeys = Object.keys(westernRoom);
+                  for (let m = 0; m < westernKeys.length; m++) {
+                    if (westernKeys[m].id.includes("entrance")) {
+                      if (westernKeys[m].id.includes("1")) {
+                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits["west"] =
+                          westernRoom[westernKeys[m]].id;
+                      }
+                    }
+                  }
+                }
+              } else if (secondaryKeys[l].id.includes("2")) {
+                if (j < mapGrid[i].length - 1) {
+                  var easternRoom = mapGrid[i][j + 1];
+                  var easternKeys = Object.keys(easternRoom);
+                  for (let m = 0; m < easternKeys.length; m++) {
+                    if (easternKeys[m].id.includes("entrance")) {
+                      if (easternKeys[m].id.includes("2")) {
+                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits["east"] =
+                          easternRoom[easternKeys[m]].id;
+                      }
+                    }
+                  }
+                }
+              } else if (secondaryKeys[l].id.includes("3")) {
+                if (i > 0) {
+                  var northernRoom = mapGrid[i - 1][j];
+                  var northernKeys = Object.keys(northernRoom);
+                  for (let m = 0; m < northernKeys.length; m++) {
+                    if (northernKeys[m].id.includes("entrance")) {
+                      if (northernKeys[m].id.includes("3")) {
+                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits[
+                          "north"
+                        ] = northernRoom[northernKeys[m]].id;
+                      }
+                    }
+                  }
+                }
+              } else if (secondaryKeys[l].id.includes("4")) {
+                if (i < mapGrid.length - 1) {
+                  var southernRoom = mapGrid[i + 1][j];
+                  var southernKeys = Object.keys(southernRoom);
+                  for (let m = 0; m < southernKeys.length; m++) {
+                    if (southernKeys[m].id.includes("entrance")) {
+                      if (southernKeys[m].id.includes("4")) {
+                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits[
+                          "south"
+                        ] = southernRoom[southernKeys[m]].id;
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
+      } catch (error) {
+        continue;
       }
     }
   }

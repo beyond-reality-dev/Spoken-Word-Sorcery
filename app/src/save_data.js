@@ -84,16 +84,18 @@ function initializeData(saveFile) {
   for (let i = 0; i < generatedMap.length; i++) {
     for (let j = 0; j < generatedMap[i].length; j++) {
       try {
-        var id = generatedMap[i][j]["id"];
-        locations[id[0]][id[1]] = generatedMap[i][j];
+        var keys = Object.keys(generatedMap[i][j]);
+        for (let k = 0; k < keys.length; k++) {
+          var secondaryKeys = Object.keys(generatedMap[i][j][keys[k]]);
+          for (let l = 0; l < secondaryKeys.length; l++) {
+            id = generatedMap[i][j][keys[k]][secondaryKeys[0]].id.split(".")[0];
+            locations[id] = generatedMap[i][j][keys[k]];
+          }
+        }
       } catch (error) {
-      var keys = Object.keys(generatedMap[i][j]);
-      for (let k = 0; k < keys.length; k++) {
-        var id = keys[k].id.split(".");
-        locations[id[0]] = {};
-        locations[id[0]][id[1]] = generatedMap[i][j];
+        console.log(error);
+        continue;
       }
-    }
     }
   }
   playerData["inventory"] = inventory;
