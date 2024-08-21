@@ -49,7 +49,7 @@ var mapGrid = [
   row15,
 ];
 
-function generateMap(map) {
+function generateMap(map, print = false) {
   generateOceans(map); // If a cell is adjacent to ocean, it will become ocean 33% of the time, otherwise it will become shore
   generateBiome(map, "F"); // Generate 5 forest tiles
   generateBiome(map, "M"); // Generate 5 mountain tiles
@@ -62,24 +62,16 @@ function generateMap(map) {
   generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
   generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
   generateUnknownShore(map); // Generate the Unknown Shore
+  if (print) {
+    var displayMap = map.map((row) => {
+      return row.map((cell) => MAP_KEY[cell]);
+    });
+    for (let i = 0; i < displayMap.length; i++) {
+      console.log(displayMap[i].join(""));
+    }
+  }
   generateRegions(map); // Generate regions for each cell
   linkRegions(map); // Link the entrances of each region to the entrances of adjacent regions
-  return mapGrid;
-}
-
-function partiallyGenerateMap(map) {
-  generateOceans(map); // If a cell is adjacent to ocean, it will become ocean 33% of the time, otherwise it will become shore
-  generateBiome(map, "F"); // Generate 5 forest tiles
-  generateBiome(map, "M"); // Generate 5 mountain tiles
-  generateBiome(map, "D"); // Generate 5 desert tiles
-  propagateBiomes(map); // Biomes will propagate to adjacent cells
-  generateParagonCity(map); // Generate Paragon City, on a tile that is surrounded by four mountain tiles (or less if that is not possible)
-  fillShoreline(map); // If there are empty cells adjacent to ocean cells, they will become shore
-  trimShoreline(map); // If there are shore cells that are not adjacent to non-shore tiles, they will become ocean
-  generateRiver(map); // Generate a river that starts at the ocean and ends at the ocean
-  generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
-  generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
-  generateUnknownShore(map); // Generate the Unknown Shore
   return mapGrid;
 }
 
@@ -1109,61 +1101,103 @@ function linkRegions(mapGrid) {
   for (let i = 0; i < mapGrid.length; i++) {
     for (let j = 0; j < mapGrid[i].length; j++) {
       try {
-        var keys = Object.keys(mapGrid[i][j]);
+        var room = mapGrid[i][j];
+        var keys = Object.keys(room);
         for (let k = 0; k < keys.length; k++) {
-          var secondaryKeys = Object.keys(mapGrid[i][j][keys[k]]);
+          var secondaryRoom = room[keys[k]];
+          var secondaryKeys = Object.keys(secondaryRoom);
           for (let l = 0; l < secondaryKeys.length; l++) {
-            if (secondaryKeys[l].id.includes("entrance")) {
-              if (secondaryKeys[l].id.includes("1")) {
+            console.log(secondaryRoom[secondaryKeys[l]]);
+            var primaryId = secondaryRoom[secondaryKeys[l]].id;
+            if (
+              primaryId.includes("entrance") ||
+              primaryId.includes("oceanTile")
+            ) {
+              if (primaryId.includes("1") || primaryId.includes("oceanTile")) {
                 if (j > 0) {
                   var westernRoom = mapGrid[i][j - 1];
                   var westernKeys = Object.keys(westernRoom);
                   for (let m = 0; m < westernKeys.length; m++) {
-                    if (westernKeys[m].id.includes("entrance")) {
-                      if (westernKeys[m].id.includes("1")) {
-                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits["west"] =
-                          westernRoom[westernKeys[m]].id;
+                    var westernSecondaryRoom = westernRoom[westernKeys[m]];
+                    var westernSecondaryKeys =
+                      Object.keys(westernSecondaryRoom);
+                    for (let n = 0; n < westernSecondaryKeys.length; n++) {
+                      var westernId =
+                        westernSecondaryRoom[westernSecondaryKeys[n]].id;
+                      if (
+                        westernId.includes("entrance") ||
+                        westernId.includes("oceanTile")
+                      ) {
+                        secondaryRoom[secondaryKeys[l]].exits["west"] =
+                          westernSecondaryRoom[westernSecondaryKeys[n]].id;
                       }
                     }
                   }
                 }
-              } else if (secondaryKeys[l].id.includes("2")) {
+              }
+              if (primaryId.includes("2") || primaryId.includes("oceanTile")) {
                 if (j < mapGrid[i].length - 1) {
                   var easternRoom = mapGrid[i][j + 1];
                   var easternKeys = Object.keys(easternRoom);
                   for (let m = 0; m < easternKeys.length; m++) {
-                    if (easternKeys[m].id.includes("entrance")) {
-                      if (easternKeys[m].id.includes("2")) {
-                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits["east"] =
-                          easternRoom[easternKeys[m]].id;
+                    var easternSecondaryRoom = easternRoom[easternKeys[m]];
+                    var easternSecondaryKeys =
+                      Object.keys(easternSecondaryRoom);
+                    for (let n = 0; n < easternSecondaryKeys.length; n++) {
+                      var easternId =
+                        easternSecondaryRoom[easternSecondaryKeys[n]].id;
+                      if (
+                        easternId.includes("entrance") ||
+                        easternId.includes("oceanTile")
+                      ) {
+                        secondaryRoom[secondaryKeys[l]].exits["east"] =
+                          easternSecondaryRoom[easternSecondaryKeys[n]].id;
                       }
                     }
                   }
                 }
-              } else if (secondaryKeys[l].id.includes("3")) {
+              }
+              if (primaryId.includes("3") || primaryId.includes("oceanTile")) {
                 if (i > 0) {
                   var northernRoom = mapGrid[i - 1][j];
                   var northernKeys = Object.keys(northernRoom);
                   for (let m = 0; m < northernKeys.length; m++) {
-                    if (northernKeys[m].id.includes("entrance")) {
-                      if (northernKeys[m].id.includes("3")) {
-                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits[
-                          "north"
-                        ] = northernRoom[northernKeys[m]].id;
+                    var northernSecondaryRoom = northernRoom[northernKeys[m]];
+                    var northernSecondaryKeys = Object.keys(
+                      northernSecondaryRoom
+                    );
+                    for (let n = 0; n < northernSecondaryKeys.length; n++) {
+                      var northernId =
+                        northernSecondaryRoom[northernSecondaryKeys[n]].id;
+                      if (
+                        northernId.includes("entrance") ||
+                        northernId.includes("oceanTile")
+                      ) {
+                        secondaryRoom[secondaryKeys[l]].exits["north"] =
+                          northernSecondaryRoom[northernSecondaryKeys[n]].id;
                       }
                     }
                   }
                 }
-              } else if (secondaryKeys[l].id.includes("4")) {
+              }
+              if (primaryId.includes("4") || primaryId.includes("oceanTile")) {
                 if (i < mapGrid.length - 1) {
                   var southernRoom = mapGrid[i + 1][j];
                   var southernKeys = Object.keys(southernRoom);
                   for (let m = 0; m < southernKeys.length; m++) {
-                    if (southernKeys[m].id.includes("entrance")) {
-                      if (southernKeys[m].id.includes("4")) {
-                        mapGrid[i][j][keys[k]][secondaryKeys[l]].exits[
-                          "south"
-                        ] = southernRoom[southernKeys[m]].id;
+                    var southernSecondaryRoom = southernRoom[southernKeys[m]];
+                    var southernSecondaryKeys = Object.keys(
+                      southernSecondaryRoom
+                    );
+                    for (let n = 0; n < southernSecondaryKeys.length; n++) {
+                      var southernId =
+                        southernSecondaryRoom[southernSecondaryKeys[n]].id;
+                      if (
+                        southernId.includes("entrance") ||
+                        southernId.includes("oceanTile")
+                      ) {
+                        secondaryRoom[secondaryKeys[l]].exits["south"] =
+                          southernSecondaryRoom[southernSecondaryKeys[n]].id;
                       }
                     }
                   }
@@ -1179,26 +1213,7 @@ function linkRegions(mapGrid) {
   }
 }
 
-function displayMap(mapGrid) {
-  var mapGenerated = false;
-  while (!mapGenerated) {
-    try {
-      var generatedMap = partiallyGenerateMap(mapGrid);
-      mapGenerated = true;
-    } catch (error) {
-      mapGenerated = false;
-    }
-  }
-  var displayMap = generatedMap.map((row) => {
-    return row.map((cell) => MAP_KEY[cell]);
-  });
-  for (let i = 0; i < displayMap.length; i++) {
-    console.log(displayMap[i].join(""));
-  }
-}
-
 module.exports = {
   generateMap,
-  displayMap,
   mapGrid,
 };
