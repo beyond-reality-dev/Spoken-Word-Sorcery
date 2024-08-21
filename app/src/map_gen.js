@@ -62,17 +62,18 @@ function generateMap(map, print = false) {
   generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
   generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
   var unknownShoreCoords = generateUnknownShore(map); // Generate the Unknown Shore
-  if (print) {
-    var displayMap = map.map((row) => {
-      return row.map((cell) => MAP_KEY[cell]);
-    });
-    for (let i = 0; i < displayMap.length; i++) {
-      console.log(displayMap[i].join(""));
+  // Make an array of all the map cells
+  var displayMap = [];
+  for (let i = 0; i < map.length; i++) {
+    var row = [];
+    for (let j = 0; j < map[i].length; j++) {
+      row.push(map[i][j]);
     }
+    displayMap.push(row);
   }
   generateRegions(map, unknownShoreCoords); // Generate regions for each cell
   linkRegions(map); // Link the entrances of each region to the entrances of adjacent regions
-  return mapGrid;
+  return [mapGrid, displayMap];
 }
 
 function generateOceans(mapGrid) {
@@ -661,7 +662,6 @@ function getIncrement(mapGrid, roomType) {
 
 function getTier(targetTile, unknownShoreCoords) {
   var d10 = Math.floor(Math.random() * 10 + 1);
-  console.log(unknownShoreCoords);
   if (d10 == 1) {
     var xDistance = Math.abs(unknownShoreCoords[0] - targetTile[0]);
     var yDistance = Math.abs(unknownShoreCoords[1] - targetTile[1]);
@@ -1207,25 +1207,21 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       firstBeach.height = 10.5;
       firstBeach.width = 20.5;
       firstBeach.description =
-        firstBeach.description +
-        " " +
-        "The beach continues to the east.";
+        firstBeach.description + " " + "The beach continues to the east.";
       secondBeach.exits = {
         west: rockyBeach.id,
       };
       secondBeach.height = 10.5;
       secondBeach.width = 20.5;
       secondBeach.description =
-        secondBeach.description +
-        " " +
-        "The beach continues to the west.";
+        secondBeach.description + " " + "The beach continues to the west.";
       forestPath_01.exits = {
         north: rockyBeach.id,
         south: clearing_01.id,
       };
       forestPath_01.height = 40.5;
       forestPath_01.width = 10.5;
-      forestPath_01.name = "Forest/Path"
+      forestPath_01.name = "Forest/Path";
       forestPath_01.description =
         forestPath_01.description + "south and a rocky beach to the north.";
       clearing_01.exits = {
@@ -1256,7 +1252,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       };
       forestPath_02.height = 40.5;
       forestPath_02.width = 10.5;
-      forestPath_02.name = "Forest/Path"
+      forestPath_02.name = "Forest/Path";
       forestPath_02.description =
         forestPath_02.description + "a clearing to the north and south.";
       clearing_02.exits = {
@@ -1298,25 +1294,21 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       firstBeach.height = 10.5;
       firstBeach.width = 20.5;
       firstBeach.description =
-        firstBeach.description +
-        " " +
-        "The beach continues to the east.";
+        firstBeach.description + " " + "The beach continues to the east.";
       secondBeach.exits = {
         west: rockyBeach.id,
       };
       secondBeach.height = 10.5;
       secondBeach.width = 20.5;
       secondBeach.description =
-        secondBeach.description +
-        " " +
-        "The beach continues to the west.";
+        secondBeach.description + " " + "The beach continues to the west.";
       forestPath_01.exits = {
         south: rockyBeach.id,
         north: clearing_01.id,
       };
       forestPath_01.height = 40.5;
       forestPath_01.width = 10.5;
-      forestPath_01.name = "Forest/Path"
+      forestPath_01.name = "Forest/Path";
       forestPath_01.description =
         forestPath_01.description + "north and a rocky beach to the south.";
       clearing_01.exits = {
@@ -1347,7 +1339,7 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       };
       forestPath_02.height = 40.5;
       forestPath_02.width = 10.5;
-      forestPath_02.name = "Forest/Path"
+      forestPath_02.name = "Forest/Path";
       forestPath_02.description =
         forestPath_02.description + "a clearing to the south and north.";
       clearing_02.exits = {
@@ -1388,21 +1380,17 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       };
       firstBeach.height = 20.5;
       firstBeach.width = 10.5;
-      firstBeach.name = "First/Beach"
+      firstBeach.name = "First/Beach";
       firstBeach.description =
-        firstBeach.description +
-        " " +
-        "The beach continues to the south.";
+        firstBeach.description + " " + "The beach continues to the south.";
       secondBeach.exits = {
         north: rockyBeach.id,
       };
       secondBeach.height = 20.5;
       secondBeach.width = 10.5;
-      secondBeach.name = "Second/Beach"
+      secondBeach.name = "Second/Beach";
       secondBeach.description =
-        secondBeach.description +
-        " " +
-        "The beach continues to the north.";
+        secondBeach.description + " " + "The beach continues to the north.";
       forestPath_01.exits = {
         west: rockyBeach.id,
         east: clearing_01.id,
@@ -1475,21 +1463,17 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
       };
       firstBeach.height = 20.5;
       firstBeach.width = 10.5;
-      firstBeach.name = "First/Beach"
+      firstBeach.name = "First/Beach";
       firstBeach.description =
-        firstBeach.description +
-        " " +
-        "The beach continues to the south.";
+        firstBeach.description + " " + "The beach continues to the south.";
       secondBeach.exits = {
         north: rockyBeach.id,
       };
       secondBeach.height = 20.5;
       secondBeach.width = 10.5;
-      secondBeach.name = "Second/Beach"
+      secondBeach.name = "Second/Beach";
       secondBeach.description =
-        secondBeach.description +
-        " " +
-        "The beach continues to the north.";
+        secondBeach.description + " " + "The beach continues to the north.";
       forestPath_01.exits = {
         east: rockyBeach.id,
         west: clearing_01.id,
@@ -1569,7 +1553,6 @@ function linkRegions(mapGrid) {
           var secondaryRoom = room[keys[k]];
           var secondaryKeys = Object.keys(secondaryRoom);
           for (let l = 0; l < secondaryKeys.length; l++) {
-            console.log(secondaryRoom[secondaryKeys[l]]);
             var primaryId = secondaryRoom[secondaryKeys[l]].id;
             if (
               primaryId.includes("entrance") ||

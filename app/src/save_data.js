@@ -71,7 +71,6 @@ function initializeData(saveFile) {
   for (let i = 0; i < keys.length; i++) {
     locations[keys[i]] = eval("locationsObjects." + keys[i]);
   }
-  console.log(locations);
   var mapGenerated = false;
   var map = mapGrid;
   while (mapGenerated == false) {
@@ -80,7 +79,9 @@ function initializeData(saveFile) {
       mapGenerated = true;
     }
   }
-  console.log(generatedMap);
+  var mapDisplayArray = generatedMap[1];
+  console.log(mapDisplayArray);
+  var generatedMap = generatedMap[0];
   for (let i = 0; i < generatedMap.length; i++) {
     for (let j = 0; j < generatedMap[i].length; j++) {
       try {
@@ -104,6 +105,8 @@ function initializeData(saveFile) {
   playerData["spokenSpells"] = spokenSpells;
   playerData["memories"] = memories;
   playerData["locations"] = locations;
+  playerData["map"] = mapDisplayArray;
+  playerData["mapGrid"] = generatedMap;
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }

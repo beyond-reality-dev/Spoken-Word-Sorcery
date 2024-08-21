@@ -110,6 +110,7 @@ function createWindow() {
         document.getElementById("map-button").onclick = function () {
           switchScreen("map-screen");
           switchButton("map-button");
+          switchMapButton("local-map-button");
           updateMap();
         }
 

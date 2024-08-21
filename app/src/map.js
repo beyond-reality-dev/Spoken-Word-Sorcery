@@ -396,7 +396,109 @@ function drawCompass(ctx, width, height) {
 }
 
 function updateWorldMap() {
-
+  var mapArray = getValue("map");
+  const canvas = document.getElementById("map");
+  const ctx = canvas.getContext("2d");
+  var squareWidth = canvas.width / 15;
+  var squareHeight = canvas.height / 15;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "black";
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 15; j++) {
+      var character = mapArray[i][j];
+      if (character == "U") {
+        ctx.fillStyle = "#8B6914";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+        ctx.font = "bold 20px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText(
+          "U",
+          i * squareWidth + squareWidth / 2,
+          j * squareHeight + squareHeight / 2 + 7
+        );
+      } else if (character == "P") {
+        ctx.fillStyle = "#A9A9A9";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+        ctx.font = "bold 20px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText(
+          "P",
+          i * squareWidth + squareWidth / 2,
+          j * squareHeight + squareHeight / 2 + 7
+        );
+      } else if (character == "L") {
+        ctx.fillStyle = "#228B22";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+        ctx.font = "bold 20px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText(
+          "L",
+          i * squareWidth + squareWidth / 2,
+          j * squareHeight + squareHeight / 2 + 7
+        );
+      } else if (character == "F") {
+        ctx.fillStyle = "#228B22";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      } else if (character == "M") {
+        ctx.fillStyle = "#A9A9A9";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      } else if (character == "V") {
+        ctx.fillStyle = "#A9A9A9";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+        ctx.beginPath();
+        ctx.arc(
+          i * squareWidth + squareWidth / 2,
+          j * squareHeight + squareHeight / 2,
+          10,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = "#8B0000";
+        ctx.fill();
+        ctx.closePath();
+      } else if (character == "D") {
+        ctx.fillStyle = "#FFD700";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      } else if (character == "O") {
+        ctx.fillStyle = "#0000FF";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      } else if (character == "S") {
+        ctx.fillStyle = "#8B6914";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      } else if (character == "R") {
+        ctx.fillStyle = "#4682B4";
+        ctx.fillRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+      }
+    }
+  }
+  var playerLocation = getValue("location");
+  var playerRegion = playerLocation.split(".")[0];
+  var mapGrid = getValue("mapGrid");
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 15; j++) {
+      var cell = mapGrid[i][j];
+      var keys = Object.keys(cell);
+      if (keys.length > 0) {
+        console.log(keys);
+        console.log(cell[keys[0]]);
+        var secondaryKeys = Object.keys(cell[keys[0]]);
+        if (cell[keys[0]][secondaryKeys[0]].hasOwnProperty("id")) {
+          var cellRegion = cell[keys[0]][secondaryKeys[0]]["id"].split(".")[0];
+          if (cellRegion == playerRegion) {
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(i * squareWidth, j * squareHeight, squareWidth, squareHeight);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+          }
+        }
+      }
+    }
+  } 
 }
 
 module.exports = { updateMap, updateWorldMap };
