@@ -61,7 +61,7 @@ function generateMap(map, print = false) {
   generateRiver(map); // Generate a river that starts at the ocean and ends at the ocean
   generateLibertyCity(map); // Generate Liberty City, on a forest tile that is adjacent to a shore and not too close to Paragon City
   generateSpecialBiome(map, "M", "V", 2); // Generate 2 volcano tiles
-  generateUnknownShore(map); // Generate the Unknown Shore
+  var unknownShoreCoords = generateUnknownShore(map); // Generate the Unknown Shore
   if (print) {
     var displayMap = map.map((row) => {
       return row.map((cell) => MAP_KEY[cell]);
@@ -70,7 +70,7 @@ function generateMap(map, print = false) {
       console.log(displayMap[i].join(""));
     }
   }
-  generateRegions(map); // Generate regions for each cell
+  generateRegions(map, unknownShoreCoords); // Generate regions for each cell
   linkRegions(map); // Link the entrances of each region to the entrances of adjacent regions
   return mapGrid;
 }
@@ -568,21 +568,6 @@ function findLibertyCity(mapGrid) {
   }
 }
 
-function findUnknownShore(mapGrid) {
-  try {
-    for (let i = 0; i < mapGrid.length; i++) {
-      for (let j = 0; j < mapGrid[i].length; j++) {
-        if (mapGrid[i][j] == "U") {
-          return [i, j];
-        }
-      }
-    }
-  } catch (error) {
-    generateUnknownShore(mapGrid);
-    findUnknownShore(mapGrid);
-  }
-}
-
 function generateSpecialBiome(
   mapGrid,
   biome,
@@ -623,7 +608,7 @@ function generateUnknownShore(mapGrid) {
         if (xDistanceParagon > 5 || yDistanceParagon > 5) {
           if (xDistanceLiberty > 5 || yDistanceLiberty > 5) {
             mapGrid[i][j] = "U";
-            return;
+            return [i, j];
           }
         }
       }
@@ -631,27 +616,27 @@ function generateUnknownShore(mapGrid) {
   }
 }
 
-function generateRegions(mapGrid) {
+function generateRegions(mapGrid, unknownShoreCoords) {
   for (let i = 0; i < mapGrid.length; i++) {
     for (let j = 0; j < mapGrid[i].length; j++) {
       if (mapGrid[i][j] == "O") {
         generateOceanTile(mapGrid, [i, j]);
       } else if (mapGrid[i][j] == "F") {
-        generateTile(mapGrid, [i, j], "forest");
+        generateTile(mapGrid, [i, j], "forest", unknownShoreCoords);
       } else if (mapGrid[i][j] == "D") {
-        generateTile(mapGrid, [i, j], "desert");
+        generateTile(mapGrid, [i, j], "desert", unknownShoreCoords);
       } else if (mapGrid[i][j] == "M") {
-        generateTile(mapGrid, [i, j], "mountain");
+        generateTile(mapGrid, [i, j], "mountain", unknownShoreCoords);
       } else if (mapGrid[i][j] == "V") {
-        generateTile(mapGrid, [i, j], "volcano");
+        generateTile(mapGrid, [i, j], "volcano", unknownShoreCoords);
       } else if (mapGrid[i][j] == "S") {
-        generateTile(mapGrid, [i, j], "shore");
+        generateTile(mapGrid, [i, j], "shore", unknownShoreCoords);
       } else if (mapGrid[i][j] == "R") {
         generateRiverTile(mapGrid, [i, j]);
       } else if (mapGrid[i][j] == "P") {
-        generateTile(mapGrid, [i, j], "paragonCity");
+        generateTile(mapGrid, [i, j], "paragonCity", unknownShoreCoords);
       } else if (mapGrid[i][j] == "L") {
-        generateTile(mapGrid, [i, j], "libertyCity");
+        generateTile(mapGrid, [i, j], "libertyCity", unknownShoreCoords);
       } else if (mapGrid[i][j] == "U") {
         generateUnknownShoreTile(mapGrid, [i, j]);
       }
@@ -674,10 +659,10 @@ function getIncrement(mapGrid, roomType) {
   return increment;
 }
 
-function getTier(targetTile) {
+function getTier(targetTile, unknownShoreCoords) {
   var d10 = Math.floor(Math.random() * 10 + 1);
+  console.log(unknownShoreCoords);
   if (d10 == 1) {
-    var unknownShoreCoords = findUnknownShore(mapGrid);
     var xDistance = Math.abs(unknownShoreCoords[0] - targetTile[0]);
     var yDistance = Math.abs(unknownShoreCoords[1] - targetTile[1]);
     var distance = xDistance + yDistance;
@@ -775,7 +760,7 @@ const {
   clearing_02,
 } = require("./class_collections/locations/unknown_shore/unknown_shore");
 
-function generateTile(mapGrid, targetTile, type) {
+function generateTile(mapGrid, targetTile, type, unknownShoreCoords) {
   var regionIncrement = getIncrement(mapGrid, type);
   var regionId = `${type}Tile_${regionIncrement}`;
   var increment = 1;
@@ -837,106 +822,106 @@ function generateTile(mapGrid, targetTile, type) {
   var firstChoice = Math.floor(Math.random() * randomTypes.length);
   var firstRandomLocation = new randomTypes[firstChoice](
     `${regionId}.location_${increment}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromWestToNorthwest = new verticalPath(
     `${regionId}.path_${increment + 1}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var secondChoice = Math.floor(Math.random() * randomTypes.length);
   var secondRandomLocation = new randomTypes[secondChoice](
     `${regionId}.location_${increment + 1}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromNorthwestToEast = new horizontalPath(
     `${regionId}.path_${increment + 2}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var thirdChoice = Math.floor(Math.random() * randomTypes.length);
   var thirdRandomLocation = new randomTypes[thirdChoice](
     `${regionId}.location_${increment + 2}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var northernPathToEntrance = new verticalPath(
     `${regionId}.path_${increment + 3}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromNorthToEast = new horizontalPath(
     `${regionId}.path_${increment + 3}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var fourthChoice = Math.floor(Math.random() * randomTypes.length);
   var fourthRandomLocation = new randomTypes[fourthChoice](
     `${regionId}.location_${increment + 3}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromNortheastToSouth = new verticalPath(
     `${regionId}.path_${increment + 4}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var fifthChoice = Math.floor(Math.random() * randomTypes.length);
   var fifthRandomLocation = new randomTypes[fifthChoice](
     `${regionId}.location_${increment + 4}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var easternPathToEntrance = new horizontalPath(
     `${regionId}.path_${increment + 5}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromEastToSouth = new verticalPath(
     `${regionId}.path_${increment + 6}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var sixthChoice = Math.floor(Math.random() * randomTypes.length);
   var sixthRandomLocation = new randomTypes[sixthChoice](
     `${regionId}.location_${increment + 5}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromSouthEastToSouth = new horizontalPath(
     `${regionId}.path_${increment + 7}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var seventhChoice = Math.floor(Math.random() * randomTypes.length);
   var seventhRandomLocation = new randomTypes[seventhChoice](
     `${regionId}.location_${increment + 6}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromWestToSouthwest = new verticalPath(
     `${regionId}.path_${increment + 8}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var eighthChoice = Math.floor(Math.random() * randomTypes.length);
   var eighthRandomLocation = new randomTypes[eighthChoice](
     `${regionId}.location_${increment + 7}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromSouthwestToNorth = new horizontalPath(
     `${regionId}.path_${increment + 9}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromSouthToCenter = new verticalPath(
     `${regionId}.path_${increment + 10}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var center = new Crossroads(
     `${regionId}.location_${increment + 8}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromWestToCenter = new horizontalPath(
     `${regionId}.path_${increment + 11}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromEastToCenter = new horizontalPath(
     `${regionId}.path_${increment + 12}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var pathFromNorthToCenter = new verticalPath(
     `${regionId}.path_${increment + 13}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var southernPathToEntrance = new verticalPath(
     `${regionId}.path_${increment + 14}`,
-    getTier(targetTile)
+    getTier(targetTile, unknownShoreCoords)
   );
   var easternEntrance = new horizontalEntrance(
     `${regionId}.entrance_${increment + 1}`
@@ -1209,32 +1194,38 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
         west: firstBeach.id,
         east: firstBeach.id,
         south: forestPath_01.id,
-        north: northernUnknownShoreEntrance.id,
       };
+      rockyBeach.height = 20.5;
+      rockyBeach.width = 40.5;
       rockyBeach.description =
         rockyBeach.description +
         " " +
         "The beach continues to the east and west, and a forest path leads south. The ocean is to the north.";
       firstBeach.exits = {
         east: rockyBeach.id,
-        west: westernUnknownShoreEntrance.id,
       };
+      firstBeach.height = 10.5;
+      firstBeach.width = 20.5;
       firstBeach.description =
         firstBeach.description +
         " " +
-        "The beach continues to the east and west.";
+        "The beach continues to the east.";
       secondBeach.exits = {
-        east: easternUnknownShoreEntrance.id,
         west: rockyBeach.id,
       };
+      secondBeach.height = 10.5;
+      secondBeach.width = 20.5;
       secondBeach.description =
         secondBeach.description +
         " " +
-        "The beach continues to the east and west.";
+        "The beach continues to the west.";
       forestPath_01.exits = {
         north: rockyBeach.id,
         south: clearing_01.id,
       };
+      forestPath_01.height = 40.5;
+      forestPath_01.width = 10.5;
+      forestPath_01.name = "Forest/Path"
       forestPath_01.description =
         forestPath_01.description + "south and a rocky beach to the north.";
       clearing_01.exits = {
@@ -1263,6 +1254,9 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
         north: clearing_01.id,
         south: clearing_02.id,
       };
+      forestPath_02.height = 40.5;
+      forestPath_02.width = 10.5;
+      forestPath_02.name = "Forest/Path"
       forestPath_02.description =
         forestPath_02.description + "a clearing to the north and south.";
       clearing_02.exits = {
@@ -1273,176 +1267,296 @@ function generateUnknownShoreTile(mapGrid, targetTile) {
         clearing_02.description +
         " " +
         "There is a forest path to the north and south.";
+      westernUnknownShoreEntrance.exits = {
+        east: firstBeach.id,
+      };
+      easternUnknownShoreEntrance.exits = {
+        west: secondBeach.id,
+      };
+      northernUnknownShoreEntrance.exits = {
+        south: rockyBeach.id,
+      };
+      southernUnknownShoreEntrance.exits = {
+        north: clearing_02.id,
+      };
       break;
     case "south":
+      rockyBeach.exits = {
+        west: firstBeach.id,
+        east: firstBeach.id,
+        north: forestPath_01.id,
+      };
+      rockyBeach.height = 20.5;
+      rockyBeach.width = 40.5;
+      rockyBeach.description =
+        rockyBeach.description +
+        " " +
+        "The beach continues to the east and west, and a forest path leads north. The ocean is to the south.";
+      firstBeach.exits = {
+        east: rockyBeach.id,
+      };
+      firstBeach.height = 10.5;
+      firstBeach.width = 20.5;
+      firstBeach.description =
+        firstBeach.description +
+        " " +
+        "The beach continues to the east.";
+      secondBeach.exits = {
+        west: rockyBeach.id,
+      };
+      secondBeach.height = 10.5;
+      secondBeach.width = 20.5;
+      secondBeach.description =
+        secondBeach.description +
+        " " +
+        "The beach continues to the west.";
+      forestPath_01.exits = {
+        south: rockyBeach.id,
+        north: clearing_01.id,
+      };
+      forestPath_01.height = 40.5;
+      forestPath_01.width = 10.5;
+      forestPath_01.name = "Forest/Path"
+      forestPath_01.description =
+        forestPath_01.description + "north and a rocky beach to the south.";
+      clearing_01.exits = {
+        south: forestPath_01.id,
+        west: travelingMerchant.id,
+        east: oldTreeStump.id,
+        north: forestPath_02.id,
+      };
+      clearing_01.description =
+        clearing_01.description +
+        " " +
+        "There is a forest path to the south and north, a traveling merchant to the west, and an old tree stump to the east.";
+      travelingMerchant.exits = {
+        east: clearing_01.id,
+      };
+      travelingMerchant.description =
+        travelingMerchant.description +
+        " " +
+        "There is a clearing to the east.";
+      oldTreeStump.exits = {
+        west: clearing_01.id,
+      };
+      oldTreeStump.description =
+        oldTreeStump.description + " " + "There is a clearing to the west.";
+      forestPath_02.exits = {
+        south: clearing_01.id,
+        north: clearing_02.id,
+      };
+      forestPath_02.height = 40.5;
+      forestPath_02.width = 10.5;
+      forestPath_02.name = "Forest/Path"
+      forestPath_02.description =
+        forestPath_02.description + "a clearing to the south and north.";
+      clearing_02.exits = {
+        south: forestPath_02.id,
+        north: northernUnknownShoreEntrance.id,
+      };
+      clearing_02.description =
+        clearing_02.description +
+        " " +
+        "There is a forest path to the south and north.";
+      westernUnknownShoreEntrance.exits = {
+        east: firstBeach.id,
+      };
+      easternUnknownShoreEntrance.exits = {
+        west: secondBeach.id,
+      };
+      northernUnknownShoreEntrance.exits = {
+        south: clearing_02.id,
+      };
+      southernUnknownShoreEntrance.exits = {
+        north: rockyBeach.id,
+      };
       break;
     case "east":
+      rockyBeach.exits = {
+        north: firstBeach.id,
+        south: firstBeach.id,
+        west: forestPath_01.id,
+      };
+      rockyBeach.height = 40.5;
+      rockyBeach.width = 20.5;
+      rockyBeach.description =
+        rockyBeach.description +
+        " " +
+        "The beach continues to the north and south, and a forest path leads west. The ocean is to the east.";
+      firstBeach.exits = {
+        south: rockyBeach.id,
+      };
+      firstBeach.height = 20.5;
+      firstBeach.width = 10.5;
+      firstBeach.name = "First/Beach"
+      firstBeach.description =
+        firstBeach.description +
+        " " +
+        "The beach continues to the south.";
+      secondBeach.exits = {
+        north: rockyBeach.id,
+      };
+      secondBeach.height = 20.5;
+      secondBeach.width = 10.5;
+      secondBeach.name = "Second/Beach"
+      secondBeach.description =
+        secondBeach.description +
+        " " +
+        "The beach continues to the north.";
+      forestPath_01.exits = {
+        west: rockyBeach.id,
+        east: clearing_01.id,
+      };
+      forestPath_01.height = 10.5;
+      forestPath_01.width = 40.5;
+      forestPath_01.description =
+        forestPath_01.description + "east and a rocky beach to the west.";
+      clearing_01.exits = {
+        east: forestPath_01.id,
+        north: travelingMerchant.id,
+        south: oldTreeStump.id,
+        west: forestPath_02.id,
+      };
+      clearing_01.description =
+        clearing_01.description +
+        " " +
+        "There is a forest path to the east and west, a traveling merchant to the north, and an old tree stump to the south.";
+      travelingMerchant.exits = {
+        south: clearing_01.id,
+      };
+      travelingMerchant.description =
+        travelingMerchant.description +
+        " " +
+        "There is a clearing to the south.";
+      oldTreeStump.exits = {
+        north: clearing_01.id,
+      };
+      oldTreeStump.description =
+        oldTreeStump.description + " " + "There is a clearing to the north.";
+      forestPath_02.exits = {
+        east: clearing_01.id,
+        west: clearing_02.id,
+      };
+      forestPath_02.height = 10.5;
+      forestPath_02.width = 40.5;
+      forestPath_02.description =
+        forestPath_02.description + "a clearing to the east and west.";
+      clearing_02.exits = {
+        east: forestPath_02.id,
+        west: westernUnknownShoreEntrance.id,
+      };
+      westernUnknownShoreEntrance.exits = {
+        east: clearing_02.id,
+      };
+      easternUnknownShoreEntrance.exits = {
+        west: rockyBeach.id,
+      };
+      northernUnknownShoreEntrance.exits = {
+        south: firstBeach.id,
+      };
+      southernUnknownShoreEntrance.exits = {
+        north: secondBeach.id,
+      };
       break;
     case "west":
+      rockyBeach.exits = {
+        north: firstBeach.id,
+        south: firstBeach.id,
+        east: forestPath_01.id,
+      };
+      rockyBeach.height = 40.5;
+      rockyBeach.width = 20.5;
+      rockyBeach.description =
+        rockyBeach.description +
+        " " +
+        "The beach continues to the north and south, and a forest path leads east. The ocean is to the west.";
+      firstBeach.exits = {
+        south: rockyBeach.id,
+      };
+      firstBeach.height = 20.5;
+      firstBeach.width = 10.5;
+      firstBeach.name = "First/Beach"
+      firstBeach.description =
+        firstBeach.description +
+        " " +
+        "The beach continues to the south.";
+      secondBeach.exits = {
+        north: rockyBeach.id,
+      };
+      secondBeach.height = 20.5;
+      secondBeach.width = 10.5;
+      secondBeach.name = "Second/Beach"
+      secondBeach.description =
+        secondBeach.description +
+        " " +
+        "The beach continues to the north.";
+      forestPath_01.exits = {
+        east: rockyBeach.id,
+        west: clearing_01.id,
+      };
+      forestPath_01.height = 10.5;
+      forestPath_01.width = 40.5;
+      forestPath_01.description =
+        forestPath_01.description + "west and a rocky beach to the east.";
+      clearing_01.exits = {
+        west: forestPath_01.id,
+        north: travelingMerchant.id,
+        south: oldTreeStump.id,
+        east: forestPath_02.id,
+      };
+      clearing_01.description =
+        clearing_01.description +
+        " " +
+        "There is a forest path to the west and east, a traveling merchant to the north, and an old tree stump to the south.";
+      travelingMerchant.exits = {
+        south: clearing_01.id,
+      };
+      travelingMerchant.description =
+        travelingMerchant.description +
+        " " +
+        "There is a clearing to the south.";
+      oldTreeStump.exits = {
+        north: clearing_01.id,
+      };
+      oldTreeStump.description =
+        oldTreeStump.description + " " + "There is a clearing to the north.";
+      forestPath_02.exits = {
+        west: clearing_01.id,
+        east: clearing_02.id,
+      };
+      forestPath_02.height = 10.5;
+      forestPath_02.width = 40.5;
+      forestPath_02.description =
+        forestPath_02.description + "a clearing to the west and east.";
+      clearing_02.exits = {
+        west: forestPath_02.id,
+        east: easternUnknownShoreEntrance.id,
+      };
+      westernUnknownShoreEntrance.exits = {
+        west: clearing_02.id,
+      };
+      easternUnknownShoreEntrance.exits = {
+        east: rockyBeach.id,
+      };
+      northernUnknownShoreEntrance.exits = {
+        south: firstBeach.id,
+      };
+      southernUnknownShoreEntrance.exits = {
+        north: secondBeach.id,
+      };
       break;
   }
   mapGrid[targetTile[0]][targetTile[1]] = {};
+  locationObjects["rockyBeach"] = rockyBeach;
+  locationObjects["firstBeach"] = firstBeach;
+  locationObjects["secondBeach"] = secondBeach;
+  locationObjects["forestPath_01"] = forestPath_01;
+  locationObjects["clearing_01"] = clearing_01;
+  locationObjects["travelingMerchant"] = travelingMerchant;
+  locationObjects["oldTreeStump"] = oldTreeStump;
+  locationObjects["forestPath_02"] = forestPath_02;
+  locationObjects["clearing_02"] = clearing_02;
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
-}
-
-function generate9x9Grid(roomTypes, pathTypes, tier, baseId) {
-  const {
-    HorizontalForestPath,
-    VerticalForestPath,
-  } = require("./class_collections/locations/generated/forest");
-  const {
-    HorizontalDesertPath,
-    VerticalDesertPath,
-  } = require("./class_collections/locations/generated/desert");
-  const {
-    HorizontalMountainPath,
-    VerticalMountainPath,
-  } = require("./class_collections/locations/generated/mountain");
-  const {
-    HorizontalVolcanicPath,
-    VerticalVolcanicPath,
-  } = require("./class_collections/locations/generated/volcano");
-  const {
-    HorizontalBeachPath,
-    VerticalBeachPath,
-  } = require("./class_collections/locations/generated/shore");
-  const {
-    HorizontalBridge,
-    VerticalBridge,
-  } = require("./class_collections/locations/generated/river");
-  const {
-    HorizontalParagonCityPath,
-    VerticalParagonCityPath,
-  } = require("./class_collections/locations/paragon_city/paragon_city");
-  const {
-    HorizontalLibertyCityPath,
-    VerticalLibertyCityPath,
-  } = require("./class_collections/locations/liberty_city/liberty_city");
-  const gridSize = 3;
-  var horizontalPath = pathTypes[0];
-  var verticalPath = pathTypes[1];
-  var interiorGrid = Array(gridSize)
-    .fill(null)
-    .map(() => Array(gridSize).fill(null));
-  for (let row = 0; row < gridSize; row++) {
-    for (let col = 0; col < gridSize; col++) {
-      let roomType = getRandomRoomType(roomTypes);
-      let roomId = `${baseId}.room_${row}_${col}`;
-      interiorGrid[row][col] = createRoom(roomType, roomId, tier);
-    }
-  }
-  for (let row = 0; row < gridSize; row++) {
-    for (let col = 0; col < gridSize; col++) {
-      if (row % 2 == 0 && col % 2 == 0) {
-        let pathType = Math.random() > 0.5 ? horizontalPath : verticalPath;
-        interiorGrid[row][col][baseId] = createRoom(
-          pathType,
-          `${baseId}.room_${row}_${col}`,
-          tier
-        );
-        console.log(interiorGrid[row][col][baseId]);
-      }
-    }
-  }
-  for (let row = 0; row < gridSize; row++) {
-    for (let col = 0; col < gridSize; col++) {
-      let room = interiorGrid[row][col];
-      room.exits = {};
-      if (room.type == horizontalPath) {
-        if (col > 0) {
-          room.exits["west"] = interiorGrid[row][col - 1].id;
-        } else if (col < gridSize - 1) {
-          room.exits["east"] = interiorGrid[row][col + 1].id;
-        } else if (row > 0) {
-          room.exits["north"] = interiorGrid[row - 1][col].id;
-        } else if (row < gridSize - 1) {
-          room.exits["south"] = interiorGrid[row + 1][col].id;
-        }
-      } else if (room.type == verticalPath) {
-        if (row > 0) {
-          room.exits["north"] = interiorGrid[row - 1][col].id;
-        } else if (row < gridSize - 1) {
-          room.exits["south"] = interiorGrid[row + 1][col].id;
-        } else if (col > 0) {
-          room.exits["west"] = interiorGrid[row][col - 1].id;
-        } else if (col < gridSize - 1) {
-          room.exits["east"] = interiorGrid[row][col + 1].id;
-        }
-      } else {
-        if (row > 0) {
-          room.exits["north"] = interiorGrid[row - 1][col].id;
-        }
-        if (row < gridSize - 1) {
-          room.exits["south"] = interiorGrid[row + 1][col].id;
-        }
-        if (col > 0) {
-          room.exits["west"] = interiorGrid[row][col - 1].id;
-        }
-        if (col < gridSize - 1) {
-          room.exits["east"] = interiorGrid[row][col + 1].id;
-        }
-      }
-    }
-  }
-  return interiorGrid;
-}
-
-function getRandomRoomType(roomTypes) {
-  return roomTypes[Math.floor(Math.random() * roomTypes.length)];
-}
-
-function createRoom(type, id, tier) {
-  const {
-    HorizontalForestPath,
-    VerticalForestPath,
-    SmallClearing,
-    LargeClearing,
-    Crossroads,
-  } = require("./class_collections/locations/generated/forest");
-  const {
-    HorizontalDesertPath,
-    VerticalDesertPath,
-    SmallDunes,
-    LargeDunes,
-    SmallOasis,
-    LargeOasis,
-  } = require("./class_collections/locations/generated/desert");
-  const {
-    HorizontalMountainPath,
-    VerticalMountainPath,
-    MountainPeak,
-    BoulderField,
-    Cave,
-  } = require("./class_collections/locations/generated/mountain");
-  const {
-    HorizontalVolcanicPath,
-    VerticalVolcanicPath,
-    LavaLake,
-    LavaFlow,
-    LavaCave,
-  } = require("./class_collections/locations/generated/volcano");
-  const {
-    HorizontalBeachPath,
-    VerticalBeachPath,
-    Beach,
-    Tidepool,
-    CoralReef,
-  } = require("./class_collections/locations/generated/shore");
-  const {
-    HorizontalBridge,
-    VerticalBridge,
-    RiverBank,
-  } = require("./class_collections/locations/generated/river");
-  const {
-    HorizontalParagonCityPath,
-    VerticalParagonCityPath,
-    CitySquare,
-  } = require("./class_collections/locations/paragon_city/paragon_city");
-  const {
-    HorizontalLibertyCityPath,
-    VerticalLibertyCityPath,
-  } = require("./class_collections/locations/liberty_city/liberty_city");
-  return eval(`new ${type}('${id}', ${tier})`);
 }
 
 function linkRegions(mapGrid) {

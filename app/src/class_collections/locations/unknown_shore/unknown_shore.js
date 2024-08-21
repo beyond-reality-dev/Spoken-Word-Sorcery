@@ -63,7 +63,7 @@ class ForestPath_01 extends Room {
       "Forest Path",
       "unknownShore.forestPath_01",
       "The forest path winds through the trees for a long way, leading to a small clearing in the ",
-      80.5,
+      40.5,
       10.5
     );
     this.items = {};
@@ -132,7 +132,7 @@ class ForestPath_02 extends Room {
       "Forest Path",
       "unknownShore.forestPath_02",
       "The forest path winds through the trees for a long way, leading to ",
-      80.5,
+      40.5,
       10.5
     );
     this.items = {};
@@ -163,7 +163,7 @@ var clearing_02 = new Clearing_02();
 class HorizontalUnknownShoreEntrance extends Room {
   constructor(id) {
     super(
-      "Unknown Shore Entrance",
+      "Unknown Shore/Entrance",
       id,
       "You can faintly hear the sound of waves crashing against the shore from the entrance to the Unknown Shore. The path leads to the east and west.",
       20.5,

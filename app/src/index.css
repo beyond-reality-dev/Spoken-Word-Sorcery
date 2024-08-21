@@ -235,7 +235,7 @@ body {
 .mana-bar {
   position: absolute;
   top: 2.5%;
-  right: 20%;
+  left: 60.5%;
   width: 35vh;
   height: 10vh;
   margin: 0 10px;
@@ -245,7 +245,7 @@ body {
 .mana-text {
   position: absolute;
   top: 5.5vh;
-  right: 28%;
+  left: 62%;
   font-size: x-large;
   font-weight: bold;
   color: white;
@@ -314,10 +314,35 @@ body {
   font-size: large;
 }
 
+.tab-spacer {
+  margin-left: 71px;
+  margin-top: 2.5vh;
+  display: inline-block;
+}
+
+.map-tab {
+  margin-left: -4px;
+  margin-top: 2.5vh;
+  width: 20vh;
+  height: 5vh;
+  background-color: #ffffff;
+  border: solid black;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  display: inline-block;
+  padding-top: 1vh;
+  text-align: center;
+  font-size: 2em;
+}
+
+.map-tab:hover {
+  background-color: #d1d1d1;
+  cursor: pointer;
+}
+
 .map {
   background-color: #fef8e6;
   margin-left: 71px;
-  margin-top: 46px;
   border: solid black;
 }
 
