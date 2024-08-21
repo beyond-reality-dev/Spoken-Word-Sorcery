@@ -501,4 +501,53 @@ function updateWorldMap() {
   } 
 }
 
-module.exports = { updateMap, updateWorldMap };
+function updateMapKey() {
+  const canvas = document.getElementById("map");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.font = "bold 20px Segoe UI";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#228B22";
+  ctx.fillRect(50, 27.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("Forest (L - Liberty City)", 110, 57.5);
+  ctx.fillStyle = "#A9A9A9";
+  ctx.fillRect(50, 97.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("Mountain (P - Paragon City)", 110, 127.5);
+  ctx.fillStyle = "#A9A9A9";
+  ctx.fillRect(50, 167.5, 50, 50);
+  ctx.fillStyle = "#8B0000";
+  ctx.beginPath();
+  ctx.arc(75, 192.5, 10, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.closePath();
+  ctx.fillStyle = "black";
+  ctx.fillText("Volcano", 110, 197.5);
+  ctx.fillStyle = "#FFD700";
+  ctx.fillRect(50, 237.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("Desert", 110, 267.5);
+  ctx.fillStyle = "#0000FF";
+  ctx.fillRect(50, 307.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("Ocean", 110, 337.5);
+  ctx.fillStyle = "#8B6914";
+  ctx.fillRect(50, 377.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("Shore (U - Unknown Shore)", 110, 407.5);
+  ctx.fillStyle = "#4682B4";
+  ctx.fillRect(50, 447.5, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.fillText("River", 110, 477.5);
+  ctx.fillStyle = "black";
+  ctx.strokeStyle = "red";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(50, 517.5, 50, 50);
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  ctx.fillStyle = "black";
+  ctx.fillText("Player Location", 110, 547.5);
+}
+
+module.exports = { updateMap, updateWorldMap, updateMapKey };

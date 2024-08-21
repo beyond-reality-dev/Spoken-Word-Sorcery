@@ -21,7 +21,7 @@ function createWindow() {
   window.webContents.executeJavaScript(`
         const { switchScreen, switchButton, switchMapButton, blockInput, allowInput } = require("./general.js");
         const { saveGame, loadGame, deleteGame, updateSaveGames, getValue, changeValue } = require("./save_data.js");
-        const { updateMap, updateWorldMap } = require("./map.js");
+        const { updateMap, updateWorldMap, updateMapKey } = require("./map.js");
         const { intro } = require("./cutscenes/imperial_citadel/imperial_academy/intro/intro.js");
 
         // Start menu functions
@@ -114,10 +114,12 @@ function createWindow() {
           if (!prologueCompleted) {
             document.getElementById("local-map-button").style.display = "none";
             document.getElementById("world-map-button").style.display = "none";
+            document.getElementById("map-key-button").style.display = "none";
             document.getElementById("map").style.marginTop = "2.75vh";
           } else {
             document.getElementById("local-map-button").style.display = "inline-block";
             document.getElementById("world-map-button").style.display = "inline-block";
+            document.getElementById("map-key-button").style.display = "inline-block";
             document.getElementById("map").style.marginTop = "0vh";
             switchMapButton("local-map-button");
           }
@@ -194,6 +196,11 @@ function createWindow() {
         document.getElementById("world-map-button").onclick = function () {
           switchMapButton("world-map-button");
           updateWorldMap();
+        }
+
+        document.getElementById("map-key-button").onclick = function () {
+          switchMapButton("map-key-button");
+          updateMapKey();
         }
     `);
 }
