@@ -31,12 +31,12 @@ class VerticalVolcanicEntrance extends Room {
 }
 
 class HorizontalVolcanicPath extends Room {
-  constructor(id, width, tier) {
+  constructor(id, tier) {
     super(
       'Volcanic Path',
       id,
       'The volcanic path winds through the rocks for a long way, leading to different areas to the east and west.',
-      width,
+      40.5,
       10.5
     );
     this.items = {};
@@ -68,7 +68,7 @@ class LavaLake extends Room {
   constructor(id, tier) {
     super(
       'Lava Lake',
-      'volcano.lavaLake',
+      id,
       'The lava lake is a swirling cauldron of fire and melted rock.',
       40.5,
       40.5

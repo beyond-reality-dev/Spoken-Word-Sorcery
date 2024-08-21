@@ -637,7 +637,7 @@ function generateRegions(mapGrid) {
       if (mapGrid[i][j] == "O") {
         generateOceanTile(mapGrid, [i, j]);
       } else if (mapGrid[i][j] == "F") {
-        generateForestTile(mapGrid, [i, j]);
+        generateTile(mapGrid, [i, j], "forest");
       } else if (mapGrid[i][j] == "D") {
         generateDesertTile(mapGrid, [i, j]);
       } else if (mapGrid[i][j] == "M") {
@@ -710,18 +710,39 @@ const {
 const {
   HorizontalDesertEntrance,
   VerticalDesertEntrance,
+  HorizontalDesertPath,
+  VerticalDesertPath,
+  SmallDunes,
+  LargeDunes,
+  SmallOasis,
+  LargeOasis,
 } = require("./class_collections/locations/generated/desert");
 const {
   HorizontalMountainEntrance,
   VerticalMountainEntrance,
+  HorizontalMountainPath,
+  VerticalMountainPath,
+  MountainPeak,
+  BoulderField,
+  Cave,
 } = require("./class_collections/locations/generated/mountain");
 const {
   HorizontalVolcanicEntrance,
   VerticalVolcanicEntrance,
+  HorizontalVolcanicPath,
+  VerticalVolcanicPath,
+  LavaLake,
+  LavaFlow,
+  LavaCave,
 } = require("./class_collections/locations/generated/volcano");
 const {
   HorizontalShoreEntrance,
   VerticalShoreEntrance,
+  HorizontalBeachPath,
+  VerticalBeachPath,
+  Beach,
+  Tidepool,
+  CoralReef,
 } = require("./class_collections/locations/generated/shore");
 const {
   HorizontalRiverEntrance,
@@ -730,11 +751,343 @@ const {
 const {
   HorizontalParagonCityEntrance,
   VerticalParagonCityEntrance,
+  HorizontalParagonCityPath,
+  VerticalParagonCityPath,
+  CitySquare,
 } = require("./class_collections/locations/paragon_city/paragon_city");
 const {
   HorizontalLibertyCityEntrance,
   VerticalLibertyCityEntrance,
+  HorizontalLibertyCityPath,
+  VerticalLibertyCityPath,
 } = require("./class_collections/locations/liberty_city/liberty_city");
+
+function generateTile(mapGrid, targetTile, type) {
+  var regionIncrement = getIncrement(mapGrid, type);
+  var regionId = `${type}Tile_${regionIncrement}`;
+  var increment = 1;
+  switch (type) {
+    case "forest":
+      var randomTypes = [SmallClearing, LargeClearing];
+      var horizontalPath = HorizontalForestPath;
+      var verticalPath = VerticalForestPath;
+      var horizontalEntrance = HorizontalForestEntrance;
+      var verticalEntrance = VerticalForestEntrance;
+      break;
+    case "desert":
+      var randomTypes = [SmallDunes, LargeDunes, SmallOasis, LargeOasis];
+      var horizontalPath = HorizontalDesertPath;
+      var verticalPath = VerticalDesertPath;
+      var horizontalEntrance = HorizontalDesertEntrance;
+      var verticalEntrance = VerticalDesertEntrance;
+      break;
+    case "mountain":
+      var randomTypes = [MountainPeak, BoulderField, Cave];
+      var horizontalPath = HorizontalMountainPath;
+      var verticalPath = VerticalMountainPath;
+      var horizontalEntrance = HorizontalMountainEntrance;
+      var verticalEntrance = VerticalMountainEntrance;
+      break;
+    case "volcano":
+      var randomTypes = [LavaLake, LavaFlow, LavaCave];
+      var horizontalPath = HorizontalVolcanicPath;
+      var verticalPath = VerticalVolcanicPath;
+      var horizontalEntrance = HorizontalVolcanicEntrance;
+      var verticalEntrance = VerticalVolcanicEntrance;
+      break;
+    case "shore":
+      var randomTypes = [Beach, Tidepool, CoralReef];
+      var horizontalPath = HorizontalBeachPath;
+      var verticalPath = VerticalBeachPath;
+      var horizontalEntrance = HorizontalShoreEntrance;
+      var verticalEntrance = VerticalShoreEntrance;
+      break;
+    case "paragonCity":
+      var randomTypes = [CitySquare];
+      var horizontalPath = HorizontalParagonCityPath;
+      var verticalPath = VerticalParagonCityPath;
+      var horizontalEntrance = HorizontalParagonCityEntrance;
+      var verticalEntrance = VerticalParagonCityEntrance;
+      break;
+    case "libertyCity":
+      var randomTypes = [CitySquare];
+      var horizontalPath = HorizontalLibertyCityPath;
+      var verticalPath = VerticalLibertyCityPath;
+      var horizontalEntrance = HorizontalLibertyCityEntrance;
+      var verticalEntrance = VerticalLibertyCityEntrance;
+      break;
+  }
+  var westernEntrance = new horizontalEntrance(
+    `${regionId}.entrance_${increment}`
+  );
+  var westernPath = new horizontalPath(`${regionId}.path_${increment}`);
+  var firstChoice = Math.floor(Math.random() * randomTypes.length);
+  var firstRandomLocation = new randomTypes[firstChoice](
+    `${regionId}.location_${increment}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToNorthwest = new verticalPath(
+    `${regionId}.path_${increment + 1}`,
+    getTier(targetTile)
+  );
+  var secondChoice = Math.floor(Math.random() * randomTypes.length);
+  var secondRandomLocation = new randomTypes[secondChoice](
+    `${regionId}.location_${increment + 1}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthwestToEast = new horizontalPath(
+    `${regionId}.path_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var thirdChoice = Math.floor(Math.random() * randomTypes.length);
+  var thirdRandomLocation = new randomTypes[thirdChoice](
+    `${regionId}.location_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var northernPathToEntrance = new verticalPath(
+    `${regionId}.path_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthToEast = new horizontalPath(
+    `${regionId}.path_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var fourthChoice = Math.floor(Math.random() * randomTypes.length);
+  var fourthRandomLocation = new randomTypes[fourthChoice](
+    `${regionId}.location_${increment + 3}`,
+    getTier(targetTile)
+  );
+  var pathFromNortheastToSouth = new verticalPath(
+    `${regionId}.path_${increment + 2}`,
+    getTier(targetTile)
+  );
+  var fifthChoice = Math.floor(Math.random() * randomTypes.length);
+  var fifthRandomLocation = new randomTypes[fifthChoice](
+    `${regionId}.location_${increment + 4}`,
+    getTier(targetTile)
+  );
+  var easternPathToEntrance = new horizontalPath(
+    `${regionId}.path_${increment + 4}`,
+    getTier(targetTile)
+  );
+  var pathFromEastToSouth = new verticalPath(
+    `${regionId}.path_${increment + 5}`,
+    getTier(targetTile)
+  );
+  var sixthChoice = Math.floor(Math.random() * randomTypes.length);
+  var sixthRandomLocation = new randomTypes[sixthChoice](
+    `${regionId}.location_${increment + 5}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthEastToSouth = new horizontalPath(
+    `${regionId}.path_${increment + 6}`,
+    getTier(targetTile)
+  );
+  var seventhChoice = Math.floor(Math.random() * randomTypes.length);
+  var seventhRandomLocation = new randomTypes[seventhChoice](
+    `${regionId}.location_${increment + 6}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToSouthwest = new verticalPath(
+    `${regionId}.path_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var eighthChoice = Math.floor(Math.random() * randomTypes.length);
+  var eighthRandomLocation = new randomTypes[eighthChoice](
+    `${regionId}.location_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthwestToNorth = new horizontalPath(
+    `${regionId}.path_${increment + 8}`,
+    getTier(targetTile)
+  );
+  var pathFromSouthToCenter = new verticalPath(
+    `${regionId}.path_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var center = new Crossroads(
+    `${regionId}.location_${increment + 7}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToCenter = new horizontalPath(
+    `${regionId}.path_${increment + 8}`,
+    getTier(targetTile)
+  );
+  var pathFromEastToCenter = new horizontalPath(
+    `${regionId}.path_${increment + 9}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthToCenter = new verticalPath(
+    `${regionId}.path_${increment + 10}`,
+    getTier(targetTile)
+  );
+  var southernPathToEntrance = new verticalPath(
+    `${regionId}.path_${increment + 11}`,
+    getTier(targetTile)
+  );
+  var easternEntrance = new horizontalEntrance(
+    `${regionId}.entrance_${increment + 1}`
+  );
+  var northernEntrance = new verticalEntrance(
+    `${regionId}.entrance_${increment + 2}`
+  );
+  var southernEntrance = new verticalEntrance(
+    `${regionId}.entrance_${increment + 3}`
+  );
+  southernPathToEntrance.exits = {
+    north: seventhRandomLocation.id,
+    south: southernEntrance.id,
+  };
+  southernEntrance.exits = {
+    north: southernPathToEntrance.id,
+  };
+  westernEntrance.exits = {
+    east: westernPath.id,
+  };
+  westernPath.exits = {
+    west: westernEntrance.id,
+    east: firstRandomLocation.id,
+  };
+  firstRandomLocation.exits = {
+    west: westernPath.id,
+    east: pathFromWestToCenter.id,
+    north: pathFromWestToNorthwest.id,
+    south: pathFromSouthwestToNorth.id,
+  };
+  pathFromWestToNorthwest.exits = {
+    north: secondRandomLocation.id,
+    south: firstRandomLocation.id,
+  };
+  secondRandomLocation.exits = {
+    south: pathFromWestToNorthwest.id,
+    east: pathFromNorthwestToEast.id,
+  };
+  pathFromNorthwestToEast.exits = {
+    west: secondRandomLocation.id,
+    east: thirdRandomLocation.id,
+  };
+  thirdRandomLocation.exits = {
+    west: pathFromNorthwestToEast.id,
+    north: northernPathToEntrance.id,
+    east: pathFromNorthToEast.id,
+    south: pathFromNorthToCenter.id,
+  };
+  northernPathToEntrance.exits = {
+    south: thirdRandomLocation.id,
+    north: northernEntrance.id,
+  };
+  northernEntrance.exits = {
+    south: northernPathToEntrance.id,
+  };
+  pathFromNorthToEast.exits = {
+    west: thirdRandomLocation.id,
+    east: fourthRandomLocation.id,
+  };
+  fourthRandomLocation.exits = {
+    west: pathFromNorthToEast.id,
+    south: pathFromNortheastToSouth.id,
+  };
+  pathFromNortheastToSouth.exits = {
+    north: fourthRandomLocation.id,
+    south: fifthRandomLocation.id,
+  };
+  fifthRandomLocation.exits = {
+    north: pathFromNortheastToSouth.id,
+    east: easternPathToEntrance.id,
+    south: pathFromEastToSouth.id,
+    west: pathFromEastToCenter.id,
+  };
+  easternPathToEntrance.exits = {
+    west: fifthRandomLocation.id,
+    east: easternEntrance.id,
+  };
+  easternEntrance.exits = {
+    west: easternPathToEntrance.id,
+  };
+  pathFromEastToSouth.exits = {
+    north: fifthRandomLocation.id,
+    south: sixthRandomLocation.id,
+  };
+  sixthRandomLocation.exits = {
+    north: pathFromEastToSouth.id,
+    west: pathFromSouthEastToSouth.id,
+  };
+  pathFromSouthEastToSouth.exits = {
+    east: sixthRandomLocation.id,
+    west: seventhRandomLocation.id,
+  };
+  seventhRandomLocation.exits = {
+    north: pathFromSouthToCenter.id,
+    east: pathFromSouthEastToSouth.id,
+    west: pathFromSouthwestToNorth.id,
+    south: southernPathToEntrance.id,
+  };
+  pathFromWestToSouthwest.exits = {
+    east: seventhRandomLocation.id,
+    west: eighthRandomLocation.id,
+  };
+  eighthRandomLocation.exits = {
+    east: pathFromWestToSouthwest.id,
+    north: pathFromSouthwestToNorth.id,
+  };
+  pathFromSouthToCenter.exits = {
+    west: pathFromSouthwestToNorth.id,
+    east: center.id,
+  };
+  center.exits = {
+    west: pathFromSouthToCenter.id,
+    east: pathFromEastToCenter.id,
+    north: pathFromNorthToCenter.id,
+  };
+  pathFromWestToCenter.exits = {
+    west: westernPath.id,
+    east: center.id,
+  };
+  pathFromEastToCenter.exits = {
+    west: center.id,
+    east: easternPathToEntrance.id,
+  };
+  pathFromNorthToCenter.exits = {
+    north: northernPathToEntrance.id,
+    south: center.id,
+  };
+  easternEntrance.exits = {
+    east: easternPathToEntrance.id,
+  };
+  northernEntrance.exits = {
+    north: northernPathToEntrance.id,
+  };
+  southernEntrance.exits = {
+    south: southernPathToEntrance.id,
+  };
+  var locationObjects = {};
+  locationObjects[`path${increment}`] = westernPath;
+  locationObjects[`location_${increment}`] = firstRandomLocation;
+  locationObjects[`path${increment + 1}`] = pathFromWestToNorthwest;
+  locationObjects[`location_${increment + 1}`] = secondRandomLocation;
+  locationObjects[`path${increment + 2}`] = pathFromNorthwestToEast;
+  locationObjects[`location_${increment + 2}`] = thirdRandomLocation;
+  locationObjects[`path${increment + 3}`] = pathFromNorthToEast;
+  locationObjects[`location_${increment + 3}`] = fourthRandomLocation;
+  locationObjects[`path${increment + 5}`] = pathFromNortheastToSouth;
+  locationObjects[`location_${increment + 4}`] = fifthRandomLocation;
+  locationObjects[`path${increment + 6}`] = easternPathToEntrance;
+  locationObjects[`location_${increment + 5}`] = sixthRandomLocation;
+  locationObjects[`path${increment + 7}`] = pathFromEastToSouth;
+  locationObjects[`location_${increment + 6}`] = seventhRandomLocation;
+  locationObjects[`path${increment + 8}`] = pathFromSouthEastToSouth;
+  locationObjects[`location_${increment + 7}`] = eighthRandomLocation;
+  locationObjects[`path${increment + 9}`] = pathFromWestToSouthwest;
+  locationObjects[`path${increment + 10}`] = pathFromSouthToCenter;
+  locationObjects[`location_${increment + 8}`] = center;
+  locationObjects[`path${increment + 11}`] = pathFromWestToCenter;
+  locationObjects[`entrance_${increment}`] = westernEntrance;
+  locationObjects[`entrance_${increment + 1}`] = easternEntrance;
+  locationObjects[`entrance_${increment + 2}`] = northernEntrance;
+  locationObjects[`entrance_${increment + 3}`] = southernEntrance;
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
+}
 
 function generateForestTile(mapGrid, targetTile) {
   var regionIncrement = getIncrement(mapGrid, "forest");
@@ -831,7 +1184,10 @@ function generateForestTile(mapGrid, targetTile) {
     `${regionId}.path_${increment + 7}`,
     getTier(targetTile)
   );
-  var center = new Crossroads(`${regionId}.location_${increment + 7}`, getTier(targetTile));
+  var center = new Crossroads(
+    `${regionId}.location_${increment + 7}`,
+    getTier(targetTile)
+  );
   var pathFromWestToCenter = new HorizontalForestPath(
     `${regionId}.path_${increment + 8}`,
     getTier(targetTile)
@@ -862,7 +1218,7 @@ function generateForestTile(mapGrid, targetTile) {
     south: southernForestEntrance.id,
   };
   southernForestEntrance.exits = {
-    north: seventhRandomForestLocation.id,
+    north: southernPathToEntrance.id,
   };
   westernForestEntrance.exits = {
     east: westernPathFromEntrance.id,
@@ -877,6 +1233,10 @@ function generateForestTile(mapGrid, targetTile) {
     east: pathFromWestToCenter.id,
     south: pathFromSouthwestToNorth.id,
   };
+  firstRandomForestLocation.description =
+    firstRandomForestLocation.description +
+    " " +
+    "The forest path continues in all directions.";
   pathFromWestToNorthwest.exits = {
     north: secondRandomForestLocation.id,
     south: firstRandomForestLocation.id,
@@ -885,6 +1245,10 @@ function generateForestTile(mapGrid, targetTile) {
     east: pathFromNorthwestToEast.id,
     south: pathFromWestToNorthwest.id,
   };
+  secondRandomForestLocation.description =
+    secondRandomForestLocation.description +
+    " " +
+    "The forest path continues to the east and south.";
   pathFromNorthwestToEast.exits = {
     west: secondRandomForestLocation.id,
     east: thirdRandomForestLocation.id,
@@ -895,6 +1259,10 @@ function generateForestTile(mapGrid, targetTile) {
     west: pathFromNorthwestToEast.id,
     south: pathFromNorthToCenter.id,
   };
+  thirdRandomForestLocation.description =
+    thirdRandomForestLocation.description +
+    " " +
+    "The forest path continues in all directions.";
   northernPathToEntrance.exits = {
     north: northernForestEntrance.id,
     south: thirdRandomForestLocation.id,
@@ -907,6 +1275,10 @@ function generateForestTile(mapGrid, targetTile) {
     west: pathFromNorthToEast.id,
     south: pathFromNortheastToSouth.id,
   };
+  fourthRandomForestLocation.description =
+    fourthRandomForestLocation.description +
+    " " +
+    "The forest path continues to the west and south.";
   pathFromNortheastToSouth.exits = {
     north: fourthRandomForestLocation.id,
     south: fifthRandomForestLocation.id,
@@ -917,6 +1289,10 @@ function generateForestTile(mapGrid, targetTile) {
     south: pathFromEastToSouth.id,
     west: pathFromEastToCenter.id,
   };
+  fifthRandomForestLocation.description =
+    fifthRandomForestLocation.description +
+    " " +
+    "The forest path continues in all directions.";
   easternPathToEntrance.exits = {
     west: fifthRandomForestLocation.id,
     east: easternForestEntrance.id,
@@ -929,6 +1305,10 @@ function generateForestTile(mapGrid, targetTile) {
     north: pathFromEastToSouth.id,
     west: pathFromSouthEastToSouth.id,
   };
+  sixthRandomForestLocation.description =
+    sixthRandomForestLocation.description +
+    " " +
+    "The forest path continues to the north and west.";
   pathFromSouthEastToSouth.exits = {
     east: sixthRandomForestLocation.id,
     west: seventhRandomForestLocation.id,
@@ -939,6 +1319,10 @@ function generateForestTile(mapGrid, targetTile) {
     west: pathFromWestToSouthwest.id,
     south: southernPathToEntrance.id,
   };
+  seventhRandomForestLocation.description =
+    seventhRandomForestLocation.description +
+    " " +
+    "The forest path continues in all directions.";
   pathFromWestToSouthwest.exits = {
     west: eighthRandomForestLocation.id,
     east: seventhRandomForestLocation.id,
@@ -947,6 +1331,10 @@ function generateForestTile(mapGrid, targetTile) {
     east: pathFromWestToSouthwest.id,
     north: pathFromSouthwestToNorth.id,
   };
+  eighthRandomForestLocation.description =
+    eighthRandomForestLocation.description +
+    " " +
+    "The forest path continues to the east and north.";
   pathFromSouthwestToNorth.exits = {
     north: firstRandomForestLocation.id,
     south: eighthRandomForestLocation.id,
