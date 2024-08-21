@@ -858,7 +858,7 @@ function generateTile(mapGrid, targetTile, type) {
     getTier(targetTile)
   );
   var pathFromNortheastToSouth = new verticalPath(
-    `${regionId}.path_${increment + 2}`,
+    `${regionId}.path_${increment + 4}`,
     getTier(targetTile)
   );
   var fifthChoice = Math.floor(Math.random() * randomTypes.length);
@@ -867,11 +867,11 @@ function generateTile(mapGrid, targetTile, type) {
     getTier(targetTile)
   );
   var easternPathToEntrance = new horizontalPath(
-    `${regionId}.path_${increment + 4}`,
+    `${regionId}.path_${increment + 5}`,
     getTier(targetTile)
   );
   var pathFromEastToSouth = new verticalPath(
-    `${regionId}.path_${increment + 5}`,
+    `${regionId}.path_${increment + 6}`,
     getTier(targetTile)
   );
   var sixthChoice = Math.floor(Math.random() * randomTypes.length);
@@ -880,7 +880,7 @@ function generateTile(mapGrid, targetTile, type) {
     getTier(targetTile)
   );
   var pathFromSouthEastToSouth = new horizontalPath(
-    `${regionId}.path_${increment + 6}`,
+    `${regionId}.path_${increment + 7}`,
     getTier(targetTile)
   );
   var seventhChoice = Math.floor(Math.random() * randomTypes.length);
@@ -889,7 +889,7 @@ function generateTile(mapGrid, targetTile, type) {
     getTier(targetTile)
   );
   var pathFromWestToSouthwest = new verticalPath(
-    `${regionId}.path_${increment + 7}`,
+    `${regionId}.path_${increment + 8}`,
     getTier(targetTile)
   );
   var eighthChoice = Math.floor(Math.random() * randomTypes.length);
@@ -898,31 +898,31 @@ function generateTile(mapGrid, targetTile, type) {
     getTier(targetTile)
   );
   var pathFromSouthwestToNorth = new horizontalPath(
-    `${regionId}.path_${increment + 8}`,
-    getTier(targetTile)
-  );
-  var pathFromSouthToCenter = new verticalPath(
-    `${regionId}.path_${increment + 7}`,
-    getTier(targetTile)
-  );
-  var center = new Crossroads(
-    `${regionId}.location_${increment + 7}`,
-    getTier(targetTile)
-  );
-  var pathFromWestToCenter = new horizontalPath(
-    `${regionId}.path_${increment + 8}`,
-    getTier(targetTile)
-  );
-  var pathFromEastToCenter = new horizontalPath(
     `${regionId}.path_${increment + 9}`,
     getTier(targetTile)
   );
-  var pathFromNorthToCenter = new verticalPath(
+  var pathFromSouthToCenter = new verticalPath(
     `${regionId}.path_${increment + 10}`,
     getTier(targetTile)
   );
-  var southernPathToEntrance = new verticalPath(
+  var center = new Crossroads(
+    `${regionId}.location_${increment + 8}`,
+    getTier(targetTile)
+  );
+  var pathFromWestToCenter = new horizontalPath(
     `${regionId}.path_${increment + 11}`,
+    getTier(targetTile)
+  );
+  var pathFromEastToCenter = new horizontalPath(
+    `${regionId}.path_${increment + 12}`,
+    getTier(targetTile)
+  );
+  var pathFromNorthToCenter = new verticalPath(
+    `${regionId}.path_${increment + 13}`,
+    getTier(targetTile)
+  );
+  var southernPathToEntrance = new verticalPath(
+    `${regionId}.path_${increment + 14}`,
     getTier(targetTile)
   );
   var easternEntrance = new horizontalEntrance(
@@ -954,6 +954,10 @@ function generateTile(mapGrid, targetTile, type) {
     north: pathFromWestToNorthwest.id,
     south: pathFromSouthwestToNorth.id,
   };
+  firstRandomLocation.description =
+    firstRandomLocation.description +
+    " " +
+    `The ${type} path continues in all directions.`;
   pathFromWestToNorthwest.exits = {
     north: secondRandomLocation.id,
     south: firstRandomLocation.id,
@@ -962,6 +966,10 @@ function generateTile(mapGrid, targetTile, type) {
     south: pathFromWestToNorthwest.id,
     east: pathFromNorthwestToEast.id,
   };
+  secondRandomLocation.description =
+    secondRandomLocation.description +
+    " " +
+    `The ${type} path continues to the south and east.`;
   pathFromNorthwestToEast.exits = {
     west: secondRandomLocation.id,
     east: thirdRandomLocation.id,
@@ -972,6 +980,10 @@ function generateTile(mapGrid, targetTile, type) {
     east: pathFromNorthToEast.id,
     south: pathFromNorthToCenter.id,
   };
+  thirdRandomLocation.description =
+    thirdRandomLocation.description +
+    " " +
+    `The ${type} path continues in all directions.`;
   northernPathToEntrance.exits = {
     south: thirdRandomLocation.id,
     north: northernEntrance.id,
@@ -987,6 +999,10 @@ function generateTile(mapGrid, targetTile, type) {
     west: pathFromNorthToEast.id,
     south: pathFromNortheastToSouth.id,
   };
+  fourthRandomLocation.description =
+    fourthRandomLocation.description +
+    " " +
+    `The ${type} path continues to the west and south.`;
   pathFromNortheastToSouth.exits = {
     north: fourthRandomLocation.id,
     south: fifthRandomLocation.id,
@@ -997,6 +1013,10 @@ function generateTile(mapGrid, targetTile, type) {
     south: pathFromEastToSouth.id,
     west: pathFromEastToCenter.id,
   };
+  fifthRandomLocation.description =
+    fifthRandomLocation.description +
+    " " +
+    `The ${type} path continues in all directions.`;
   easternPathToEntrance.exits = {
     west: fifthRandomLocation.id,
     east: easternEntrance.id,
@@ -1012,6 +1032,10 @@ function generateTile(mapGrid, targetTile, type) {
     north: pathFromEastToSouth.id,
     west: pathFromSouthEastToSouth.id,
   };
+  sixthRandomLocation.description =
+    sixthRandomLocation.description +
+    " " +
+    `The ${type} path continues to the north and west.`;
   pathFromSouthEastToSouth.exits = {
     east: sixthRandomLocation.id,
     west: seventhRandomLocation.id,
@@ -1022,6 +1046,10 @@ function generateTile(mapGrid, targetTile, type) {
     west: pathFromSouthwestToNorth.id,
     south: southernPathToEntrance.id,
   };
+  seventhRandomLocation.description =
+    seventhRandomLocation.description +
+    " " +
+    `The ${type} path continues in all directions.`;
   pathFromWestToSouthwest.exits = {
     east: seventhRandomLocation.id,
     west: eighthRandomLocation.id,
@@ -1030,6 +1058,10 @@ function generateTile(mapGrid, targetTile, type) {
     east: pathFromWestToSouthwest.id,
     north: pathFromSouthwestToNorth.id,
   };
+  eighthRandomLocation.description =
+    eighthRandomLocation.description +
+    " " +
+    `The ${type} path continues to the east and north.`;
   pathFromSouthToCenter.exits = {
     west: pathFromSouthwestToNorth.id,
     east: center.id,
@@ -1038,6 +1070,7 @@ function generateTile(mapGrid, targetTile, type) {
     west: pathFromSouthToCenter.id,
     east: pathFromEastToCenter.id,
     north: pathFromNorthToCenter.id,
+    south: pathFromSouthToCenter.id,
   };
   pathFromWestToCenter.exits = {
     west: westernPath.id,
@@ -1061,26 +1094,29 @@ function generateTile(mapGrid, targetTile, type) {
     south: southernPathToEntrance.id,
   };
   var locationObjects = {};
-  locationObjects[`path${increment}`] = westernPath;
+  locationObjects[`path_${increment}`] = westernPath;
   locationObjects[`location_${increment}`] = firstRandomLocation;
-  locationObjects[`path${increment + 1}`] = pathFromWestToNorthwest;
+  locationObjects[`path_${increment + 1}`] = pathFromWestToNorthwest;
   locationObjects[`location_${increment + 1}`] = secondRandomLocation;
-  locationObjects[`path${increment + 2}`] = pathFromNorthwestToEast;
+  locationObjects[`path_${increment + 2}`] = pathFromNorthwestToEast;
   locationObjects[`location_${increment + 2}`] = thirdRandomLocation;
-  locationObjects[`path${increment + 3}`] = pathFromNorthToEast;
+  locationObjects[`path_${increment + 3}`] = pathFromNorthToEast;
   locationObjects[`location_${increment + 3}`] = fourthRandomLocation;
-  locationObjects[`path${increment + 5}`] = pathFromNortheastToSouth;
+  locationObjects[`path_${increment + 4}`] = pathFromNortheastToSouth;
+  locationObjects[`path_${increment + 5}`] = easternPathToEntrance;
   locationObjects[`location_${increment + 4}`] = fifthRandomLocation;
-  locationObjects[`path${increment + 6}`] = easternPathToEntrance;
+  locationObjects[`path_${increment + 6}`] = pathFromEastToSouth;
   locationObjects[`location_${increment + 5}`] = sixthRandomLocation;
-  locationObjects[`path${increment + 7}`] = pathFromEastToSouth;
+  locationObjects[`path_${increment + 7}`] = pathFromSouthEastToSouth;
   locationObjects[`location_${increment + 6}`] = seventhRandomLocation;
-  locationObjects[`path${increment + 8}`] = pathFromSouthEastToSouth;
+  locationObjects[`path_${increment + 8}`] = pathFromWestToSouthwest;
   locationObjects[`location_${increment + 7}`] = eighthRandomLocation;
-  locationObjects[`path${increment + 9}`] = pathFromWestToSouthwest;
-  locationObjects[`path${increment + 10}`] = pathFromSouthToCenter;
+  locationObjects[`path_${increment + 9}`] = pathFromSouthwestToNorth;
+  locationObjects[`path_${increment + 10}`] = pathFromSouthToCenter;
   locationObjects[`location_${increment + 8}`] = center;
-  locationObjects[`path${increment + 11}`] = pathFromWestToCenter;
+  locationObjects[`path_${increment + 11}`] = pathFromWestToCenter;
+  locationObjects[`path_${increment + 12}`] = pathFromEastToCenter;
+  locationObjects[`path_${increment + 13}`] = pathFromNorthToCenter;
   locationObjects[`entrance_${increment}`] = westernEntrance;
   locationObjects[`entrance_${increment + 1}`] = easternEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernEntrance;
