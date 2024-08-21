@@ -1336,7 +1336,7 @@ async function handleShop(location) {
     }
     handleShop(location);
   } else if (response == "3" || response == "leave") {
-    quickPrint("Thank you for your business.");
+    quickPrint('"Thank you for your business."', vendor, "says cheerfully.");
   }
 }
 

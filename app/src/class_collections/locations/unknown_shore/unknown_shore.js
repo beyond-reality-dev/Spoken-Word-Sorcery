@@ -116,8 +116,8 @@ class OldTreeStump extends Room {
       "Old Tree/Stump",
       "unknownShore.oldTreeStump",
       "The old tree stump is a small, moss-covered stump with a hole in the center.",
-      15.5,
-      15.5
+      10.5,
+      10.5
     );
     this.items = {};
     this.exits = {};

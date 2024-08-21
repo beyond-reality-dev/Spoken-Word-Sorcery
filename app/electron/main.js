@@ -132,9 +132,9 @@ function createWindow() {
         }
 
         // Setttings functions
-        if (localStorage.getItem("gameSpeed") != null) {
+        try {
           var gameSpeed = getValue("gameSpeed");
-        } else {
+        } catch (error) {
           var gameSpeed = 1000;
         }
         

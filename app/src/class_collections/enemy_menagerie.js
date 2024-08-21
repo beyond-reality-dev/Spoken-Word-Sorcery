@@ -380,6 +380,61 @@ class ImperialGuard extends MeleeEnemy {
   }
 }
 
+class ImperialLightCrossbowman extends RangedEnemy {
+  constructor(name, position, items = [new catalog.LightCrossbow()]) {
+    super(
+      name,
+      "light crossbowman",
+      position,
+      `${name} fires their light crossbow!`,
+      50,
+      0,
+      "1d8",
+      30,
+      10,
+      5,
+      items
+    );
+  }
+}
+
+class ImperialHeavyCrossbowman extends RangedEnemy {
+  constructor(name, position, items = [new catalog.HeavyCrossbow()]) {
+    super(
+      name,
+      "heavy crossbowman",
+      position,
+      `${name} fires their heavy crossbow!`,
+      50,
+      0,
+      "1d10",
+      60,
+      10,
+      5,
+      items
+    );
+  }
+}
+
+class ImperialMage extends RangedEnemy {
+  constructor(name, position, items = [new catalog.Staff()], spells) {
+    super(
+      name,
+      "mage",
+      position,
+      `${name} yells <i>${spells}</i> and casts a spell!`,
+      50,
+      0,
+      "5d10",
+      100,
+      10,
+      5,
+      items
+    );
+    this.spells = spells;
+  }
+}
+
 class Obstacle {
   constructor(name, position, health, shape, color) {
     this.name = name;
@@ -483,6 +538,9 @@ module.exports = {
   BanditLightCrossbowman,
   BanditSlinger,
   ImperialGuard,
+  ImperialLightCrossbowman,
+  ImperialHeavyCrossbowman,
+  ImperialMage,
   Obstacle,
   Wall,
   Crate,
