@@ -1,4 +1,5 @@
 const { Room } = require("../room");
+const enemies = require("../../../class_collections/enemy_menagerie");
 
 class NorthernCityEntrance extends Room {
   constructor(id) {
@@ -11,6 +12,12 @@ class NorthernCityEntrance extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [3, 4]),
+      new enemies.ImperialGuard("Imperial Guard 2", [4, 4]),
+      new enemies.ImperialGuard("Imperial Guard 3", [5, 4]),
+      new enemies.ImperialGuard("Imperial Guard 4", [6, 4]),
+    ];
     this.type = "northernCityEntrance";
     this.cutscene = "paragonCityTile.cityEntrance";
     this.cutscenePlayed = false;
@@ -28,6 +35,12 @@ class SouthernCityEntrance extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [3, 1]),
+      new enemies.ImperialGuard("Imperial Guard 2", [4, 1]),
+      new enemies.ImperialGuard("Imperial Guard 3", [5, 1]),
+      new enemies.ImperialGuard("Imperial Guard 4", [6, 1]),
+    ];
     this.type = "southernCityEntrance";
     this.cutscene = "paragonCityTile.cityEntrance";
     this.cutscenePlayed = false;
@@ -45,6 +58,12 @@ class WesternCityEntrance extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [1, 3]),
+      new enemies.ImperialGuard("Imperial Guard 2", [1, 4]),
+      new enemies.ImperialGuard("Imperial Guard 3", [1, 5]),
+      new enemies.ImperialGuard("Imperial Guard 4", [1, 6]),
+    ];
     this.type = "westernCityEntrance";
     this.cutscene = "paragonCityTile.cityEntrance";
     this.cutscenePlayed = false;
@@ -62,6 +81,12 @@ class EasternCityEntrance extends Room {
     );
     this.items = {};
     this.exits = {};
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [4, 3]),
+      new enemies.ImperialGuard("Imperial Guard 2", [4, 4]),
+      new enemies.ImperialGuard("Imperial Guard 3", [4, 5]),
+      new enemies.ImperialGuard("Imperial Guard 4", [4, 6]),
+    ];
     this.type = "easternCityEntrance";
     this.cutscene = "paragonCityTile.cityEntrance";
     this.cutscenePlayed = false;
@@ -70,13 +95,7 @@ class EasternCityEntrance extends Room {
 
 class ShortHorizontalCityStreet extends Room {
   constructor(id) {
-    super(
-      "City Street",
-      id,
-      "The city street leads to a ",
-      20.5,
-      10.5
-    );
+    super("City Street", id, "The city street leads to a ", 20.5, 10.5);
     this.items = {};
     this.exits = {};
     this.type = "shortHorizontalCityStreet";
@@ -85,13 +104,7 @@ class ShortHorizontalCityStreet extends Room {
 
 class LongHorizontalCityStreet extends Room {
   constructor(id) {
-    super(
-      "City Street",
-      id,
-      "The city street leads to a ",
-      40.5,
-      10.5
-    );
+    super("City Street", id, "The city street leads to a ", 40.5, 10.5);
     this.items = {};
     this.exits = {};
     this.type = "longHorizontalCityStreet";
@@ -100,13 +113,7 @@ class LongHorizontalCityStreet extends Room {
 
 class ShortVerticalCityStreet extends Room {
   constructor(id) {
-    super(
-      "City Street",
-      id,
-      "The city street leads to a ",
-      10.5,
-      20.5
-    );
+    super("City Street", id, "The city street leads to a ", 10.5, 20.5);
     this.items = {};
     this.exits = {};
     this.type = "shortVerticalCityStreet";
@@ -115,13 +122,7 @@ class ShortVerticalCityStreet extends Room {
 
 class LongVerticalCityStreet extends Room {
   constructor(id) {
-    super(
-      "City Street",
-      id,
-      "The city street leads to a ",
-      10.5,
-      40.5
-    );
+    super("City Street", id, "The city street leads to a ", 10.5, 40.5);
     this.items = {};
     this.exits = {};
     this.type = "longVerticalCityStreet";

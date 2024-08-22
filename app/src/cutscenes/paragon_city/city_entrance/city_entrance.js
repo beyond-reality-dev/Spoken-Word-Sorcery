@@ -1,3 +1,4 @@
+const { handleCombat } = require("../../../combat");
 const { printLines, toTitleCase } = require("../../../general");
 const { closedInput } = require("../../../handle_input");
 const { generateName } = require("../../../proc_gen");
@@ -17,7 +18,6 @@ async function cityEntrance() {
   var leaderName = generateName("male fullName");
   var location = getValue("location");
   var entrance = location.split(".")[1];
-  // split up by capital letters
   entrance = entrance.split(/(?=[A-Z])/).join(" ");
   entrance = toTitleCase(entrance);
   if (hasRing) {
@@ -32,11 +32,24 @@ async function cityEntrance() {
       leaderName: leaderName,
       entrance: entrance,
     });
+    handleCombat();
+    if (
+      getValue("location") != paragonCityTile.entrance_1 &&
+      getValue("location") != paragonCityTile.entrance_2 &&
+      getValue("location") != paragonCityTile.entrance_3 &&
+      getValue("location") != paragonCityTile.entrance_4
+    ) {
+      return;
+    }
   }
-  changeValue("paragonCityTile.entrance_1", "cutscenePlayed", true);
-  changeValue("paragonCityTile.entrance_2", "cutscenePlayed", true);
-  changeValue("paragonCityTile.entrance_3", "cutscenePlayed", true);
-  changeValue("paragonCityTile.entrance_4", "cutscenePlayed", true);
+  changeValue("paragonCityTile.entrance_1.cutscenePlayed", true, "locations");
+  changeValue("paragonCityTile.entrance_1.enemies", [], "locations");
+  changeValue("paragonCityTile.entrance_2.cutscenePlayed", true, "locations");
+  changeValue("paragonCityTile.entrance_2.enemies", [], "locations");
+  changeValue("paragonCityTile.entrance_3.cutscenePlayed", true, "locations");
+  changeValue("paragonCityTile.entrance_3.enemies", [], "locations");
+  changeValue("paragonCityTile.entrance_4.cutscenePlayed", true, "locations");
+  changeValue("paragonCityTile.entrance_4.enemies", [], "locations");
 }
 
 module.exports = {
