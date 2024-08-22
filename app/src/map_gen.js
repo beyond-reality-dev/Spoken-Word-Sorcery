@@ -34,7 +34,7 @@ var mapGrid = [
   row15,
 ];
 
-function generateMap(map, print = false) {
+function generateMap(map) {
   generateOceans(map); // If a cell is adjacent to ocean, it will become ocean 33% of the time, otherwise it will become shore
   generateBiome(map, "F"); // Generate 5 forest tiles
   generateBiome(map, "M"); // Generate 5 mountain tiles
@@ -620,7 +620,7 @@ function generateRegions(mapGrid, unknownShoreCoords) {
       } else if (mapGrid[i][j] == "R") {
         generateRiverTile(mapGrid, [i, j], unknownShoreCoords);
       } else if (mapGrid[i][j] == "P") {
-        generateTile(mapGrid, [i, j], "paragonCity", unknownShoreCoords);
+        generateParagonCityTile(mapGrid, [i, j], unknownShoreCoords);
       } else if (mapGrid[i][j] == "L") {
         generateTile(mapGrid, [i, j], "libertyCity", unknownShoreCoords);
       } else if (mapGrid[i][j] == "U") {
@@ -723,10 +723,10 @@ const {
   ThinVerticalBridge,
 } = require("./class_collections/locations/generated/river");
 const {
-  HorizontalParagonCityEntrance,
-  VerticalParagonCityEntrance,
-  HorizontalParagonCityPath,
-  VerticalParagonCityPath,
+  NorthernCityEntrance,
+  SouthernCityEntrance,
+  EasternCityEntrance,
+  WesternCityEntrance,
   CitySquare,
 } = require("./class_collections/locations/paragon_city/paragon_city");
 const {
@@ -788,13 +788,6 @@ function generateTile(mapGrid, targetTile, type, unknownShoreCoords) {
       var verticalPath = VerticalBeachPath;
       var horizontalEntrance = HorizontalShoreEntrance;
       var verticalEntrance = VerticalShoreEntrance;
-      break;
-    case "paragonCity":
-      var randomTypes = [CitySquare];
-      var horizontalPath = HorizontalParagonCityPath;
-      var verticalPath = VerticalParagonCityPath;
-      var horizontalEntrance = HorizontalParagonCityEntrance;
-      var verticalEntrance = VerticalParagonCityEntrance;
       break;
     case "libertyCity":
       var randomTypes = [CitySquare];
@@ -1108,6 +1101,51 @@ function generateTile(mapGrid, targetTile, type, unknownShoreCoords) {
   locationObjects[`entrance_${increment + 1}`] = easternEntrance;
   locationObjects[`entrance_${increment + 2}`] = northernEntrance;
   locationObjects[`entrance_${increment + 3}`] = southernEntrance;
+  mapGrid[targetTile[0]][targetTile[1]] = {};
+  mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
+}
+
+function generateParagonCityTile(mapGrid, targetTile, unknownShoreCoords) {
+  var regionIncrement = getIncrement(mapGrid, "paragonCity");
+  var regionId = `paragonCityTile_${regionIncrement}`;
+  var increment = getIncrement(mapGrid, `${regionId}.entrance`);
+  var locationObjects = {};
+  var northernCityEntrance = new NorthernCityEntrance(
+    `${regionId}.entrance_${increment}`
+  );
+  var southernCityEntrance = new SouthernCityEntrance(
+    `${regionId}.entrance_${increment + 1}`
+  );
+  var easternCityEntrance = new EasternCityEntrance(
+    `${regionId}.entrance_${increment + 2}`
+  );
+  var westernCityEntrance = new WesternCityEntrance(
+    `${regionId}.entrance_${increment + 3}`
+  );
+  var citySquare = new CitySquare(`${regionId}.location_${increment}`);
+  northernCityEntrance.exits = {
+    south: citySquare.id,
+  };
+  citySquare.exits = {
+    north: northernCityEntrance.id,
+    south: southernCityEntrance.id,
+    east: easternCityEntrance.id,
+    west: westernCityEntrance.id,
+  };
+  southernCityEntrance.exits = {
+    north: citySquare.id,
+  };
+  easternCityEntrance.exits = {
+    west: citySquare.id,
+  };
+  westernCityEntrance.exits = {
+    east: citySquare.id,
+  };
+  locationObjects[`entrance_${increment}`] = northernCityEntrance;
+  locationObjects[`entrance_${increment + 1}`] = southernCityEntrance;
+  locationObjects[`entrance_${increment + 2}`] = easternCityEntrance;
+  locationObjects[`entrance_${increment + 3}`] = westernCityEntrance;
+  locationObjects[`location_${increment}`] = citySquare;
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }
