@@ -1110,8 +1110,7 @@ function generateTile(mapGrid, targetTile, type, unknownShoreCoords) {
 }
 
 function generateParagonCityTile(mapGrid, targetTile, unknownShoreCoords) {
-  var regionIncrement = getIncrement(mapGrid, "paragonCity");
-  var regionId = `paragonCityTile_${regionIncrement}`;
+  var regionId = `paragonCityTile`;
   var increment = getIncrement(mapGrid, `${regionId}.entrance`);
   var locationObjects = {};
   var northernCityEntrance = new NorthernCityEntrance(

@@ -1,7 +1,7 @@
 const { printLines } = require("../../../general");
 const { closedInput } = require("../../../handle_input");
 const { generateName } = require("../../../proc_gen");
-const { changeValue, removeEntity, getValue } = require("../../../save_data");
+const { changeValue, removeEntity } = require("../../../save_data");
 
 var peasantName = generateName("male fullName");
 var villageName = generateName("town") + " Village";

@@ -18,3 +18,4 @@ exports.imperialDreadnoughtExterior = require("./imperial_citadel/imperial_port/
 exports.imperialDreadnoughtUpperDeck = require("./imperial_citadel/imperial_port/imperial_dreadnought_upper_deck/imperial_dreadnought_upper_deck");
 exports.imperialDreadnoughtHold = require("./imperial_citadel/imperial_port/imperial_dreadnought_hold/imperial_dreadnought_hold");
 exports.rockyBeach = require("./unknown_shore/rocky_beach/rocky_beach");
+exports.cityEntrance = require("./paragon_city/city_entrance/city_entrance");

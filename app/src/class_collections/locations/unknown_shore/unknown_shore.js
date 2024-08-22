@@ -8,7 +8,7 @@ class RockyBeach extends Room {
     super(
       "Rocky Beach",
       "unknownShore.rockyBeach",
-      "The rocky beach is a desolate place, with the sound of waves crashing against the shore. ",
+      "The rocky beach is a desolate place, with the sound of waves crashing against the shore. There is a large piece of driftwood that looks like it would make a good place to rest. ",
       20.5,
       40.5
     );
@@ -20,6 +20,7 @@ class RockyBeach extends Room {
     };
     this.cutscenePlayed = false;
     this.cutscene = "rockyBeach";
+    this.restArea = true;
   }
 }
 

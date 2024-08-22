@@ -21,9 +21,6 @@
   - [Combat System](#combat-system)
   - [Resting System](#resting-system)
   - [Visual Map](#visual-map)
-- [Future Changes](#future-changes)
-  - [Better Grammar Parsing](#better-grammar-parsing)
-  - [Open World Features](#open-world-features)
   - [Procedural Generation](#procedural-generation)
 - [Miscellaneous](#miscellaneous)
   - [AI Disclosure](#ai-disclosure)
@@ -142,7 +139,7 @@ Users can pick up, drop, equip, and unequip items, and view their items in the i
 
 ### Combat System
 
-The combat system is turn-based, with the player and enemies taking turns to attack. The enemies occupy a certain direction in a room, and the player can change the direction that they are facing in order to target their desired enemy. They may then use a weapon or spell to attack those enemies. The damage that the player and enemies inflict is randomized within a specified range, and enemies move in random directions to evade the player's attacks.
+The combat system is turn-based, with the player and enemies taking turns to attack. The enemies and player maneuver around a grid, and the player can attack with melee or ranged weapons, or use spells. The player and enemies can only move a certain distance each turn. The player can also turn to face different directions, in order to target different enemies. The player can also use items in combat, like potions and other consumables.
 
 ### Resting System
 
@@ -154,19 +151,15 @@ The game has a visual map that shows the player's current location and the locat
 
 During combat, there is also now a tactical map that is displayed. The tactical map shows the player's current location, the direction that they are facing, and the locations of the enemies that are in the room. It also displays the rooms that are directly connected to the player's current room, although no others, due to technical limitations and the fact that the player is not able to move during combat.
 
-## Future Changes
-
-### Better Grammar Parsing
-
-Currently options are very limited for what a user is able to type and be recognized by the game, which obviously is not ideal for a text-based game. In the future I hope to allow for more advanced input parsing to create a more immersive experience.
-
-### Open World Features
-
-The description of Spoken World Sorcery as open world is somewhat aspirational given that it is currently a short, linear game, however the systems and frameworks are being put into place that will allow it to be open world in the future.
+After the prologue has been completed, there is also a world map that the player can use to see other regions of the world that they can travel to. The world map is not interactive, but it does show the locations of the regions that the player can travel to, and the connections between them.
 
 ### Procedural Generation
 
-To support the goal of open world gameplay, I hope to build a procedural generation system for the game, to make the world large in scope while remaining sufficiently detailed. This however will only be possible once the more fundamental systems have been finished.
+Most character and place names in the game are entirely procedurally generated, using a Markov chain algorithm. This allows for a large number of unique names to be generated, which is important for the open world format of the game. It also allows for many unique items to be generated.
+
+The game also uses procedural generation to create the layout of the world, including the locations of the rooms and the connections between them. This allows for a large, open world to be created, with many different regions and locations to explore.
+
+The game world is large, largely because of the procedural generation that is used to create it. While there are around 100 handcrafted rooms and locations, the game world can have as many as 3,000 rooms and locations, depending on various factors such as the size of the ocean that is generated. The game world is divided into regions, each of which has its own unique features and locations based on its biome.
 
 ## Miscellaneous
 

@@ -12,6 +12,8 @@ class NorthernCityEntrance extends Room {
     this.items = {};
     this.exits = {};
     this.type = "northernCityEntrance";
+    this.cutscene = "paragonCityTile.cityEntrance";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -27,6 +29,8 @@ class SouthernCityEntrance extends Room {
     this.items = {};
     this.exits = {};
     this.type = "southernCityEntrance";
+    this.cutscene = "paragonCityTile.cityEntrance";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -42,6 +46,8 @@ class WesternCityEntrance extends Room {
     this.items = {};
     this.exits = {};
     this.type = "westernCityEntrance";
+    this.cutscene = "paragonCityTile.cityEntrance";
+    this.cutscenePlayed = false;
   }
 }
 
@@ -57,6 +63,8 @@ class EasternCityEntrance extends Room {
     this.items = {};
     this.exits = {};
     this.type = "easternCityEntrance";
+    this.cutscene = "paragonCityTile.cityEntrance";
+    this.cutscenePlayed = false;
   }
 }
 
