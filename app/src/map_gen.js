@@ -727,6 +727,10 @@ const {
   SouthernCityEntrance,
   EasternCityEntrance,
   WesternCityEntrance,
+  ShortHorizontalCityStreet,
+  LongHorizontalCityStreet,
+  ShortVerticalCityStreet,
+  LongVerticalCityStreet,
   CitySquare,
 } = require("./class_collections/locations/paragon_city/paragon_city");
 const {

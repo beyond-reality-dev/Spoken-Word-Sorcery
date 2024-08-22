@@ -102,7 +102,6 @@ async function rockyBeach() {
   }
   changeValue("prologueCompleted", true);
   changeValue("unknownShore.rockyBeach.cutscenePlayed", true, "locations");
-  console.log(getValue("unknownShore.rockyBeach.cutscenePlayed", "locations"));
 }
 
 module.exports = { rockyBeach };

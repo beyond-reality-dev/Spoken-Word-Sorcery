@@ -81,7 +81,6 @@ function initializeData(saveFile) {
     }
   }
   var mapDisplayArray = generatedMap[1];
-  console.log(mapDisplayArray);
   var generatedMap = generatedMap[0];
   for (let i = 0; i < generatedMap.length; i++) {
     for (let j = 0; j < generatedMap[i].length; j++) {
@@ -714,18 +713,9 @@ function getValue(target, locations = false) {
   if (locations) {
     var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
-    console.log(locations);
     var primaryTarget = target.split(".")[0];
-    if (target.split(".").length == 2) {
-      var secondaryTarget = target.split(".")[1];
-      var value = locations[primaryTarget][secondaryTarget];
-    } else if (target.split(".").length == 3) {
-      var secondaryTarget = target.split(".")[1];
-      var tertiaryTarget = target.split(".")[2];
-      var value = locations[primaryTarget][secondaryTarget][tertiaryTarget];
-    } else {
-      var value = locations[primaryTarget];
-    }
+    var secondaryTarget = target.split(".")[1];
+    var value = locations[primaryTarget][secondaryTarget];
     return value;
   }
   var playerData = JSON.parse(localStorage.getItem("playerData"));
@@ -735,7 +725,6 @@ function getValue(target, locations = false) {
 
 function changeValue(target, newValue, i = 0) {
   var playerData = JSON.parse(localStorage.getItem("playerData"));
-  console.log(target);
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {

@@ -1,41 +1,41 @@
-const { Room } = require('../room');
+const { Room } = require("../room");
 
 class HorizontalVolcanicEntrance extends Room {
   constructor(id) {
     super(
-      'Volcanic Entrance',
+      "Volcanic Entrance",
       id,
-      'The volcanic entrance is a dangerous place, with lava flows and volcanic ash. The path leads to the east and west.',
+      "The volcanic entrance is a dangerous place, with lava flows and volcanic ash. The path leads to the east and west.",
       20.5,
       40.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'horizontalVolcanicEntrance';
+    this.type = "horizontalVolcanicEntrance";
   }
 }
 
 class VerticalVolcanicEntrance extends Room {
   constructor(id) {
     super(
-      'Volcanic Entrance',
+      "Volcanic Entrance",
       id,
-      'The volcanic entrance is a dangerous place, with lava flows and volcanic ash. The path leads to the north and south.',
+      "The volcanic entrance is a dangerous place, with lava flows and volcanic ash. The path leads to the north and south.",
       40.5,
       20.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'verticalVolcanicEntrance';
+    this.type = "verticalVolcanicEntrance";
   }
 }
 
 class HorizontalVolcanicPath extends Room {
   constructor(id, tier) {
     super(
-      'Volcanic Path',
+      "Volcanic Path",
       id,
-      'The volcanic path winds through the rocks for a long way, leading to different areas to the east and west.',
+      "The volcanic path winds through the rocks for a long way, leading to different areas to the east and west.",
       40.5,
       10.5
     );
@@ -43,16 +43,16 @@ class HorizontalVolcanicPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'horizontalVolcanicPath';
+    this.type = "horizontalVolcanicPath";
   }
 }
 
 class VerticalVolcanicPath extends Room {
   constructor(id, tier) {
     super(
-      'Volcanic Path',
+      "Volcanic Path",
       id,
-      'The volcanic path winds through the rocks for a long way, leading to different areas to the north and south.',
+      "The volcanic path winds through the rocks for a long way, leading to different areas to the north and south.",
       10.5,
       40.5
     );
@@ -60,16 +60,16 @@ class VerticalVolcanicPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'verticalVolcanicPath';
+    this.type = "verticalVolcanicPath";
   }
 }
 
 class LavaLake extends Room {
   constructor(id, tier) {
     super(
-      'Lava Lake',
+      "Lava Lake",
       id,
-      'The lava lake is a swirling cauldron of fire and melted rock.',
+      "The lava lake is a swirling cauldron of fire and melted rock.",
       40.5,
       40.5
     );
@@ -77,16 +77,16 @@ class LavaLake extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'lavaLake';
+    this.type = "lavaLake";
   }
 }
 
 class LavaFlow extends Room {
   constructor(id, tier) {
     super(
-      'Lava Flow',
+      "Lava Flow",
       id,
-      'The lava flow is a river of molten rock, flowing from the volcano.',
+      "The lava flow is a river of molten rock, flowing from the volcano.",
       40.5,
       40.5
     );
@@ -94,16 +94,16 @@ class LavaFlow extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'lavaFlow';
+    this.type = "lavaFlow";
   }
 }
 
 class LavaCave extends Room {
   constructor(id, tier) {
     super(
-      'Lava Cave',
+      "Lava Cave",
       id,
-      'The lava cave is a dark, hot place, with glowing lava pools and steam vents.',
+      "The lava cave is a dark, hot place, with glowing lava pools and steam vents.",
       40.5,
       40.5
     );
@@ -111,7 +111,7 @@ class LavaCave extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'lavaCave';
+    this.type = "lavaCave";
   }
 }
 

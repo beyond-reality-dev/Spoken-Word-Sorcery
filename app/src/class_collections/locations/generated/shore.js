@@ -1,41 +1,41 @@
-const { Room } = require('../room');
+const { Room } = require("../room");
 
 class VerticalShoreEntrance extends Room {
   constructor(id) {
     super(
-      'Shore Entrance',
+      "Shore Entrance",
       id,
-      'The shore is a long stretch of sand, with the ocean on one side and the land on the other.',
+      "The shore is a long stretch of sand, with the ocean on one side and the land on the other.",
       40.5,
       20.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'verticalShoreEntrance';
+    this.type = "verticalShoreEntrance";
   }
 }
 
 class HorizontalShoreEntrance extends Room {
   constructor(id) {
     super(
-      'Shore Entrance',
+      "Shore Entrance",
       id,
-      'The shore is a long stretch of sand, with the ocean on one side and the land on the other.',
+      "The shore is a long stretch of sand, with the ocean on one side and the land on the other.",
       20.5,
       40.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'horizontalShoreEntrance';
+    this.type = "horizontalShoreEntrance";
   }
 }
 
 class HorizontalBeachPath extends Room {
   constructor(id, tier) {
     super(
-      'Beach Path',
+      "Beach Path",
       id,
-      'The beach path winds through the sand for a long way, leading to different areas to the east and west.',
+      "The beach path winds through the sand for a long way, leading to different areas to the east and west.",
       40.5,
       10.5
     );
@@ -43,16 +43,16 @@ class HorizontalBeachPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'horizontalBeachPath';
+    this.type = "horizontalBeachPath";
   }
 }
 
 class VerticalBeachPath extends Room {
   constructor(id, tier) {
     super(
-      'Beach Path',
+      "Beach Path",
       id,
-      'The beach path winds through the sand for a long way, leading to different areas to the north and south.',
+      "The beach path winds through the sand for a long way, leading to different areas to the north and south.",
       10.5,
       40.5
     );
@@ -60,16 +60,16 @@ class VerticalBeachPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'verticalBeachPath';
+    this.type = "verticalBeachPath";
   }
 }
 
 class Beach extends Room {
   constructor(id, tier) {
     super(
-      'Beach',
+      "Beach",
       id,
-      'The beach is a pleasant stretch of sand, and you can hear the sounds of crashing waves',
+      "The beach is a pleasant stretch of sand, and you can hear the sounds of crashing waves",
       20.5,
       20.5
     );
@@ -77,16 +77,16 @@ class Beach extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'beach';
+    this.type = "beach";
   }
 }
 
 class Tidepool extends Room {
   constructor(id, tier) {
     super(
-      'Tidepool',
+      "Tidepool",
       id,
-      'The tidepool is a small pool of water left behind by the receding tide.',
+      "The tidepool is a small pool of water left behind by the receding tide.",
       20.5,
       20.5
     );
@@ -94,16 +94,16 @@ class Tidepool extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'tidepool';
+    this.type = "tidepool";
   }
 }
 
 class CoralReef extends Room {
   constructor(id, tier) {
     super(
-      'Coral Reef',
+      "Coral Reef",
       id,
-      'The coral reef is a beautiful underwater garden of colorful coral and fish.',
+      "The coral reef is a beautiful underwater garden of colorful coral and fish.",
       20.5,
       20.5
     );
@@ -111,7 +111,7 @@ class CoralReef extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'coralReef';
+    this.type = "coralReef";
   }
 }
 

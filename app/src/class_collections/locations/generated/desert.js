@@ -1,41 +1,41 @@
-const { Room } = require('../room');
+const { Room } = require("../room");
 
 class HorizontalDesertEntrance extends Room {
   constructor(id) {
     super(
-      'Desert Entrance',
+      "Desert Entrance",
       id,
-      'The desert is a vast expanse of sand, stretching as far as the eye can see. The path leads to the east and west.',
+      "The desert is a vast expanse of sand, stretching as far as the eye can see. The path leads to the east and west.",
       20.5,
       40.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'horizontalDesertEntrance';
+    this.type = "horizontalDesertEntrance";
   }
 }
 
 class VerticalDesertEntrance extends Room {
   constructor(id) {
     super(
-      'Desert Entrance',
+      "Desert Entrance",
       id,
-      'The desert is a vast expanse of sand, stretching as far as the eye can see. The path leads to the north and south.',
+      "The desert is a vast expanse of sand, stretching as far as the eye can see. The path leads to the north and south.",
       40.5,
       20.5
     );
     this.items = {};
     this.exits = {};
-    this.type = 'verticalDesertEntrance';
+    this.type = "verticalDesertEntrance";
   }
 }
 
 class HorizontalDesertPath extends Room {
   constructor(id, tier) {
     super(
-      'Desert Path',
+      "Desert Path",
       id,
-      'The desert path winds through the sand for a long way, leading to different areas to the east and west.',
+      "The desert path winds through the sand for a long way, leading to different areas to the east and west.",
       40.5,
       10.5
     );
@@ -43,16 +43,16 @@ class HorizontalDesertPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'horizontalDesertPath';
+    this.type = "horizontalDesertPath";
   }
 }
 
 class VerticalDesertPath extends Room {
   constructor(id, tier) {
     super(
-      'Desert Path',
+      "Desert Path",
       id,
-      'The desert path winds through the sand for a long way, leading to different areas to the north and south.',
+      "The desert path winds through the sand for a long way, leading to different areas to the north and south.",
       10.5,
       40.5
     );
@@ -60,16 +60,16 @@ class VerticalDesertPath extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'verticalDesertPath';
+    this.type = "verticalDesertPath";
   }
 }
 
 class SmallDunes extends Room {
   constructor(id, tier) {
     super(
-      'Small Dunes',
+      "Small Dunes",
       id,
-      'There is a small collection of sand dunes in the area.',
+      "There is a small collection of sand dunes in the area.",
       20.5,
       20.5
     );
@@ -77,16 +77,16 @@ class SmallDunes extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'smallDunes';
+    this.type = "smallDunes";
   }
 }
 
 class LargeDunes extends Room {
   constructor(id, tier) {
     super(
-      'Large Dunes',
+      "Large Dunes",
       id,
-      'There is a large collection of sand dunes in the area.',
+      "There is a large collection of sand dunes in the area.",
       40.5,
       40.5
     );
@@ -94,16 +94,16 @@ class LargeDunes extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'largeDunes';
+    this.type = "largeDunes";
   }
 }
 
 class SmallOasis extends Room {
   constructor(id, tier) {
     super(
-      'Small Oasis',
+      "Small Oasis",
       id,
-      'There is a small oasis in the area.',
+      "There is a small oasis in the area.",
       20.5,
       20.5
     );
@@ -111,16 +111,16 @@ class SmallOasis extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'smallOasis';
+    this.type = "smallOasis";
   }
 }
 
 class LargeOasis extends Room {
   constructor(id, tier) {
     super(
-      'Large Oasis',
+      "Large Oasis",
       id,
-      'There is a large oasis in the area.',
+      "There is a large oasis in the area.",
       40.5,
       40.5
     );
@@ -128,16 +128,16 @@ class LargeOasis extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'largeOasis';
+    this.type = "largeOasis";
   }
 }
 
 class Crossroads extends Room {
   constructor(id, tier) {
     super(
-      'Crossroads',
+      "Crossroads",
       id,
-      'The desert path leads to the north, south, east, and west.',
+      "The desert path leads to the north, south, east, and west.",
       40.5,
       40.5
     );
@@ -145,7 +145,7 @@ class Crossroads extends Room {
     this.exits = {};
     this.encounter = `generateRandomEncounter(${tier})`;
     this.encountered = false;
-    this.type = 'crossroads';
+    this.type = "crossroads";
   }
 }
 

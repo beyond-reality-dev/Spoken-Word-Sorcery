@@ -483,8 +483,6 @@ function updateWorldMap() {
       var cell = mapGrid[i][j];
       var keys = Object.keys(cell);
       if (keys.length > 0) {
-        console.log(keys);
-        console.log(cell[keys[0]]);
         var secondaryKeys = Object.keys(cell[keys[0]]);
         if (cell[keys[0]][secondaryKeys[0]].hasOwnProperty("id")) {
           var cellRegion = cell[keys[0]][secondaryKeys[0]]["id"].split(".")[0];
