@@ -247,23 +247,20 @@ async function intro() {
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/11.txt"
   );
   await requireAnswer(["spear"], '"Speak the word <i>Spear</i>."');
-  var spear = new Spear();
-  addEntity(spear, "spokenSpells");
-  calculateValue("currentMana", "subtract", spear.manaCost);
+  addEntity(new Spear(), "spokenSpells");
+  calculateValue("currentMana", "subtract", 5);
   printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/12.txt"
   );
   await requireAnswer(["shield"], '"Speak the word <i>Shield</i>."');
-  var shield = new Shield();
-  addEntity(shield, "spokenSpells");
-  calculateValue("currentMana", "subtract", shield.manaCost);
+  addEntity(new Shield(), "spokenSpells");
+  calculateValue("currentMana", "subtract", 5);
   printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/13.txt"
   );
-  var away = new Away();
-  addEntity(away, "knownSpells");
+  addEntity(new Away(), "knownSpells");
   await openInput(true);
-  while (getValue("direction") == "north" || getValue("currentMana") >= 90) {
+  while (getValue("direction") == "north" || getValue("currentMana") >= 40) {
     printLines(
       "app/src/cutscenes/imperial_citadel/imperial_academy/intro/14.txt"
     );
@@ -272,7 +269,8 @@ async function intro() {
   await printLines(
     "app/src/cutscenes/imperial_citadel/imperial_academy/intro/15.txt"
   );
-  changeValue("currentMana", 100);
+  var maxMana = getValue("maxMana");
+  changeValue("currentMana", maxMana);
   inputLoop();
 }
 

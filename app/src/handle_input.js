@@ -1042,8 +1042,6 @@ function parseCombatMovement(clause, direction, firstSubstring, lastSubstring) {
 function handleMovement(direction) {
   var currentLocation = getValue("location");
   currentLocation = eval(getValue(currentLocation, true));
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
-  var locations = playerData["locations"];
   if (direction == "load") {
     changeValue(`${currentLocation.id}.isVisited`, true, "locations");
     quickPrint(currentLocation.description);
@@ -1333,7 +1331,7 @@ async function handleShop(location) {
     }
     handleShop(location);
   } else if (response == "3" || response == "leave") {
-    quickPrint('"Thank you for your business."', vendor, "says cheerfully.");
+    quickPrint("Thank you for your business.");
   }
 }
 

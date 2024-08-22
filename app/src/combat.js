@@ -4,6 +4,7 @@ const {
   calculateValue,
   updateUI,
   levelScaling,
+  playerData,
 } = require("./save_data");
 const { quickPrint, diceRoll, getRandomInt } = require("./general");
 const { openInput } = require("./handle_input");
@@ -54,13 +55,11 @@ async function handleCombat() {
         }
       }
     }
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
     var location = getValue("location");
     var primaryLocation = location.split(".")[0];
     var secondaryLocation = location.split(".")[1];
     locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-    localStorage.setItem("playerData", JSON.stringify(playerData));
   }
   playerHealth = getValue("currentHealth");
   if (playerHealth <= 0) {
@@ -224,10 +223,8 @@ async function handlePlayerTurn(enemies, length) {
         var location = getValue("location");
         var primaryLocation = location.split(".")[0];
         var secondaryLocation = location.split(".")[1];
-        var playerData = JSON.parse(localStorage.getItem("playerData"));
         var locations = playerData["locations"];
         locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-        localStorage.setItem("playerData", JSON.stringify(playerData));
         if (enemy.health <= 0) {
           quickPrint(`You have defeated ${enemy.name}.`);
           quickPrint(
@@ -252,7 +249,6 @@ async function handlePlayerTurn(enemies, length) {
           locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
           playerData["gold"] = getValue("gold");
           playerData["experiencePoints"] = getValue("experiencePoints");
-          localStorage.setItem("playerData", JSON.stringify(playerData));
         }
       } else {
         quickPrint("There is no enemy in that direction.");
@@ -324,10 +320,8 @@ async function handlePlayerTurn(enemies, length) {
           var location = getValue("location");
           var primaryLocation = location.split(".")[0];
           var secondaryLocation = location.split(".")[1];
-          var playerData = JSON.parse(localStorage.getItem("playerData"));
           var locations = playerData["locations"];
           locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-          localStorage.setItem("playerData", JSON.stringify(playerData));
           if (enemy.health <= 0) {
             quickPrint(`You have defeated ${enemy.name}.`);
             quickPrint(
@@ -352,7 +346,6 @@ async function handlePlayerTurn(enemies, length) {
             playerData["gold"] = getValue("gold");
             playerData["experiencePoints"] = getValue("experiencePoints");
             locations[primaryLocation][secondaryLocation]["enemies"] = enemies;
-            localStorage.setItem("playerData", JSON.stringify(playerData));
           }
         }
       } else if (spellEffect == "healthIncrease") {
@@ -450,9 +443,7 @@ function checkAmmo(position, enemies) {
       var current = inventory[i].quantity;
       current = current - 1;
       changeValue("itemQuantity", current, i);
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
       playerData["inventory"] = inventory;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
       used = true;
       updateUI();
       return [enemies, used];

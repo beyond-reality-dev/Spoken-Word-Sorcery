@@ -1,7 +1,6 @@
-const { getValue } = require("./save_data");
+const { getValue, playerData } = require("./save_data");
 
 function updateMap() {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var location = playerData["location"];
   var primaryLocation = location.split(".")[0];
   var secondaryLocation = location.split(".")[1];

@@ -12,7 +12,10 @@ module.exports = {
   changeValue,
   calculateValue,
   levelScaling,
+  playerData,
 };
+
+var playerData;
 
 const { quickPrint, getRandomInt, addDice } = require("./general");
 const { inputLoop, handleMovement } = require("./handle_input");
@@ -28,17 +31,17 @@ const {
 const { generateMap, mapGrid } = require("./map_gen");
 
 function initializeData(saveFile) {
-  var playerData = {
+  playerData = {
     saveFile: saveFile,
     name: "",
     level: 1,
     experiencePoints: 0,
     insanity: 0,
-    maxHealth: 100,
-    currentHealth: 100,
+    maxHealth: 50,
+    currentHealth: 50,
     tempHealth: 0,
-    maxMana: 100,
-    currentMana: 100,
+    maxMana: 50,
+    currentMana: 50,
     tempMana: 0,
     attack: 0,
     armor: 0,
@@ -131,7 +134,6 @@ function saveGame(saveFile) {
       return false;
     }
   }
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var save = JSON.stringify(playerData);
   localStorage.setItem(saveFile, save);
   return true;
@@ -139,7 +141,7 @@ function saveGame(saveFile) {
 
 async function loadGame(saveFile) {
   var save = localStorage.getItem(saveFile);
-  var playerData = JSON.parse(save);
+  playerData = JSON.parse(save);
   localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
   handleMovement("load");
@@ -319,14 +321,14 @@ function updateSpellbook(target) {
         if (document.getElementById(spellName)) {
           document.getElementById(spellName).remove();
         }
-        if (spells[i]["isSupport"] == false) {
-          document.getElementById(
-            targetElement
-          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} ${effect} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
-        } else if (spells[i]["isSupport"] == true) {
+        if (spells[i]["isSupport"] == true) {
           document.getElementById(
             targetElement
           ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Atk↑: ${spellAttackIncrease} | HP↑: ${spellHealthIncrease} | Def↑: ${spellArmorIncrease} | Spd↑: ${spellSpeedIncrease} | Rng↑: ${spellRangeIncrease}</option>`;
+        } else {
+          document.getElementById(
+            targetElement
+          ).innerHTML += `<option id="${spellName}">${spellName} | ${spellType} | ${spellDescription} | Power: ${spellPower} ${spellEffect} | Range: ${spellRange} | Mana Cost: ${spellManaCost}</option>`;
         }
       }
     }
@@ -424,9 +426,7 @@ function updateInventory() {
     }
     encumbrance = encumbrance + itemWeight * itemQuantity;
   }
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   playerData["encumbrance"] = encumbrance;
-  localStorage.setItem("playerData", JSON.stringify(playerData));
   document.getElementById(
     "gold-counter"
   ).innerHTML = `Gold: ${gold} | Encumbrance: ${encumbrance} lbs`;
@@ -438,7 +438,6 @@ function updateInventory() {
 
 function updateEquipment() {
   var equipment = getValue("equipment");
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var armorValue = 0;
   var attackValue = 0;
   if (equipment["head"] != null) {
@@ -591,7 +590,6 @@ function updateEquipment() {
   }
   playerData["attack"] = attackValue;
   playerData["armor"] = armorValue;
-  localStorage.setItem("playerData", JSON.stringify(playerData));
   var tempArmor = getValue("tempArmor");
   var speed = getValue("speed");
   if (tempArmor > 0) {
@@ -608,19 +606,10 @@ function updateEquipment() {
 }
 
 function addEntity(entity, target) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var matchKnown = false;
   if (target == "spokenSpells") {
-    for (
-      let i = 0;
-      i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
-      i++
-    ) {
-      if (
-        JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i][
-          "name"
-        ] == entity["name"]
-      ) {
+    for (let i = 0; i < playerData["knownSpells"].length; i++) {
+      if (playerData["knownSpells"][i]["name"] == entity["name"]) {
         var matchKnown = true;
         var index = i;
         break;
@@ -631,16 +620,8 @@ function addEntity(entity, target) {
     }
     playerData["spokenSpells"].push(entity);
   } else if (target == "knownSpells") {
-    for (
-      let i = 0;
-      i < JSON.parse(localStorage.getItem("playerData"))["knownSpells"].length;
-      i++
-    ) {
-      if (
-        JSON.parse(localStorage.getItem("playerData"))["knownSpells"][i][
-          "name"
-        ] == entity["name"]
-      ) {
+    for (let i = 0; i < playerData["knownSpells"].length; i++) {
+      if (playerData["knownSpells"][i]["name"] == entity["name"]) {
         var matchKnown = true;
         var index = i;
         break;
@@ -683,12 +664,10 @@ function addEntity(entity, target) {
   } else {
     playerData[target].push(entity);
   }
-  localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }
 
 function removeEntity(entity, target) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var hits = 0;
   for (let i = 0; i < playerData[target].length; i++) {
     if (playerData[target][i]["name"] == entity) {
@@ -705,26 +684,22 @@ function removeEntity(entity, target) {
       }
     }
   }
-  localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }
 
 function getValue(target, locations = false) {
   if (locations) {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData["locations"];
     var primaryTarget = target.split(".")[0];
     var secondaryTarget = target.split(".")[1];
     var value = locations[primaryTarget][secondaryTarget];
     return value;
   }
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var value = playerData[target];
   return value;
 }
 
 function changeValue(target, newValue, i = 0) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   if (target == "itemQuantity") {
     playerData["inventory"][i]["quantity"] = newValue;
   } else if (i == "locations") {
@@ -735,13 +710,11 @@ function changeValue(target, newValue, i = 0) {
       newValue;
   } else if (target == "experiencePoints") {
     playerData[target] = newValue;
-    localStorage.setItem("playerData", JSON.stringify(playerData));
     levelChecker();
     return;
   } else {
     playerData[target] = newValue;
   }
-  localStorage.setItem("playerData", JSON.stringify(playerData));
   updateUI();
 }
 

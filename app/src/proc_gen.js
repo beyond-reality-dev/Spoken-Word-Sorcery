@@ -3,7 +3,7 @@ const enemies = require("./class_collections/enemy_menagerie");
 const spells = require("./class_collections/spellbook");
 const { NameGenerator } = require("../lib/markov_namegen/name_generator");
 const { getRandomInt, printLines, requireAnswer } = require("./general");
-const { getValue, calculateValue } = require("./save_data");
+const { getValue, calculateValue, playerData } = require("./save_data");
 const {
   handleCombat,
   findEnemiesInCell,
@@ -333,7 +333,6 @@ function generateAmmo(tier) {
 
 function generateRandomEncounter(tier, hostile = true) {
   if (tier == 0) {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData.locations;
     var locationName = getValue("location");
     var primaryLocation = locationName.split(".")[0];
@@ -351,7 +350,6 @@ function generateRandomEncounter(tier, hostile = true) {
     }
   }
   if (hostile) {
-    var playerData = JSON.parse(localStorage.getItem("playerData"));
     var locations = playerData.locations;
     var locationName = getValue("location");
     var primaryLocation = locationName.split(".")[0];
@@ -369,14 +367,12 @@ function generateRandomEncounter(tier, hostile = true) {
     var generatedEnemies = generatedEnemies[1];
     enemies = enemies.concat(generatedEnemies);
     playerData.locations[primaryLocation][secondaryLocation].enemies = enemies;
-    localStorage.setItem("playerData", JSON.stringify(playerData));
     handleEncounter(faction, tier);
   } else {
     var encounterTypes = ["shop"];
     var encounterType = encounterTypes[getRandomInt(encounterTypes.length)];
     if (encounterType == "shop") {
       var shop = generateShop(tier);
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
       var locations = playerData.locations;
       var locationName = getValue("location");
       var primaryLocation = locationName.split(".")[0];
@@ -388,7 +384,6 @@ function generateRandomEncounter(tier, hostile = true) {
       location.markup = shop[3];
       location.description = `You have encountered a traveling cart run by ${shop[0]}.`;
       playerData.locations[primaryLocation][secondaryLocation] = location;
-      localStorage.setItem("playerData", JSON.stringify(playerData));
       handleMovement("load");
     }
   }
@@ -503,7 +498,6 @@ function generateEnemy(tier, quantity = 1) {
 }
 
 function generateEnemyPosition(enemies) {
-  var playerData = JSON.parse(localStorage.getItem("playerData"));
   var locations = playerData.locations;
   var locationName = getValue("location");
   var primaryLocation = locationName.split(".")[0];
@@ -558,7 +552,6 @@ async function handleEncounter(faction, tier) {
         var location = getValue("location");
         var primaryLocation = location.split(".")[0];
         var secondaryLocation = location.split(".")[1];
-        var playerData = JSON.parse(localStorage.getItem("playerData"));
         var locations = playerData.locations;
         var location = locations[primaryLocation][secondaryLocation];
         location.enemies = [];
@@ -570,7 +563,7 @@ async function handleEncounter(faction, tier) {
     var extortion = tier * getRandomInt(50) + 50;
     await printLines("app/src/class_collections/encounters/rebel/1.txt", {
       rebelName: rebelName,
-      cellName: cellName
+      cellName: cellName,
     });
     var response = await closedInput(
       [
@@ -592,7 +585,6 @@ async function handleEncounter(faction, tier) {
       response == "comply with their demands" ||
       response == "comply with the rebels"
     ) {
-      var playerData = JSON.parse(localStorage.getItem("playerData"));
       var inventory = playerData.inventory;
       var hasRing = false;
       for (let i = 0; i < inventory.length; i++) {
@@ -635,19 +627,23 @@ async function handleEncounter(faction, tier) {
         ) {
           var gold = getValue("gold");
           if (gold < extortion) {
-            await printLines("app/src/class_collections/encounters/rebel/4.txt");
+            await printLines(
+              "app/src/class_collections/encounters/rebel/4.txt"
+            );
             await requireAnswer(["any"], "unreachable");
             handleCombat();
           } else {
-            await printLines("app/src/class_collections/encounters/rebel/5.txt", {
-              rebelName: rebelName,
-              extortion: extortion,
-            });
+            await printLines(
+              "app/src/class_collections/encounters/rebel/5.txt",
+              {
+                rebelName: rebelName,
+                extortion: extortion,
+              }
+            );
             calculateValue("gold", "subtract", extortion);
             var location = getValue("location");
             var primaryLocation = location.split(".")[0];
             var secondaryLocation = location.split(".")[1];
-            var playerData = JSON.parse(localStorage.getItem("playerData"));
             var locations = playerData.locations;
             var location = locations[primaryLocation][secondaryLocation];
             location.enemies = [];
