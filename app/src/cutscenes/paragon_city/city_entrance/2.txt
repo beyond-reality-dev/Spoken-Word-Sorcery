@@ -5,7 +5,7 @@ They surrounded you, weapons drawn.
 "{"name"}!" one of them spat.
 They advanced on you, their eyes filled with hatred.
 "You never should have come here," another snarled.
-"You, who forsake the Seal of the Empire, and allowed the Emperor to die," the first guard growled.
+"You, who forsake the Imperial Signet Ring, and allowed the Emperor to die," the first guard growled.
 "By my authority as {"leaderName"}, Captain of the {"entrance"} Guard, I sentence you to death," he declared.
 The guards raised their weapons, ready to strike.
 Press enter to continue...

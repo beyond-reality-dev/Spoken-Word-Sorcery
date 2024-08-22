@@ -1125,30 +1125,56 @@ function generateParagonCityTile(mapGrid, targetTile, unknownShoreCoords) {
   var westernCityEntrance = new WesternCityEntrance(
     `${regionId}.entrance_${increment + 3}`
   );
-  var citySquare = new CitySquare(`${regionId}.location_${increment}`);
+  var cityStreetFromNorth = new ShortVerticalCityStreet(`${regionId}.cityStreetFromNorth`);
+  var cityStreetFromSouth = new ShortVerticalCityStreet(`${regionId}.cityStreetFromSouth`);
+  var cityStreetFromEast = new ShortHorizontalCityStreet(`${regionId}.cityStreetFromEast`);
+  var cityStreetFromWest = new ShortHorizontalCityStreet(`${regionId}.cityStreetFromWest`);
+  var importedLocations = require("./class_collections/locations/paragon_city/paragon_city");
+  for (var key in importedLocations) {
+    if (typeof importedLocations[key] == "function") {
+      delete importedLocations[key];
+    }
+  }
   northernCityEntrance.exits = {
-    south: citySquare.id,
-  };
-  citySquare.exits = {
-    north: northernCityEntrance.id,
-    south: southernCityEntrance.id,
-    east: easternCityEntrance.id,
-    west: westernCityEntrance.id,
+    south: cityStreetFromNorth.id,
   };
   southernCityEntrance.exits = {
-    north: citySquare.id,
+    north: cityStreetFromSouth.id,
   };
   easternCityEntrance.exits = {
-    west: citySquare.id,
+    west: cityStreetFromEast.id,
   };
   westernCityEntrance.exits = {
-    east: citySquare.id,
+    east: cityStreetFromWest.id,
+  };
+  cityStreetFromNorth.exits = {
+    north: northernCityEntrance.id,
+    south: `${regionId}.northernCustomsCheckpoint`,
+  };
+  cityStreetFromSouth.exits = {
+    north: `${regionId}.southernCustomsCheckpoint`,
+    south: southernCityEntrance.id,
+  };
+  cityStreetFromEast.exits = {
+    east: easternCityEntrance.id,
+    west: `${regionId}.easternCustomsCheckpoint`,
+  };
+  cityStreetFromWest.exits = {
+    east: `${regionId}.westernCustomsCheckpoint`,
+    west: westernCityEntrance.id,
   };
   locationObjects[`entrance_${increment}`] = northernCityEntrance;
   locationObjects[`entrance_${increment + 1}`] = southernCityEntrance;
   locationObjects[`entrance_${increment + 2}`] = easternCityEntrance;
   locationObjects[`entrance_${increment + 3}`] = westernCityEntrance;
-  locationObjects[`location_${increment}`] = citySquare;
+  locationObjects[`cityStreetFromNorth`] = cityStreetFromNorth;
+  locationObjects[`cityStreetFromSouth`] = cityStreetFromSouth;
+  locationObjects[`cityStreetFromEast`] = cityStreetFromEast;
+  locationObjects[`cityStreetFromWest`] = cityStreetFromWest;
+  for (var key in importedLocations) {
+    var id = key.split(".")[1];
+    locationObjects[id] = importedLocations[key];
+  }
   mapGrid[targetTile[0]][targetTile[1]] = {};
   mapGrid[targetTile[0]][targetTile[1]][regionId] = locationObjects;
 }

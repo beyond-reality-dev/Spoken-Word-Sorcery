@@ -18,3 +18,7 @@ They stood, and the first guard stepped forward.
 "We did not abandon the cause, because we knew that one day, someone would come to restore the Empire to its former glory."
 "And now, that day has come."
 {"leaderName"} looked at you with hopeful expectation.
+"Are you the one who will lead us to victory?" he asked.
+What do you say?
+1. "You are mistaken. I am not who you have been waiting for."
+2. "I am who you think I am. I have come to reclaim the Empire."

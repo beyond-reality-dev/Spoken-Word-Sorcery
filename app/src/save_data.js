@@ -55,6 +55,7 @@ function initializeData(saveFile) {
     location: "imperialAcademy.trainingRoom",
     isCombat: false,
     prologueCompleted: false,
+    claimedThrone: false,
     gameSpeed: 1000,
   };
   var inventory = [];

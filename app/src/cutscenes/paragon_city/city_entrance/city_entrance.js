@@ -26,6 +26,22 @@ async function cityEntrance() {
       leaderName: leaderName,
       entrance: entrance,
     });
+    var response = await closedInput(
+      ["1", "you are mistaken", "2", "i am who you think i am"],
+      "What do you say?"
+    );
+    if (response == "1" || response == "you are mistaken") {
+      await printLines("app/src/cutscenes/paragon_city/city_entrance/3.txt", {
+        name: name,
+        leaderName: leaderName,
+      });
+    } else {
+      await printLines("app/src/cutscenes/paragon_city/city_entrance/4.txt", {
+        name: name,
+        leaderName: leaderName,
+      });
+      changeValue("claimedThrone", true);
+    }
   } else {
     await printLines("app/src/cutscenes/paragon_city/city_entrance/2.txt", {
       name: name,

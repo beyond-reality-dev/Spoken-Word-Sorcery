@@ -43,6 +43,10 @@ Please see the [how to play section](#how-to-play) below.
 
 Spoken Word Sorcery is not signed, so some operating systems may give you a warning when you try to run it. You can be confident that the game is safe to run, especially since it is an Electron PWA that runs in a secured sandbox, but if you are still concerned, you can check the source code yourself!
 
+### How is this related to the Arcade Club Game Jam theme "loopholes"? <!-- omit from toc -->
+
+No spoilers! You will understand once you complete the prologue.
+
 ### How can I report a bug or suggest a feature? <!-- omit from toc -->
 
 Please open an issue on the [issues page](https://github.com/beyond-reality-dev/Spoken-Word-Sorcery/issues), or message me directly.
