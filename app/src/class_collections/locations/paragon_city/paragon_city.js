@@ -163,12 +163,16 @@ class NorthernCustomsCheckpoint extends Room {
 
 var northernCustomsCheckpoint = new NorthernCustomsCheckpoint();
 
-var shortVerticalStreet_01 = new ShortVerticalCityStreet("paragonCityTile.shortVerticalStreet_01");
+var shortVerticalStreet_01 = new ShortVerticalCityStreet(
+  "paragonCityTile.shortVerticalStreet_01"
+);
 shortVerticalStreet_01.exits = {
   north: "paragonCityTile.northernCustomsCheckpoint",
   south: "paragonCityTile.paragonCityMarketSquare",
 };
-shortVerticalStreet_01.description = shortVerticalStreet_01.description + "a customs checkpoint to the north and a market square to the south.";
+shortVerticalStreet_01.description =
+  shortVerticalStreet_01.description +
+  "a customs checkpoint to the north and a market square to the south.";
 
 class MarketSquare extends Room {
   constructor() {
@@ -683,7 +687,8 @@ class GovernorsPalaceGates extends Room {
     };
     this.enemies = [];
     this.isLocked = true;
-    this.lockedDescription = "The gates to the Governor's Palace are barred shut, by order of the Governor.";
+    this.lockedDescription =
+      "The gates to the Governor's Palace are barred shut, by order of the Governor.";
   }
 }
 
@@ -721,14 +726,60 @@ class GatesToImperialFortress extends Room {
     this.items = {};
     this.exits = {
       west: "paragonCityTile.streetToImperialFortress",
+      east: "paragonCityTile.makeshiftThroneRoom",
     };
-    this.enemies = [];
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [3, 4]),
+      new enemies.ImperialGuard("Imperial Guard 2", [4, 4]),
+      new enemies.ImperialGuard("Imperial Guard 3", [5, 4]),
+      new enemies.ImperialGuard("Imperial Guard 4", [6, 4]),
+      new enemies.ImperialGuard("Imperial Guard 5", [3, 3]),
+      new enemies.ImperialGuard("Imperial Guard 6", [4, 3]),
+      new enemies.ImperialGuard("Imperial Guard 7", [5, 3]),
+      new enemies.ImperialGuard("Imperial Guard 8", [6, 3]),
+    ];
     this.cutscenePlayed = false;
     this.cutscene = "imperialFortressGates";
   }
 }
 
 var gatesToImperialFortress = new GatesToImperialFortress();
+
+class MakeshiftThroneRoom extends Room {
+  constructor() {
+    super(
+      "Makeshift Throne Room",
+      "paragonCityTile.makeshiftThroneRoom",
+      "The makeshift throne room is a large, open area with a long purple carpet. At the end of the hall, it appears that a throne has been set up, but it is empty. There is a practical army of Imperial guards milling about. The gates to the Imperial Fortress are to the west.",
+      80.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {};
+    this.enemies = [
+      new enemies.ImperialGuard("Imperial Guard 1", [1, 16]),
+      new enemies.ImperialGuard("Imperial Guard 2", [3, 16]),
+      new enemies.ImperialGuard("Imperial Guard 3", [5, 16]),
+      new enemies.ImperialGuard("Imperial Guard 4", [7, 16]),
+      new enemies.ImperialGuard("Imperial Guard 5", [2, 15]),
+      new enemies.ImperialGuard("Imperial Guard 6", [4, 15]),
+      new enemies.ImperialGuard("Imperial Guard 7", [6, 15]),
+      new enemies.ImperialGuard("Imperial Guard 8", [8, 15]),
+      new enemies.ImperialGuard("Imperial Guard 9", [1, 14]),
+      new enemies.ImperialGuard("Imperial Guard 10", [3, 14]),
+      new enemies.ImperialGuard("Imperial Guard 11", [5, 14]),
+      new enemies.ImperialGuard("Imperial Guard 12", [7, 14]),
+      new enemies.ImperialGuard("Imperial Guard 13", [2, 13]),
+      new enemies.ImperialGuard("Imperial Guard 14", [4, 13]),
+      new enemies.ImperialGuard("Imperial Guard 15", [6, 13]),
+      new enemies.ImperialGuard("Imperial Guard 16", [8, 13]),
+    ];
+    this.cutscenePlayed = false;
+    this.cutscene = "makeshiftThroneRoom";
+  }
+}
+
+var makeshiftThroneRoom = new MakeshiftThroneRoom();
 
 module.exports = {
   NorthernCityEntrance,
@@ -769,4 +820,5 @@ module.exports = {
   governorsPalaceGates,
   streetToImperialFortress,
   gatesToImperialFortress,
+  makeshiftThroneRoom,
 };
