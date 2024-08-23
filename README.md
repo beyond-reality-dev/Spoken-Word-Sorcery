@@ -15,7 +15,7 @@
   - [Resting](#resting)
   - [Remembering](#remembering)
 - [Features](#features)
-  - [Introduction](#introduction)
+  - [Prologue](#prologue)
   - [Game Speed Settings](#game-speed-settings)
   - [Inventory System](#inventory-system)
   - [Combat System](#combat-system)
@@ -42,6 +42,10 @@ Please see the [how to play section](#how-to-play) below.
 ### Why do I get a warning when I try to run Spoken Word Sorcery? <!-- omit from toc -->
 
 Spoken Word Sorcery is not signed, so some operating systems may give you a warning when you try to run it. You can be confident that the game is safe to run, especially since it is an Electron PWA that runs in a secured sandbox, but if you are still concerned, you can check the source code yourself!
+
+### What do I do if the screen is greyed out and nothing is happening on the start of a new game? <!-- omit from toc -->
+
+On some devices/browser configurations, there are stricter limits on recursion than others, which can sometimes cause an invisible crash during the map generation at the very beginning of the game. If this occurs, you can simply close and reopen the game until it works. This is a known issue that I am working on fixing, although it is a challenging one due to device-specific limitations.
 
 ### How is this related to the Arcade Club Game Jam theme "loopholes"? <!-- omit from toc -->
 
@@ -129,9 +133,9 @@ To remember a phrase, you can type "remember" followed by the phrase you want to
 
 ## Features
 
-### Introduction
+### Prologue
 
-Currently the only part of the game that is playable is an introduction that gives some insight into some of the game's lore and mechanics but does not include the procedural generation and open world format that the game will eventually include.
+The prologue to the game is a short, linear introduction to the game's mechanics and some of its lore. Afterwards, players are free to explore the largely procedurally generated world and continue the main story.
 
 ### Game Speed Settings
 

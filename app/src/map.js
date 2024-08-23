@@ -1,10 +1,10 @@
-const { getValue, playerData } = require("./save_data");
+const { getValue } = require("./save_data");
 
 function updateMap() {
-  var location = playerData["location"];
+  var location = getValue("location");
   var primaryLocation = location.split(".")[0];
   var secondaryLocation = location.split(".")[1];
-  var locations = playerData["locations"];
+  var locations = getValue("locations");
   var currentLocation = locations[primaryLocation][secondaryLocation];
   var locationName = currentLocation["name"];
   var exits = currentLocation["exits"];

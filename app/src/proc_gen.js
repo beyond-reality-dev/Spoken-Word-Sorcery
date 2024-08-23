@@ -264,13 +264,15 @@ function generateArmor(tier, firstName = "", lastName = "") {
         var generatedLastName = lastName;
         var generatedName = `${generatedFirstName} ${generatedLastName}`;
       }
+      var boost = getRandomInt(tier) + 1;
       var baseArmor = new items[armorType]();
+      var defenseValue = baseArmor.defenseValue + boost;
       var basePrice = baseArmor.value;
       var newPrice = boost * 1.5 * basePrice;
       var armor = {
         name: `${generatedFirstName}'s ${baseArmor.name}`,
         description: `A ${baseArmor.name} that once belonged to ${generatedName}.`,
-        defenseValue: baseArmor.defenseValue,
+        defenseValue: defenseValue,
         weight: baseArmor.weight,
         value: newPrice,
         type: baseArmor.type,
@@ -286,7 +288,11 @@ function generateArmor(tier, firstName = "", lastName = "") {
 }
 
 function generatePotion(tier) {
-  var potionTypes = items[`tier${tier}Potions`];
+  if (tier < 4) {
+    var potionTypes = items[`tier${tier}Potions`];
+  } else {
+    var potionTypes = items[`tier3Potions`];
+  }
   var potionType = potionTypes[getRandomInt(potionTypes.length)];
   var potion = new items[potionType]();
   return potion;

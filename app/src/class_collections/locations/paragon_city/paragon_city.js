@@ -1,4 +1,4 @@
-const { Room } = require("../room");
+const { Room, Shop } = require("../room");
 const enemies = require("../../../class_collections/enemy_menagerie");
 const { generateShop } = require("../../../proc_gen");
 
@@ -659,7 +659,7 @@ class StreetToGovernorsPalace extends Room {
     );
     this.items = {};
     this.exits = {
-      west: "paragonCityTile.governorsPalace",
+      west: "paragonCityTile.governorsPalaceGates",
       east: "paragonCityTile.crossroads",
     };
     this.enemies = [];
@@ -667,6 +667,27 @@ class StreetToGovernorsPalace extends Room {
 }
 
 var streetToGovernorsPalace = new StreetToGovernorsPalace();
+
+class GovernorsPalaceGates extends Room {
+  constructor() {
+    super(
+      "Governor's Palace Gates",
+      "paragonCityTile.governorsPalaceGates",
+      "The gates to the Governor's Palace are unguarded, but securely locked. It seems strange that a residence for someone so important does not have any security forces. The street leads to the west.",
+      20.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "paragonCityTile.streetToGovernorsPalace",
+    };
+    this.enemies = [];
+    this.isLocked = true;
+    this.lockedDescription = "The gates to the Governor's Palace are barred shut, by order of the Governor.";
+  }
+}
+
+var governorsPalaceGates = new GovernorsPalaceGates();
 
 class StreetToImperialFortress extends Room {
   constructor() {
@@ -688,6 +709,26 @@ class StreetToImperialFortress extends Room {
 
 var streetToImperialFortress = new StreetToImperialFortress();
 
+class GatesToImperialFortress extends Room {
+  constructor() {
+    super(
+      "Imperial Fortress Gates",
+      "paragonCityTile.imperialFortress",
+      "The gates to the Imperial Fortress are heavily guarded by soldiers, who glare at any passerby. The street leads to the east.",
+      20.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "paragonCityTile.streetToImperialFortress",
+    };
+    this.enemies = [];
+    this.cutscenePlayed = false;
+    this.cutscene = "imperialFortressGates";
+  }
+}
+
+var gatesToImperialFortress = new GatesToImperialFortress();
 
 module.exports = {
   NorthernCityEntrance,
@@ -721,4 +762,11 @@ module.exports = {
   easternHousingDistrict,
   shortHorizontalStreet_04,
   southernCustomsCheckpoint,
+  longVerticalStreet_01,
+  crossroads,
+  longVerticalStreet_02,
+  streetToGovernorsPalace,
+  governorsPalaceGates,
+  streetToImperialFortress,
+  gatesToImperialFortress,
 };
