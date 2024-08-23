@@ -379,6 +379,26 @@ class EasternMarketStall_03 extends Shop {
 
 var easternMarketStall_03 = new EasternMarketStall_03();
 
+class ShortVerticalStreet_02 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.shortVerticalStreet_02",
+      "The city street leads to the market square in the south and the market in the north.",
+      10.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "paragonCityTile.paragonCityMarketSquare",
+      south: "paragonCityTile.citySquare",
+    };
+    this.enemies = [];
+  }
+}
+
+var shortVerticalStreet_02 = new ShortVerticalStreet_02();
+
 class WesternCustomsCheckpoint extends Room {
   constructor() {
     super(
@@ -390,14 +410,74 @@ class WesternCustomsCheckpoint extends Room {
     );
     this.items = {};
     this.exits = {
-      east: "paragonCityTile.cityStreetFromWest",
-      west: "paragonCityTile.shortHorizontalStreet_01",
+      west: "paragonCityTile.cityStreetFromWest",
+      east: "paragonCityTile.shortHorizontalStreet_01",
     };
     this.enemies = [];
   }
 }
 
 var westernCustomsCheckpoint = new WesternCustomsCheckpoint();
+
+class ShortHorizontalStreet_01 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.shortHorizontalStreet_01",
+      "The city street leads to a customs checkpoint in the west and the western housing district in the east.",
+      20.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "paragonCityTile.westernCustomsCheckpoint",
+      east: "paragonCityTile.westernHousingDistrict",
+    };
+    this.enemies = [];
+  }
+}
+
+var shortHorizontalStreet_01 = new ShortHorizontalStreet_01();
+
+class WesternHousingDistrict extends Room {
+  constructor() {
+    super(
+      "Housing District",
+      "paragonCityTile.westernHousingDistrict",
+      "The western housing district is a quiet place, with people going about their daily lives. The street continues to the west and the east.",
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "paragonCityTile.shortHorizontalStreet_01",
+      east: "paragonCityTile.shortHorizontalStreet_03",
+    };
+    this.enemies = [];
+  }
+}
+
+var westernHousingDistrict = new WesternHousingDistrict();
+
+class ShortHorizontalStreet_03 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.shortHorizontalStreet_03",
+      "The city street leads to the western housing district in the west and the city square in the east.",
+      20.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "paragonCityTile.westernHousingDistrict",
+      east: "paragonCityTile.citySquare",
+    };
+    this.enemies = [];
+  }
+}
+
+var shortHorizontalStreet_03 = new ShortHorizontalStreet_03();
 
 class EasternCustomsCheckpoint extends Room {
   constructor() {
@@ -418,6 +498,66 @@ class EasternCustomsCheckpoint extends Room {
 }
 
 var easternCustomsCheckpoint = new EasternCustomsCheckpoint();
+
+class ShortHorizontalStreet_02 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.shortHorizontalStreet_02",
+      "The city street leads to a customs checkpoint in the east and the eastern housing district in the west.",
+      20.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "paragonCityTile.easternCustomsCheckpoint",
+      west: "paragonCityTile.easternHousingDistrict",
+    };
+    this.enemies = [];
+  }
+}
+
+var shortHorizontalStreet_02 = new ShortHorizontalStreet_02();
+
+class EasternHousingDistrict extends Room {
+  constructor() {
+    super(
+      "Housing District",
+      "paragonCityTile.easternHousingDistrict",
+      "The eastern housing district is a quiet place, with people going about their daily lives. The street continues to the east and the west.",
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "paragonCityTile.shortHorizontalStreet_02",
+      west: "paragonCityTile.shortHorizontalStreet_04",
+    };
+    this.enemies = [];
+  }
+}
+
+var easternHousingDistrict = new EasternHousingDistrict();
+
+class ShortHorizontalStreet_04 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.shortHorizontalStreet_04",
+      "The city street leads to the eastern housing district in the east and the city square in the west.",
+      20.5,
+      10.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "paragonCityTile.easternHousingDistrict",
+      west: "paragonCityTile.citySquare",
+    };
+    this.enemies = [];
+  }
+}
+
+var shortHorizontalStreet_04 = new ShortHorizontalStreet_04();
 
 class SouthernCustomsCheckpoint extends Room {
   constructor() {
@@ -461,6 +601,12 @@ module.exports = {
   easternMarketStall_02,
   easternMarketStall_03,
   westernCustomsCheckpoint,
+  shortHorizontalStreet_01,
+  westernHousingDistrict,
+  shortHorizontalStreet_03,
   easternCustomsCheckpoint,
+  shortHorizontalStreet_02,
+  easternHousingDistrict,
+  shortHorizontalStreet_04,
   southernCustomsCheckpoint,
 };
