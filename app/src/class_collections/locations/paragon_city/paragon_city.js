@@ -132,9 +132,16 @@ class CitySquare extends Room {
       40.5
     );
     this.items = {};
-    this.exits = {};
+    this.exits = {
+      north: "paragonCityTile.shortVerticalStreet_02",
+      south: "paragonCityTile.shortVerticalStreet_01",
+      east: "paragonCityTile.shortHorizontalStreet_03",
+      west: "paragonCityTile.shortHorizontalStreet_04",
+    };
   }
 }
+
+var citySquare = new CitySquare("paragonCityTile.citySquare");
 
 class NorthernCustomsCheckpoint extends Room {
   constructor() {
@@ -571,13 +578,116 @@ class SouthernCustomsCheckpoint extends Room {
     this.items = {};
     this.exits = {
       south: "paragonCityTile.cityStreetFromSouth",
-      north: "paragonCityTile.shortVerticalStreet_02",
+      north: "paragonCityTile.longVerticalStreet_01",
     };
     this.enemies = [];
   }
 }
 
 var southernCustomsCheckpoint = new SouthernCustomsCheckpoint();
+
+class LongVerticalStreet_01 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.longVerticalStreet_01",
+      "The city street leads to a customs checkpoint in the south and a crossroads in the north.",
+      10.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "paragonCityTile.southernCustomsCheckpoint",
+      north: "paragonCityTile.crossroads",
+    };
+    this.enemies = [];
+  }
+}
+
+var longVerticalStreet_01 = new LongVerticalStreet_01();
+
+class Crossroads extends Room {
+  constructor() {
+    super(
+      "Crossroads",
+      "paragonCityTile.crossroads",
+      "The city street continues to the north and south and leads to the street to the Governor's Palace in the west, and the street to the Imperial Fortress in the east.",
+      40.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      north: "paragonCityTile.longVerticalStreet_02",
+      south: "paragonCityTile.longVerticalStreet_01",
+      west: "paragonCityTile.streetToGovernorsPalace",
+      east: "paragonCityTile.streetToImperialFortress",
+    };
+    this.enemies = [];
+  }
+}
+
+var crossroads = new Crossroads();
+
+class LongVerticalStreet_02 extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.longVerticalStreet_02",
+      "The city street leads to a crossroads in the south and the city square in the north.",
+      10.5,
+      40.5
+    );
+    this.items = {};
+    this.exits = {
+      south: "paragonCityTile.crossroads",
+      north: "paragonCityTile.citySquare",
+    };
+    this.enemies = [];
+  }
+}
+
+var longVerticalStreet_02 = new LongVerticalStreet_02();
+
+class StreetToGovernorsPalace extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.streetToGovernorsPalace",
+      "The city street leads to the Governor's Palace in the west and the crossroads in the east.",
+      40.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      west: "paragonCityTile.governorsPalace",
+      east: "paragonCityTile.crossroads",
+    };
+    this.enemies = [];
+  }
+}
+
+var streetToGovernorsPalace = new StreetToGovernorsPalace();
+
+class StreetToImperialFortress extends Room {
+  constructor() {
+    super(
+      "City Street",
+      "paragonCityTile.streetToImperialFortress",
+      "The city street leads to the Imperial Fortress in the east and the crossroads in the west.",
+      40.5,
+      20.5
+    );
+    this.items = {};
+    this.exits = {
+      east: "paragonCityTile.imperialFortress",
+      west: "paragonCityTile.crossroads",
+    };
+    this.enemies = [];
+  }
+}
+
+var streetToImperialFortress = new StreetToImperialFortress();
+
 
 module.exports = {
   NorthernCityEntrance,
@@ -589,6 +699,7 @@ module.exports = {
   ShortVerticalCityStreet,
   LongVerticalCityStreet,
   CitySquare,
+  citySquare,
   northernCustomsCheckpoint,
   shortVerticalStreet_01,
   marketSquare,
@@ -600,6 +711,7 @@ module.exports = {
   easternMarketStall_01,
   easternMarketStall_02,
   easternMarketStall_03,
+  shortVerticalStreet_02,
   westernCustomsCheckpoint,
   shortHorizontalStreet_01,
   westernHousingDistrict,
